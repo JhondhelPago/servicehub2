@@ -124,10 +124,10 @@ const PostInfoDiv = (props) => {
                                 </div>
                             </div>
                             {/* <!-- description --> */}
-                            <p className="px-2 max-h-20 text-justify overflow-auto">{props.description} Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugit repellendus fugiat, cumque ab similique pariatur officia quae molestiae temporibus ullam quas? Quae, provident! Eum mollitia minima temporibus obcaecati aspernatur aliquid.</p>
+                            <p className="px-2 max-h-20 text-justify overflow-auto">{props.data.description} Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugit repellendus fugiat, cumque ab similique pariatur officia quae molestiae temporibus ullam quas? Quae, provident! Eum mollitia minima temporibus obcaecati aspernatur aliquid.</p>
                         </div>
                         {/* <!-- img --> */}
-                        <img className="h-32 w-32 object-cover rounded-lg hover:cursor-pointer" onclick="enlargeImg()" id="smallImg" src={require(`./FileUpload/${ImageStringUtils.FirstImageElement(props.data.imagefiles)}`)} alt={ImageStringUtils.FirstImageElement(props.data.imagefiles)}/>
+                        <img className="h-32 w-32 object-cover rounded-lg hover:cursor-pointer" onclick="enlargeImg()" id="smallImg" src={require(`../../../../server/FileUpload/${ImageStringUtils.FirstImageElement(props.data.imagefiles)}`)} alt={ImageStringUtils.FirstImageElement(props.data.imagefiles)}/>
                         <button className="bg-red-600 absolute rounded-full top-0 right-0 p-3 m-2 hidden" id="closeBtn" onclick="closeEnlargedImg()">
                             <svg className="h-7 text-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" d="M18.3 5.71a.996.996 0 0 0-1.41 0L12 10.59L7.11 5.7A.996.996 0 1 0 5.7 7.11L10.59 12L5.7 16.89a.996.996 0 1 0 1.41 1.41L12 13.41l4.89 4.89a.996.996 0 1 0 1.41-1.41L13.41 12l4.89-4.89c.38-.38.38-1.02 0-1.4"/></svg>
                         </button>
