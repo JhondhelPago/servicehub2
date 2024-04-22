@@ -1,16 +1,12 @@
 import React from 'react';
 import {useState, useEffect} from 'react';
-import { ImageStringUtils, TimeUtils } from '../../utils';
 
-
-//this line grant access to the fileUpload -> where image file of the post is stored
-// const images = require.context('./FileUpload', false, /\.(jpg|jpeg|png)$/);
-const JobPosting = () => {
+const EventPosting = () => {
 
     const [Data, setData] = useState([]);
 
     useEffect(() => {
-
+        
         jobData();
 
     }, []);
@@ -19,7 +15,7 @@ const JobPosting = () => {
     const  jobData = async() =>{
 
         try{
-            const response = await fetch('/fetchingJobPost');
+            const response = await fetch('/fetchingEventPost');
             const ArrayData = await response.json();
 
             setData(ArrayData)
@@ -30,7 +26,6 @@ const JobPosting = () => {
     }
 
   
-
     return (
         <>
             {/* component structure here */}
@@ -38,7 +33,7 @@ const JobPosting = () => {
 
             <div id="mainContentContainer" class="pb-5 flex flex-col flex-grow bg-gray-100 text-darkColor">
                 <div className="py-5 px-5 mb-5 gap-2 flex items-center justify-between sticky top-0 bg-gray-100 ">
-                    <h1 className="text-2xl md:text-4xl font-medium">Manage Job Posts</h1>
+                    <h1 className="text-2xl md:text-4xl font-medium">Manage Event Posts</h1>
                     {/* <!-- search bar --> */}
                     <form className="p-0 m-0 flex justify-between items-center rounded border border-darkColor bg-transparent">
                         <input className="p-2 h-full w-32 focus:bg-white md:w-auto focus:outline-none bg-transparent" type="text" placeholder="Search"/>
@@ -74,13 +69,13 @@ const PostInfoDiv = (props) => {
                             <div className="w-1 h-full bg-gradient-to-b from-primary-light to-transparent"></div>
                             {/* <!-- admin name --> */}
                             <div>
-                                <span className="text-xs">Post by</span>
-                                <h4 className="text-xl font-semibold">{props.data.firstName}</h4>
+                                <span className="text-xs">Post by {props.data.creator} </span>
+                                <h4 className="text-xl font-semibold">Admin Name A.</h4>
                             </div>
                             {/* <!-- date posted --> */}
                             <div>
                                 <span className="text-xs">Posted on</span>
-                                <h4 className="text-xl font-normal">{props.data.date_created}</h4>
+                                <h4 className="text-xl font-normal">00/00/0000</h4>
                             </div>
                         </div>
                         {/* <!-- buttons --> */}
@@ -111,23 +106,23 @@ const PostInfoDiv = (props) => {
                         <div className="flex flex-col gap-2">
                             <div className=" flex flex-col gap-2">
                                 {/* <!-- title --> */}
-                                <h2 className="text-2xl font-semibold">Charity Program: {props.data.event_title}</h2>
+                                <h2 className="text-2xl font-semibold">Charity Program: The Chance to Work Again</h2>
                                 <div className="flex flex-wrap gap-2 items-center">
                                     {/* <!-- date --> */}
-                                    <span className="text-lg font-light">{props.data.scheduled_date}</span>
+                                    <span className="text-lg font-light">00/00/0000</span>
                                     <span className="h-1 w-1 bg-darkColor rounded-full"></span>
                                     {/* <!-- time --> */}
-                                    <span className="text-lg font-light">{TimeUtils._24HrTo12hr(props.data.scheduled_time)}</span>
+                                    <span className="text-lg font-light">00:00:00</span>
                                     <span className="h-1 w-1 bg-darkColor rounded-full"></span>
                                     {/* <!-- location --> */}
-                                    <span className="text-lg font-light">{props.location}</span>
+                                    <span className="text-lg font-light">Location</span>
                                 </div>
                             </div>
                             {/* <!-- description --> */}
-                            <p className="px-2 max-h-20 text-justify overflow-auto">{props.description} Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugit repellendus fugiat, cumque ab similique pariatur officia quae molestiae temporibus ullam quas? Quae, provident! Eum mollitia minima temporibus obcaecati aspernatur aliquid.</p>
+                            <p className="px-2 max-h-20 text-justify overflow-auto">Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugit repellendus fugiat, cumque ab similique pariatur officia quae molestiae temporibus ullam quas? Quae, provident! Eum mollitia minima temporibus obcaecati aspernatur aliquid.</p>
                         </div>
                         {/* <!-- img --> */}
-                        <img className="h-32 w-32 object-cover rounded-lg hover:cursor-pointer" onclick="enlargeImg()" id="smallImg" src={require(`./FileUpload/${ImageStringUtils.FirstImageElement(props.data.imagefiles)}`)} alt={ImageStringUtils.FirstImageElement(props.data.imagefiles)}/>
+                        <img className="h-32 w-32 object-cover rounded-lg hover:cursor-pointer" src="./assets/sample_img.jpg" onclick="enlargeImg()" id="smallImg" alt="post_image"/>
                         <button className="bg-red-600 absolute rounded-full top-0 right-0 p-3 m-2 hidden" id="closeBtn" onclick="closeEnlargedImg()">
                             <svg className="h-7 text-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" d="M18.3 5.71a.996.996 0 0 0-1.41 0L12 10.59L7.11 5.7A.996.996 0 1 0 5.7 7.11L10.59 12L5.7 16.89a.996.996 0 1 0 1.41 1.41L12 13.41l4.89 4.89a.996.996 0 1 0 1.41-1.41L13.41 12l4.89-4.89c.38-.38.38-1.02 0-1.4"/></svg>
                         </button>
@@ -151,4 +146,4 @@ const PostInfoDiv = (props) => {
 
 
 
-export default JobPosting;
+export default EventPosting;

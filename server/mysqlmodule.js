@@ -148,7 +148,14 @@ async function fetchEvent(){
 
         const [row] = await pool.execute(`SELECT * FROM event_post`);
 
-        return row;
+        let newRow = row.map((record) => {
+            record.imagefiles = StringManipulate.RemoveQuotation(record.imagefiles);
+            record.target_group = StringManipulate.RemoveQuotation(record.target_group);
+
+            return record;
+        })
+
+        return newRow;
 
     }catch(error){
         console.log('Error in \'fetchEventPosting() function\' in mysqlmodule.js');

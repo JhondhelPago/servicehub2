@@ -14,7 +14,8 @@ const {
     //admin function imports
     get_adminId,
     post_EventJob,
-    fetchJob
+    fetchJob,
+    fetchEvent
 
 } = require('./mysqlmodule.js');
 
@@ -140,7 +141,7 @@ app.post('/Posting', EventUpload.array('uploadImages', 10), async (req, res) => 
 
 });
 
-//fetcing jobposing from the server
+//fetcing jobposting from the server
 app.get('/fetchingJobPost', async (req, res) => {
 
     try{
@@ -155,6 +156,22 @@ app.get('/fetchingJobPost', async (req, res) => {
 
         throw error;
 
+    }
+
+});
+
+
+//fetching eventposting from the server
+app.get('/fetchingEventPost', async (req, res) => {
+
+    try{
+
+        const data = await fetchEvent();
+        console.log(data);
+        res.send(data);
+
+    }catch(error){
+        throw error;
     }
 
 });
