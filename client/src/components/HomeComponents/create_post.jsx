@@ -3,8 +3,14 @@ import {useNavigate} from 'react-router-dom';
 import upload_icon from '../../assets/upload.png'
 import { renderIntoDocument } from 'react-dom/test-utils';
 
+
+import { useContext } from 'react';
+import { UserContext } from '../LoginComponents/UserContext';
+
 const PostForm = ({onClick}) => {
     
+    const {AdminId} = useContext(UserContext);
+
     const [RenderingComponent, setRenderingComponent] = useState(null);
     
     const navigateHome = useNavigate();
@@ -96,6 +102,7 @@ const PostForm = ({onClick}) => {
     
                         <div className="py-5 px-5 mb-3 gap-2 flex items-center justify-between bg-gray-100 ">
                             <h1 className="text-2xl md:text-4xl font-medium">Create Post</h1>
+                            <p>{AdminId}</p> 
                         </div>
                         
                         
@@ -152,7 +159,7 @@ const PostForm = ({onClick}) => {
                                         <option value="Disability 5">Disability 4</option>
                                     </select>
                                 </div>
-                                <input id="creator_id" type="hidden" name="creator_id"/>
+                                <input id="creator_id" type="hidden" name="creator_id" value={AdminId}/>
                                 <button className="w-2/4 mx-auto p-3 my-3 bg-primary-light rounded-lg text-white scaleHover" type="submit" >Post</button>
                             </form>                
                         </div>
@@ -162,7 +169,8 @@ const PostForm = ({onClick}) => {
                     <div id="imageContainerDiv" className="h-full  w-auto  overflow-y-hidden ">
                     
                     </div>
-    
+
+                      
                 </div>
                 )}     
             </>

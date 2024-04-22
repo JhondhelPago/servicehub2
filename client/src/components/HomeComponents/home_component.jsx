@@ -5,6 +5,8 @@ import nav_logo_white from '../../assets/nav logo white.png';
 import icon_logo from '../../assets/icon logo.png';
 import admin_icon from '../../assets/adminIcon.png';
 
+
+import JobPosting from './Job_Post';
 import PostForm from './create_post';
 import Homeprompt from './homeprompt';
 
@@ -20,7 +22,7 @@ const HomeComponent = () => {
     }
 
     //initializing useState
-    const [ActiveComponent, setActiveComponent] = useState(null);
+    const [ActiveComponent, setActiveComponent] = useState('dashboard');
 
     const SelectComponent = (Component) => {
         setActiveComponent(Component);
@@ -60,7 +62,7 @@ const HomeComponent = () => {
                             {/* <!-- <span class="px-5 rounded font-normal absolute start-24 -z-[1] invisible group-hover/tooltip:visible bg-darkColor">Event Posting</span> --> */}
                         </button>
 
-                        <button className="group-hover/label:justify-between navHover group/tooltip" id="links">
+                        <button className="group-hover/label:justify-between navHover group/tooltip" id="links" onClick={() => {SelectComponent('job_posting')}}>
                             <label className="hidden mr-3 group-hover/label:flex">Job Posting</label>
                             <svg className="w-7" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" d="M4.615 20q-.69 0-1.152-.462Q3 19.075 3 18.385v-9.77q0-.69.463-1.152Q3.925 7 4.615 7H9V5.615q0-.69.463-1.152Q9.925 4 10.615 4h2.77q.69 0 1.153.463q.462.462.462 1.152V7h4.385q.69 0 1.152.463q.463.462.463 1.152v9.77q0 .69-.462 1.152q-.463.463-1.153.463zm0-1h14.77q.23 0 .423-.192q.192-.193.192-.423v-9.77q0-.23-.192-.423Q19.615 8 19.385 8H4.615q-.23 0-.423.192Q4 8.385 4 8.615v9.77q0 .23.192.423q.193.192.423.192M10 7h4V5.615q0-.23-.192-.423Q13.615 5 13.385 5h-2.77q-.23 0-.423.192q-.192.193-.192.423zM4 19V8z"/></svg>
                             {/* <!-- <span class="px-5 rounded font-normal absolute start-24 -z-[1] invisible group-hover/tooltip:visible bg-darkColor">Job Posting</span> --> */}
@@ -111,6 +113,7 @@ const HomeComponent = () => {
                    
                 {ActiveComponent === 'dashboard' && <Homeprompt></Homeprompt>}
                 {ActiveComponent === 'create_post' && <PostForm navigateHome={HandleNavigateHome} onClick={SelectComponent}></PostForm>}
+                {ActiveComponent === 'job_posting' && <JobPosting></JobPosting>}
 
                         
                 
