@@ -25,6 +25,12 @@ const HomeComponent = () => {
     const [ActiveComponent, setActiveComponent] = useState('dashboard');
 
     const SelectComponent = (Component) => {
+
+        if(Component === 'logout'){
+            //navigate to the default path -> index route
+            navigate('/');
+        }
+
         setActiveComponent(Component);
     }
 
@@ -101,7 +107,7 @@ const HomeComponent = () => {
                             {/* <!-- <span class="px-5 rounded font-normal absolute start-24 -z-[1] invisible group-hover/tooltip:visible bg-darkColor">Profile</span> --> */}
                         </button>
 
-                        <button className="group-hover/label:justify-between group/tooltip navHover hover:bg-red-600" id="links" href="#">
+                        <button className="group-hover/label:justify-between group/tooltip navHover hover:bg-red-600" id="links" onClick={() => SelectComponent('logout')}>
                             <label className="hidden mr-3 group-hover/label:flex">Logout</label>
                             <svg className="w-7" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" d="M5 3h6a3 3 0 0 1 3 3v4h-1V6a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2v-4h1v4a3 3 0 0 1-3 3H5a3 3 0 0 1-3-3V6a3 3 0 0 1 3-3m3 9h11.25L16 8.75l.66-.75l4.5 4.5l-4.5 4.5l-.66-.75L19.25 13H8z"/></svg>
                             {/* <!-- <span class="px-5 rounded font-normal absolute start-24 -z-[1] invisible group-hover/tooltip:visible bg-darkColor">Logout</span> --> */}
@@ -115,6 +121,7 @@ const HomeComponent = () => {
                 {ActiveComponent === "event_posting" && <EventPosting></EventPosting>}
                 {ActiveComponent === 'job_posting' && <JobPosting></JobPosting>}
                 {ActiveComponent === 'create_post' && <PostForm navigateHome={HandleNavigateHome} onClick={SelectComponent}></PostForm>}
+                  
 
                         
                 

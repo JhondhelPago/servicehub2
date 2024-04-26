@@ -42,7 +42,7 @@ const App = () => {
       <UserProvider>
         <BrowserRouter>
           <Routes>
-            <Route index element = {<LoginPage></LoginPage>}></Route>
+            <Route index path = '/' element = {<LoginPage></LoginPage>}></Route>
             <Route home path = '/home' element = {<HomePage></HomePage>}></Route>
           </Routes>
         </BrowserRouter>

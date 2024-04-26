@@ -40,7 +40,31 @@ class ImageStringUtils {
 
 }
 
+
+function sampleEdit(props){
+    // const obj_props = {title: newTitle, creator: newCreatorName};
+    const obj_props = props;
+
+
+    try{
+        fetch('/editpost',{
+            method : 'POST',
+            headers : {
+                'Content-Type' : 'application/json'
+            },
+            body : JSON.stringify(obj_props)
+        });
+
+    }catch(error){
+        throw error;
+    }
+}
+
 export {
     TimeUtils,
-    ImageStringUtils
+    ImageStringUtils,
+    sampleEdit
 }
+
+
+

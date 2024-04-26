@@ -167,7 +167,7 @@ app.get('/fetchingEventPost', async (req, res) => {
     try{
 
         const data = await fetchEvent();
-        console.log(data);
+        // console.log(data);
         res.send(data);
 
     }catch(error){
@@ -232,6 +232,21 @@ app.post('/JobsPost', JobUpload.array('images', 10), (req, res) => {
     
 
     res.sendFile(path.join(__dirname, '..', 'public', 'testing.html'));
+
+});
+
+//edit selected post 
+app.post('/editpost', async (req, res) => {
+
+    const DataReceived = req.body;
+
+    const creator = DataReceived.creator;
+
+    console.log(creator);
+
+
+
+    
 
 });
 
