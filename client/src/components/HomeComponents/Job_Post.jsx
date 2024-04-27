@@ -6,7 +6,7 @@ import { ImageStringUtils, TimeUtils, sampleEdit } from '../../utils';
 
 //this line grant access to the fileUpload -> where image file of the post is stored
 // const images = require.context('./FileUpload', false, /\.(jpg|jpeg|png)$/);
-const JobPosting = () => {
+const JobPosting = ({TriggerSetEditData}) => {
 
     const [Data, setData] = useState([]);
 
@@ -37,7 +37,7 @@ const JobPosting = () => {
             {/* component structure here */}
             
 
-            <div id="mainContentContainer" class="pb-5 flex flex-col flex-grow bg-gray-100 text-darkColor">
+            <div id="mainContentContainer" Class="pb-5 flex flex-col flex-grow bg-gray-100 text-darkColor">
                 <div className="py-5 px-5 mb-5 gap-2 flex items-center justify-between sticky top-0 bg-gray-100 ">
                     <h1 className="text-2xl md:text-4xl font-medium">Manage Job Posts</h1>
                     {/* <!-- search bar --> */}
@@ -54,7 +54,7 @@ const JobPosting = () => {
                 
                 
                 {Data.map((item, index) => (
-                    <PostInfoDiv key={index} data={item}></PostInfoDiv>
+                    <PostInfoDiv key={index} data={item} TriggerSetEditData={TriggerSetEditData}></PostInfoDiv>
                 ))}
             </div>
 
@@ -68,6 +68,13 @@ const PostInfoDiv = (props) => {
 
     const nagivate = useNavigate();
 
+    const ParentFunc = (EditObjectData) => {
+        const {TriggerSetEditData} = props;
+
+        TriggerSetEditData(EditObjectData);
+
+    }
+
     const editFnc = (obj_props) => {
         sampleEdit();
     }
@@ -76,7 +83,7 @@ const PostInfoDiv = (props) => {
         <>
             <div className="px-5 flex flex-col gap-5 items-center">
                 {/* <!-- post container --> */}
-                <div className="p-5 flex flex-col gap-5 rounded-lg bg-gray-50 hover:shadow-lg hover:bg-white">
+                <div className="p-5  my-5 flex flex-col gap-5 rounded-lg bg-gray-50 hover:shadow-lg hover:bg-white">
                     <div className="flex flex-col lg:flex-row gap-5 justify-between">
                         <div className="flex flex-row items-center gap-5">
                             <div className="w-1 h-full bg-gradient-to-b from-primary-light to-transparent"></div>
@@ -108,7 +115,7 @@ const PostInfoDiv = (props) => {
                                 Remove
                                 <svg className="h-7" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" d="M6 19a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V7H6zM8 9h8v10H8zm7.5-5l-1-1h-5l-1 1H5v2h14V4z"/></svg>
                             </button>
-                            <button className="w-4/5 mx-auto md:mx-0 md:w-auto p-3 gap-2 flex items-center justify-between rounded-lg scaleHover bg-primary-light" onClick={() => {sampleEdit(props.data)}}>
+                            <button className="w-4/5 mx-auto md:mx-0 md:w-auto p-3 gap-2 flex items-center justify-between rounded-lg scaleHover bg-primary-light" onClick={() => {ParentFunc(props.data)}}>
                                 Edit
                                 <svg className="h-7" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" d="M5 19h1.425L16.2 9.225L14.775 7.8L5 17.575zm-2 2v-4.25L16.2 3.575q.3-.275.663-.425t.762-.15q.4 0 .775.15t.65.45L20.425 5q.3.275.438.65T21 6.4q0 .4-.137.763t-.438.662L7.25 21zM19 6.4L17.6 5zm-3.525 2.125l-.7-.725L16.2 9.225z"/></svg>
                             </button>

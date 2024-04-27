@@ -9,6 +9,7 @@ import EventPosting from './Event_Post';
 import JobPosting from './Job_Post';
 import PostForm from './create_post';
 import Homeprompt from './homeprompt';
+import EditFormComponent from './edit_post';
 
 
 const HomeComponent = () => {
@@ -32,6 +33,19 @@ const HomeComponent = () => {
         }
 
         setActiveComponent(Component);
+    }
+
+
+    const [EditingData, setEditingData] = useState({});
+
+    const TriggerSetEditData = (PassPostObject) => {
+        
+        //reinitiating the Editing from the grandchild component
+        setEditingData(PassPostObject);
+
+
+        //updating the ActiveComponent
+        SelectComponent('edit');
     }
 
 
@@ -119,9 +133,9 @@ const HomeComponent = () => {
                    
                 {ActiveComponent === 'dashboard' && <Homeprompt></Homeprompt>}
                 {ActiveComponent === "event_posting" && <EventPosting></EventPosting>}
-                {ActiveComponent === 'job_posting' && <JobPosting></JobPosting>}
+                {ActiveComponent === 'job_posting' && <JobPosting TriggerSetEditData={TriggerSetEditData}></JobPosting>}
                 {ActiveComponent === 'create_post' && <PostForm navigateHome={HandleNavigateHome} onClick={SelectComponent}></PostForm>}
-                  
+                {ActiveComponent === 'edit' && <EditFormComponent EditingData={EditingData}></EditFormComponent> }
 
                         
                 
