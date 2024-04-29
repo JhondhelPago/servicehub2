@@ -15,7 +15,8 @@ const {
     get_adminId,
     post_EventJob,
     fetchJob,
-    fetchEvent
+    fetchEvent,
+    job_post_edit
 
 } = require('./mysqlmodule.js');
 
@@ -235,18 +236,39 @@ app.post('/JobsPost', JobUpload.array('images', 10), (req, res) => {
 
 });
 
+app.post('/edit-job-post', async (req, res) => {
+
+    const DataReceived = req.body;
+    console.log(DataReceived.id);
+
+    try{
+
+        await job_post_edit(DataReceived.id, DataReceived.event_title, DataReceived.scheduled_date, DataReceived.scheduled_time, DataReceived.description);
+
+        res.send({ok: true});
+
+    }catch(error){
+        throw error;
+    }
+
+});
+
+
 //edit selected post 
-app.post('/editpost', async (req, res) => {
+app.post('/jobeditpost', async (req, res) => {
 
     const DataReceived = req.body;
 
-    const event_title = DataReceived.event_title;
 
-    console.log(event_title);
+    try{
 
+        await job_post_edit(DataReceived.id, DataReceived.event_title, DataReceived.scheduled_date, DataReceived.scheduled_time, DataReceived.description);
 
+        res.send({ok: true});
 
-    
+    }catch(error){
+        throw error;
+    }
 
 });
 

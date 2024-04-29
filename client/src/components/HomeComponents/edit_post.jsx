@@ -11,9 +11,12 @@ const EditFormComponent = (props) => {
 
     // deconstructive function from the parent component set as the props of this child Componet
     const {SetComponent} = props;
+
+    const OriginalData = props.EditingData;
    
 
     const [InputData, setInputData] = useState({
+        id: props.EditingData.id,
         event_title : props.EditingData.event_title,
         scheduled_date : props.EditingData.scheduled_date,
         scheduled_time : props.EditingData.scheduled_time,
@@ -39,30 +42,41 @@ const EditFormComponent = (props) => {
         // check the variable if there is changes
         // if there is a change execute the backend
         // if there no changes simple set the active component to the job_posting
-        
-      
 
-        fetch('/editpost', {
-            method: 'POST',
-            headers: {
-                'Content-Type' : 'application/json'
-            },
-            body: JSON.stringify(InputData)
-        })
-        .then(response => {
-            if(response.ok){
-                return response.json();
-            }else{
-                throw new Error('response is not ok in edit_post at SaveChanges() function');
-            }
-        })
-        .catch(error => {
-            console.log(error);
-        })
+        if (
+            (OriginalData.event_title === InputData.event_title) &&
+            (OriginalData.scheduled_date === InputData.scheduled_date) &&
+            (OriginalData.scheduled_time === InputData.scheduled_time) && 
+            (OriginalData.location === InputData.location) &&
+            (OriginalData.description === InputData.description)
+        ){
 
-        alert('The Post has been updated.');
-        SetComponent('job_posting');
+            SetComponent('job_posting');
 
+        }else{
+
+            fetch('/jobeditpost', {
+                method: 'POST',
+                headers: {
+                    'Content-Type' : 'application/json'
+                },
+                body: JSON.stringify(InputData)
+            })
+            .then(response => {
+                if(response.ok){
+                    return response.json();
+                }else{
+                    throw new Error('response is not ok in edit_post at SaveChanges() function');
+                }
+            })
+            .catch(error => {
+                console.log(error);
+            })
+
+            alert('The Post has been updated.');
+            SetComponent('job_posting');
+
+        }
         
         
 
