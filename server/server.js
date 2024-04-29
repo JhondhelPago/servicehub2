@@ -262,7 +262,7 @@ app.post('/jobeditpost', async (req, res) => {
 
     try{
 
-        await job_post_edit(DataReceived.id, DataReceived.event_title, DataReceived.scheduled_date, DataReceived.scheduled_time, DataReceived.description);
+        await job_post_edit(DataReceived.id, DataReceived.event_title, DataReceived.scheduled_date, DataReceived.scheduled_time, DataReceived.description, DataReceived.post_type);
 
         res.send({ok: true});
 

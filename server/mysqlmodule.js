@@ -83,8 +83,9 @@ async function post_EventJob(Type, Creator_id, EventTitle, ScheduledDate, Schedu
         event_title,
         description,
         target_group,
+        post_type,
         imagefiles)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`, [Creator_id, MyDateTime.Datenow(), MyDateTime.Timenow(), ScheduledDate, ScheduledTime, Location, EventTitle, Description, Disability, filesArray]); 
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`, [Creator_id, MyDateTime.Datenow(), MyDateTime.Timenow(), ScheduledDate, ScheduledTime, Location, EventTitle, Description, Disability, Table, filesArray]); 
     
     }catch(error){
 
@@ -116,14 +117,14 @@ async function post_EventJob(Type, Creator_id, EventTitle, ScheduledDate, Schedu
 //     }
 // }
 
-async function job_post_edit(para_postID, para_Event, para_Date, para_Time, para_Description){
+async function job_post_edit(para_postID, para_Event, para_Date, para_Time, para_Description, para_PostType){
 
     //query for editing the post in the MySQL Server
 
     try{
 
         await pool.execute(`
-        UPDATE job_post 
+        UPDATE ${para_PostType}
         SET scheduled_date = ?,
             scheduled_time = ?,
             event_title = ?,

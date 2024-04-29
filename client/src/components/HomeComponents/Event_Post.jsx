@@ -1,7 +1,7 @@
 import React from 'react';
 import {useState, useEffect} from 'react';
 import { ImageStringUtils, TimeUtils } from '../../utils';
-const EventPosting = () => {
+const EventPosting = ({TriggerSetEditData}) => {
 
     const [Data, setData] = useState([]);
 
@@ -48,7 +48,7 @@ const EventPosting = () => {
                 
                 
                 {Data.map((item, index) => (
-                    <PostInfoDiv key={index} data={item}></PostInfoDiv>
+                    <PostInfoDiv key={index} data={item} TriggerSetEditData={TriggerSetEditData}></PostInfoDiv>
                 ))}
             </div>
 
@@ -59,6 +59,13 @@ const EventPosting = () => {
 
 
 const PostInfoDiv = (props) => {
+
+    const ParentFunc = (EditObjectData) => {
+        const {TriggerSetEditData} = props;
+
+        TriggerSetEditData(EditObjectData)
+    }
+
     return (
         <>
             <div className="px-5 flex flex-col gap-5 items-center">
@@ -95,7 +102,7 @@ const PostInfoDiv = (props) => {
                                 Remove
                                 <svg className="h-7" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" d="M6 19a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V7H6zM8 9h8v10H8zm7.5-5l-1-1h-5l-1 1H5v2h14V4z"/></svg>
                             </button>
-                            <button className="w-4/5 mx-auto md:mx-0 md:w-auto p-3 gap-2 flex items-center justify-between rounded-lg scaleHover bg-primary-light">
+                            <button className="w-4/5 mx-auto md:mx-0 md:w-auto p-3 gap-2 flex items-center justify-between rounded-lg scaleHover bg-primary-light" onClick={() => {ParentFunc(props.data)}}>
                                 Edit
                                 <svg className="h-7" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" d="M5 19h1.425L16.2 9.225L14.775 7.8L5 17.575zm-2 2v-4.25L16.2 3.575q.3-.275.663-.425t.762-.15q.4 0 .775.15t.65.45L20.425 5q.3.275.438.65T21 6.4q0 .4-.137.763t-.438.662L7.25 21zM19 6.4L17.6 5zm-3.525 2.125l-.7-.725L16.2 9.225z"/></svg>
                             </button>

@@ -21,7 +21,8 @@ const EditFormComponent = (props) => {
         scheduled_date : props.EditingData.scheduled_date,
         scheduled_time : props.EditingData.scheduled_time,
         location : props.EditingData.location,
-        description : props.EditingData.description
+        description : props.EditingData.description,
+        post_type : props.EditingData.post_type
     });
 
     
@@ -55,6 +56,8 @@ const EditFormComponent = (props) => {
 
         }else{
 
+
+
             fetch('/jobeditpost', {
                 method: 'POST',
                 headers: {
@@ -74,7 +77,13 @@ const EditFormComponent = (props) => {
             })
 
             alert('The Post has been updated.');
-            SetComponent('job_posting');
+
+            if(InputData.post_type === 'event_post'){
+                SetComponent('event_posting')
+            }else{
+                SetComponent('job_posting');
+            }
+            
 
         }
         
