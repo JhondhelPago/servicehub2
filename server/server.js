@@ -240,9 +240,9 @@ app.post('/editpost', async (req, res) => {
 
     const DataReceived = req.body;
 
-    const creator = DataReceived.creator;
+    const event_title = DataReceived.event_title;
 
-    console.log(creator);
+    console.log(event_title);
 
 
 
