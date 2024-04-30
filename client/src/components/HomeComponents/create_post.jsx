@@ -139,7 +139,7 @@ const PostForm = ({onClick}) => {
                                             <!-- upload button --> */}
                                             <div className="h-52 w-full md:w-52 flex items-center justify-center border border-gray-200 bg-white rounded-lg " >
                                                 {/* <!-- image upload icon --> */}
-                                                <img className="h-20" src={require} alt="upload image icon"/>
+                                                <img className="h-20" src={upload_icon} alt="upload image icon"/>
                                                 <input id="imageInput" className="absolute inset-0 opacity-0 cursor-pointer" type="file" name="uploadImages" placeholder="upload file"  multiple/>
                                             </div>
                                         </div>

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 29, 2024 at 02:23 PM
+-- Generation Time: Apr 30, 2024 at 03:05 PM
 -- Server version: 10.4.24-MariaDB
 -- PHP Version: 8.1.6
 
@@ -64,15 +64,9 @@ CREATE TABLE `event_post` (
   `event_title` varchar(191) NOT NULL,
   `description` varchar(3000) NOT NULL,
   `imagefiles` varchar(100) NOT NULL,
-  `target_group` varchar(1000) NOT NULL
+  `target_group` varchar(1000) NOT NULL,
+  `post_type` varchar(191) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dumping data for table `event_post`
---
-
-INSERT INTO `event_post` (`id`, `creator`, `date_created`, `time_created`, `scheduled_date`, `scheduled_time`, `location`, `event_title`, `description`, `imagefiles`, `target_group`) VALUES
-(55, 'admin1000', '2024-4-22', '21:26:18', '2024-04-22', '21:25', 'somewhere else', 'sample event posting', 'sample event description', '\"uploadImages-1713792378889-914555134.jpg,uploadImages-1713792378893-594647784.png\"', '\"Disability 3\"');
 
 -- --------------------------------------------------------
 
@@ -120,16 +114,9 @@ CREATE TABLE `job_post` (
   `event_title` varchar(191) NOT NULL,
   `description` varchar(3000) NOT NULL,
   `imagefiles` varchar(100) NOT NULL,
-  `target_group` varchar(1000) NOT NULL
+  `target_group` varchar(1000) NOT NULL,
+  `post_type` varchar(191) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dumping data for table `job_post`
---
-
-INSERT INTO `job_post` (`id`, `creator`, `date_created`, `time_created`, `scheduled_date`, `scheduled_time`, `location`, `event_title`, `description`, `imagefiles`, `target_group`) VALUES
-(8, 'admin1000', '2024-4-22', '13:07:17', '2024-04-22', '13:06', 'somewhere else', 'sample job poxting', 'sample description', '\"uploadImages-1713762437386-879674370.jpg,uploadImages-1713762437388-425798596.png\"', '\"Disability 5\"'),
-(9, 'admin1000', '2024-4-22', '13:08:22', '2024-04-22', '13:08', 'somewhere else again', 'sample job posting second', 'sample description again', '\"uploadImages-1713762502957-898583104.jpg,uploadImages-1713762502957-479226225.jpg\"', '\"Disability 2\"');
 
 -- --------------------------------------------------------
 
@@ -256,13 +243,13 @@ ALTER TABLE `job_post_hist`
 -- AUTO_INCREMENT for table `event_post`
 --
 ALTER TABLE `event_post`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=56;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=65;
 
 --
 -- AUTO_INCREMENT for table `job_post`
 --
 ALTER TABLE `job_post`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

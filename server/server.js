@@ -2,6 +2,7 @@ const express  = require('express');
 const multer = require('multer');
 const path = require('path');
 const bodyParser = require('body-parser');
+const fs = require('fs');
 
 
 //functions from mysqlmodule connection
@@ -16,9 +17,30 @@ const {
     post_EventJob,
     fetchJob,
     fetchEvent,
-    job_post_edit
+    job_post_edit,
+    deletePost
 
 } = require('./mysqlmodule.js');
+
+//function to delete the images to the directory
+
+function DelImage(filename){
+
+    const imagepath = path.join(__dirname, 'FileUpload', filename);
+
+    fs.unlink(imagepath, (err) => {
+
+        if(err){
+            console.log('Error deleting image with the file name ' + filename);
+            throw err;
+        }
+
+    
+
+    });
+
+}
+
 
 
 
@@ -272,6 +294,35 @@ app.post('/jobeditpost', async (req, res) => {
 
 });
 
+
+
+app.post('/post_delete', async (req, res) => {
+
+    const post_obj = req.body;
+
+    //take the image file names -> array type
+    const fileImages = post_obj.imagefiles.split(',');
+
+    try{
+
+        await deletePost(post_obj.id, post_obj.post_type);
+
+        console.log(`post with id ${post_obj.id} at table ${post_obj.post_type} has been deleted.`);
+
+        res.send({ok : true})
+
+    }catch(error){
+        req.send({ok : false});
+    }
+
+
+    fileImages.forEach((filename) => {
+        DelImage(filename);
+    });
+
+    console.log(`deleting post with id ${post_obj.id}`);
+
+});
 
 
 

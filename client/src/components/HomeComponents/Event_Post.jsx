@@ -1,12 +1,17 @@
 import React from 'react';
 import {useState, useEffect} from 'react';
-import { ImageStringUtils, TimeUtils } from '../../utils';
+import {useNavigate} from 'react-router-dom';
+import { ImageStringUtils, TimeUtils, sampleEdit } from '../../utils';
+
+
+//this line grant access to the fileUpload -> where image file of the post is stored
+// const images = require.context('./FileUpload', false, /\.(jpg|jpeg|png)$/);
 const EventPosting = ({TriggerSetEditData}) => {
 
     const [Data, setData] = useState([]);
 
     useEffect(() => {
-        
+
         jobData();
 
     }, []);
@@ -26,14 +31,15 @@ const EventPosting = ({TriggerSetEditData}) => {
     }
 
   
+
     return (
         <>
             {/* component structure here */}
             
 
-            <div id="mainContentContainer" class="pb-5 flex flex-col flex-grow bg-gray-100 text-darkColor">
+            <div id="mainContentContainer" Class="pb-5 flex flex-col flex-grow bg-gray-100 text-darkColor">
                 <div className="py-5 px-5 mb-5 gap-2 flex items-center justify-between sticky top-0 bg-gray-100 ">
-                    <h1 className="text-2xl md:text-4xl font-medium">Manage Event Posts</h1>
+                    <h1 className="text-2xl md:text-4xl font-medium">Manage Job Posts</h1>
                     {/* <!-- search bar --> */}
                     <form className="p-0 m-0 flex justify-between items-center rounded border border-darkColor bg-transparent">
                         <input className="p-2 h-full w-32 focus:bg-white md:w-auto focus:outline-none bg-transparent" type="text" placeholder="Search"/>
@@ -48,7 +54,7 @@ const EventPosting = ({TriggerSetEditData}) => {
                 
                 
                 {Data.map((item, index) => (
-                    <PostInfoDiv key={index} data={item} TriggerSetEditData={TriggerSetEditData}></PostInfoDiv>
+                    <PostInfoDiv key={index} data={item} TriggerSetEditData={TriggerSetEditData} ReInitiateUseState={jobData}></PostInfoDiv>
                 ))}
             </div>
 
@@ -60,24 +66,64 @@ const EventPosting = ({TriggerSetEditData}) => {
 
 const PostInfoDiv = (props) => {
 
+    const nagivate = useNavigate();
+
+    const {ReInitiateUseState} = props;
+
     const ParentFunc = (EditObjectData) => {
         const {TriggerSetEditData} = props;
 
-        TriggerSetEditData(EditObjectData)
+        TriggerSetEditData(EditObjectData);
+
     }
+
+    const editFnc = (obj_props) => {
+        sampleEdit();
+    }
+
+
+    const removeFnc = (obj_props) => {
+        if(window.confirm( "Are you sure to delete this post?")){
+
+            console.log(obj_props);
+            console.log('deleting');
+
+
+            //performe deletion process
+
+
+            fetch('/post_delete', {
+                method: 'POST',
+                headers : {
+                    'Content-Type' : 'application/json'
+                },
+                body : JSON.stringify(obj_props)
+            })
+
+
+            console.log('deleted');
+
+        }else{
+            console.log('cancel deletion');
+        }
+
+        ReInitiateUseState();
+    }
+
+
 
     return (
         <>
             <div className="px-5 flex flex-col gap-5 items-center">
                 {/* <!-- post container --> */}
-                <div className="p-5 flex flex-col gap-5 rounded-lg bg-gray-50 hover:shadow-lg hover:bg-white">
+                <div className="p-5  my-5 flex flex-col gap-5 rounded-lg bg-gray-50 hover:shadow-lg hover:bg-white">
                     <div className="flex flex-col lg:flex-row gap-5 justify-between">
                         <div className="flex flex-row items-center gap-5">
                             <div className="w-1 h-full bg-gradient-to-b from-primary-light to-transparent"></div>
                             {/* <!-- admin name --> */}
                             <div>
-                                <span className="text-xs">Post by {props.data.creator} </span>
-                                <h4 className="text-xl font-semibold">{props.data.creator}</h4>
+                                <span className="text-xs">Post by</span>
+                                <h4 className="text-xl font-semibold">{props.data.firstName}</h4>
                             </div>
                             {/* <!-- date posted --> */}
                             <div>
@@ -98,7 +144,7 @@ const PostInfoDiv = (props) => {
                                 {/* <!-- hide/arrow up icon - when stats are shown --> */}
                                 <svg className="h-7 hidden" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><g fill="none" fill-rule="evenodd"><path d="M24 0v24H0V0zM12.593 23.258l-.011.002l-.071.035l-.02.004l-.014-.004l-.071-.035c-.01-.004-.019-.001-.024.005l-.004.01l-.017.428l.005.02l.01.013l.104.074l.015.004l.012-.004l.104-.074l.012-.016l.004-.017l-.017-.427c-.002-.01-.009-.017-.017-.018m.265-.113l-.013.002l-.185.093l-.01.01l-.003.011l.018.43l.005.012l.008.007l.201.093c.012.004.023 0 .029-.008l.004-.014l-.034-.614c-.003-.012-.01-.02-.02-.022m-.715.002a.023.023 0 0 0-.027.006l-.006.014l-.034.614c0 .012.007.02.017.024l.015-.002l.201-.093l.01-.008l.004-.011l.017-.43l-.003-.012l-.01-.01z"/><path fill="currentColor" d="M11.293 8.293a1 1 0 0 1 1.414 0l5.657 5.657a1 1 0 0 1-1.414 1.414L12 10.414l-4.95 4.95a1 1 0 0 1-1.414-1.414z"/></g></svg>
                             </button>
-                            <button className="w-4/5 mx-auto md:mx-0 md:w-auto p-3 gap-2 flex items-center justify-between rounded-lg scaleHover bg-red-600">
+                            <button className="w-4/5 mx-auto md:mx-0 md:w-auto p-3 gap-2 flex items-center justify-between rounded-lg scaleHover bg-red-600" onClick={() => {removeFnc(props.data)}}>
                                 Remove
                                 <svg className="h-7" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" d="M6 19a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V7H6zM8 9h8v10H8zm7.5-5l-1-1h-5l-1 1H5v2h14V4z"/></svg>
                             </button>
@@ -122,7 +168,7 @@ const PostInfoDiv = (props) => {
                                     <span className="text-lg font-light">{TimeUtils._24HrTo12hr(props.data.scheduled_time)}</span>
                                     <span className="h-1 w-1 bg-darkColor rounded-full"></span>
                                     {/* <!-- location --> */}
-                                    <span className="text-lg font-light">{props.data.location}</span>
+                                    <span className="text-lg font-light">{props.location}</span>
                                 </div>
                             </div>
                             {/* <!-- description --> */}

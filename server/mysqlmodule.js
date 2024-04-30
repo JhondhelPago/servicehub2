@@ -191,6 +191,24 @@ async function fetchJob(){
 }
 
 
+async function deletePost(id, post_type){
+
+    let table;
+
+    post_type === 'event_post' ? (table = 'event_post') : (table = 'job_post');
+
+
+    try{
+
+        await pool.execute(`DELETE FROM ${table} WHERE id = ${id}`);
+
+    }catch(error){
+
+    }
+
+
+}
+
 const MyDateTime = {
     Timenow: () => {
         const TheDateTime = new Date();
@@ -244,5 +262,6 @@ module.exports = {
     post_EventJob, //inserting the Event or Job data information to the database
     fetchEvent,
     fetchJob,
-    job_post_edit
+    job_post_edit,
+    deletePost
 };

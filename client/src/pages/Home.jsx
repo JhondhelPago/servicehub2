@@ -10,7 +10,6 @@ const HomePage = () => {
     return (
         <>
             <div>
-                
                 <HomeComponent></HomeComponent>
             </div>
         </>
