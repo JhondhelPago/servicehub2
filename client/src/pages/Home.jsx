@@ -10,9 +10,7 @@ const HomePage = () => {
     return (
         <>
             <div>
-                
                 <HomeComponent></HomeComponent>
-                <h1>{AdminId}</h1>
             </div>
         </>
     )

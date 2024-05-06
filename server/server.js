@@ -2,6 +2,7 @@ const express  = require('express');
 const multer = require('multer');
 const path = require('path');
 const bodyParser = require('body-parser');
+const fs = require('fs');
 
 
 //functions from mysqlmodule connection
@@ -14,9 +15,32 @@ const {
     //admin function imports
     get_adminId,
     post_EventJob,
-    fetchJob
+    fetchJob,
+    fetchEvent,
+    job_post_edit,
+    deletePost
 
 } = require('./mysqlmodule.js');
+
+//function to delete the images to the directory
+
+function DelImage(filename){
+
+    const imagepath = path.join(__dirname, 'FileUpload', filename);
+
+    fs.unlink(imagepath, (err) => {
+
+        if(err){
+            console.log('Error deleting image with the file name ' + filename);
+            throw err;
+        }
+
+    
+
+    });
+
+}
+
 
 
 
@@ -140,7 +164,7 @@ app.post('/Posting', EventUpload.array('uploadImages', 10), async (req, res) => 
 
 });
 
-//fetcing jobposing from the server
+//fetcing jobposting from the server
 app.get('/fetchingJobPost', async (req, res) => {
 
     try{
@@ -155,6 +179,22 @@ app.get('/fetchingJobPost', async (req, res) => {
 
         throw error;
 
+    }
+
+});
+
+
+//fetching eventposting from the server
+app.get('/fetchingEventPost', async (req, res) => {
+
+    try{
+
+        const data = await fetchEvent();
+        // console.log(data);
+        res.send(data);
+
+    }catch(error){
+        throw error;
     }
 
 });
@@ -218,6 +258,71 @@ app.post('/JobsPost', JobUpload.array('images', 10), (req, res) => {
 
 });
 
+app.post('/edit-job-post', async (req, res) => {
+
+    const DataReceived = req.body;
+    console.log(DataReceived.id);
+
+    try{
+
+        await job_post_edit(DataReceived.id, DataReceived.event_title, DataReceived.scheduled_date, DataReceived.scheduled_time, DataReceived.description);
+
+        res.send({ok: true});
+
+    }catch(error){
+        throw error;
+    }
+
+});
+
+
+//edit selected post 
+app.post('/jobeditpost', async (req, res) => {
+
+    const DataReceived = req.body;
+
+
+    try{
+
+        await job_post_edit(DataReceived.id, DataReceived.event_title, DataReceived.scheduled_date, DataReceived.scheduled_time, DataReceived.description, DataReceived.post_type);
+
+        res.send({ok: true});
+
+    }catch(error){
+        throw error;
+    }
+
+});
+
+
+
+app.post('/post_delete', async (req, res) => {
+
+    const post_obj = req.body;
+
+    //take the image file names -> array type
+    const fileImages = post_obj.imagefiles.split(',');
+
+    try{
+
+        await deletePost(post_obj.id, post_obj.post_type);
+
+        console.log(`post with id ${post_obj.id} at table ${post_obj.post_type} has been deleted.`);
+
+        res.send({ok : true})
+
+    }catch(error){
+        req.send({ok : false});
+    }
+
+
+    fileImages.forEach((filename) => {
+        DelImage(filename);
+    });
+
+    console.log(`deleting post with id ${post_obj.id}`);
+
+});
 
 
 

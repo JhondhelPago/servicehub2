@@ -6,7 +6,7 @@ import { ImageStringUtils, TimeUtils, sampleEdit } from '../../utils';
 
 //this line grant access to the fileUpload -> where image file of the post is stored
 // const images = require.context('./FileUpload', false, /\.(jpg|jpeg|png)$/);
-const JobPosting = ({TriggerSetEditData}) => {
+const EventPosting = ({TriggerSetEditData}) => {
 
     const [Data, setData] = useState([]);
 
@@ -20,7 +20,7 @@ const JobPosting = ({TriggerSetEditData}) => {
     const  jobData = async() =>{
 
         try{
-            const response = await fetch('/fetchingJobPost');
+            const response = await fetch('/fetchingEventPost');
             const ArrayData = await response.json();
 
             setData(ArrayData)
@@ -199,4 +199,4 @@ const PostInfoDiv = (props) => {
 
 
 
-export default JobPosting;
+export default EventPosting;
