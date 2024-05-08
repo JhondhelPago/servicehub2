@@ -46,6 +46,10 @@ const JobPosting = () => {
 
     return (
         <>
+            <head>
+                <title>Job Posts</title>
+            </head>
+            
             {/* component structure here */}
             
 

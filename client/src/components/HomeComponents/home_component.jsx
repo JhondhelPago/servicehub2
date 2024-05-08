@@ -9,6 +9,9 @@ import admin_icon from '../../assets/adminIcon.png';
 import JobPosting from './Job_Post';
 import PostForm from './create_post';
 import Homeprompt from './homeprompt';
+import Inquiries from './inquiry';
+
+import Heading from './testing';
 
 
 const HomeComponent = () => {
@@ -32,7 +35,7 @@ const HomeComponent = () => {
 
     return (
         <>
-            
+            {/* <Heading></Heading> */}
 
             <div className="flex font-poppins">
                 {/* <!-- nav --> */}
@@ -74,7 +77,7 @@ const HomeComponent = () => {
                             {/* <!-- <span class="px-5 rounded font-normal absolute start-24 -z-[1] invisible group-hover/tooltip:visible bg-darkColor">Create Post</span> --> */}
                         </button>
 
-                        <button className="group-hover/label:justify-between navHover group/tooltip" id="links" >
+                        <button className="group-hover/label:justify-between navHover group/tooltip" id="links" onClick={() => {SelectComponent('inquiries')}}>
                             <label className="hidden mr-3 group-hover/label:flex">Inquiries</label>
                             <svg className="w-7" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path fill="currentColor" d="M9 2a4 4 0 1 0 0 8a4 4 0 0 0 0-8M6 6a3 3 0 1 1 6 0a3 3 0 0 1-6 0m-1.991 5A2.001 2.001 0 0 0 2 13c0 1.691.833 2.966 2.135 3.797C5.417 17.614 7.145 18 9 18c.41 0 .816-.019 1.21-.057a5.501 5.501 0 0 1-.618-.958C9.398 16.996 9.2 17 9 17c-1.735 0-3.257-.364-4.327-1.047C3.623 15.283 3 14.31 3 13c0-.553.448-1 1.009-1h5.59c.184-.358.405-.693.658-1zM14.5 19a4.5 4.5 0 1 1 0-9a4.5 4.5 0 0 1 0 9m.624-1.995a.625.625 0 1 0-1.249 0a.625.625 0 0 0 1.25 0m1.23-3.552c0-1.104-.823-1.95-1.854-1.95c-1.048 0-1.864.818-1.853 1.955a.5.5 0 1 0 1-.01c-.006-.579.36-.945.853-.945c.472 0 .853.392.853.95c0 .202-.07.315-.36.544l-.277.215c-.506.404-.716.717-.716 1.288a.5.5 0 0 0 .992.09l.011-.156c.017-.148.1-.254.346-.448l.277-.215c.513-.41.727-.732.727-1.318"/></svg>
                             {/* <!-- <span class="px-5 rounded font-normal absolute start-24 -z-[1] invisible group-hover/tooltip:visible bg-darkColor">Inquiries</span> --> */}
@@ -86,11 +89,11 @@ const HomeComponent = () => {
                             {/* <!-- <span class="px-5 rounded font-normal absolute start-24 -z-[1] invisible group-hover/tooltip:visible bg-darkColor">Requests</span> --> */}
                         </button>
 
-                        <button className="group-hover/label:justify-between navHover group/tooltip" id="links">
+                        {/* <button className="group-hover/label:justify-between navHover group/tooltip" id="links">
                             <label className="hidden mr-3 group-hover/label:flex">Mailbox</label>
                             <svg className="w-7" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" fillRule="evenodd" d="M18.372 3.03a2.45 2.45 0 0 0-1.345-.12l-.277.053v1.655a3.95 3.95 0 0 1 2.16.194c.428.165.892.206 1.34.12V3.275a3.677 3.677 0 0 1-1.8-.214zM16.75 6.145l.277-.054a2.45 2.45 0 0 1 1.345.12a3.95 3.95 0 0 0 2.344.154l.067-.016c.567-.136.967-.644.967-1.228v-2.22c0-.77-.72-1.336-1.468-1.156c-.429.103-.88.074-1.292-.085l-.08-.03a3.95 3.95 0 0 0-2.166-.193l-.486.093a1.243 1.243 0 0 0-1.008 1.22v3.5H7a.754.754 0 0 0-.136.012A5.25 5.25 0 0 0 1.25 11.5v5.267a2.983 2.983 0 0 0 2.983 2.983H9.75V22a.75.75 0 0 0 1.5 0v-2.25h2.5V22a.75.75 0 0 0 1.5 0v-2.25h4.543a2.957 2.957 0 0 0 2.957-2.957V11.5c0-2.9-2.35-5.25-5.25-5.25h-.75zm-1.5 1.604V11a.75.75 0 0 0 1.5 0V7.75h.75a3.75 3.75 0 0 1 3.75 3.75v5.293c0 .804-.652 1.457-1.457 1.457H11.75V11.5c0-1.47-.603-2.798-1.576-3.75zm-5 10.5V11.5a3.75 3.75 0 1 0-7.5 0v5.267c0 .819.664 1.483 1.483 1.483zm-6-2.25a.75.75 0 0 1 .75-.75h3a.75.75 0 1 1 0 1.5H5a.75.75 0 0 1-.75-.75" clipRule="evenodd"/></svg>
-                            {/* <!-- <span class="px-5 rounded font-normal absolute start-24 -z-[1] invisible group-hover/tooltip:visible bg-darkColor">Mailbox</span> --> */}
-                        </button>
+                            <!-- <span class="px-5 rounded font-normal absolute start-24 -z-[1] invisible group-hover/tooltip:visible bg-darkColor">Mailbox</span> -->
+                        </button> */}
 
                         <button className="group-hover/label:justify-between navHover group/tooltip mt-auto" id="links">
                             <label className="hidden flex-col font-extralight group-hover/label:flex" >
@@ -110,13 +113,11 @@ const HomeComponent = () => {
                 </nav>
                 {/* <!-- main content container --> */}
                 
-                   
                 {ActiveComponent === 'dashboard' && <Homeprompt></Homeprompt>}
                 {ActiveComponent === 'create_post' && <PostForm navigateHome={HandleNavigateHome} onClick={SelectComponent}></PostForm>}
                 {ActiveComponent === 'job_posting' && <JobPosting></JobPosting>}
+                {ActiveComponent === 'inquiries' && <Inquiries></Inquiries>}
 
-                        
-                
             </div>
         </>
     )
