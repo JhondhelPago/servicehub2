@@ -5,13 +5,15 @@ import nav_logo_white from '../../assets/nav logo white.png';
 import icon_logo from '../../assets/icon logo.png';
 import admin_icon from '../../assets/adminIcon.png';
 
-
+import EventPosting from './Event_Post';
 import JobPosting from './Job_Post';
 import PostForm from './create_post';
 import Homeprompt from './homeprompt';
-import Inquiries from './inquiry';
 
+import Inquiries from './inquiry';
 import Heading from './testing';
+import EditFormComponent from './edit_post';
+
 
 
 const HomeComponent = () => {
@@ -28,7 +30,26 @@ const HomeComponent = () => {
     const [ActiveComponent, setActiveComponent] = useState('dashboard');
 
     const SelectComponent = (Component) => {
+
+        if(Component === 'logout'){
+            //navigate to the default path -> index route
+            navigate('/');
+        }
+
         setActiveComponent(Component);
+    }
+
+
+    const [EditingData, setEditingData] = useState({});
+
+    const TriggerSetEditData = (PassPostObject) => {
+        
+        //reinitiating the Editing from the grandchild component
+        setEditingData(PassPostObject);
+
+
+        //updating the ActiveComponent
+        SelectComponent('edit');
     }
 
 
@@ -59,7 +80,7 @@ const HomeComponent = () => {
                             {/* <!-- <span class="px-5 rounded font-normal absolute start-24 -z-[1] invisible group-hover/tooltip:visible bg-darkColor">Dashboard</span> --> */}
                         </button>
 
-                        <button className="group-hover/label:justify-between navHover group/tooltip" id="links" >
+                        <button className="group-hover/label:justify-between navHover group/tooltip" id="links" onClick={() => {SelectComponent('event_posting')}}>
                             <label className="hidden mr-3 group-hover/label:flex">Event Posting</label>
                             <svg className="w-7" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" d="M14.885 18q-.877 0-1.497-.62q-.619-.618-.619-1.495q0-.877.62-1.497q.619-.619 1.496-.619t1.496.62q.619.619.619 1.496t-.62 1.496q-.618.619-1.495.619m-9.27 3q-.69 0-1.152-.462Q4 20.075 4 19.385V6.615q0-.69.463-1.152Q4.925 5 5.615 5h1.77V2.77h1.077V5h7.153V2.77h1V5h1.77q.69 0 1.152.463q.463.462.463 1.152v12.77q0 .69-.462 1.152q-.463.463-1.153.463zm0-1h12.77q.23 0 .423-.192q.192-.193.192-.423v-8.77H5v8.77q0 .23.192.423q.193.192.423.192M5 9.615h14v-3q0-.23-.192-.423Q18.615 6 18.385 6H5.615q-.23 0-.423.192Q5 6.385 5 6.615zm0 0V6z"/></svg>
                             {/* <!-- <span class="px-5 rounded font-normal absolute start-24 -z-[1] invisible group-hover/tooltip:visible bg-darkColor">Event Posting</span> --> */}
@@ -104,7 +125,7 @@ const HomeComponent = () => {
                             {/* <!-- <span class="px-5 rounded font-normal absolute start-24 -z-[1] invisible group-hover/tooltip:visible bg-darkColor">Profile</span> --> */}
                         </button>
 
-                        <button className="group-hover/label:justify-between group/tooltip navHover hover:bg-red-600" id="links" href="#">
+                        <button className="group-hover/label:justify-between group/tooltip navHover hover:bg-red-600" id="links" onClick={() => SelectComponent('logout')}>
                             <label className="hidden mr-3 group-hover/label:flex">Logout</label>
                             <svg className="w-7" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" d="M5 3h6a3 3 0 0 1 3 3v4h-1V6a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2v-4h1v4a3 3 0 0 1-3 3H5a3 3 0 0 1-3-3V6a3 3 0 0 1 3-3m3 9h11.25L16 8.75l.66-.75l4.5 4.5l-4.5 4.5l-.66-.75L19.25 13H8z"/></svg>
                             {/* <!-- <span class="px-5 rounded font-normal absolute start-24 -z-[1] invisible group-hover/tooltip:visible bg-darkColor">Logout</span> --> */}
@@ -114,9 +135,13 @@ const HomeComponent = () => {
                 {/* <!-- main content container --> */}
                 
                 {ActiveComponent === 'dashboard' && <Homeprompt></Homeprompt>}
+                {ActiveComponent === "event_posting" && <EventPosting TriggerSetEditData={TriggerSetEditData}></EventPosting>}
+                {ActiveComponent === 'job_posting' && <JobPosting TriggerSetEditData={TriggerSetEditData}></JobPosting>}
                 {ActiveComponent === 'create_post' && <PostForm navigateHome={HandleNavigateHome} onClick={SelectComponent}></PostForm>}
                 {ActiveComponent === 'job_posting' && <JobPosting></JobPosting>}
                 {ActiveComponent === 'inquiries' && <Inquiries></Inquiries>}
+                {ActiveComponent === 'edit' && <EditFormComponent EditingData={EditingData} SetComponent={SelectComponent}></EditFormComponent> }
+
 
             </div>
         </>

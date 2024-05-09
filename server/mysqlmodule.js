@@ -83,8 +83,9 @@ async function post_EventJob(Type, Creator_id, EventTitle, ScheduledDate, Schedu
         event_title,
         description,
         target_group,
+        post_type,
         imagefiles)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`, [Creator_id, MyDateTime.Datenow(), MyDateTime.Timenow(), ScheduledDate, ScheduledTime, Location, EventTitle, Description, Disability, filesArray]); 
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`, [Creator_id, MyDateTime.Datenow(), MyDateTime.Timenow(), ScheduledDate, ScheduledTime, Location, EventTitle, Description, Disability, Table, filesArray]); 
     
     }catch(error){
 
@@ -116,25 +117,24 @@ async function post_EventJob(Type, Creator_id, EventTitle, ScheduledDate, Schedu
 //     }
 // }
 
-async function post_edit(postID, Event, Date, Time, Description, TargetAudience){
+async function job_post_edit(para_postID, para_Event, para_Date, para_Time, para_Description, para_PostType){
 
     //query for editing the post in the MySQL Server
 
     try{
 
         await pool.execute(`
-        UPDATE event_post 
-        SET(
-        date_created = ?,
-        time_created = ?,
-        event_title = ?,
-        description = ?,
-        target_group = ? 
-        WHERE id = ?)`, [Date, Time, Event, Description, TargetAudience, postID]);
+        UPDATE ${para_PostType}
+        SET scheduled_date = ?,
+            scheduled_time = ?,
+            event_title = ?,
+            description = ?
+        WHERE id = ?`, [para_Date, para_Time, para_Event, para_Description, para_postID]);
+
 
     }catch(error){
-        throw error;
         console.log('Error in the post_edit function @ mysqlmodule.js');
+        throw error;
     }
 
 }
@@ -148,7 +148,14 @@ async function fetchEvent(){
 
         const [row] = await pool.execute(`SELECT * FROM event_post`);
 
-        return row;
+        let newRow = row.map((record) => {
+            record.imagefiles = StringManipulate.RemoveQuotation(record.imagefiles);
+            record.target_group = StringManipulate.RemoveQuotation(record.target_group);
+
+            return record;
+        })
+
+        return newRow;
 
     }catch(error){
         console.log('Error in \'fetchEventPosting() function\' in mysqlmodule.js');
@@ -183,6 +190,24 @@ async function fetchJob(){
 
 }
 
+
+async function deletePost(id, post_type){
+
+    let table;
+
+    post_type === 'event_post' ? (table = 'event_post') : (table = 'job_post');
+
+
+    try{
+
+        await pool.execute(`DELETE FROM ${table} WHERE id = ${id}`);
+
+    }catch(error){
+
+    }
+
+
+}
 
 const MyDateTime = {
     Timenow: () => {
@@ -236,5 +261,7 @@ module.exports = {
     get_adminId, //gettig the adminId
     post_EventJob, //inserting the Event or Job data information to the database
     fetchEvent,
-    fetchJob
+    fetchJob,
+    job_post_edit,
+    deletePost
 };
