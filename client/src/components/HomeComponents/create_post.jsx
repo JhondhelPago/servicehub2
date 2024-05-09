@@ -87,6 +87,9 @@ const PostForm = ({onClick}) => {
     
         return (
             <>
+                <head>
+                    <title>Create Post</title>
+                </head>
                 {RenderingComponent === true && (
                     <p>Rendering new Component</p>
                 )}

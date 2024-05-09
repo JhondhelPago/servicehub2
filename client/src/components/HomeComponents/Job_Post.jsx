@@ -34,6 +34,10 @@ const JobPosting = ({TriggerSetEditData}) => {
 
     return (
         <>
+            <head>
+                <title>Job Posts</title>
+            </head>
+            
             {/* component structure here */}
             
 
