@@ -1,6 +1,47 @@
 import React from "react";
+import {useState, useEffect, useContext} from "react";
+import { UserContext } from "../LoginComponents/UserContext";
 
 const InboxComponent = () => {
+
+    const {AdminId} = useContext(UserContext);
+
+
+    //useState -> store dynamic data 
+
+    const [Inbox, setInbox] = useState(AdminId);
+
+    //this function will reload after the render of the return 
+    useEffect(() => {
+
+        FetchMail();
+
+
+    }, []);
+
+
+    const FetchMail = async () => {
+
+        try{
+
+            const response =  await fetch(`/Fetchmail/${AdminId}`);
+            const data = await response.json();
+
+            //to set new value to the Inbox
+            setInbox(data);
+        
+        
+        }catch(error){
+            throw error;
+        }
+
+    }
+ 
+    
+
+
+    
+
   return (
     <>
       {/* <!-- inbox list/content container --> */}
@@ -10,7 +51,7 @@ const InboxComponent = () => {
               <div className="p-2 w-full flex justify-between border-b border-darkColor bg-extra-extra-light">
                   <div className="flex gap-2">
                       <input type="checkbox"/>
-                      <label for="">Select All</label>
+                      <label for="">Select All {Inbox ? Inbox[1].time_sent : 'no data' } </label>
                   </div>
                   <button className="hover:text-red-600">
                       <svg className="h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" d="M6 19a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V7H6zM8 9h8v10H8zm7.5-5l-1-1h-5l-1 1H5v2h14V4z"/></svg>
@@ -26,7 +67,7 @@ const InboxComponent = () => {
                           <h6 className="truncate">User1 User1User1</h6>
                       </label>
                       {/* <!-- subject --> */}
-                      <h6 className="col-span-3 truncate">SubjectSubjectSubjectSubjectSubjectSubje ctSubjectSubjectSubjectSubject</h6>
+                      <h6 className="col-span-3 truncate"> subjectsuvbjectsubject </h6>
                       <h6 className="col-span-2 text-xs my-auto justify-self-end group-hover/del:hidden">00/00/00</h6>
                       <button className="col-span-2 justify-self-end hidden group-hover/del:inline hover:text-red-600">
                           <svg className="h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" d="M6 19a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V7H6zM8 9h8v10H8zm7.5-5l-1-1h-5l-1 1H5v2h14V4z"/></svg>
