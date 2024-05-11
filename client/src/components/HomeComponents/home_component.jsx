@@ -138,7 +138,6 @@ const HomeComponent = () => {
                 {ActiveComponent === "event_posting" && <EventPosting TriggerSetEditData={TriggerSetEditData}></EventPosting>}
                 {ActiveComponent === 'job_posting' && <JobPosting TriggerSetEditData={TriggerSetEditData}></JobPosting>}
                 {ActiveComponent === 'create_post' && <PostForm navigateHome={HandleNavigateHome} onClick={SelectComponent}></PostForm>}
-                {ActiveComponent === 'job_posting' && <JobPosting></JobPosting>}
                 {ActiveComponent === 'inquiries' && <Inquiries></Inquiries>}
                 {ActiveComponent === 'edit' && <EditFormComponent EditingData={EditingData} SetComponent={SelectComponent}></EditFormComponent> }
 
