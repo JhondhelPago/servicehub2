@@ -1,6 +1,10 @@
 {
   "dependencies": {
+<<<<<<< Updated upstream
     "@headlessui/react": "^2.0.1",
     "@heroicons/react": "^2.1.3"
+=======
+    "mysql2": "^3.9.7"
+>>>>>>> Stashed changes
   }
 }

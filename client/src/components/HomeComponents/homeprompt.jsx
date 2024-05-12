@@ -1,41 +1,32 @@
-import React from 'react';
-
-import childCom from './sampeReact';
-
-
-
+import React from "react";
+import { useState, useEffect } from "react";
 
 const Homeprompt = () => {
-    return (
-        <>
-            <head>
-                <title>Dashboard</title>
-            </head>
-            <div>
-                <p className="text-xl text-red-600">Admin Dashborad</p>
-                <SampleComponent></SampleComponent>
-            </div>
-        </>
-    )
-}
+  const [UserData, setUserData] = useState(null);
 
-const SampleComponent = () => {
+  useEffect(() => {
+    GetUserData();
+  }, []);
 
-    
+  const GetUserData = async () => {
+    try {
+      const GetData = await fetch(`/Fetchuser`);
+      const FormattedData = GetData.json();
 
+      setUserData(FormattedData);
+    } catch (error) {
+      throw error;
+    }
+  };
 
-    return (
-        <>
-            <div>
-                <button className='border border-black'>click here</button>
-                <p></p>
-            </div>
-        </>
-    )
-}
+  const authorName = "JR";
 
-
-
-
+  return (
+    <>
+      <p>Author: {authorName} A. Solis</p>
+      <p>{UserData ? UserData[0].email : "no data"}</p>
+    </>
+  );
+};
 
 export default Homeprompt;
