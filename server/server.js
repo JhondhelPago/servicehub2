@@ -18,7 +18,8 @@ const {
     fetchJob,
     fetchEvent,
     job_post_edit,
-    deletePost
+    deletePost,
+    FetchMail
 
 } = require('./mysqlmodule.js');
 
@@ -439,6 +440,30 @@ app.post('/adminLoginSession', async (req, res) => {
     }
 
     res.end();
+
+});
+
+
+app.get('/Fetchmail/:AdminId', async (req, res) => {
+
+    const AdminId = req.params.AdminId;
+
+    try{
+
+        const InboxesData = await FetchMail(AdminId);
+
+        if(InboxesData.length > 0){
+
+            res.send(InboxesData);
+
+        }else{
+            res.send(null);
+        }
+
+
+    }catch(error){
+        throw error;
+    }
 
 });
 

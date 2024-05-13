@@ -39,7 +39,7 @@ const EventPosting = ({TriggerSetEditData}) => {
 
             <div id="mainContentContainer" Class="pb-5 flex flex-col flex-grow bg-gray-100 text-darkColor">
                 <div className="py-5 px-5 mb-5 gap-2 flex items-center justify-between sticky top-0 bg-gray-100 ">
-                    <h1 className="text-2xl md:text-4xl font-medium">Manage Job Posts</h1>
+                    <h1 className="text-2xl md:text-4xl font-medium">Manage Event Post</h1>
                     {/* <!-- search bar --> */}
                     <form className="p-0 m-0 flex justify-between items-center rounded border border-darkColor bg-transparent">
                         <input className="p-2 h-full w-32 focus:bg-white md:w-auto focus:outline-none bg-transparent" type="text" placeholder="Search"/>

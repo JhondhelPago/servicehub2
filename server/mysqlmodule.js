@@ -209,6 +209,23 @@ async function deletePost(id, post_type){
 
 }
 
+async function FetchMail(adminId){
+
+    try{
+
+        const [row] = await pool.execute(`SELECT * FROM mail_sent WHERE receiverID = ?`,[adminId]);
+            
+        if(row.length > 0){
+            return row;
+        }else{
+            return null;
+        }
+
+    }catch(error){
+        throw error;
+    }
+}
+
 const MyDateTime = {
     Timenow: () => {
         const TheDateTime = new Date();
@@ -263,5 +280,6 @@ module.exports = {
     fetchEvent,
     fetchJob,
     job_post_edit,
-    deletePost
+    deletePost,
+    FetchMail
 };

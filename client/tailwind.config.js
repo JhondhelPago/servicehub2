@@ -10,6 +10,8 @@ module.exports = {
         'primary-mid': '#B17709',
         'primary-dark': '#966D22',
         'primary-extraDark': '#A44F00',
+        'extra-light': '#F0DCB6',
+        'extra-extra-light': '#FAF5EA',
         'darkColor': '#424B54',
         'darkerColor': '#3A4147',
         'gradient-primary-light-from': '#F0DCB6',
