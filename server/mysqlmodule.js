@@ -213,7 +213,12 @@ async function FetchMail(adminId){
 
     try{
 
-        const [row] = await pool.execute(`SELECT * FROM mail_sent WHERE receiverID = ?`,[adminId]);
+        const [row] = await pool.execute(`
+        SELECT mail_sent.*, user.firstName
+        FROM mail_sent 
+        JOIN user ON mail_sent.senderID = user.id COLLATE utf8mb4_general_ci
+        WHERE mail_sent.receiverID = ?
+        `,[adminId]);
             
         if(row.length > 0){
             return row;
