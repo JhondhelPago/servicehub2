@@ -7,7 +7,7 @@
 
 /* width */
 ::-webkit-scrollbar {
-  @apply w-2 h-2 md:w-3 md:h-3 bg-transparent;
+  @apply w-2 h-2 bg-transparent md:w-3 md:h-3;
 }
 
 /* Track */
@@ -17,7 +17,7 @@
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  @apply bg-primary-light rounded-full;
+  @apply rounded-full bg-primary-light;
 }
 
 /* Handle on hover */
@@ -25,46 +25,62 @@
   @apply bg-primary-dark;
 }
 
-.navHover{
-  @apply px-5 py-2 rounded flex items-center justify-center;
+.navHover {
+  @apply flex items-center justify-center px-5 py-2 transition ease-in-out rounded;
 }
 
-.navHover label{
+.navHover label {
   @apply cursor-pointer;
 }
 
-.navHover:hover{
+.navHover:hover {
   @apply bg-darkerColor;
 }
 
-.scaleHover:hover{
-  @apply scale-105 shadow;
+.scaleHover {
+  @apply transition ease-in-out hover:scale-105 hover:shadow-lg;
 }
 
-.activeLink{
-  @apply px-5 py-2 rounded flex items-center justify-center font-bold bg-darkerColor cursor-default;
+.activeLink {
+  @apply flex items-center justify-center px-5 py-2 font-bold rounded cursor-default bg-darkerColor;
 }
 
-.enlargedImg{
-  @apply object-contain absolute inset-0 h-screen w-screen bg-black bg-opacity-50 backdrop-blur-sm;
+.enlargedImg {
+  @apply absolute inset-0 object-contain w-screen h-screen bg-black bg-opacity-50 backdrop-blur-sm;
 }
 
-.activeMail{
-  @apply bg-extra-light rounded;
+.activeMail {
+  @apply rounded bg-extra-light;
 }
 
-.hoverMail:hover{
-  @apply bg-extra-light rounded;
+.hoverMail {
+  @apply transition ease-in-out hover:bg-extra-light hover:rounded;
 }
 
-.hoverMailItem{
-  @apply cursor-pointer;
+.hoverMailItem {
+  @apply transition ease-in-out cursor-pointer;
 }
 
-.hoverMailItem:hover{
+.hoverMailItem:hover {
   @apply bg-extra-light;
 }
 
-.activeMailItem{
+.activeMailItem {
   @apply bg-extra-extra-light;
+}
+
+.activeUserLink {
+  @apply font-bold border-b-2 border-primary-light;
+}
+
+.userNavHover {
+  @apply transition ease-in-out hover:border-b-2 border-primary-light;
+}
+
+.tagBG {
+  @apply flex items-center justify-center px-2 py-1 border rounded bg-darkColor border-darkColor bg-opacity-20;
+}
+
+.eventCard {
+  @apply transition ease-in-out rounded-lg hover:shadow-lg hover:bg-white;
 }
