@@ -99,9 +99,8 @@ const Homepage = () => {
                         {/* <!-- event post container --> */}
                         {ActiveComponent === 'EventPosting' && EventData.map((eventItem) => {
                             return(
-                                <>
-                                    <EventPostComponent eventdata={eventItem}></EventPostComponent>
-                                </>
+                                <EventPostComponent key={eventItem.id} eventdata={eventItem}></EventPostComponent>
+                                
                             )
                         })}
                         {/* job post component */}
