@@ -1,5 +1,6 @@
 import React, { useContext , useEffect, useState } from 'react';
 import { ClientUserContext } from './ClientUserContext.jsx';
+import axios from 'axios';
 
 import nav_logo from '../assets/nav logo dark.png';
 
@@ -16,11 +17,16 @@ const Homepage = () => {
 
     const [EventData, SetEventData] = useState([]);
 
-    const FetchEventData = () => {
+    const FetchEventData = async() => {
         
         try{
 
             // getting the data from the middle server
+            const response = await axios.get('/fetchingEventPost');
+            const data = response.data;
+
+            console.log(data);
+            SetEventData(data);
             
             
 
@@ -42,6 +48,8 @@ const Homepage = () => {
 
     useEffect(() => {
         document.title = 'Homepage'
+        FetchEventData();
+        console.log(EventData);
     }, [])
 
     return (
@@ -89,7 +97,13 @@ const Homepage = () => {
 
                     <div className="container flex flex-col justify-center gap-5 p-5 mx-auto">
                         {/* <!-- event post container --> */}
-                        {ActiveComponent === 'EventPosting' && (<EventPostComponent></EventPostComponent>)}
+                        {ActiveComponent === 'EventPosting' && EventData.map((eventItem) => {
+                            return(
+                                <>
+                                    <EventPostComponent eventdata={eventItem}></EventPostComponent>
+                                </>
+                            )
+                        })}
                         {/* job post component */}
                         {ActiveComponent === 'JobPosting' && (<JobPostComponent></JobPostComponent>)}
                         {/* InboxComponent */}
