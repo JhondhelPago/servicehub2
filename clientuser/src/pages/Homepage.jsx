@@ -8,6 +8,7 @@ import JobPostComponent from '../components/job_post_component.jsx';
 import InboxComponent from '../components/inbox_component.jsx';
 import ComposeComponent from '../components/compose_component.jsx';
 import SentComponent from '../components/sent_component.jsx';
+import Profilepage from '../components/Profilepage.jsx';
 
 const Homepage = () => {
 
@@ -79,7 +80,7 @@ const Homepage = () => {
                                 <button onClick={() => {SetSelectedComponent('EventPosting')}}>Events</button>
                                 <button onClick={() => {SetSelectedComponent('JobPosting')}}>Find a Job</button>
                                 <button onClick={() => {SetSelectedComponent('Inbox')}}>Chat</button>
-                                <button>Profile</button>
+                                <button onClick={() => {SetSelectedComponent('Profile')}}>Profile</button>
                             </ul>
                         </div>
                     </nav>
@@ -93,6 +94,8 @@ const Homepage = () => {
                         {ActiveComponent === 'JobPosting' && (<JobPostComponent></JobPostComponent>)}
                         {/* InboxComponent */}
                         {ActiveComponent === 'Inbox' && (<InboxComponent></InboxComponent>)}
+                        {/* Profile */}
+                        {ActiveComponent == 'Profile' && (<Profilepage></Profilepage>)}
                         
 
 
