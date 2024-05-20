@@ -1,13 +1,43 @@
-import React, { useContext , useEffect } from 'react';
+import React, { useContext , useEffect, useState } from 'react';
 import { ClientUserContext } from './ClientUserContext.jsx';
 
 import nav_logo from '../assets/nav logo dark.png';
 
 import EventPostComponent from '../components/event_post_component.jsx';
+import JobPostComponent from '../components/job_post_component.jsx';
+import InboxComponent from '../components/inbox_component.jsx';
+import ComposeComponent from '../components/compose_component.jsx';
+import SentComponent from '../components/sent_component.jsx';
 
 const Homepage = () => {
 
     const { clientuserId } = useContext(ClientUserContext);
+
+    const [EventData, SetEventData] = useState([]);
+
+    const FetchEventData = () => {
+        
+        try{
+
+            // getting the data from the middle server
+            
+            
+
+        }catch(error){
+            console.error(error);
+        }
+    }
+
+    const [ActiveComponent, setActiveComponent] = useState('EventPosting');
+
+    const SetSelectedComponent = (ComponentName) => {
+
+        setActiveComponent(ComponentName);
+
+    };
+
+
+
 
     useEffect(() => {
         document.title = 'Homepage'
@@ -32,8 +62,8 @@ const Homepage = () => {
                         </button>
                         {/* <!-- links container --> */}
                         <div className="hidden col-span-2 font-medium lg:ml-auto lg:col-span-1 lg:flex" id="navLinksContainer">
-                            <ul className="grid gap-10 pt-5 mx-auto text-center w-fit lg:pt-0 lg:flex lg:gap-20 lg:w-auto">
-                                <li className="activeUserLink">
+                            <ul className="grid gap-10 pt-5 mx-auto text-center w-fit lg:pt-0 lg:flex lg:gap-20 lg:w-auto font-bold">
+                                {/* <li className="activeUserLink">
                                     <a href="">Events</a>
                                 </li>
                                 <li className="userNavHover">
@@ -44,7 +74,12 @@ const Homepage = () => {
                                 </li>
                                 <li className="userNavHover">
                                     <a href="">Profile</a>
-                                </li>
+                                </li> */}
+
+                                <button onClick={() => {SetSelectedComponent('EventPosting')}}>Events</button>
+                                <button onClick={() => {SetSelectedComponent('JobPosting')}}>Find a Job</button>
+                                <button onClick={() => {SetSelectedComponent('Inbox')}}>Chat</button>
+                                <button>Profile</button>
                             </ul>
                         </div>
                     </nav>
@@ -53,7 +88,13 @@ const Homepage = () => {
 
                     <div className="container flex flex-col justify-center gap-5 p-5 mx-auto">
                         {/* <!-- event post container --> */}
-                        <EventPostComponent></EventPostComponent>
+                        {ActiveComponent === 'EventPosting' && (<EventPostComponent></EventPostComponent>)}
+                        {/* job post component */}
+                        {ActiveComponent === 'JobPosting' && (<JobPostComponent></JobPostComponent>)}
+                        {/* InboxComponent */}
+                        {ActiveComponent === 'Inbox' && (<InboxComponent></InboxComponent>)}
+                        
+
 
                     </div>
                 </div>

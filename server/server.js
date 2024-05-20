@@ -476,7 +476,7 @@ app.get('/Fetchmail/:AdminId', async (req, res) => {
 
 
 
-//code below are the server logic for the client user
+//code below are the server logic for the clientuser
 
 app.get('/returnboolean', async (req, res) => {
 
@@ -516,6 +516,16 @@ app.post('/clientuser/loginsession', async (req, res) => {
 
     console.log(email);
     console.log(password);
+
+    
+
+});
+
+
+
+app.get('/kainap/events', async (req, res) => {
+
+    // logic here to get the data from the main server using defined sql query from the mysql module.
 
     
 

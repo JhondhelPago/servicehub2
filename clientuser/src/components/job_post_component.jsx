@@ -2,12 +2,12 @@ import React from "react";
 
 import sample_img from '../assets/sample_img.jpg';
 
-const EventPostComponent = () => {
+const JobPostComponent = () => {
   return (
     <>
       {/* <!-- event post container --> */}
       <div>
-        <h2 className='font-bold text-2xl'>Upcomming Events</h2>
+        <h2 className="font-bold text-2xl">Seek your Job</h2>
       </div>
       <div className="flex flex-wrap gap-4 p-4 xl:flex-nowrap eventCard">
         {/* <!-- event info container --> */}
@@ -37,4 +37,4 @@ const EventPostComponent = () => {
   )
 }
 
-export default EventPostComponent;
+export default JobPostComponent;
