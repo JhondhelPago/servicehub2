@@ -41,7 +41,6 @@ Desktop.ini
 *.sw?
 
 #SpeceficFile to ignore
-client/node_modules
-server/node_modules
 
-/clientuser
+
+clientuser/
