@@ -44,10 +44,10 @@ const App = () => {
       <UserProvider>
         <BrowserRouter>
           <Routes>
-            <Route index path = '/' element = {<LoginPage></LoginPage>}></Route>
-            <Route home path = '/home' element = {<HomePage></HomePage>}></Route>
-            <Route UserLog path = '/UserLogin' element = {<UserLoginpage></UserLoginpage>}></Route>
-            <Route UserHome path = '/UserHome' element = {<UserHomepage></UserHomepage>}></Route>
+            <Route index path = '/' element = {<UserLoginpage></UserLoginpage>}></Route>
+            <Route home path = '/home' element = {<UserHomepage></UserHomepage>}></Route>
+            <Route UserLog path = '/AdminLogin' element = {<LoginPage></LoginPage>}></Route>
+            <Route UserHome path = '/AdminHome' element = {<HomePage></HomePage>}></Route>
 
           </Routes>
         </BrowserRouter>

@@ -54,7 +54,7 @@ const LoginComponents = () => {
                 setAdminId(UserAdminId); 
 
 
-                nagivateHome('/home')
+                nagivateHome('/AdminHome')
             } else {
                 // If login fails, display an error message
                 setError('Invalid email or password');
