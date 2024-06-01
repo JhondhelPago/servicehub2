@@ -4,8 +4,10 @@ import {useEffect, useState} from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import  HomePage from "./pages/Home";
 import LoginPage from "./pages/Login";
-
+import AdminLog from './pages/AdminLog';
 import { UserProvider } from './components/LoginComponents/UserContext';
+import UserLoginpage from './pages/UserLoginpage';
+import UserHomepage from './pages/UserHomepage';
 
 // const App = () => {
 
@@ -44,6 +46,9 @@ const App = () => {
           <Routes>
             <Route index path = '/' element = {<LoginPage></LoginPage>}></Route>
             <Route home path = '/home' element = {<HomePage></HomePage>}></Route>
+            <Route UserLog path = '/UserLogin' element = {<UserLoginpage></UserLoginpage>}></Route>
+            <Route UserHome path = '/UserHome' element = {<UserHomepage></UserHomepage>}></Route>
+
           </Routes>
         </BrowserRouter>
       </UserProvider>
