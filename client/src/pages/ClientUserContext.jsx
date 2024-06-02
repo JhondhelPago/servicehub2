@@ -3,7 +3,7 @@ import React, { createContext, useState, useEffect } from 'react';
 //creating a context object
 export const ClientUserContext = createContext();
 
-export const UserProvider = ({children}) => {
+export const ClientProvider = ({children}) => {
 
     
 
