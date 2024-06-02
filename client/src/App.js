@@ -23,7 +23,6 @@ const App = () => {
               <Route home path = '/home' element = {<UserHomepage></UserHomepage>}></Route>
               <Route UserLog path = '/AdminLogin' element = {<LoginPage></LoginPage>}></Route>
               <Route UserHome path = '/AdminHome' element = {<HomePage></HomePage>}></Route>
-
             </Routes>
           </BrowserRouter>
         </ClientProvider>

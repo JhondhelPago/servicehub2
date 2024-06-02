@@ -12,36 +12,36 @@ import nav_logo from '../assets/nav logo dark.png';
 // import SentComponent from '../components/sent_component.jsx';
 // import Profilepage from '../components/Profilepage.jsx';
 
-import EventPostComponent from '../components/AdminComponents/event_post_component.jsx';
-import JobPostComponent from '../components/AdminComponents/job_post_component.jsx';
-import InboxComponent from '../components/AdminComponents/inbox_component.jsx';
-import ComposeComponent from '../components/AdminComponents/compose_component.jsx';
-import SentComponent from '../components/AdminComponents/sent_component.jsx';
-import Profilepage from '../components/AdminComponents/Profilepage.jsx';
+import EventPostComponent from '../components/HomeComponents/event_post_component.jsx';
+import JobPostComponent from '../components/HomeComponents/job_post_component.jsx';
+import InboxComponent from '../components/HomeComponents/inbox_component.jsx';
+import ComposeComponent from '../components/HomeComponents/compose_component.jsx';
+import SentComponent from '../components/HomeComponents/sent_component.jsx';
+import Profilepage from '../components/HomeComponents/Profilepage.jsx';
 
 const UserHomepage = () => {
 
-    // const { clientuserId } = useContext(ClientUserContext);
+    const { clientuserId } = useContext(ClientUserContext);
 
-    // const [EventData, SetEventData] = useState([]);
+    const [EventData, SetEventData] = useState([]);
 
-    // const FetchEventData = async() => {
+    const FetchEventData = async() => {
         
-    //     try{
+        try{
 
-    //         // getting the data from the middle server
-    //         const response = await axios.get('/fetchingEventPost');
-    //         const data = response.data;
+            // getting the data from the middle server
+            const response = await axios.get('/fetchingEventPost');
+            const data = response.data;
 
-    //         console.log(data);
-    //         SetEventData(data);
+            console.log(data);
+            SetEventData(data);
             
             
 
-    //     }catch(error){
-    //         console.error(error);
-    //     }
-    // }
+        }catch(error){
+            console.error(error);
+        }
+    }
 
     const [ActiveComponent, setActiveComponent] = useState('EventPosting');
 
@@ -54,11 +54,11 @@ const UserHomepage = () => {
 
 
 
-    // useEffect(() => {
-    //     document.title = 'Homepage'
-    //     FetchEventData();
-    //     console.log(EventData);
-    // }, [])
+    useEffect(() => {
+        document.title = 'Homepage'
+        FetchEventData();
+        console.log(EventData);
+    }, [])
 
     return (
         <>
@@ -105,12 +105,13 @@ const UserHomepage = () => {
 
                     <div className="container flex flex-col justify-center gap-5 p-5 mx-auto">
                         {/* <!-- event post container --> */}
-                        {/* {ActiveComponent === 'EventPosting' && EventData.map((eventItem) => {
+                        {ActiveComponent === 'EventPosting' && EventData.map((eventItem) => {
                             return(
                                 <EventPostComponent key={eventItem.id} eventdata={eventItem}></EventPostComponent>
                                 
                             )
-                        })} */}
+                        })}
+                        {/* {ActiveComponent === 'EventPosting' && <EventPostComponent></EventPostComponent>} */}
                         {/* job post component */}
                         {ActiveComponent === 'JobPosting' && (<JobPostComponent></JobPostComponent>)}
                         {/* InboxComponent */}
