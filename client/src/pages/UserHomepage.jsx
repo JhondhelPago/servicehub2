@@ -146,7 +146,7 @@ const UserHomepage = () => {
                         {/* InboxComponent */}
                         {ActiveComponent === 'Inbox' && (<InboxComponent></InboxComponent>)}
                         {/* Profile */}
-                        {ActiveComponent == 'Profile' && (<Profilepage></Profilepage>)}
+                        {ActiveComponent == 'Profile' && (<Profilepage UserId={clientuserId}></Profilepage>)}
                         
 
 
