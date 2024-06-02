@@ -23,7 +23,11 @@ const UserHomepage = () => {
 
     const { clientuserId } = useContext(ClientUserContext);
 
+    // Array container for the EventPost
     const [EventData, SetEventData] = useState([]);
+
+    // Array container for JobPost
+    const [JobData, SetJobData] = useState([]);
 
     const FetchEventData = async() => {
         
@@ -43,6 +47,24 @@ const UserHomepage = () => {
         }
     }
 
+
+    const FetchJobData = async() => {
+
+        try{
+
+            //using the axios get the data from the server
+            const response = await axios.get('/fetchingJobPost');
+            const data = response.data;
+        
+            console.log(data);
+            SetJobData(data);
+
+        }catch(error){
+            console.log(error);
+        }
+
+    }
+
     const [ActiveComponent, setActiveComponent] = useState('EventPosting');
 
     const SetSelectedComponent = (ComponentName) => {
@@ -56,7 +78,10 @@ const UserHomepage = () => {
 
     useEffect(() => {
         document.title = 'Homepage'
+        
         FetchEventData();
+
+        FetchJobData();
         console.log(EventData);
     }, [])
 
@@ -113,7 +138,11 @@ const UserHomepage = () => {
                         })}
                         {/* {ActiveComponent === 'EventPosting' && <EventPostComponent></EventPostComponent>} */}
                         {/* job post component */}
-                        {ActiveComponent === 'JobPosting' && (<JobPostComponent></JobPostComponent>)}
+                        {ActiveComponent === 'JobPosting' && JobData.map((jobItem) => {
+                            return(
+                                <JobPostComponent key={jobItem.id} jobdata={jobItem}></JobPostComponent>
+                            )
+                        })}
                         {/* InboxComponent */}
                         {ActiveComponent === 'Inbox' && (<InboxComponent></InboxComponent>)}
                         {/* Profile */}
