@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.0
+-- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 03, 2024 at 07:30 AM
--- Server version: 10.4.24-MariaDB
--- PHP Version: 8.1.6
+-- Generation Time: Jun 03, 2024 at 03:23 PM
+-- Server version: 10.4.28-MariaDB
+-- PHP Version: 8.2.4
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -28,15 +28,15 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `admin` (
-  `id` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `firstName` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `lastName` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `phone` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `email` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `username` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `password` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `role` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `refreshToken` text COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `id` varchar(191) NOT NULL,
+  `firstName` varchar(191) NOT NULL,
+  `lastName` varchar(191) NOT NULL,
+  `phone` varchar(191) NOT NULL,
+  `email` varchar(191) NOT NULL,
+  `username` varchar(191) NOT NULL,
+  `password` varchar(191) NOT NULL,
+  `role` varchar(191) NOT NULL,
+  `refreshToken` text DEFAULT NULL,
   `status` int(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -57,7 +57,7 @@ INSERT INTO `admin` (`id`, `firstName`, `lastName`, `phone`, `email`, `username`
 CREATE TABLE `admin_active` (
   `adminId` varchar(191) NOT NULL,
   `status` int(1) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `admin_active`
@@ -86,7 +86,7 @@ CREATE TABLE `event_post` (
   `imagefiles` varchar(100) NOT NULL,
   `target_group` varchar(1000) NOT NULL,
   `post_type` varchar(191) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `event_post`
@@ -106,7 +106,7 @@ CREATE TABLE `event_registry` (
   `registration_id` int(11) NOT NULL,
   `event_id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -127,7 +127,7 @@ CREATE TABLE `job_post` (
   `imagefiles` varchar(100) NOT NULL,
   `target_group` varchar(1000) NOT NULL,
   `post_type` varchar(191) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `job_post`
@@ -146,7 +146,7 @@ CREATE TABLE `job_registry` (
   `registration_id` int(11) NOT NULL,
   `job_id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -165,7 +165,7 @@ CREATE TABLE `mail_sent` (
   `documentfile` varchar(1500) NOT NULL,
   `imagefile` varchar(1500) NOT NULL,
   `read_status` varchar(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `mail_sent`
@@ -182,57 +182,57 @@ INSERT INTO `mail_sent` (`send_id`, `senderID`, `date_sent`, `time_sent`, `recei
 --
 
 CREATE TABLE `user` (
-  `id` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `id` varchar(191) NOT NULL,
   `createdAt` datetime(3) NOT NULL DEFAULT current_timestamp(3),
-  `firstName` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `middleName` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `lastName` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `suffix` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `firstName` varchar(191) NOT NULL,
+  `middleName` varchar(191) NOT NULL,
+  `lastName` varchar(191) NOT NULL,
+  `suffix` varchar(191) DEFAULT NULL,
   `age` int(11) NOT NULL,
-  `birthdate` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `birthplace` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `gender` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `religion` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `citizenship` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `civil` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `email` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `phone` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `landline` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `houseno` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `street` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `barangay` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `district` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `city` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `province` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `zipcode` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `elementary` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `attain` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `highschool` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `attain1` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `senior` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `attain2` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `college` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `attain3` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `employment` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `occupation` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `yearEmploy` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `skill1` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `skill2` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `blood` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `height` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `weight` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `disability` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `visibility` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `made_disabled` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `status` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `device` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `specificDevice` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `medicine` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `specificMedicine` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `others` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `password` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `refreshToken` text COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `role` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL
+  `birthdate` varchar(191) NOT NULL,
+  `birthplace` varchar(191) NOT NULL,
+  `gender` varchar(191) NOT NULL,
+  `religion` varchar(191) NOT NULL,
+  `citizenship` varchar(191) NOT NULL,
+  `civil` varchar(191) NOT NULL,
+  `email` varchar(191) NOT NULL,
+  `phone` varchar(191) NOT NULL,
+  `landline` varchar(191) DEFAULT NULL,
+  `houseno` varchar(191) DEFAULT NULL,
+  `street` varchar(191) NOT NULL,
+  `barangay` varchar(191) NOT NULL,
+  `district` varchar(191) DEFAULT NULL,
+  `city` varchar(191) NOT NULL,
+  `province` varchar(191) DEFAULT NULL,
+  `zipcode` varchar(191) DEFAULT NULL,
+  `elementary` varchar(191) NOT NULL,
+  `attain` varchar(191) NOT NULL,
+  `highschool` varchar(191) NOT NULL,
+  `attain1` varchar(191) NOT NULL,
+  `senior` varchar(191) NOT NULL,
+  `attain2` varchar(191) NOT NULL,
+  `college` varchar(191) NOT NULL,
+  `attain3` varchar(191) NOT NULL,
+  `employment` varchar(191) NOT NULL,
+  `occupation` varchar(191) DEFAULT NULL,
+  `yearEmploy` varchar(191) DEFAULT NULL,
+  `skill1` varchar(191) DEFAULT NULL,
+  `skill2` varchar(191) DEFAULT NULL,
+  `blood` varchar(191) NOT NULL,
+  `height` varchar(191) NOT NULL,
+  `weight` varchar(191) NOT NULL,
+  `disability` varchar(191) NOT NULL,
+  `visibility` varchar(191) NOT NULL,
+  `made_disabled` varchar(191) NOT NULL,
+  `status` varchar(191) NOT NULL,
+  `device` varchar(191) NOT NULL,
+  `specificDevice` varchar(191) DEFAULT NULL,
+  `medicine` varchar(191) NOT NULL,
+  `specificMedicine` varchar(191) DEFAULT NULL,
+  `others` varchar(191) NOT NULL,
+  `password` varchar(191) DEFAULT NULL,
+  `refreshToken` text DEFAULT NULL,
+  `role` varchar(191) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -240,7 +240,7 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`id`, `createdAt`, `firstName`, `middleName`, `lastName`, `suffix`, `age`, `birthdate`, `birthplace`, `gender`, `religion`, `citizenship`, `civil`, `email`, `phone`, `landline`, `houseno`, `street`, `barangay`, `district`, `city`, `province`, `zipcode`, `elementary`, `attain`, `highschool`, `attain1`, `senior`, `attain2`, `college`, `attain3`, `employment`, `occupation`, `yearEmploy`, `skill1`, `skill2`, `blood`, `height`, `weight`, `disability`, `visibility`, `made_disabled`, `status`, `device`, `specificDevice`, `medicine`, `specificMedicine`, `others`, `password`, `refreshToken`, `role`) VALUES
-('1000', '2024-03-26 23:02:49.826', 'sample1000', '', '', NULL, 0, '', '', '', '', '', '', 'sample1000@gmail.com', '', NULL, NULL, '', '', NULL, '', NULL, NULL, '', '', '', '', '', '', '', '', '', NULL, NULL, NULL, NULL, '', '', '', '', '', '', '', '', NULL, '', NULL, '', '1234', NULL, ''),
+('1000', '2024-03-26 23:02:49.826', 'sample1000', 'sample1000s', 'sample1000smax', NULL, 24, '01/01/2001', 'qc', 'male', 'catholic', 'filipino', '', 'sample1000@gmail.com', '09191859313', NULL, '15', 'mabilis', 'pinyahan', 'second district', 'quezon city', NULL, '1100', '', '', '', '', '', '', '', '', '', NULL, NULL, NULL, NULL, '', '', '', '', '', '', '1', '', NULL, '', NULL, '', '1234', NULL, ''),
 ('1001', '2024-03-27 01:02:43.313', 'Second1001', '', '', NULL, 0, '', '', '', '', '', '', 'second1001@gmail.com', '', NULL, NULL, '', '', NULL, '', NULL, NULL, '', '', '', '', '', '', '', '', '', NULL, NULL, NULL, NULL, '', '', '', '', '', '', '', '', NULL, '', NULL, '', '1234', NULL, '');
 
 --
@@ -264,6 +264,12 @@ ALTER TABLE `job_post`
 --
 ALTER TABLE `mail_sent`
   ADD PRIMARY KEY (`send_id`);
+
+--
+-- Indexes for table `user`
+--
+ALTER TABLE `user`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- AUTO_INCREMENT for dumped tables
