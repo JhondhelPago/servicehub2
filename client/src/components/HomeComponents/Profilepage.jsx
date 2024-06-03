@@ -16,6 +16,7 @@ const Profilepage = ({ userId }) => {
 
   useEffect(() => {
     FetchClientData();
+    console.log(ClientData)
   });
   // function to get the data from the server, but after serve must be prepare
 
@@ -43,7 +44,7 @@ const Profilepage = ({ userId }) => {
                 Username
               </th>
               <td className="w-full p-5 border-b border-darkColor">
-                {`${ClientData[0].firstName} ${ClientData[0].middleName} ${ClientData[0].LastName}`}
+                  {`${ClientData[0].firstName}`}
               </td>
             </tr>
             <tr>
