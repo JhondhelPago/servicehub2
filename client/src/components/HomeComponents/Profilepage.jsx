@@ -4,6 +4,11 @@ import { useState } from "react";
 // import Nav from '../components/nav.jsx';
 
 const Profilepage = ({ userId }) => {
+
+
+  // function to get the data from the server, but after serve must be prepare
+
+
   return (
     <>
       <head>

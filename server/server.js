@@ -26,6 +26,7 @@ const {
 
     //function query for the clientuser
     ,clientuserLoginSession
+    
 
 } = require('./mysqlmodule.js');
 
@@ -529,6 +530,15 @@ app.get('/kainap/events', async (req, res) => {
 
     
 
+});
+
+
+
+app.get('/ClientDataRequest/:id', async(req, res) => {
+
+
+    //backend logic to connect to the actual database
+    //call the function from the mysqlmodule.js
 });
 
 

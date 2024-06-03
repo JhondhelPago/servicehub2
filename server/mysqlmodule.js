@@ -302,6 +302,25 @@ async function clientuserLoginSession(email, password){//return the id of this c
 
 
 
+async function ClientData(id){
+
+    // id = 1000
+    //select (user, fist , last , addres) from user where id = id
+
+    try{
+
+        // query statement
+        
+
+
+    }catch(eror){
+        throw error;
+    }
+
+}
+
+
+
 module.exports = {
     //user function exports
     get_userId,
