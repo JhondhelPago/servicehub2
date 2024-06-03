@@ -12,7 +12,7 @@ const Homeprompt = () => {
                 <title>Dashboard</title>
             </head>
             <div>
-                <p className="text-xl text-red-600">Admin Dashborad</p>
+                <p className="text-xl">Admin Dashborad</p>
                 <SampleComponent></SampleComponent>
             </div>
         </>
@@ -21,7 +21,7 @@ const Homeprompt = () => {
 
 const SampleComponent = () => {
 
-    
+
 
 
     return (
