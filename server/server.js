@@ -25,7 +25,8 @@ const {
 
 
     //function query for the clientuser
-    ,clientuserLoginSession
+    ,clientuserLoginSession,
+    clientInformation,
 
 } = require('./mysqlmodule.js');
 
@@ -520,6 +521,25 @@ app.post('/clientuser/loginsession', async (req, res) => {
     
 
 });
+
+
+
+app.get('/ClientData/:id', async(req, res) =>{
+
+
+    const id = req.params.id;
+
+    try{
+
+        const clientInformation = await clientInformation(id);
+
+        res.send({'UserInformation' : clientInformation});  
+
+    }catch(error){
+        throw error;
+    }
+
+})
 
 
 

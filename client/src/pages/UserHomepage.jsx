@@ -121,6 +121,7 @@ const UserHomepage = () => {
                                 <button onClick={() => {SetSelectedComponent('EventPosting')}}>Events</button>
                                 <button onClick={() => {SetSelectedComponent('JobPosting')}}>Find a Job</button>
                                 <button onClick={() => {SetSelectedComponent('Inbox')}}>Chat</button>
+                                <button onClick={() => {SetSelectedComponent('Compose')}}>Compose</button>
                                 <button onClick={() => {SetSelectedComponent('Profile')}}>Profile</button>
                             </ul>
                         </div>
@@ -146,7 +147,7 @@ const UserHomepage = () => {
                         {/* InboxComponent */}
                         {ActiveComponent === 'Inbox' && (<InboxComponent></InboxComponent>)}
                         {/* Profile */}
-                        {ActiveComponent == 'Profile' && (<Profilepage UserId={clientuserId}></Profilepage>)}
+                        {ActiveComponent === 'Profile' && (<Profilepage UserId={clientuserId}></Profilepage>)}
                         
 
 

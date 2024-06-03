@@ -301,6 +301,57 @@ async function clientuserLoginSession(email, password){//return the id of this c
 }
 
 
+async function clientInformation(id){
+
+    try{
+        /*
+        information to from the user table
+
+        Username
+        Name
+        Age
+        Gender
+        Address
+        City
+        District
+        Contact No.
+        Member Status
+        */
+        const [clientInformationRow] = await pool.execute(
+            `
+            SELECT (
+                firstName,
+                lastName,
+                age,
+                gender,
+                barangay,
+                street,
+                houseno,
+                district,
+                city,
+                phone,
+                status
+            ) FROM user WHERE id = ${id}
+            `)
+
+        if(clientInformationRow.length != 0){
+            
+            return clientInformationRow[0]
+
+        }else{
+            
+            return null;
+
+        }
+
+
+    }catch(error){
+        throw error;
+    }
+
+}
+
+
 
 module.exports = {
     //user function exports
@@ -326,6 +377,7 @@ module.exports = {
 
 
     //function query for the clientuser
-    ,clientuserLoginSession
+    ,clientuserLoginSession,
+    clientInformation
     
 };
