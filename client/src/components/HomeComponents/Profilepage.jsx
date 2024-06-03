@@ -5,7 +5,7 @@ import axios from "axios";
 // import Nav from '../components/nav.jsx';
 
 const Profilepage = ({ userId }) => {
-  const [ClientData, setClientData] = useState([]);
+  const [ClientData, setClientData] = useState(null);
 
   const FetchClientData = async () => {
     const response = await axios.get(`/ClientDataRequest/${userId}`);
@@ -16,8 +16,8 @@ const Profilepage = ({ userId }) => {
 
   useEffect(() => {
     FetchClientData();
-    console.log(ClientData)
-  });
+    console.log(ClientData);
+  }, []);
   // function to get the data from the server, but after serve must be prepare
 
   return (
@@ -44,27 +44,26 @@ const Profilepage = ({ userId }) => {
                 Username
               </th>
               <td className="w-full p-5 border-b border-darkColor">
-                  {`${ClientData[0].firstName}`}
+                {ClientData && `${ClientData[0].firstName}`}
               </td>
             </tr>
             <tr>
               <th className="p-5 border-b border-r border-darkColor">Name</th>
               <td className="w-full p-5 border-b border-darkColor">
-                Lorem ipsum dolor sit amet consectetur, adipisicing elit. Autem
-                expedita, quaerat dolore dignissimos vero ullam id consequuntur!
-                Minima, corrupti aut.
+                {ClientData &&
+                  `${ClientData[0].firstName} ${ClientData[0].middleName} ${ClientData[0].Lastname}`}
               </td>
             </tr>
             <tr>
               <th className="p-5 border-b border-r border-darkColor">Age</th>
               <td className="w-full p-5 border-b border-darkColor">
-                912309123901237
+                {ClientData && `${ClientData[0].age}`}
               </td>
             </tr>
             <tr>
               <th className="p-5 border-b border-r border-darkColor">Gender</th>
               <td className="w-full p-5 border-b border-darkColor">
-                912309123901237
+                {ClientData && `${ClientData[0].gender}`}
               </td>
             </tr>
             <tr>
@@ -72,13 +71,14 @@ const Profilepage = ({ userId }) => {
                 Address
               </th>
               <td className="w-full p-5 border-b border-darkColor">
-                912309123901237
+                {ClientData &&
+                  `${ClientData[0].houseno} ${ClientData[0].street} ${ClientData[0].barangay} ${ClientData[0].city} ${ClientData[0].district} ${ClientData[0].zipcode}`}
               </td>
             </tr>
             <tr>
               <th className="p-5 border-b border-r border-darkColor">City</th>
               <td className="w-full p-5 border-b border-darkColor">
-                912309123901237
+                {ClientData && `${ClientData[0].city}`}
               </td>
             </tr>
             <tr>
@@ -86,7 +86,7 @@ const Profilepage = ({ userId }) => {
                 District
               </th>
               <td className="w-full p-5 border-b border-darkColor">
-                912309123901237
+                {ClientData && `${ClientData[0].district}`}
               </td>
             </tr>
             <tr>
@@ -94,12 +94,14 @@ const Profilepage = ({ userId }) => {
                 Contact No.
               </th>
               <td className="w-full p-5 border-b border-darkColor">
-                912309123901237
+                {ClientData && `${ClientData[0].phone}`}
               </td>
             </tr>
             <tr>
               <th className="p-5 border-r border-darkColor">Member Status</th>
-              <td className="w-full p-5">912309123901237</td>
+              <td className="w-full p-5">
+                {ClientData && `${ClientData[0].status}`}
+              </td>
             </tr>
           </table>
         </div>
