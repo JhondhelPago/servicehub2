@@ -19,14 +19,16 @@ const {
     fetchEvent,
     job_post_edit,
     deletePost,
-    FetchMail
+    FetchMail,
+    getAdmin,
 
 
 
 
     //function query for the clientuser
-    ,clientuserLoginSession,
+    clientuserLoginSession,
     clientInformation,
+    ClientMailInsert
 
 } = require('./mysqlmodule.js');
 
@@ -49,6 +51,12 @@ function DelImage(filename){
 
 }
 
+
+
+function RandomSelectedIndex(ArrayLength){
+    const randomIndex = Math.floor(Math.random() * ArrayLength);
+    return randomIndex;
+}
 
 
 
@@ -540,6 +548,72 @@ app.get('/ClientData/:id', async(req, res) =>{
     }
 
 })
+
+
+
+app.post('/ClientSendMail', async(req, res) => {
+
+    const {SenderId, MailType, MailSubject, MailBody} = req.body;
+
+
+    const AdminArray = await getAdmin();
+    let AssignedAdmin;
+
+    const RandomizedIndex = RandomSelectedIndex(AdminArray.length);
+
+    AssignedAdmin = AdminArray[RandomizedIndex].id;
+
+
+    console.log(SenderId)
+    console.log(MailType);
+    console.log(MailSubject);
+    console.log(MailBody);
+    console.log(`Assigned Admin: ${AssignedAdmin}`);
+
+
+    const MailObj = {
+        SenderId: SenderId,
+        MailType: MailType,
+        MailSubject: MailSubject,
+        MailBody: MailBody,
+        AssignedAdmin: AssignedAdmin
+    }
+
+
+    try{
+
+        await ClientMailInsert(MailObj);
+
+    }catch(error){
+        throw error;
+    }
+
+
+
+});
+
+
+app.get('/GetAdmins', async(req, res) => {
+
+    const AdminArray = await getAdmin();
+
+    let AssignedAdmin;
+
+
+    const RanIndex = RandomSelectedIndex(AdminArray.length);
+
+    AssignedAdmin = AdminArray[RanIndex].id;
+
+
+    res.send(AssignedAdmin);
+
+
+    
+
+
+    
+
+});
 
 
 

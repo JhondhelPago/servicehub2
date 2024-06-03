@@ -231,6 +231,24 @@ async function FetchMail(adminId){
     }
 }
 
+
+async function getAdmin(){
+    
+    try{
+
+        const [AdminIdRow] = await pool.execute(`SELECT id FROM admin WHERE role="regular"`);
+
+        if(AdminIdRow.length == 0){
+            return null;
+        }else{
+            return AdminIdRow;
+        }
+
+    }catch(error){
+        throw error;
+    }
+}
+
 const MyDateTime = {
     Timenow: () => {
         const TheDateTime = new Date();
@@ -352,6 +370,33 @@ async function clientInformation(id){
 }
 
 
+async function ClientMailInsert(MailObj){
+
+    try{
+
+        //logic here to insert the MailSend to the mail_sent table on the database
+
+        await pool.execute(`
+        INSERT INTO mail_sent
+        (send_id,
+        senderID,
+        date_sent,
+        time_sent,
+        receiverID,
+        subject,
+        body,
+        documentfile,
+        imagefile,
+        read_status)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`, [0, MailObj.SenderId, MyDateTime.Datenow(), MyDateTime.Timenow(), MailObj.AssignedAdmin, MailObj.MailSubject, MailObj.MailBody, 'sample.pdf', 'img5.jpg,img6.png', 'unread']);
+
+
+    }catch(error){
+        throw error;
+    }
+}
+
+
 
 module.exports = {
     //user function exports
@@ -370,14 +415,16 @@ module.exports = {
     fetchJob,
     job_post_edit,
     deletePost,
-    FetchMail
+    FetchMail,
+    getAdmin,
 
 
 
 
 
     //function query for the clientuser
-    ,clientuserLoginSession,
-    clientInformation
+    clientuserLoginSession,
+    clientInformation,
+    ClientMailInsert
     
 };
