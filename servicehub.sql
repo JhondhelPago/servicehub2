@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 30, 2024 at 03:05 PM
+-- Generation Time: Jun 03, 2024 at 07:30 AM
 -- Server version: 10.4.24-MariaDB
 -- PHP Version: 8.1.6
 
@@ -36,16 +36,36 @@ CREATE TABLE `admin` (
   `username` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `password` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `role` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `refreshToken` text COLLATE utf8mb4_unicode_ci DEFAULT NULL
+  `refreshToken` text COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `status` int(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `admin`
 --
 
-INSERT INTO `admin` (`id`, `firstName`, `lastName`, `phone`, `email`, `username`, `password`, `role`, `refreshToken`) VALUES
-('admin1000', 'admin1', 'admin1', '9876543210', 'admin1@gmail.com', 'admin1', '1234', 'regular', NULL),
-('admin1002', 'admin2', 'admin2', '9876543210', 'admin2@gmail.com', 'admin2', '1234', 'manager', NULL);
+INSERT INTO `admin` (`id`, `firstName`, `lastName`, `phone`, `email`, `username`, `password`, `role`, `refreshToken`, `status`) VALUES
+('admin1000', 'admin1', 'admin1', '9876543210', 'admin1@gmail.com', 'admin1', '1234', 'regular', NULL, 1),
+('admin1002', 'admin2', 'admin2', '9876543210', 'admin2@gmail.com', 'admin2', '1234', 'manager', NULL, 1);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `admin_active`
+--
+
+CREATE TABLE `admin_active` (
+  `adminId` varchar(191) NOT NULL,
+  `status` int(1) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `admin_active`
+--
+
+INSERT INTO `admin_active` (`adminId`, `status`) VALUES
+('admin1000', 1),
+('admin1002', 0);
 
 -- --------------------------------------------------------
 
@@ -68,22 +88,13 @@ CREATE TABLE `event_post` (
   `post_type` varchar(191) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- --------------------------------------------------------
-
 --
--- Table structure for table `event_post_hist`
+-- Dumping data for table `event_post`
 --
 
-CREATE TABLE `event_post_hist` (
-  `id` int(11) NOT NULL,
-  `creator` varchar(191) NOT NULL,
-  `date_created` varchar(191) NOT NULL,
-  `time_created` varchar(191) NOT NULL,
-  `event_title` varchar(191) NOT NULL,
-  `description` varchar(3000) NOT NULL,
-  `imagefiles` varchar(100) NOT NULL,
-  `target_group` varchar(1000) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+INSERT INTO `event_post` (`id`, `creator`, `date_created`, `time_created`, `scheduled_date`, `scheduled_time`, `location`, `event_title`, `description`, `imagefiles`, `target_group`, `post_type`) VALUES
+(66, 'admin1000', '2024-5-20', '16:01:27', '2024-05-31', '08:00', 'somwhere else', 'sample event posting pago post', 'sample event posting. lorem ipsum blah blahblah', '\"uploadImages-1716192087762-377921277.jpg,uploadImages-1716192087764-291662646.jpg\"', '\"Disability 2\"', 'event_post'),
+(67, 'admin1000', '2024-5-20', '23:04:32', '2024-05-26', '16:00', '', 'second event posting para sa mga senior pwd', 'lkngjdfl;adfdlkff;ksd;fkf;aksf;lfdna;ksflkAKSDHLKAhfhDLHFLKSFLKhkfhaFAksfnsLKNFLKSAnflknaskNFKASNFKNASknflkSANFASknflkASNFLKNasknflkasnFKNSNKASNCCLKASNFLKNALKNFLASFLKNAKNFASFNLKANSF ASFALKSNFFLKASNFLKNASKFNKASNFKANSFNA;JFLKANTNUOAHTA,BFAIHTABFANSHRAJRAJFLKALKTALURBFMBSdgbgfnsdmnfkjasl;fjalsjram fknqlksjfalhfam,bfabflkaskfaskjcanaskf;asra,mdalksnljfalskjflasfasnclksskfsfksnkdalksfdlkasflkanvaritgakfnsnanvewfnaslfpafamfnlkansopramc kewhglkafagkdnfnajfmqwmasdnvkankndfasjfj;agamfiodwfbeiognlkenfvkanegnawkeg', '\"uploadImages-1716217472542-298328458.png,uploadImages-1716217472577-167915135.jpg\"', '\"Disability 4\"', 'event_post');
 
 -- --------------------------------------------------------
 
@@ -118,20 +129,12 @@ CREATE TABLE `job_post` (
   `post_type` varchar(191) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- --------------------------------------------------------
-
 --
--- Table structure for table `job_post_hist`
+-- Dumping data for table `job_post`
 --
 
-CREATE TABLE `job_post_hist` (
-  `id` int(11) NOT NULL,
-  `creator` int(11) NOT NULL,
-  `date_createad` varchar(191) NOT NULL,
-  `description` varchar(3000) NOT NULL,
-  `imgaefiles` varchar(100) NOT NULL,
-  `target` varchar(1000) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+INSERT INTO `job_post` (`id`, `creator`, `date_created`, `time_created`, `scheduled_date`, `scheduled_time`, `location`, `event_title`, `description`, `imagefiles`, `target_group`, `post_type`) VALUES
+(24, 'admin1000', '2024-5-20', '16:02:53', '2024-05-31', '10:00', 'somewhere else you cant find', 'sample job posting post from pago', 'sample job description, lorem ipsum blah blah', '\"uploadImages-1716192173051-801293362.jpg,uploadImages-1716192173053-84407517.png\"', '\"Disability 3\"', 'job_post');
 
 -- --------------------------------------------------------
 
@@ -144,6 +147,33 @@ CREATE TABLE `job_registry` (
   `job_id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `mail_sent`
+--
+
+CREATE TABLE `mail_sent` (
+  `send_id` int(10) NOT NULL,
+  `senderID` varchar(191) NOT NULL,
+  `date_sent` varchar(191) NOT NULL,
+  `time_sent` varchar(191) NOT NULL,
+  `receiverID` varchar(191) NOT NULL,
+  `subject` varchar(191) NOT NULL,
+  `body` varchar(5000) NOT NULL,
+  `documentfile` varchar(1500) NOT NULL,
+  `imagefile` varchar(1500) NOT NULL,
+  `read_status` varchar(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `mail_sent`
+--
+
+INSERT INTO `mail_sent` (`send_id`, `senderID`, `date_sent`, `time_sent`, `receiverID`, `subject`, `body`, `documentfile`, `imagefile`, `read_status`) VALUES
+(100, '1001', '5/10/2024', '15:04', 'admin1000', 'concern', 'lorem ipsum blah blah', 'docu.pdf,docu1.pdf', 'img1.jpg,img2.jpeg', 'unread'),
+(101, '1001', '5/11/24', '23:37', 'admin1000', 'concern', 'lorem ipsum test blah blah', 'samplefile.pdf,sample.docx', 'img3.jpeg,img4.png', 'unread');
 
 -- --------------------------------------------------------
 
@@ -230,10 +260,10 @@ ALTER TABLE `job_post`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `job_post_hist`
+-- Indexes for table `mail_sent`
 --
-ALTER TABLE `job_post_hist`
-  ADD PRIMARY KEY (`id`);
+ALTER TABLE `mail_sent`
+  ADD PRIMARY KEY (`send_id`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -243,13 +273,13 @@ ALTER TABLE `job_post_hist`
 -- AUTO_INCREMENT for table `event_post`
 --
 ALTER TABLE `event_post`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=65;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=68;
 
 --
 -- AUTO_INCREMENT for table `job_post`
 --
 ALTER TABLE `job_post`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
