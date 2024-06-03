@@ -31,7 +31,7 @@ const UserHomepage = () => {
 
     const FetchEventData = async() => {
         
-        try{
+        try{  
 
             // getting the data from the middle server
             const response = await axios.get('/fetchingEventPost');
@@ -146,6 +146,7 @@ const UserHomepage = () => {
                         })}
                         {/* InboxComponent */}
                         {ActiveComponent === 'Inbox' && (<InboxComponent></InboxComponent>)}
+                        {ActiveComponent === 'Compose' && (<ComposeComponent></ComposeComponent>)}
                         {/* Profile */}
                         {ActiveComponent === 'Profile' && (<Profilepage UserId={clientuserId}></Profilepage>)}
                         

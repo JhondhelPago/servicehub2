@@ -1,10 +1,16 @@
 import React from "react";
+import ComposeComponent from "./compose_component";
 
 const InboxComponent = () => {
+
+    
 
     return (
         <>
             {/* <!-- inbox list/content container --> */}
+            {/* <div>
+                <button className="border-2 border-gray bg-orange-400 text-white text-2xl px-4 py-2 rounded-md">Compose</button>
+            </div> */}
             <div className="flex px-5 pb-5 overflow-auto rounded h-dvh">
                 {/* <!-- mail list container --> */}
                 <div className="flex flex-col w-full overflow-hidden border-l min-w-80 border-y border-darkColor rounded-s">

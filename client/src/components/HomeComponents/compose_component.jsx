@@ -9,7 +9,12 @@ const ComposeComponent = () => {
           <form className="p-2 w-full md:w-3/5 flex flex-col gap-5 rounded">
               <div className="w-full flex items-center gap-4">
                   <label className="w-16 pl-2" for="">To:</label>
-                  <input className="grow py-2 px-4 rounded bg-white" type="text"/>
+                  {/* <input className="grow py-2 px-4 rounded bg-white" type="text"/> */}
+                  <select className="grow py-2 px-4 rounded bg-white" >
+                    <option value='' disabled selected hidden >Please Select Mail Type</option>
+                    <option value='inquiry'>Inquiries</option>
+                    <option value='request'>Request</option>
+                  </select>
               </div>
               <div className="w-full flex items-center gap-4">
                   <label className="w-16 pl-2" for="">Subject:</label>
