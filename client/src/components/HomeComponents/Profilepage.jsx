@@ -1,13 +1,23 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
+import axios from "axios";
 
 // import Nav from '../components/nav.jsx';
 
 const Profilepage = ({ userId }) => {
+  const [ClientData, setClientData] = useState([]);
 
+  const FetchClientData = async () => {
+    const response = await axios.get(`/ClientDataRequest/${userId}`);
 
+    const data = response.data;
+    setClientData(data);
+  };
+
+  useEffect(() => {
+    FetchClientData();
+  });
   // function to get the data from the server, but after serve must be prepare
-
 
   return (
     <>
@@ -33,7 +43,7 @@ const Profilepage = ({ userId }) => {
                 Username
               </th>
               <td className="w-full p-5 border-b border-darkColor">
-                912309123901237
+                {`${ClientData[0].firstName} ${ClientData[0].middleName} ${ClientData[0].LastName}`}
               </td>
             </tr>
             <tr>

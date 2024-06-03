@@ -418,7 +418,7 @@ app.get("/ClientDataRequest/:id", async (req, res) => {
     if (clientdata == null) {
       res.send("no data found");
     } else {
-      res.send(clientdata[0]);
+      res.send(clientdata);
     }
   } catch (error) {
     throw error;
