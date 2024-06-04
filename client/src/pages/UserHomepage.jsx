@@ -1,4 +1,4 @@
-import React, { useContext , useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { ClientUserContext } from './ClientUserContext.jsx';
 import axios from 'axios';
 
@@ -18,6 +18,7 @@ import InboxComponent from '../components/HomeComponents/inbox_component.jsx';
 import ComposeComponent from '../components/HomeComponents/compose_component.jsx';
 import SentComponent from '../components/HomeComponents/sent_component.jsx';
 import Profilepage from '../components/HomeComponents/Profilepage.jsx';
+import TicketPage from '../components/HomeComponents/ticketPage.jsx';
 
 const UserHomepage = () => {
 
@@ -29,9 +30,9 @@ const UserHomepage = () => {
     // Array container for JobPost
     const [JobData, SetJobData] = useState([]);
 
-    const FetchEventData = async() => {
-        
-        try{
+    const FetchEventData = async () => {
+
+        try {
 
             // getting the data from the middle server
             const response = await axios.get('/fetchingEventPost');
@@ -39,27 +40,27 @@ const UserHomepage = () => {
 
             console.log(data);
             SetEventData(data);
-            
-            
 
-        }catch(error){
+
+
+        } catch (error) {
             console.error(error);
         }
     }
 
 
-    const FetchJobData = async() => {
+    const FetchJobData = async () => {
 
-        try{
+        try {
 
             //using the axios get the data from the server
             const response = await axios.get('/fetchingJobPost');
             const data = response.data;
-        
+
             console.log(data);
             SetJobData(data);
 
-        }catch(error){
+        } catch (error) {
             console.log(error);
         }
 
@@ -78,7 +79,7 @@ const UserHomepage = () => {
 
     useEffect(() => {
         document.title = 'Homepage'
-        
+
         FetchEventData();
 
         FetchJobData();
@@ -87,9 +88,9 @@ const UserHomepage = () => {
 
     return (
         <>
-            
+
             <title>Welcome to ServiceHub</title>
-        
+
             <div className='min-h-screen bg-gray-100 min-w-screen'>
                 <div className="flex flex-col font-poppins text-darkColor">
                     {/* <!-- nav --> */}
@@ -104,7 +105,7 @@ const UserHomepage = () => {
                         </button>
                         {/* <!-- links container --> */}
                         <div className="hidden col-span-2 font-medium lg:ml-auto lg:col-span-1 lg:flex" id="navLinksContainer">
-                            <ul className="grid gap-10 pt-5 mx-auto text-center w-fit lg:pt-0 lg:flex lg:gap-20 lg:w-auto font-bold">
+                            <ul className="grid gap-10 pt-5 mx-auto font-bold text-center w-fit lg:pt-0 lg:flex lg:gap-20 lg:w-auto">
                                 {/* <li className="activeUserLink">
                                     <a href="">Events</a>
                                 </li>
@@ -118,10 +119,11 @@ const UserHomepage = () => {
                                     <a href="">Profile</a>
                                 </li> */}
 
-                                <button onClick={() => {SetSelectedComponent('EventPosting')}}>Events</button>
-                                <button onClick={() => {SetSelectedComponent('JobPosting')}}>Find a Job</button>
-                                <button onClick={() => {SetSelectedComponent('Inbox')}}>Chat</button>
-                                <button onClick={() => {SetSelectedComponent('Profile')}}>Profile</button>
+                                <button className='font-medium userNavHover' onClick={() => { SetSelectedComponent('EventPosting') }}>Events</button>
+                                <button className='font-medium userNavHover' onClick={() => { SetSelectedComponent('JobPosting') }}>Find a Job</button>
+                                <button className='font-medium userNavHover' onClick={() => { SetSelectedComponent('Inbox') }}>Chat</button>
+                                <button className='font-medium userNavHover' onClick={() => { SetSelectedComponent('Tickets') }}>Tickets</button>
+                                <button className='font-medium userNavHover' onClick={() => { SetSelectedComponent('Profile') }}>Profile</button>
                             </ul>
                         </div>
                     </nav>
@@ -129,26 +131,36 @@ const UserHomepage = () => {
                     {/* <p>output {clientuserId ?  clientuserId : 'null'}</p> */}
 
                     <div className="container flex flex-col justify-center gap-5 p-5 mx-auto">
+                        {/* <div className="flex justify-center w-full font-noto">
+                            <h2 className='text-5xl font-medium'>Events</h2>
+                        </div> */}
                         {/* <!-- event post container --> */}
                         {ActiveComponent === 'EventPosting' && EventData.map((eventItem) => {
-                            return(
-                                <EventPostComponent key={eventItem.id} eventdata={eventItem}></EventPostComponent>
-                                
+                            return (
+                                <>
+                                    <EventPostComponent key={eventItem.id} eventdata={eventItem}></EventPostComponent>
+                                </>
+
                             )
                         })}
                         {/* {ActiveComponent === 'EventPosting' && <EventPostComponent></EventPostComponent>} */}
                         {/* job post component */}
                         {ActiveComponent === 'JobPosting' && JobData.map((jobItem) => {
-                            return(
-                                <JobPostComponent key={jobItem.id} jobdata={jobItem}></JobPostComponent>
+                            return (
+                                <>
+                                    {/* <div className="flex justify-center w-full font-noto">
+                                        <h2 className='text-5xl font-medium'>Seek Your Job</h2>
+                                    </div> */}
+                                    <JobPostComponent key={jobItem.id} jobdata={jobItem}></JobPostComponent>
+                                </>
                             )
                         })}
                         {/* InboxComponent */}
                         {ActiveComponent === 'Inbox' && (<InboxComponent></InboxComponent>)}
                         {/* Profile */}
                         {ActiveComponent == 'Profile' && (<Profilepage></Profilepage>)}
-                        
 
+                        {ActiveComponent == 'Tickets' && (<TicketPage></TicketPage>)}
 
                     </div>
                 </div>
