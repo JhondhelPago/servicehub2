@@ -1,38 +1,29 @@
-import React, { useContext, useEffect, useState } from "react";
-import { ClientUserContext } from "./ClientUserContext.jsx";
-import axios from "axios";
+import React, { useContext, useEffect, useState } from 'react';
+import { ClientUserContext } from './ClientUserContext.jsx';
+import axios from 'axios';
+import nav_logo from '../assets/nav logo dark.png';
 
-import nav_logo from "../assets/nav logo dark.png";
-
-// import EventPostComponent from '../components/event_post_component.jsx';
-// import JobPostComponent from '../components/job_post_component.jsx';
-// import InboxComponent from '../components/inbox_component.jsx';
-// import ComposeComponent from '../components/compose_component.jsx';
-// import SentComponent from '../components/sent_component.jsx';
-// import Profilepage from '../components/Profilepage.jsx';
-
-import EventPostComponent from "../components/HomeComponents/event_post_component.jsx";
-import JobPostComponent from "../components/HomeComponents/job_post_component.jsx";
-import InboxComponent from "../components/HomeComponents/inbox_component.jsx";
-import ComposeComponent from "../components/HomeComponents/compose_component.jsx";
-import SentComponent from "../components/HomeComponents/sent_component.jsx";
-import Profilepage from "../components/HomeComponents/Profilepage.jsx";
+// Import components
+import EventPostComponent from '../components/HomeComponents/event_post_component.jsx';
+import JobPostComponent from '../components/HomeComponents/job_post_component.jsx';
+import InboxComponent from '../components/HomeComponents/inbox_component.jsx';
+import ComposeComponent from '../components/HomeComponents/compose_component.jsx';
+import SentComponent from '../components/HomeComponents/sent_component.jsx';
+import Profilepage from '../components/HomeComponents/Profilepage.jsx';
+import TicketPage from '../components/HomeComponents/ticketPage.jsx';
 
 const UserHomepage = () => {
   const { clientuserId } = useContext(ClientUserContext);
 
   // Array container for the EventPost
   const [EventData, SetEventData] = useState([]);
-
-  // Array container for JobPost
-  const [JobData, SetJobData] = useState([]);
+  const [JobData, SetJobData] = useState([]); // Add JobData state
 
   const FetchEventData = async () => {
     try {
       // getting the data from the middle server
       const response = await axios.get("/fetchingEventPost");
       const data = response.data;
-
       console.log(data);
       SetEventData(data);
     } catch (error) {
@@ -43,9 +34,8 @@ const UserHomepage = () => {
   const FetchJobData = async () => {
     try {
       //using the axios get the data from the server
-      const response = await axios.get("/fetchingJobPost");
+      const response = await axios.get('/fetchingJobPost');
       const data = response.data;
-
       console.log(data);
       SetJobData(data);
     } catch (error) {
@@ -61,17 +51,13 @@ const UserHomepage = () => {
 
   useEffect(() => {
     document.title = "Homepage";
-
     FetchEventData();
-
     FetchJobData();
-    console.log(EventData);
   }, []);
 
   return (
     <>
       <title>Welcome to ServiceHub</title>
-
       <div className="min-h-screen bg-gray-100 min-w-screen">
         <div className="flex flex-col font-poppins text-darkColor">
           {/* <!-- nav --> */}
@@ -102,44 +88,33 @@ const UserHomepage = () => {
               id="navLinksContainer"
             >
               <ul className="grid gap-10 pt-5 mx-auto text-center w-fit lg:pt-0 lg:flex lg:gap-20 lg:w-auto font-bold">
-                {/* <li className="activeUserLink">
-                                    <a href="">Events</a>
-                                </li>
-                                <li className="userNavHover">
-                                    <a href="">Find a Job</a>
-                                </li>
-                                <li className="userNavHover">
-                                    <a href="">Chat</a>
-                                </li>
-                                <li className="userNavHover">
-                                    <a href="">Profile</a>
-                                </li> */}
-
                 <button
-                  onClick={() => {
-                    SetSelectedComponent("EventPosting");
-                  }}
+                  className="font-medium userNavHover"
+                  onClick={() => SetSelectedComponent('EventPosting')}
                 >
                   Events
                 </button>
                 <button
-                  onClick={() => {
-                    SetSelectedComponent("JobPosting");
-                  }}
+                  className="font-medium userNavHover"
+                  onClick={() => SetSelectedComponent('JobPosting')}
                 >
                   Find a Job
                 </button>
                 <button
-                  onClick={() => {
-                    SetSelectedComponent("Inbox");
-                  }}
+                  className="font-medium userNavHover"
+                  onClick={() => SetSelectedComponent('Inbox')}
                 >
                   Chat
                 </button>
                 <button
-                  onClick={() => {
-                    SetSelectedComponent("Profile");
-                  }}
+                  className="font-medium userNavHover"
+                  onClick={() => SetSelectedComponent('Tickets')}
+                >
+                  Tickets
+                </button>
+                <button
+                  className="font-medium userNavHover"
+                  onClick={() => SetSelectedComponent('Profile')}
                 >
                   Profile
                 </button>
@@ -147,36 +122,24 @@ const UserHomepage = () => {
             </div>
           </nav>
           {/* <!-- main content container --> */}
-          {/* <p>output {clientuserId ?  clientuserId : 'null'}</p> */}
-
           <div className="container flex flex-col justify-center gap-5 p-5 mx-auto">
-            {/* <!-- event post container --> */}
-            {ActiveComponent === "EventPosting" &&
-              EventData.map((eventItem) => {
-                return (
-                  <EventPostComponent
-                    key={eventItem.id}
-                    eventdata={eventItem}
-                  ></EventPostComponent>
-                );
-              })}
-            {/* {ActiveComponent === 'EventPosting' && <EventPostComponent></EventPostComponent>} */}
-            {/* job post component */}
-            {ActiveComponent === "JobPosting" &&
-              JobData.map((jobItem) => {
-                return (
-                  <JobPostComponent
-                    key={jobItem.id}
-                    jobdata={jobItem}
-                  ></JobPostComponent>
-                );
-              })}
-            {/* InboxComponent */}
-            {ActiveComponent === "Inbox" && <InboxComponent></InboxComponent>}
-            {/* Profile */}
-            {ActiveComponent === "Profile" && (
-              <Profilepage userId={clientuserId}></Profilepage>
-            )}
+            {ActiveComponent === 'EventPosting' &&
+              EventData.map((eventItem) => (
+                <EventPostComponent
+                  key={eventItem.id}
+                  eventdata={eventItem}
+                />
+              ))}
+            {ActiveComponent === 'JobPosting' &&
+              JobData.map((jobItem) => (
+                <JobPostComponent
+                  key={jobItem.id}
+                  jobdata={jobItem}
+                />
+              ))}
+            {ActiveComponent === 'Inbox' && <InboxComponent />}
+            {ActiveComponent === 'Profile' && <Profilepage />}
+            {ActiveComponent === 'Tickets' && <TicketPage />}
           </div>
         </div>
       </div>

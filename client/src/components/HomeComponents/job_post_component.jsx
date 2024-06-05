@@ -1,15 +1,15 @@
 import React from "react";
-import { TimeUtils , ImageStringUtils } from "../../module-script/util";
+import { TimeUtils, ImageStringUtils } from "../../module-script/util";
 import sample_img from '../../assets/sample_img.jpg';
 
-const JobPostComponent = ({jobdata}) => {
+const JobPostComponent = ({ jobdata }) => {
   return (
     <>
       {/* <!-- event post container --> */}
-      <div>
-        <h2 className="font-bold text-2xl">Seek your Job</h2>
-      </div>
-      <div className="flex flex-wrap gap-4 p-4 xl:flex-nowrap eventCard">
+      {/* <div>
+        <h2 className="text-2xl font-bold">Seek your Job</h2>
+      </div> */}
+      <div className="flex flex-wrap gap-4 p-4 bg-gray-50 xl:flex-nowrap eventCard">
         {/* <!-- event info container --> */}
         <div className="flex flex-col w-full gap-4 text-center lg:text-start xl:w-1/2">
           {/* <!-- title --> */}
