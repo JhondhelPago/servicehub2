@@ -14,6 +14,7 @@ import nav_logo from '../assets/nav logo dark.png';
 
 import EventPostComponent from '../components/HomeComponents/event_post_component.jsx';
 import JobPostComponent from '../components/HomeComponents/job_post_component.jsx';
+import ChatSection from '../components/HomeComponents/chat_component.jsx';
 import InboxComponent from '../components/HomeComponents/inbox_component.jsx';
 import ComposeComponent from '../components/HomeComponents/compose_component.jsx';
 import SentComponent from '../components/HomeComponents/sent_component.jsx';
@@ -120,7 +121,7 @@ const UserHomepage = () => {
 
                                 <button onClick={() => {SetSelectedComponent('EventPosting')}}>Events</button>
                                 <button onClick={() => {SetSelectedComponent('JobPosting')}}>Find a Job</button>
-                                <button onClick={() => {SetSelectedComponent('Inbox')}}>Chat</button>
+                                <button onClick={() => {SetSelectedComponent('Chat')}}>Chat</button>
                                 <button onClick={() => {SetSelectedComponent('Compose')}}>Compose</button>
                                 <button onClick={() => {SetSelectedComponent('Profile')}}>Profile</button>
                             </ul>
@@ -145,7 +146,7 @@ const UserHomepage = () => {
                             )
                         })}
                         {/* InboxComponent */}
-                        {ActiveComponent === 'Inbox' && (<InboxComponent></InboxComponent>)}
+                        {ActiveComponent === 'Chat' && (<ChatSection></ChatSection>)}
                         {ActiveComponent === 'Compose' && (<ComposeComponent userId={clientuserId}></ComposeComponent>)}
                         {/* Profile */}
                         {ActiveComponent === 'Profile' && (<Profilepage UserId={clientuserId}></Profilepage>)}

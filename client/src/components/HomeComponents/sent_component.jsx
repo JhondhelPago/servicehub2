@@ -1,6 +1,50 @@
+import { useContext, useEffect, useState } from 'react';
 import React from "react";
+import  { ClientUserContext } from '../../pages/ClientUserContext.jsx';
+import axios from 'axios';
+
+
+
+
+
 
 const SentComponent = () => {
+
+    //Create a logic here to fetch the email sent by this ClientUser
+
+    //id reference of this active Client User
+    const { clientuserId } = useContext(ClientUserContext);
+
+
+    const [SentMailArray, SetSentMailArray] = useState([]);
+
+
+    const FetchSentMail = async() => {
+
+        try{
+
+
+            const response = await axios.get(`/ClientSentMail/${clientuserId}`);
+            const ArrayOfSentMail = response.data;
+
+            console.log(ArrayOfSentMail);
+
+        }catch(error){
+            console.log(error);
+            throw error;
+        }
+    }
+
+    useEffect(() => {
+
+        FetchSentMail();
+
+    }, [])
+
+
+
+
+
   return (
     <>
       {/* <!-- sent list/content container --> */}
@@ -10,7 +54,7 @@ const SentComponent = () => {
               <div className="p-2 w-full flex justify-between border-b border-darkColor bg-extra-extra-light">
                   <div className="flex gap-2">
                       <input type="checkbox"/>
-                      <label for="">Select All</label>
+                      <label for="">Select All {clientuserId}</label>
                   </div>
                   <button className="hover:text-red-600">
                       <svg className="h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" d="M6 19a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V7H6zM8 9h8v10H8zm7.5-5l-1-1h-5l-1 1H5v2h14V4z"/></svg>

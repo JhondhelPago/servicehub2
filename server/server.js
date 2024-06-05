@@ -28,7 +28,8 @@ const {
     //function query for the clientuser
     clientuserLoginSession,
     clientInformation,
-    ClientMailInsert
+    ClientMailInsert,
+    GetSentMail
 
 } = require('./mysqlmodule.js');
 
@@ -614,6 +615,16 @@ app.get('/GetAdmins', async(req, res) => {
     
 
 });
+
+
+app.get('/ClientSentMail/:senderID', async(req, res) => {
+
+    const id = req.params.senderID;
+
+    const ClientMailArray = await GetSentMail(id);
+    res.send(ClientMailArray);
+
+})
 
 
 
