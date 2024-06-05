@@ -3,14 +3,14 @@ import { useState } from 'react';
 
 // import Nav from '../components/nav.jsx';
 
-const Profilepage = ({UserId}) => {
+const Profilepage = () => {
   return (
     <>
       <head>
         <title>Profile</title>
       </head>
       <div className="container flex flex-col justify-center gap-5 p-5 mx-auto">
-        <h1 className="text-6xl font-semibold text-center font-noto">My Profile {UserId}</h1>
+        <h1 className="text-6xl font-semibold text-center font-noto">My Profile </h1>
         <div className="w-full border rounded-md border-darkColor">
           <table className="border-collapse">
             <tr>
