@@ -1,14 +1,18 @@
-import React, { useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import { useState } from "react";
+import { ClientUserContext } from "../../pages/ClientUserContext";
 import axios from "axios";
 
 // import Nav from '../components/nav.jsx';
 
-const Profilepage = ({ userId }) => {
+const Profilepage = () => {
+
+  const { clientuserId } = useContext(ClientUserContext);
+
   const [ClientData, setClientData] = useState(null);
 
   const FetchClientData = async () => {
-    const response = await axios.get(`/ClientDataRequest/${userId}`);
+    const response = await axios.get(`/ClientDataRequest/${clientuserId}`);
 
     const data = response.data;
     setClientData(data);
@@ -27,7 +31,7 @@ const Profilepage = ({ userId }) => {
       </head>
       <div className="container flex flex-col justify-center gap-5 p-5 mx-auto">
         <h1 className="text-6xl font-semibold text-center font-noto">
-          My Profile {userId}
+          My Profile {clientuserId}
         </h1>
         <div className="w-full border rounded-md border-darkColor">
           <table className="border-collapse">
