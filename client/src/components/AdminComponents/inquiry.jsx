@@ -46,7 +46,7 @@ const Inquiries = () => {
 
                 {ActiveComponent === 'inbox' && <InboxComponent></InboxComponent>}
                 {ActiveComponent === 'sent' && <SentComponent></SentComponent>}
-                {ActiveComponent === 'compose' && <ComposeComponent></ComposeComponent>}
+                {ActiveComponent === 'compose' && <ComposeComponent SetSentComponent={() => SelectComponent('sent')}></ComposeComponent>}
             </div>
         </>
     )

@@ -48,10 +48,6 @@ const ComposeComponent = ({userId}) => {
       throw error;
     }
 
-
-
-    
-
   }
 
 

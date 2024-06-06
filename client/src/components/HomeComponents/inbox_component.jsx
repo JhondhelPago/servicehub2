@@ -1,11 +1,17 @@
-import React, { useState } from "react";
+import React, { useState, useContext} from "react";
+import { ClientUserContext } from "../../pages/ClientUserContext";
 
 
 const InboxComponent = () => {
 
-   
-   
-    
+    const { clientuserId } = useContext(ClientUserContext);
+
+    const [InboxArray, SetInboxArray] = useState([]);
+
+    //function to fetch the inbox of the clientuser using the clientuserId
+
+
+
 
 
     

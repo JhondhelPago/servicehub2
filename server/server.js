@@ -20,6 +20,7 @@ const {
     deletePost,
     FetchMail,
     getAdmin,
+    AdminMailInsert,
 
 
 
@@ -57,6 +58,7 @@ function RandomSelectedIndex(ArrayLength){
 
 const { StringManipulate } = require("./utilities.js");
 const e = require("express");
+const { setDefaultAutoSelectFamily } = require("net");
 
 // express app instanciation
 const app = express();
@@ -500,12 +502,35 @@ app.get('/GetAdmins', async(req, res) => {
 
     res.send(AssignedAdmin);
 
+});
 
-    
 
 
-    
+app.post('/AdminMailInsert', async(req, res) => {
 
+    const SenderId = req.body.SenderId
+    const ReceiverId = req.body.MailReceiverId;
+    const Subject = req.body.MailSubject;
+    const Body  = req.body.MailBody;
+
+
+    // console.log(SenderId);
+    // console.log(ReceiverId);
+    // console.log(Subject);
+    // console.log(Body);
+
+    try{
+
+      const response = await AdminMailInsert({
+        SenderId : SenderId,
+        ReceiverId : ReceiverId,
+        Subject : Subject,
+        Body : Body
+      });
+
+    }catch(error){
+      throw error;
+    }
 });
 
 
@@ -516,7 +541,7 @@ app.get('/ClientSentMail/:senderID', async(req, res) => {
     const ClientMailArray = await GetSentMail(id);
     res.send(ClientMailArray);
 
-})
+});
 
 
 

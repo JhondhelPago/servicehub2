@@ -252,6 +252,29 @@ async function getAdmin(){
     }
 }
 
+
+
+async function AdminMailInsert(MailObj){
+
+    try{
+        await pool.execute(`
+        INSERT INTO mail_sent
+        (send_id,
+        senderID,
+        date_sent,
+        time_sent,
+        receiverID,
+        subject,
+        body,
+        documentfile,
+        imagefile,
+        read_status)
+        VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`, [0, MailObj.SenderId, MyDateTime.Datenow(), MyDateTime.Timenow(), MailObj.ReceiverId, MailObj.Subject, MailObj.Body, 'docu.pdf,docu1.docx', 'img7.png,img8.jpg', 'unread']);
+    }catch(error){
+        throw error;
+    }
+}
+
 const MyDateTime = {
   Timenow: () => {
     const TheDateTime = new Date();
@@ -446,6 +469,7 @@ module.exports = {
   deletePost,
   FetchMail,
   getAdmin,
+  AdminMailInsert,
 
 
 
