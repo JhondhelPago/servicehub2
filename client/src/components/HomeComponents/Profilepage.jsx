@@ -30,9 +30,7 @@ const Profilepage = () => {
         <title>Profile</title>
       </head>
       <div className="container flex flex-col justify-center gap-5 p-5 mx-auto">
-        <h1 className="text-6xl font-semibold text-center font-noto">
-          My Profile {clientuserId}
-        </h1>
+        <h1 className="text-6xl font-semibold text-center font-noto">My Profile </>
         <div className="w-full border rounded-md border-darkColor">
           <table className="border-collapse">
             <tr>

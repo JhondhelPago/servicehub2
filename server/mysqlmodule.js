@@ -234,6 +234,24 @@ async function FetchMail(adminId) {
   }
 }
 
+
+async function getAdmin(){
+    
+    try{
+
+        const [AdminIdRow] = await pool.execute(`SELECT id FROM admin WHERE role="regular"`);
+
+        if(AdminIdRow.length == 0){
+            return null;
+        }else{
+            return AdminIdRow;
+        }
+
+    }catch(error){
+        throw error;
+    }
+}
+
 const MyDateTime = {
   Timenow: () => {
     const TheDateTime = new Date();
@@ -309,13 +327,116 @@ async function ClientData(id) {
   }
 }
 
+
+
+async function clientInformation(id){
+
+    try{
+        /*
+        information to from the user table
+
+        Username
+        Name
+        Age
+        Gender
+        Address
+        City
+        District
+        Contact No.
+        Member Status
+        */
+        const [clientInformationRow] = await pool.execute(
+            `
+            SELECT (
+                firstName,
+                lastName,
+                age,
+                gender,
+                barangay,
+                street,
+                houseno,
+                district,
+                city,
+                phone,
+                status
+            ) FROM user WHERE id = ${id}
+            `)
+
+        if(clientInformationRow.length != 0){
+            
+            return clientInformationRow[0]
+
+        }else{
+            
+            return null;
+
+        }
+
+
+    }catch(error){
+        throw error;
+    }
+
+}
+
+
+async function ClientMailInsert(MailObj){
+
+    try{
+
+        //logic here to insert the MailSend to the mail_sent table on the database
+
+        await pool.execute(`
+        INSERT INTO mail_sent
+        (send_id,
+        senderID,
+        date_sent,
+        time_sent,
+        receiverID,
+        subject,
+        body,
+        documentfile,
+        imagefile,
+        read_status)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`, [0, MailObj.SenderId, MyDateTime.Datenow(), MyDateTime.Timenow(), MailObj.AssignedAdmin, MailObj.MailSubject, MailObj.MailBody, 'sample.pdf', 'img5.jpg,img6.png', 'unread']);
+
+
+    }catch(error){
+        throw error;
+    }
+}
+
+
+async function GetSentMail(id){
+
+    try{
+
+        const [SentMailArray] = await pool.execute(`SELECT * FROM mail_sent WHERE senderID = ${id} ORDER BY STR_TO_DATE(CONCAT(date_sent, ' ', time_sent), '%Y-%m-%d %H:%i:%s') DESC`);
+
+        if(SentMailArray.length == 0){
+            return null;
+        }else{
+            return SentMailArray;
+        }
+
+    }catch(error){
+        throw error;
+    }
+
+}
+
+
+
 module.exports = {
   //user function exports
   get_userId,
 
+
+
   //admin function exports
 
   MyDateTime, // Object
+
 
   get_adminId, //gettig the adminId
   post_EventJob, //inserting the Event or Job data information to the database
@@ -324,8 +445,15 @@ module.exports = {
   job_post_edit,
   deletePost,
   FetchMail,
+  getAdmin,
+
+
 
   //function query for the clientuser
   clientuserLoginSession,
-  ClientData,
+  clientInformation,
+  ClientMailInsert,
+  GetSentMail
+    
 };
+

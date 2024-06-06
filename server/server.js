@@ -6,22 +6,32 @@ const fs = require("fs");
 
 //functions from mysqlmodule connection
 const {
-  //user function imports
-  get_userId,
+    //user function imports
+    get_userId,
 
-  //admin function imports
-  get_adminId,
-  post_EventJob,
-  fetchJob,
-  fetchEvent,
-  job_post_edit,
-  deletePost,
-  FetchMail,
 
-  //function query for the clientuser
-  clientuserLoginSession,
-  ClientData,
-} = require("./mysqlmodule.js");
+
+    //admin function imports
+    get_adminId,
+    post_EventJob,
+    fetchJob,
+    fetchEvent,
+    job_post_edit,
+    deletePost,
+    FetchMail,
+    getAdmin,
+
+
+
+
+    //function query for the clientuser
+    clientuserLoginSession,
+    clientInformation,
+    ClientMailInsert,
+    GetSentMail
+
+} = require('./mysqlmodule.js');
+
 
 //function to delete the images to the directory
 
@@ -34,6 +44,13 @@ function DelImage(filename) {
       throw err;
     }
   });
+}
+
+
+
+function RandomSelectedIndex(ArrayLength){
+    const randomIndex = Math.floor(Math.random() * ArrayLength);
+    return randomIndex;
 }
 
 //utilities.js -> provide utility classes and functions
@@ -405,8 +422,107 @@ app.post("/clientuser/loginsession", async (req, res) => {
   console.log(password);
 });
 
-app.get("/kainap/events", async (req, res) => {
-  // logic here to get the data from the main server using defined sql query from the mysql module.
+
+
+
+app.get('/ClientData/:id', async(req, res) =>{
+
+
+    const id = req.params.id;
+
+    try{
+
+        const clientInformation = await clientInformation(id);
+
+        res.send({'UserInformation' : clientInformation});  
+
+    }catch(error){
+        throw error;
+    }
+
+})
+
+
+
+app.post('/ClientSendMail', async(req, res) => {
+
+    const {SenderId, MailType, MailSubject, MailBody} = req.body;
+
+
+    const AdminArray = await getAdmin();
+    let AssignedAdmin;
+
+    const RandomizedIndex = RandomSelectedIndex(AdminArray.length);
+
+    AssignedAdmin = AdminArray[RandomizedIndex].id;
+
+
+    console.log(SenderId)
+    console.log(MailType);
+    console.log(MailSubject);
+    console.log(MailBody);
+    console.log(`Assigned Admin: ${AssignedAdmin}`);
+
+
+    const MailObj = {
+        SenderId: SenderId,
+        MailType: MailType,
+        MailSubject: MailSubject,
+        MailBody: MailBody,
+        AssignedAdmin: AssignedAdmin
+    }
+
+
+    try{
+
+        await ClientMailInsert(MailObj);
+
+    }catch(error){
+        throw error;
+    }
+
+
+
+});
+
+
+app.get('/GetAdmins', async(req, res) => {
+
+    const AdminArray = await getAdmin();
+
+    let AssignedAdmin;
+
+
+    const RanIndex = RandomSelectedIndex(AdminArray.length);
+
+    AssignedAdmin = AdminArray[RanIndex].id;
+
+
+    res.send(AssignedAdmin);
+
+
+    
+
+
+    
+
+});
+
+
+app.get('/ClientSentMail/:senderID', async(req, res) => {
+
+    const id = req.params.senderID;
+
+    const ClientMailArray = await GetSentMail(id);
+    res.send(ClientMailArray);
+
+})
+
+
+
+app.get('/kainap/events', async (req, res) => {
+
+    // logic here to get the data from the main server using defined sql query from the mysql module
 });
 
 app.get("/ClientDataRequest/:id", async (req, res) => {
