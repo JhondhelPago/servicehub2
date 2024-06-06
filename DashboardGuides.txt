@@ -1,0 +1,8 @@
+1. pie graph
+2. bar graph
+
+mga division na may title tas pag lalgaya ng data -> ket box na shapre ng division
+
+
+kunwari Active member na div tas ouput ko dun yung total count ng active kainakap member sa database
+tas pag eron na yan copy paste nalang yan the  output ng ibat ibang data 
