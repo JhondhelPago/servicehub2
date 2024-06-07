@@ -432,11 +432,7 @@ async function GetSentMail(id){
 
         const [SentMailArray] = await pool.execute(`SELECT * FROM mail_sent WHERE senderID = ${id} ORDER BY STR_TO_DATE(CONCAT(date_sent, ' ', time_sent), '%Y-%m-%d %H:%i:%s') DESC`);
 
-        if(SentMailArray.length == 0){
-            return null;
-        }else{
-            return SentMailArray;
-        }
+        return SentMailArray;
 
     }catch(error){
         throw error;
@@ -471,6 +467,7 @@ module.exports = {
 
   //function query for the clientuser
   clientuserLoginSession,
+  ClientData,
   clientInformation,
   ClientMailInsert,
   GetSentMail

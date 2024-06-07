@@ -27,6 +27,7 @@ const {
 
     //function query for the clientuser
     clientuserLoginSession,
+    ClientData,
     clientInformation,
     ClientMailInsert,
     GetSentMail
