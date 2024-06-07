@@ -3,6 +3,7 @@ import { useState, useEffect, useContext } from "react";
 import { UserContext } from "../LoginComponents/UserContext";
 
 const InboxComponent = () => {
+    
 
     const { AdminId } = useContext(UserContext); // 0. AdminId useContext ang laman is yung AdminId netong loginSession
 

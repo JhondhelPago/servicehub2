@@ -488,6 +488,16 @@ app.post('/ClientSendMail', async(req, res) => {
 
 });
 
+app.get('/AdminSentItem/:senderID', async(req, res) => {
+
+  const id = req.params.senderID;
+
+  const ClientMailArray = await GetSentMail(id);
+  res.send(ClientMailArray);
+
+});
+
+
 
 app.get('/GetAdmins', async(req, res) => {
 

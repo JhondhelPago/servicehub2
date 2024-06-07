@@ -271,6 +271,19 @@ async function AdminMailInsert(MailObj){
     }
 }
 
+// async function AdminSentItems(id){
+  
+//   try{
+
+//     const [SentItemsArray] = await pool.execute(`
+      
+//       `)
+
+//   }catch(error){
+//     throw error;
+//   }
+// }
+
 const MyDateTime = {
   Timenow: () => {
     const TheDateTime = new Date();
@@ -430,8 +443,28 @@ async function GetSentMail(id){
 
     try{
 
-        const [SentMailArray] = await pool.execute(`SELECT * FROM mail_sent WHERE senderID = ${id} ORDER BY STR_TO_DATE(CONCAT(date_sent, ' ', time_sent), '%Y-%m-%d %H:%i:%s') DESC`);
+        // const [SentMailArray] = await pool.execute(`SELECT * FROM mail_sent WHERE senderID = "${id}" ORDER BY STR_TO_DATE(CONCAT(date_sent, ' ', time_sent), '%Y-%m-%d %H:%i:%s') DESC`);
 
+        const[SentMailArray] = await pool.execute(`
+          SELECT 
+          mail_sent.send_id,
+          mail_sent.senderID,
+          mail_sent.date_sent,
+          mail_sent.time_sent,
+          mail_sent.receiverID,
+          mail_sent.subject,
+          mail_sent.body,
+          mail_sent.documentfile,
+          mail_sent.imagefile,
+          mail_sent.read_status, 
+          user.id AS user_id,
+          user.firstName,
+          user.middleName,
+          user.lastName
+          FROM mail_sent JOIN user ON mail_sent.receiverID = user.id
+          COLLATE utf8mb4_unicode_ci WHERE mail_sent.senderID = "${id}"
+          COLLATE utf8mb4_unicode_ci ORDER BY STR_TO_DATE(CONCAT(mail_sent.date_sent, ' ', mail_sent.time_sent), '%Y-%m-%d %H:%i:%s') DESC;
+        `)
         return SentMailArray;
 
     }catch(error){
