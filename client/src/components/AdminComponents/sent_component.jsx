@@ -6,6 +6,9 @@ const SentComponent = () => {
 
     const { AdminId } = useContext(UserContext);
 
+    // //variable storage for detail view of mail, this is the container for the MailObj
+    const [MailDetailsObj, SetMailObj] = useState(null);
+    
     const [SentItems, SetSentItems] = useState([]);
 
     const FetchAdminSentItems = async() => {
@@ -20,6 +23,11 @@ const SentComponent = () => {
             console.log(error);
             throw error;
         }
+    }
+
+    const giveMailObjToMailDetails = (MailObj) => {
+        SetMailObj(MailObj);
+        console.log(MailDetailsObj);
     }
 
 
@@ -54,7 +62,7 @@ const SentComponent = () => {
 
                             // redering the MailListView Component
                             return (
-                                <MailListView MailObj={MailData}></MailListView>
+                                <MailListView MailObj={MailData} ListMailClick={giveMailObjToMailDetails}></MailListView>
                             )
                         })}
 
@@ -77,7 +85,9 @@ const SentComponent = () => {
                 {/* <!-- mail content view --> */}
                 {/* 5. another child component */}
                 {/* yung boung view ng Email  */}
-                {/* <MailOverView></MailOverView> */}
+                {MailDetailsObj && (
+                    <MailOverView MailInfo={MailDetailsObj}></MailOverView>
+                )}
             </div>
         </>
     )
@@ -92,7 +102,7 @@ const MailListView = (props) => {
 
     return (
         <>
-            <div className="grid grid-cols-7 gap-4 p-2 border-b border-darkColor hoverMailItem group/del" >
+            <div className="grid grid-cols-7 gap-4 p-2 border-b border-darkColor hoverMailItem group/del" onClick={() => {props.ListMailClick(props.MailObj)}}>
                 <label className="flex col-span-2 gap-2" for="">
                     <input type="checkbox" />
                     {/* <!-- from --> */}
@@ -119,19 +129,19 @@ const MailOverView = (props) => {
             {/* <!-- mail content view --> */}
             <div className="flex flex-col w-3/4 border-t border-b border-r border-darkColor rounded-e">
                 <div className="flex flex-col gap-1 p-4 rounded-tr bg-extra-extra-light" id="takenHeight">
-                    <h3 className="text-xl font-medium break-words md:text-center">{props.MailOverViewData.subject}</h3>
+                    <h3 className="text-xl font-medium break-words md:text-center">{props.MailInfo.subject}</h3>
                     <div className="flex flex-col justify-between gap-1 md:flex-row">
-                        <h5 className="font-light md:order-last">{props.MailOverViewData.date_sent}</h5>
-                        <h4 className="font-light">From: <span className="font-medium">{props.MailOverViewData.firstName}</span></h4>
+                        <h5 className="font-light md:order-last">{props.MailInfo.date_sent}</h5>
+                        <h4 className="font-light">From: <span className="font-medium">{props.MailInfo.firstName}</span></h4>
                     </div>
                     <div className="flex flex-col justify-between gap-1 md:flex-row">
-                        <h5 className="font-light md:order-last">{props.MailOverViewData.time_sent}</h5>
-                        <h4 className="font-light">To: <span className="font-medium">{props.MailOverViewData.receiverID}</span></h4>
+                        <h5 className="font-light md:order-last">{props.MailInfo.time_sent}</h5>
+                        <h4 className="font-light">To: <span className="font-medium">{props.MailInfo.receiverID}</span></h4>
                     </div>
                 </div>
                 {/* <!-- body --> */}
                 <div className="relative flex flex-col gap-6 p-4 overflow-auto" id="remainingHeight">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Quibusdam iusto, assumenda non animi corporis recusandae veritatis nemo tempore nihil asperiores suscipit magni voluptate repellendus molestiae, quasi architecto explicabo perferendis? Minus, quibusdam inventore? Error, cum? Aliquid dignissimos, iste voluptatem beatae adipisci similique expedita voluptates blanditiis! Beatae expedita minus quisquam, accusantium deserunt earum doloribus tempore dicta similique nihil nam eveniet, iste rerum. Lorem ipsum dolor sit amet consectetur, adipisicing elit. Accusamus, molestias neque cumque pariatur voluptate aut eos dicta? Veniam non molestias placeat ipsam ea nemo possimus nostrum, dolore modi doloribus corporis expedita. Sed, reiciendis eaque. Rerum iste culpa atque qui? Natus voluptatibus aliquam maiores neque quam minima enim mollitia dignissimos odio sint voluptates nihil necessitatibus, itaque repellat veniam quo similique ad! Reprehenderit atque placeat dignissimos, asperiores vel veniam minus animi aliquam quia. Odit blanditiis saepe enim consequatur praesentium facere repudiandae. Dolorem vel aliquam
+                    {props.MailInfo.body}
                     <div className="flex justify-around gap-5 px-5 font-medium">
                         <button className="w-full py-2 border rounded border-darkColor scaleHover hover:bg-extra-light">Forward</button>
                         <button className="w-full py-2 text-white rounded bg-primary-light scaleHover">Reply</button>
