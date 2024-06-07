@@ -1,5 +1,0 @@
-1. kukunin yung id -> HomeComponent/Profilepage
-2. gagawa ng query sa mysqlmodule.js
-3. setup the server api
-
-4. pass the server data to the frontend
