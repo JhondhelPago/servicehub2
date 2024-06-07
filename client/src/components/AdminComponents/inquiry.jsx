@@ -10,9 +10,25 @@ const Inquiries = () => {
     //initializing useState
     const [ActiveComponent, setActiveComponent] = useState('inbox');
 
+
     const SelectComponent = (Component) => {
         setActiveComponent(Component);
     }
+
+    const RenderSentItems = () => {
+        setActiveComponent('sent');
+    }
+
+
+
+    const [VarCon, SetVarCon] = useState('no trigger');
+
+    const TriggerFromChild = () => {
+        SetVarCon('Trigger from send buttton');
+        console.log(`VarCon value: ${VarCon}`);
+    }
+
+
 
     return (
         <>
@@ -46,7 +62,7 @@ const Inquiries = () => {
 
                 {ActiveComponent === 'inbox' && <InboxComponent></InboxComponent>}
                 {ActiveComponent === 'sent' && <SentComponent></SentComponent>}
-                {ActiveComponent === 'compose' && <ComposeComponent SetSentComponent={() => SelectComponent('sent')}></ComposeComponent>}
+                {ActiveComponent === 'compose' && <ComposeComponent ShowSentItem={RenderSentItems}></ComposeComponent>}
             </div>
         </>
     )

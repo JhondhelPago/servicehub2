@@ -4,13 +4,13 @@ import axios from 'axios';
 import { UserContext } from "../LoginComponents/UserContext";
 
 
-const ComposeComponent = ({SetSentComponent}) => {
+const ComposeComponent = ( { ShowSentItem } ) => {
 
   const { AdminId } = useContext(UserContext);
 
-  const [ReceiverId, SetReceiverId] = useState(null);
-  const [Subject, SetSubject] = useState(null);
-  const [Body, SetBody] = useState(null);
+  const [ReceiverId, SetReceiverId] = useState('null');
+  const [Subject, SetSubject] = useState('null');
+  const [Body, SetBody] = useState('null');
 
   
   const handleReceiverChange = (event) => {
@@ -26,25 +26,39 @@ const ComposeComponent = ({SetSentComponent}) => {
   }
 
 
+  const statelog = () => {
+    console.log(AdminId);
+    console.log(ReceiverId);
+    console.log(Subject);
+    console.log(Body);
+  }
+
+
   const SendAdminMail = async(event) => {
       event.preventDefault();
+      
 
       const MailReceiverId = ReceiverId;
       const MailSubject = Subject;
       const MailBody = Body;
 
+      console.log('SendMail Blocks');
+
       try{
 
-        await axios.post('/AdminMailInsert', {
+        const response = await axios.post('/AdminMailInsert', {
           SenderId : AdminId  ,
           MailReceiverId : MailReceiverId,     
           MailSubject : MailSubject,
           MailBody : MailBody
         });
 
-        console.log('axios AdminMail may post the request.');
-
-        SetSentComponent();
+        console.log(response);
+        
+        if(response.status >= 200 && response.status < 300){
+          console.log('this control flow is trigerring function from parent component');
+          ShowSentItem();
+        }
 
       }catch(error){
         throw error;
@@ -69,7 +83,7 @@ const ComposeComponent = ({SetSentComponent}) => {
               {/* <!-- <label className="opacity-70" for="">To:</label> --> */}
               <textarea className="w-full h-full py-2 px-4 rounded bg-white" name="" id="" cols="30" rows="10" onChange={handleBodyChange}></textarea>
               <div className="w-2/6 mx-auto text-center">
-                  <button className="w-full py-2 rounded text-white bg-primary-light scaleHover">Send</button>
+                  <button type="submit" className="w-full py-2 rounded text-white bg-primary-light scaleHover" >Send</button>
               </div>
           </form>
       </div>

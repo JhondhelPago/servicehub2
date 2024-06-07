@@ -224,11 +224,7 @@ async function FetchMail(adminId) {
       [adminId]
     );
 
-    if (row.length > 0) {
-      return row;
-    } else {
-      return null;
-    }
+    return row;
   } catch (error) {
     throw error;
   }

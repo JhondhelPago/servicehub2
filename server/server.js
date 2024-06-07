@@ -388,7 +388,7 @@ app.get("/Fetchmail/:AdminId", async (req, res) => {
     if (InboxesData.length > 0) {
       res.send(InboxesData);
     } else {
-      res.send(null);
+      res.send([]);
     }
   } catch (error) {
     throw error;
@@ -514,19 +514,22 @@ app.post('/AdminMailInsert', async(req, res) => {
     const Body  = req.body.MailBody;
 
 
-    // console.log(SenderId);
-    // console.log(ReceiverId);
-    // console.log(Subject);
-    // console.log(Body);
+    console.log(SenderId);
+    console.log(ReceiverId);
+    console.log(Subject);
+    console.log(Body);
 
     try{
-
       const response = await AdminMailInsert({
         SenderId : SenderId,
         ReceiverId : ReceiverId,
         Subject : Subject,
         Body : Body
       });
+    
+      console.log('\nresponse details: ');
+
+      res.send(response);
 
     }catch(error){
       throw error;
