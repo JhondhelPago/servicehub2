@@ -212,7 +212,7 @@ async function deletePost(id, post_type) {
   } catch (error) {}
 }
 
-async function FetchMail(adminId) {
+async function FetchAdminInboxFromClient(adminId) {
   try {
     const [row] = await pool.execute(
       `
@@ -509,6 +509,27 @@ async function GetClientSentMail(id){
 }
 
 
+async function FetchInboxOfClient(id){
+
+  try{
+
+    const [ClientInbox] = await pool.execute(`
+      SELECT mail_sent.*, admin.firstName, admin.lastName 
+      FROM mail_sent 
+      JOIN admin ON mail_sent.senderID = admin.id 
+      COLLATE utf8mb4_general_ci WHERE mail_sent.receiverID = ?;
+    `,[id]);
+
+
+    return ClientInbox;
+
+  }catch(error){
+
+  }
+
+}
+
+
 
 
 
@@ -529,7 +550,7 @@ module.exports = {
   fetchJob,
   job_post_edit,
   deletePost,
-  FetchMail,
+  FetchAdminInboxFromClient,
   getAdmin,
   AdminMailInsert,
   GetSentMail,
@@ -541,7 +562,8 @@ module.exports = {
   ClientData,
   clientInformation,
   ClientMailInsert,
-  GetClientSentMail
+  GetClientSentMail,
+  FetchInboxOfClient
     
 };
 

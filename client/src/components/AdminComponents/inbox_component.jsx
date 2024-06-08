@@ -24,7 +24,7 @@ const InboxComponent = () => {
 
         try {
 
-            const response = await fetch(`/Fetchmail/${AdminId}`); // ito yung route sa server tapos may parameter na AdminId -> which is the id of this loginSession
+            const response = await fetch(`/FetchMailInbox/Admin/${AdminId}`); // ito yung route sa server tapos may parameter na AdminId -> which is the id of this loginSession
             const data = await response.json();
 
             //to set new value to the Inbox

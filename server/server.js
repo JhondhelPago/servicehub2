@@ -18,7 +18,7 @@ const {
     fetchEvent,
     job_post_edit,
     deletePost,
-    FetchMail,
+    FetchAdminInboxFromClient,
     getAdmin,
     AdminMailInsert,
     GetSentMail,
@@ -31,7 +31,8 @@ const {
     ClientData,
     clientInformation,
     ClientMailInsert,
-    GetClientSentMail
+    GetClientSentMail,
+    FetchInboxOfClient
 
 } = require('./mysqlmodule.js');
 
@@ -381,11 +382,11 @@ app.post("/adminLoginSession", async (req, res) => {
   res.end();
 });
 
-app.get("/Fetchmail/:AdminId", async (req, res) => {
+app.get("/FetchMailInbox/Admin/:AdminId", async (req, res) => {
   const AdminId = req.params.AdminId;
 
   try {
-    const InboxesData = await FetchMail(AdminId);
+    const InboxesData = await FetchAdminInboxFromClient(AdminId);
 
     if (InboxesData.length > 0) {
       res.send(InboxesData);
@@ -560,6 +561,26 @@ app.get('/ClientSentMail/:senderID', async(req, res) => {
 
 
 
+app.get('/FetchMailInbox/Client/:clienduserId', async(req, res) => {
+
+  const clientId = req.params.clienduserId;
+  console.log(clientId);
+
+  try{
+
+    const clientInboxArray = await FetchInboxOfClient(clientId);
+
+    res.send(clientInboxArray);
+
+  }catch(error){
+    console.log(error);
+    throw error;
+  }
+
+})
+
+
+
 app.get('/kainap/events', async (req, res) => {
 
     // logic here to get the data from the main server using defined sql query from the mysql module
@@ -583,6 +604,7 @@ app.get("/ClientDataRequest/:id", async (req, res) => {
   //backend logic to connect to the actual database
   //call the function from the mysqlmodule.js
 });
+
 
 app.get("/sample_res", (req, res) => {
   res.send("this is a response");
