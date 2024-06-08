@@ -1,4 +1,5 @@
-import React, { useState, useContext} from "react";
+import React, { useState, useContext, useEffect} from "react";
+import axios from "axios";
 import { ClientUserContext } from "../../pages/ClientUserContext";
 
 
@@ -9,6 +10,29 @@ const InboxComponent = () => {
     const [InboxArray, SetInboxArray] = useState([]);
 
     //function to fetch the inbox of the clientuser using the clientuserId
+
+
+    const FetchMailInbox = async() => {
+
+        try{
+
+            const response =  await axios.get(`Fetchmail/${clientuserId}`);
+            const InboxArraydata = response.data;
+            SetInboxArray(InboxArraydata);
+
+        }catch(error){
+            console.log(error);
+            throw error;
+        }
+    }
+
+
+
+    useEffect(() => {
+
+        FetchMailInbox();
+
+    }, [])
 
 
 
@@ -38,7 +62,11 @@ const InboxComponent = () => {
 
 
                     
-                    <MailListView></MailListView>
+                    {InboxArray.map((Inbox) => {
+                        return(
+                            <MailListView MailObj={Inbox}></MailListView>
+                        )
+                    })}
                     
 
 

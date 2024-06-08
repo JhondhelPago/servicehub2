@@ -21,6 +21,7 @@ const {
     FetchMail,
     getAdmin,
     AdminMailInsert,
+    GetSentMail,
 
 
 
@@ -30,7 +31,7 @@ const {
     ClientData,
     clientInformation,
     ClientMailInsert,
-    GetSentMail
+    GetClientSentMail
 
 } = require('./mysqlmodule.js');
 
@@ -552,7 +553,7 @@ app.get('/ClientSentMail/:senderID', async(req, res) => {
 
     const id = req.params.senderID;
 
-    const ClientMailArray = await GetSentMail(id);
+    const ClientMailArray = await GetClientSentMail(id);
     res.send(ClientMailArray);
 
 });

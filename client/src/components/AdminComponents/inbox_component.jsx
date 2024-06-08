@@ -129,7 +129,7 @@ const MailListView = (props) => {
                 </label>
                 {/* <!-- subject --> */}
                 <h6 className="col-span-3 truncate">{props.MailObj.subject}</h6>
-                <h6 className="col-span-2 my-auto text-xs justify-self-end group-hover/del:hidden">00/00/00</h6>
+                <h6 className="col-span-2 my-auto text-xs justify-self-end group-hover/del:hidden">{props.MailObj.date_sent + ' ' + props.MailObj.time_sent}</h6>
                 <button className="hidden col-span-2 justify-self-end group-hover/del:inline hover:text-red-600">
                     <svg className="h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" d="M6 19a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V7H6zM8 9h8v10H8zm7.5-5l-1-1h-5l-1 1H5v2h14V4z" /></svg>
                 </button>
@@ -160,7 +160,7 @@ const MailOverView = (props) => {
                 </div>
                 {/* <!-- body --> */}
                 <div className="relative flex flex-col gap-6 p-4 overflow-auto" id="remainingHeight">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Quibusdam iusto, assumenda non animi corporis recusandae veritatis nemo tempore nihil asperiores suscipit magni voluptate repellendus molestiae, quasi architecto explicabo perferendis? Minus, quibusdam inventore? Error, cum? Aliquid dignissimos, iste voluptatem beatae adipisci similique expedita voluptates blanditiis! Beatae expedita minus quisquam, accusantium deserunt earum doloribus tempore dicta similique nihil nam eveniet, iste rerum. Lorem ipsum dolor sit amet consectetur, adipisicing elit. Accusamus, molestias neque cumque pariatur voluptate aut eos dicta? Veniam non molestias placeat ipsam ea nemo possimus nostrum, dolore modi doloribus corporis expedita. Sed, reiciendis eaque. Rerum iste culpa atque qui? Natus voluptatibus aliquam maiores neque quam minima enim mollitia dignissimos odio sint voluptates nihil necessitatibus, itaque repellat veniam quo similique ad! Reprehenderit atque placeat dignissimos, asperiores vel veniam minus animi aliquam quia. Odit blanditiis saepe enim consequatur praesentium facere repudiandae. Dolorem vel aliquam
+                    {props.MailOverViewData.body}
                     <div className="flex justify-around gap-5 px-5 font-medium">
                         <button className="w-full py-2 border rounded border-darkColor scaleHover hover:bg-extra-light">Forward</button>
                         <button className="w-full py-2 text-white rounded bg-primary-light scaleHover">Reply</button>

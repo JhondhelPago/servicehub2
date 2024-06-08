@@ -271,6 +271,42 @@ async function AdminMailInsert(MailObj){
     }
 }
 
+
+async function GetSentMail(id){
+
+  try{
+
+      // const [SentMailArray] = await pool.execute(`SELECT * FROM mail_sent WHERE senderID = "${id}" ORDER BY STR_TO_DATE(CONCAT(date_sent, ' ', time_sent), '%Y-%m-%d %H:%i:%s') DESC`);
+
+      const[SentMailArray] = await pool.execute(`
+        SELECT 
+        mail_sent.send_id,
+        mail_sent.senderID,
+        mail_sent.date_sent,
+        mail_sent.time_sent,
+        mail_sent.receiverID,
+        mail_sent.subject,
+        mail_sent.body,
+        mail_sent.documentfile,
+        mail_sent.imagefile,
+        mail_sent.read_status, 
+        user.id AS user_id,
+        user.firstName,
+        user.middleName,
+        user.lastName
+        FROM mail_sent JOIN user ON mail_sent.receiverID = user.id
+        COLLATE utf8mb4_unicode_ci WHERE mail_sent.senderID = "${id}"
+        COLLATE utf8mb4_unicode_ci ORDER BY STR_TO_DATE(CONCAT(mail_sent.date_sent, ' ', mail_sent.time_sent), '%Y-%m-%d %H:%i:%s') DESC;
+      `)
+      return SentMailArray;
+
+  }catch(error){
+      throw error;
+  }
+
+}
+
+
 // async function AdminSentItems(id){
   
 //   try{
@@ -439,7 +475,7 @@ async function ClientMailInsert(MailObj){
 }
 
 
-async function GetSentMail(id){
+async function GetClientSentMail(id){
 
     try{
 
@@ -457,11 +493,10 @@ async function GetSentMail(id){
           mail_sent.documentfile,
           mail_sent.imagefile,
           mail_sent.read_status, 
-          user.id AS user_id,
-          user.firstName,
-          user.middleName,
-          user.lastName
-          FROM mail_sent JOIN user ON mail_sent.receiverID = user.id
+          admin.id AS admin_id,
+          admin.firstName,
+          admin.lastName
+          FROM mail_sent JOIN admin ON mail_sent.receiverID = admin.id
           COLLATE utf8mb4_unicode_ci WHERE mail_sent.senderID = "${id}"
           COLLATE utf8mb4_unicode_ci ORDER BY STR_TO_DATE(CONCAT(mail_sent.date_sent, ' ', mail_sent.time_sent), '%Y-%m-%d %H:%i:%s') DESC;
         `)
@@ -472,6 +507,8 @@ async function GetSentMail(id){
     }
 
 }
+
+
 
 
 
@@ -495,6 +532,7 @@ module.exports = {
   FetchMail,
   getAdmin,
   AdminMailInsert,
+  GetSentMail,
 
 
 
@@ -503,7 +541,7 @@ module.exports = {
   ClientData,
   clientInformation,
   ClientMailInsert,
-  GetSentMail
+  GetClientSentMail
     
 };
 
