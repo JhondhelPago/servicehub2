@@ -517,7 +517,8 @@ async function FetchInboxOfClient(id){
       SELECT mail_sent.*, admin.firstName, admin.lastName 
       FROM mail_sent 
       JOIN admin ON mail_sent.senderID = admin.id 
-      COLLATE utf8mb4_general_ci WHERE mail_sent.receiverID = ?;
+      COLLATE utf8mb4_general_ci WHERE mail_sent.receiverID = ?
+      ORDER BY STR_TO_DATE(CONCAT(mail_sent.date_sent, ' ', mail_sent.time_sent), '%Y-%m-%d %H:%i:%s') DESC
     `,[id]);
 
 

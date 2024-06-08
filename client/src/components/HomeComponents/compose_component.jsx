@@ -4,7 +4,7 @@ import axios from "axios";
 import { ClientUserContext } from "../../pages/ClientUserContext";
 
 
-const ComposeComponent = () => {
+const ComposeComponent = ({RenderSentItem}) => {
 
   const { clientuserId } = useContext(ClientUserContext);
 
@@ -46,6 +46,13 @@ const ComposeComponent = () => {
           MailSubject: MailSubject,
           MailBody: MailBody
       });
+
+
+      if(response.status >= 200 && response.status < 300){
+        RenderSentItem();
+      }
+
+
 
       console.log('axios MailSend may post the request');
 
