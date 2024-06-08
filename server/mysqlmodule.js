@@ -56,22 +56,24 @@ async function get_adminId(email, password, role) {
   }
 }
 
-async function GetClientInformation(){
+async function GetAllClientInformation(){
 
 
   try{
 
-    const [ClientDataInformationRow] = await pool.execute( `
+    const ClientDataInformationRow = await pool.execute( `
       SELECT COUNT(*)
-      
-      FROM 
+      FROM user
+    `);
 
-    `)
+
+    return ClientDataInformationRow;
 
   }catch(error){
     console.log(error);
   }
 }
+
 async function post_EventJob(
   Type,
   Creator_id,
@@ -569,6 +571,7 @@ module.exports = {
   getAdmin,
   AdminMailInsert,
   GetSentMail,
+  GetAllClientInformation,
 
 
 

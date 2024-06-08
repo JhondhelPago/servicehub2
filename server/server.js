@@ -22,6 +22,7 @@ const {
     getAdmin,
     AdminMailInsert,
     GetSentMail,
+    GetAllClientInformation,
 
 
 
@@ -397,6 +398,25 @@ app.get("/FetchMailInbox/Admin/:AdminId", async (req, res) => {
     throw error;
   }
 });
+
+
+
+app.get('/Dashboard/Information', async(req, res) => {
+
+  try{
+
+    const [totalUser] = await GetAllClientInformation();
+    console.log(`total user count: ${totalUser[0]['COUNT(*)']}`);
+
+    res.send(totalUser[0]);
+
+  }catch(error){
+    console.log(error);
+    throw error;
+  }
+})
+
+
 
 //code below are the server logic for the clientuser
 
