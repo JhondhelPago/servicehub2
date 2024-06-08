@@ -18,9 +18,10 @@ const {
     fetchEvent,
     job_post_edit,
     deletePost,
-    FetchMail,
+    FetchAdminInboxFromClient,
     getAdmin,
     AdminMailInsert,
+    GetSentMail,
 
 
 
@@ -30,7 +31,8 @@ const {
     ClientData,
     clientInformation,
     ClientMailInsert,
-    GetSentMail
+    GetClientSentMail,
+    FetchInboxOfClient
 
 } = require('./mysqlmodule.js');
 
@@ -380,11 +382,11 @@ app.post("/adminLoginSession", async (req, res) => {
   res.end();
 });
 
-app.get("/Fetchmail/:AdminId", async (req, res) => {
+app.get("/FetchMailInbox/Admin/:AdminId", async (req, res) => {
   const AdminId = req.params.AdminId;
 
   try {
-    const InboxesData = await FetchMail(AdminId);
+    const InboxesData = await FetchAdminInboxFromClient(AdminId);
 
     if (InboxesData.length > 0) {
       res.send(InboxesData);
@@ -480,6 +482,9 @@ app.post('/ClientSendMail', async(req, res) => {
 
         await ClientMailInsert(MailObj);
 
+
+        res.send(true)
+
     }catch(error){
         throw error;
     }
@@ -487,6 +492,16 @@ app.post('/ClientSendMail', async(req, res) => {
 
 
 });
+
+app.get('/AdminSentItem/:senderID', async(req, res) => {
+
+  const id = req.params.senderID;
+
+  const ClientMailArray = await GetSentMail(id);
+  res.send(ClientMailArray);
+
+});
+
 
 
 app.get('/GetAdmins', async(req, res) => {
@@ -542,10 +557,30 @@ app.get('/ClientSentMail/:senderID', async(req, res) => {
 
     const id = req.params.senderID;
 
-    const ClientMailArray = await GetSentMail(id);
+    const ClientMailArray = await GetClientSentMail(id);
     res.send(ClientMailArray);
 
 });
+
+
+
+app.get('/FetchMailInbox/Client/:clienduserId', async(req, res) => {
+
+  const clientId = req.params.clienduserId;
+  console.log(clientId);
+
+  try{
+
+    const clientInboxArray = await FetchInboxOfClient(clientId);
+
+    res.send(clientInboxArray);
+
+  }catch(error){
+    console.log(error);
+    throw error;
+  }
+
+})
 
 
 
@@ -572,6 +607,7 @@ app.get("/ClientDataRequest/:id", async (req, res) => {
   //backend logic to connect to the actual database
   //call the function from the mysqlmodule.js
 });
+
 
 app.get("/sample_res", (req, res) => {
   res.send("this is a response");

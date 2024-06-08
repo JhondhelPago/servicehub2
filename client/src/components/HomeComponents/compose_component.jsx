@@ -1,7 +1,13 @@
-import React from "react";
+import React, { useContext } from "react";
 import { useState } from 'react';
 import axios from "axios";
-const ComposeComponent = ({userId}) => {
+import { ClientUserContext } from "../../pages/ClientUserContext";
+
+
+const ComposeComponent = ({RenderSentItem}) => {
+
+  const { clientuserId } = useContext(ClientUserContext);
+
 
   const [Type, setType] = useState(null);
   const [Subject, setSubject] = useState(null);
@@ -35,11 +41,18 @@ const ComposeComponent = ({userId}) => {
       //axios to post request
       
       const response = await axios.post('/ClientSendMail', {
-          SenderId: userId,
+          SenderId: clientuserId,
           MailType: MailType,
           MailSubject: MailSubject,
           MailBody: MailBody
       });
+
+
+      if(response.status >= 200 && response.status < 300){
+        RenderSentItem();
+      }
+
+
 
       console.log('axios MailSend may post the request');
 
