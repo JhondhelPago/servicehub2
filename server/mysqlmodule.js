@@ -56,8 +56,22 @@ async function get_adminId(email, password, role) {
   }
 }
 
-async function EventPosting() {}
+async function GetClientInformation(){
 
+
+  try{
+
+    const [ClientDataInformationRow] = await pool.execute( `
+      SELECT COUNT(*)
+      
+      FROM 
+
+    `)
+
+  }catch(error){
+    console.log(error);
+  }
+}
 async function post_EventJob(
   Type,
   Creator_id,
