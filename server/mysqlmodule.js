@@ -61,8 +61,9 @@ async function GetAllClientInformation(){
 
   try{
 
+    //return the total registered user
     const ClientDataInformationRow = await pool.execute( `
-      SELECT COUNT(*)
+      SELECT COUNT(*) 
       FROM user
     `);
 
@@ -73,6 +74,11 @@ async function GetAllClientInformation(){
     console.log(error);
   }
 }
+
+
+//another function to count number of female and male
+//another function to count the registred memeber lived in manila, qc, pasay
+//another function to count the regitered member manila district 1, 2
 
 async function post_EventJob(
   Type,

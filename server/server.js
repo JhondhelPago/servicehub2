@@ -408,7 +408,10 @@ app.get('/Dashboard/Information', async(req, res) => {
     const [totalUser] = await GetAllClientInformation();
     console.log(`total user count: ${totalUser[0]['COUNT(*)']}`);
 
-    res.send(totalUser[0]);
+    res.send({
+      'TotalRegistered': totalUser[0],
+      'percentageMale' : 10/totalUser[0]['COUNT(*)']
+    });
 
   }catch(error){
     console.log(error);
