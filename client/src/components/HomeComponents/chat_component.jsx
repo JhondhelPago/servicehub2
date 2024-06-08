@@ -15,6 +15,11 @@ const ChatSection = () => {
     }
 
 
+    const ActivateSentComponent = () => {
+        setActiveComponent('sent');
+    }
+
+
     return(
         <>
             <div id="mainContentContainer" className="pb-0.5 w-full h-screen flex flex-col flex-grow bg-gray-100 text-darkColor overflow-hidden">
@@ -42,7 +47,7 @@ const ChatSection = () => {
 
                 {ActiveComponent === 'inbox' && (<InboxComponent></InboxComponent>)}
                 {ActiveComponent === 'sent' && (<SentComponent></SentComponent>)}
-                {ActiveComponent === 'compose' && (<ComposeComponent></ComposeComponent>)}
+                {ActiveComponent === 'compose' && (<ComposeComponent RenderSentItem={ActivateSentComponent}></ComposeComponent>)}
 
 
                 

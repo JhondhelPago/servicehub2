@@ -482,6 +482,9 @@ app.post('/ClientSendMail', async(req, res) => {
 
         await ClientMailInsert(MailObj);
 
+
+        res.send(true)
+
     }catch(error){
         throw error;
     }
