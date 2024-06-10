@@ -124,11 +124,31 @@ const MailListView = (props) => {
 // component definition of the MailOverView
 const MailOverView = (props) => {
 
+    // in this area is the loaded array of mail conversation
+
     return (
         <>
             {/* <!-- mail content view --> */}
-            <div className="flex flex-col w-3/4 border-t border-b border-r border-darkColor rounded-e">
-                <div className="flex flex-col gap-1 p-4 rounded-tr bg-extra-extra-light" id="takenHeight">
+            <div className="flex flex-col w-3/4 border-t border-b border-r border-darkColor rounded-e ">
+
+               <MailInnerView MailInfo={props.MailInfo}></MailInnerView>
+
+                <div className="flex justify-around gap-5 px-5 font-medium">
+                        <button className="w-full py-2 border rounded border-darkColor scaleHover hover:bg-extra-light">Forward</button>
+                        <button className="w-full py-2 text-white rounded bg-primary-light scaleHover">Reply</button>
+                </div>
+            </div>
+        </>
+    )
+
+}
+
+const MailInnerView = (props) =>  {
+    
+    return(
+        <>
+            <div className='m-2 border-4 border-gray-300  rounded-lg'>
+                <div className="flex flex-col gap-1 p-4 rounded-tr bg-extra-extra-light border" id="takenHeight">
                     <h3 className="text-xl font-medium break-words md:text-center">{props.MailInfo.subject}</h3>
                     <div className="flex flex-col justify-between gap-1 md:flex-row">
                         <h5 className="font-light md:order-last">{props.MailInfo.date_sent}</h5>
@@ -142,15 +162,10 @@ const MailOverView = (props) => {
                 {/* <!-- body --> */}
                 <div className="relative flex flex-col gap-6 p-4 overflow-auto" id="remainingHeight">
                     {props.MailInfo.body}
-                    <div className="flex justify-around gap-5 px-5 font-medium">
-                        <button className="w-full py-2 border rounded border-darkColor scaleHover hover:bg-extra-light">Forward</button>
-                        <button className="w-full py-2 text-white rounded bg-primary-light scaleHover">Reply</button>
-                    </div>
                 </div>
             </div>
         </>
     )
-
 }
 
 

@@ -29,6 +29,7 @@ const InboxComponent = () => {
 
             //to set new value to the Inbox
             setInbox(data);
+            console.log(Inbox);
 
 
         } catch (error) {
@@ -79,13 +80,13 @@ const InboxComponent = () => {
                     <div className="pb-5 overflow-auto border-r border-darkColor h-svh">
 
                         {/*  Inbox ba ay not null &&==then  Inbox.map()=loop for every element */}
-                        {Inbox && Inbox.map((MailData) => { //MailData is Default parameter, ang value nyan is yung object sa current map
+                        {/* {Inbox && Inbox.map((MailData) => { //MailData is Default parameter, ang value nyan is yung object sa current map
 
                             // redering the MailListView Component
                             return (
                                 <MailListView MailObj={MailData} SelectedMailData={SelectedMailData}></MailListView>
                             )
-                        })}
+                        })} */}
 
                         {/* <!-- mail active sample --> */}
                         <div className="grid grid-cols-7 gap-4 p-2 border-b border-darkColor activeMailItem group/del">
@@ -106,7 +107,7 @@ const InboxComponent = () => {
                 {/* <!-- mail content view --> */}
                 {/* 5. another child component */}
                 {/* yung boung view ng Email  */}
-                {MailOverViewData && <MailOverView MailOverViewData={MailOverViewData}></MailOverView>}
+                {/* {MailOverViewData && <MailOverView MailOverViewData={MailOverViewData}></MailOverView>} */}
             </div>
         </>
     )
@@ -147,29 +148,41 @@ const MailOverView = (props) => {
         <>
             {/* <!-- mail content view --> */}
             <div className="flex flex-col w-3/4 border-t border-b border-r border-darkColor rounded-e">
-                <div className="flex flex-col gap-1 p-4 rounded-tr bg-extra-extra-light" id="takenHeight">
-                    <h3 className="text-xl font-medium break-words md:text-center">{props.MailOverViewData.subject}</h3>
-                    <div className="flex flex-col justify-between gap-1 md:flex-row">
-                        <h5 className="font-light md:order-last">{props.MailOverViewData.date_sent}</h5>
-                        <h4 className="font-light">From: <span className="font-medium">{props.MailOverViewData.firstName}</span></h4>
-                    </div>
-                    <div className="flex flex-col justify-between gap-1 md:flex-row">
-                        <h5 className="font-light md:order-last">{props.MailOverViewData.time_sent}</h5>
-                        <h4 className="font-light">To: <span className="font-medium">{props.MailOverViewData.receiverID}</span></h4>
-                    </div>
-                </div>
-                {/* <!-- body --> */}
-                <div className="relative flex flex-col gap-6 p-4 overflow-auto" id="remainingHeight">
-                    {props.MailOverViewData.body}
-                    <div className="flex justify-around gap-5 px-5 font-medium">
-                        <button className="w-full py-2 border rounded border-darkColor scaleHover hover:bg-extra-light">Forward</button>
-                        <button className="w-full py-2 text-white rounded bg-primary-light scaleHover">Reply</button>
-                    </div>
+             
+                <MailInnerView MailOverViewData={props.MailOverViewData}></MailInnerView>
+                <div className="flex justify-around gap-5 px-5 font-medium">
+                    <button className="w-full py-2 border rounded border-darkColor scaleHover hover:bg-extra-light">Forward</button>
+                    <button className="w-full py-2 text-white rounded bg-primary-light scaleHover">Reply</button>
                 </div>
             </div>
         </>
     )
 
 }
+
+const  MailInnerView = (props) => {
+    return(
+        <>
+            <div className='m-2 border-4 border-gray-300  rounded-lg'>
+                <div className="flex flex-col gap-1 p-4 rounded-tr bg-extra-extra-light" id="takenHeight">
+                        <h3 className="text-xl font-medium break-words md:text-center">{props.MailOverViewData.subject}</h3>
+                        <div className="flex flex-col justify-between gap-1 md:flex-row">
+                            <h5 className="font-light md:order-last">{props.MailOverViewData.date_sent}</h5>
+                            <h4 className="font-light">From: <span className="font-medium">{props.MailOverViewData.firstName}</span></h4>
+                        </div>
+                        <div className="flex flex-col justify-between gap-1 md:flex-row">
+                            <h5 className="font-light md:order-last">{props.MailOverViewData.time_sent}</h5>
+                            <h4 className="font-light">To: <span className="font-medium">{props.MailOverViewData.receiverID}</span></h4>
+                        </div>
+                    </div>
+                    {/* <!-- body --> */}
+                    <div className="relative flex flex-col gap-6 p-4 overflow-auto" id="remainingHeight">
+                        {props.MailOverViewData.body}
+                    </div>
+            </div>
+        </>
+    )
+}
+
 
 export default InboxComponent;

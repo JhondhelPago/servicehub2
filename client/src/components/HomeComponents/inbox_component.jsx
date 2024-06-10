@@ -19,6 +19,7 @@ const InboxComponent = () => {
             const response =  await axios.get(`/FetchMailInbox/Client/${clientuserId}`);
             const InboxArraydata = response.data;
             SetInboxArray(InboxArraydata);
+            
 
         }catch(error){
             console.log(error);
@@ -31,6 +32,7 @@ const InboxComponent = () => {
     useEffect(() => {
 
         FetchMailInbox();
+        console.log(InboxArray);
 
     }, [])
 
@@ -71,11 +73,11 @@ const InboxComponent = () => {
 
 
                     
-                    {InboxArray.map((Inbox) => {
+                    {/* {InboxArray.map((Inbox) => {
                         return(
                             <MailListView MailObj={Inbox} ListMailClick={placeMailOverViewObj}></MailListView>
                         )
-                    })}
+                    })} */}
                     
 
 
@@ -100,9 +102,9 @@ const InboxComponent = () => {
             {/* <!-- mail content view --> */}
             {/* 5. another child component */}
             {/* yung boung view ng Email  */}
-            {MailOverViewObj && (
+            {/* {MailOverViewObj && (
                 <MailOverView MailInfo={MailOverViewObj}></MailOverView>
-            )}
+            )} */}
         </div>
     </>
   )
@@ -143,29 +145,40 @@ const MailOverView = ({MailInfo}) => {
         <>
             {/* <!-- mail content view --> */}
             <div className="w-3/4 flex flex-col border border-darkColor rounded-e">
-                <div className="p-4 flex flex-col gap-1 bg-extra-extra-light rounded-tr" id="takenHeight">
-                    <h3 className="text-xl md:text-center font-medium break-words">{MailInfo.subject}</h3>
-                    <div className="flex flex-col md:flex-row gap-1 justify-between">
-                        <h5 className="font-light md:order-last"></h5>
-                        <h4 className="font-light">From: <span className="font-medium">{MailInfo.senderID}</span></h4>
-                    </div>
-                    <div className="flex flex-col md:flex-row gap-1 justify-between">
-                        <h5 className="font-light md:order-last"></h5>
-                        <h4 className="font-light">To: <span className="font-medium">{MailInfo.receiverID}</span></h4>
-                    </div>
-                </div>
-                {/* <!-- body --> */}
-                <div className="p-4 flex flex-col gap-6 overflow-auto relative" id="remainingHeight">
-                    {MailInfo.body}
-                    <div className="px-5 flex gap-5 justify-around font-medium">
-                        <button className="py-2 w-full border border-darkColor rounded scaleHover hover:bg-extra-light">Forward</button>
-                        <button className="py-2 w-full rounded text-white bg-primary-light scaleHover">Reply</button>
-                    </div>
+                <MailInnerView MailInfo={MailInfo}></MailInnerView>
+                <div className="px-5 flex gap-5 justify-around font-medium">
+                    <button className="py-2 w-full border border-darkColor rounded scaleHover hover:bg-extra-light">Forward</button>
+                    <button className="py-2 w-full rounded text-white bg-primary-light scaleHover">Reply</button>
                 </div>
             </div>
         </>
     )
 
+}
+
+const MailInnerView = ({MailInfo}) => {
+    return(
+        <>
+             <div className='m-2 border-4 border-gray-300  rounded-lg'>
+                <div className="p-4 flex flex-col gap-1 bg-extra-extra-light rounded-tr" id="takenHeight">
+                        <h3 className="text-xl md:text-center font-medium break-words">{MailInfo.subject}</h3>
+                        <div className="flex flex-col md:flex-row gap-1 justify-between">
+                            <h5 className="font-light md:order-last"></h5>
+                            <h4 className="font-light">From: <span className="font-medium">{MailInfo.senderID}</span></h4>
+                        </div>
+                        <div className="flex flex-col md:flex-row gap-1 justify-between">
+                            <h5 className="font-light md:order-last"></h5>
+                            <h4 className="font-light">To: <span className="font-medium">{MailInfo.receiverID}</span></h4>
+                        </div>
+                    </div>
+                    {/* <!-- body --> */}
+                    <div className="p-4 flex flex-col gap-6 overflow-auto relative" id="remainingHeight">
+                        {MailInfo.body}
+                    
+                    </div>
+             </div>
+        </>
+    )
 }
 
 export default InboxComponent;

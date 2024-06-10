@@ -397,6 +397,12 @@ app.get("/FetchMailInbox/Admin/:AdminId", async (req, res) => {
   } catch (error) {
     throw error;
   }
+
+  //new logic
+
+
+
+
 });
 
 
@@ -590,11 +596,24 @@ app.get('/ClientSentMail/:senderID', async(req, res) => {
 app.get('/FetchMailInbox/Client/:clienduserId', async(req, res) => {
 
   const clientId = req.params.clienduserId;
-  console.log(clientId);
 
   try{
 
+    let adminIdArray = [];
+
     const clientInboxArray = await FetchInboxOfClient(clientId);
+
+    console.log(clientInboxArray);
+
+    clientInboxArray.forEach((senderObj) => {
+      
+        if(!adminIdArray.includes(senderObj.senderID)){
+          adminIdArray.push(senderObj.senderID);
+        }
+    });
+
+
+    console.log(`\nadminIdArray: ${adminIdArray}`);
 
     res.send(clientInboxArray);
 
@@ -602,6 +621,9 @@ app.get('/FetchMailInbox/Client/:clienduserId', async(req, res) => {
     console.log(error);
     throw error;
   }
+
+
+  //new logic 
 
 })
 
