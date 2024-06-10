@@ -615,7 +615,7 @@ app.get('/FetchMailInbox/Client/:clienduserId', async(req, res) => {
 
     console.log(`\nadminIdArray: ${adminIdArray}`);
 
-    res.send(clientInboxArray);
+    res.send(adminIdArray);
 
   }catch(error){
     console.log(error);

@@ -575,6 +575,18 @@ async function FetchInboxOfClient(id){
 }
 
 
+async function Client_GetAllInboxFromAdmin(ClientReceiver_id, SenderAdminId){
+
+  try{
+
+  }catch(error){
+    console.log(error);
+    throw error;
+  }
+
+}
+
+
 
 
 

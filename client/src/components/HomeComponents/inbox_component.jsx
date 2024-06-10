@@ -7,7 +7,7 @@ const InboxComponent = () => {
 
     const { clientuserId } = useContext(ClientUserContext);
 
-    const [InboxArray, SetInboxArray] = useState([]);
+    const [InboxContact, SetInboxContact] = useState([]);
 
     //function to fetch the inbox of the clientuser using the clientuserId
 
@@ -17,8 +17,8 @@ const InboxComponent = () => {
         try{
 
             const response =  await axios.get(`/FetchMailInbox/Client/${clientuserId}`);
-            const InboxArraydata = response.data;
-            SetInboxArray(InboxArraydata);
+            const InboxListAdmin = response.data;
+            SetInboxContact(InboxListAdmin);
             
 
         }catch(error){
@@ -32,7 +32,7 @@ const InboxComponent = () => {
     useEffect(() => {
 
         FetchMailInbox();
-        console.log(InboxArray);
+        console.log(InboxContact);
 
     }, [])
 
@@ -60,7 +60,7 @@ const InboxComponent = () => {
                 <div className="p-2 w-full flex justify-between border-b border-darkColor bg-extra-extra-light">
                     <div className="flex gap-2">
                         <input type="checkbox"/>
-                        <label for="">Select All {InboxArray.length}</label>
+                        <label for="">Select All {InboxContact.length}</label>
                         
                     </div>
                     <button className="hover:text-red-600">
@@ -78,6 +78,12 @@ const InboxComponent = () => {
                             <MailListView MailObj={Inbox} ListMailClick={placeMailOverViewObj}></MailListView>
                         )
                     })} */}
+
+                    {InboxContact.map((AdminContactId) => {
+                        return(
+                            <MailListView AdminContactId={AdminContactId} ListMailClick={placeMailOverViewObj}></MailListView>
+                        )   
+                    })}
                     
 
 
@@ -113,9 +119,36 @@ const InboxComponent = () => {
 
 
 // component definition of the MailListView
-const MailListView = ({MailObj, ListMailClick}) => {
+const MailListView = ({MailObj, ListMailClick, AdminContactId}) => {
 
+
+    const { clientuserId } = useContext(ClientUserContext);
+
+    const SenderAdminId = AdminContactId;
+
+
+    const [MailObjsArray, SetMailObjsArray] = useState([]);
+
+
+
+    const FetchConvo_Client_Admin = () => {
+
+
+        try{
+
+            
+
+        }catch(error){
+            throw error;
+        }
+    }
+
+
+    //logic to get all the conversation fromt this senderID
+
+    // let AdminContactId;
     
+    // const []
 
     return(
         <>
@@ -123,11 +156,11 @@ const MailListView = ({MailObj, ListMailClick}) => {
                 <label className="col-span-2 flex gap-2" htmlFor="">
                     <input type="checkbox"/>
                     {/* <!-- from --> */}
-                    <h6 className="truncate">{MailObj.firstName}</h6>
+                    <h6 className="truncate">SampleAdminSender</h6>
                 </label>
                 {/* <!-- subject --> */}
-                <h6 className="col-span-3 truncate">{MailObj.subject}</h6>
-                <h6 className="col-span-2 text-xs my-auto justify-self-end group-hover/del:hidden">{`${MailObj.date_sent} ${MailObj.time_sent}`}</h6>
+                <h6 className="col-span-3 truncate">Sample Admin Subject</h6>
+                <h6 className="col-span-2 text-xs my-auto justify-self-end group-hover/del:hidden">date_sent time_sent</h6>
                 <button className="col-span-2 justify-self-end hidden group-hover/del:inline hover:text-red-600">
                     <svg className="h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" d="M6 19a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V7H6zM8 9h8v10H8zm7.5-5l-1-1h-5l-1 1H5v2h14V4z"/></svg>
                 </button>
