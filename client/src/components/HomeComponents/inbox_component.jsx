@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect} from "react";
+import React, { useState, useContext, useEffect, useRef} from "react";
 import axios from "axios";
 import { ClientUserContext } from "../../pages/ClientUserContext";
 
@@ -38,12 +38,48 @@ const InboxComponent = () => {
 
 
 
-    const [MailOverViewObj, SetMailOverViewObj] = useState(null);
+    // const [MailOverViewObj, SetMailOverViewObj] = useState(null);
 
 
-    const placeMailOverViewObj = (MailObj) => {
-        SetMailOverViewObj(MailObj);
+    // const placeMailOverViewObj = (MailObj) => {
+    //     SetMailOverViewObj(MailObj);
+    // }
+
+
+
+
+
+
+
+
+
+    const [MailOverViewBoolean, SetMailOverViewBoolean] = useState(null); 
+
+    const [MailObjsArray, SetMailObjsArray] = useState([]);
+
+
+    const ClickInboxAction = async(adminId) => { 
+        
+        await FetchConvo_Client_Admin(adminId);
+
+        
     }
+
+    const FetchConvo_Client_Admin = async(SenderAdminId) => {
+
+        try{
+
+            const response = await axios.get(`/GetClient/Convo/WithAdmin/${clientuserId}/${SenderAdminId}`);
+            const ConversationMailArray = response.data
+            console.log(ConversationMailArray);
+            SetMailObjsArray(ConversationMailArray);
+            SetMailOverViewBoolean(true);
+
+        }catch(error){
+            throw error;
+        }
+    }
+
 
 
 
@@ -81,7 +117,7 @@ const InboxComponent = () => {
 
                     {InboxContact.map((AdminContactId) => {
                         return(
-                            <MailListView AdminContactId={AdminContactId} ListMailClick={placeMailOverViewObj}></MailListView>
+                            <MailListView AdminContactId={AdminContactId}  ClickInboxAction={ClickInboxAction}></MailListView>
                         )   
                     })}
                     
@@ -108,9 +144,9 @@ const InboxComponent = () => {
             {/* <!-- mail content view --> */}
             {/* 5. another child component */}
             {/* yung boung view ng Email  */}
-            {/* {MailOverViewObj && (
-                <MailOverView MailInfo={MailOverViewObj}></MailOverView>
-            )} */}
+            {MailOverViewBoolean && (
+                <MailOverView MailObjsArray={MailObjsArray}></MailOverView>
+            )}
         </div>
     </>
   )
@@ -119,44 +155,20 @@ const InboxComponent = () => {
 
 
 // component definition of the MailListView
-const MailListView = ({MailObj, ListMailClick, AdminContactId}) => {
+const MailListView = ({MailObj, ListMailClick, AdminContactId, ClickInboxAction}) => {
 
 
     const { clientuserId } = useContext(ClientUserContext);
 
     const SenderAdminId = AdminContactId;
 
-
-    const [MailObjsArray, SetMailObjsArray] = useState([]);
-
-
-
-    const FetchConvo_Client_Admin = () => {
-
-
-        try{
-
-            
-
-        }catch(error){
-            throw error;
-        }
-    }
-
-
-    //logic to get all the conversation fromt this senderID
-
-    // let AdminContactId;
-    
-    // const []
-
     return(
         <>
-            <div className="p-2 grid grid-cols-7 gap-4 border-b border-darkColor hoverMailItem group/del" onClick={() => {ListMailClick(MailObj)}}>
+            <div className="p-2 grid grid-cols-7 gap-4 border-b border-darkColor hoverMailItem group/del" onClick={() => {ClickInboxAction(SenderAdminId)}}>
                 <label className="col-span-2 flex gap-2" htmlFor="">
                     <input type="checkbox"/>
                     {/* <!-- from --> */}
-                    <h6 className="truncate">SampleAdminSender</h6>
+                    <h6 className="truncate">{AdminContactId}</h6>
                 </label>
                 {/* <!-- subject --> */}
                 <h6 className="col-span-3 truncate">Sample Admin Subject</h6>
@@ -172,13 +184,30 @@ const MailListView = ({MailObj, ListMailClick, AdminContactId}) => {
 
 
 // component definition of the MailOverView
-const MailOverView = ({MailInfo}) => {
+const MailOverView = ({MailObjsArray}) => {
+
+    const Overflow_InnerInbox = useRef(null);
+
+
+    useEffect(() => {
+
+        if(Overflow_InnerInbox.current){
+            Overflow_InnerInbox.current.scrollTop = Overflow_InnerInbox.current.scrollHeight;
+        }
+
+    }, [])
 
     return(
         <>
             {/* <!-- mail content view --> */}
-            <div className="w-3/4 flex flex-col border border-darkColor rounded-e">
-                <MailInnerView MailInfo={MailInfo}></MailInnerView>
+            <div ref={Overflow_InnerInbox} className="w-3/4 flex flex-col border border-darkColor rounded-e overflow-y-auto">
+
+                {MailObjsArray.map((MailObj) => {
+                    return(
+                        <MailInnerView MailObj={MailObj}></MailInnerView>
+                    )
+                })}
+
                 <div className="px-5 flex gap-5 justify-around font-medium">
                     <button className="py-2 w-full border border-darkColor rounded scaleHover hover:bg-extra-light">Forward</button>
                     <button className="py-2 w-full rounded text-white bg-primary-light scaleHover">Reply</button>
@@ -189,24 +218,24 @@ const MailOverView = ({MailInfo}) => {
 
 }
 
-const MailInnerView = ({MailInfo}) => {
+const MailInnerView = ({MailObj}) => {
     return(
         <>
              <div className='m-2 border-4 border-gray-300  rounded-lg'>
                 <div className="p-4 flex flex-col gap-1 bg-extra-extra-light rounded-tr" id="takenHeight">
-                        <h3 className="text-xl md:text-center font-medium break-words">{MailInfo.subject}</h3>
+                        <h3 className="text-xl md:text-center font-medium break-words">{MailObj.subject}</h3>
                         <div className="flex flex-col md:flex-row gap-1 justify-between">
                             <h5 className="font-light md:order-last"></h5>
-                            <h4 className="font-light">From: <span className="font-medium">{MailInfo.senderID}</span></h4>
+                            <h4 className="font-light">From: <span className="font-medium">{MailObj.senderID}</span></h4>
                         </div>
                         <div className="flex flex-col md:flex-row gap-1 justify-between">
                             <h5 className="font-light md:order-last"></h5>
-                            <h4 className="font-light">To: <span className="font-medium">{MailInfo.receiverID}</span></h4>
+                            <h4 className="font-light">To: <span className="font-medium">{MailObj.receiverID}</span></h4>
                         </div>
                     </div>
                     {/* <!-- body --> */}
                     <div className="p-4 flex flex-col gap-6 overflow-auto relative" id="remainingHeight">
-                        {MailInfo.body}
+                        {MailObj.body}
                     
                     </div>
              </div>

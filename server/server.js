@@ -33,7 +33,8 @@ const {
     clientInformation,
     ClientMailInsert,
     GetClientSentMail,
-    FetchInboxOfClient
+    FetchInboxOfClient,
+    ALL_SendMaiL
 
 } = require('./mysqlmodule.js');
 
@@ -651,6 +652,38 @@ app.get("/ClientDataRequest/:id", async (req, res) => {
 
   //backend logic to connect to the actual database
   //call the function from the mysqlmodule.js
+});
+
+
+app.get('/GetClient/Convo/WithAdmin/:clientuserId/:adminId', async(req, res) => {
+
+  const clientuserId =  req.params.clientuserId;
+  const adminId = req.params.adminId;
+
+  //logic here to get the mail of the client using the parameter senderID = clientuserId AND receiverID = adminId ||||| to get the mail of the admin using the parameter senderID = adminID AND receiverID = clientuserId
+  
+  try{
+
+    //get the mail of client
+    const Client_MailSendArray = await ALL_SendMaiL(clientuserId, adminId);
+
+
+    //get the mail of the admin 
+    const Admin_MailSendArray = await ALL_SendMaiL(adminId, clientuserId);
+
+
+    //mergre adn sort the Client_MailSendArray & Admin_MailSendArray
+
+    let MergedSendmail = Client_MailSendArray.concat(Admin_MailSendArray);
+
+    MergedSendmail.sort((a, b) => a.send_id - b.send_id);
+
+    res.send(MergedSendmail);
+
+  }catch(error){
+    throw error;
+  }
+
 });
 
 

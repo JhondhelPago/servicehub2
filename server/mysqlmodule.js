@@ -561,8 +561,8 @@ async function FetchInboxOfClient(id){
       SELECT senderID
       FROM mail_sent
       WHERE receiverID = ?
-      ORDER BY STR_TO_DATE(CONCAT(date_sent, " ", time_sent), "%Y-%m-%d %H:%i:%s")
-      DESC LIMIT 1000;
+      ORDER BY STR_TO_DATE(CONCAT(date_sent, " ", time_sent), "%Y-%m-%d %H:%i:%s") DESC 
+      LIMIT 1000;
       `, [id]);
 
       return ClientInbox;
@@ -575,9 +575,18 @@ async function FetchInboxOfClient(id){
 }
 
 
-async function Client_GetAllInboxFromAdmin(ClientReceiver_id, SenderAdminId){
+async function ALL_SendMaiL(ClientReceiver_id, SenderAdminId){
 
   try{
+
+    const [SendMails] = await pool.execute(`
+      SELECT * 
+      FROM mail_sent
+      WHERE senderID = ? AND receiverID = ?
+      ORDER BY STR_TO_DATE(CONCAT(date_sent, " ", time_sent), "%Y-%m-%d %H:%i:%s") DESC;
+      `, [ClientReceiver_id, SenderAdminId]);
+
+      return SendMails;
 
   }catch(error){
     console.log(error);
@@ -585,6 +594,8 @@ async function Client_GetAllInboxFromAdmin(ClientReceiver_id, SenderAdminId){
   }
 
 }
+
+
 
 
 
@@ -621,7 +632,8 @@ module.exports = {
   clientInformation,
   ClientMailInsert,
   GetClientSentMail,
-  FetchInboxOfClient
+  FetchInboxOfClient,
+  ALL_SendMaiL
     
 };
 
