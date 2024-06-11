@@ -42,7 +42,7 @@
 }
 
 .activeLink {
-  @apply flex items-center justify-center px-5 py-2 font-bold rounded cursor-default bg-darkerColor;
+  @apply flex items-center justify-center px-5 py-2 font-medium rounded cursor-default bg-darkerColor;
 }
 
 .enlargedImg {
@@ -70,7 +70,7 @@
 }
 
 .activeUserLink {
-  @apply font-bold border-b-2 border-primary-light;
+  @apply font-semibold border-b-2 border-primary-light;
 }
 
 .userNavHover {
