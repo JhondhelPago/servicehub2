@@ -55,6 +55,8 @@ const InboxComponent = () => {
 
     const [MailOverViewBoolean, SetMailOverViewBoolean] = useState(null); 
 
+    const [MailOverViewAdminId, SetMailOverViewAdminId] = useState(null);
+
     const [MailObjsArray, SetMailObjsArray] = useState([]);
 
 
@@ -62,7 +64,15 @@ const InboxComponent = () => {
         
         await FetchConvo_Client_Admin(adminId);
 
-        
+        if(MailOverViewAdminId != adminId){
+            SetMailOverViewBoolean(null);
+            SetMailOverViewAdminId(null);
+            SetMailOverViewAdminId([]);
+            
+            await FetchConvo_Client_Admin(adminId);
+
+
+        }
     }
 
     const FetchConvo_Client_Admin = async(SenderAdminId) => {
@@ -74,6 +84,7 @@ const InboxComponent = () => {
             console.log(ConversationMailArray);
             SetMailObjsArray(ConversationMailArray);
             SetMailOverViewBoolean(true);
+            SetMailOverViewAdminId(SenderAdminId);
 
         }catch(error){
             throw error;
@@ -145,7 +156,7 @@ const InboxComponent = () => {
             {/* 5. another child component */}
             {/* yung boung view ng Email  */}
             {MailOverViewBoolean && (
-                <MailOverView MailObjsArray={MailObjsArray}></MailOverView>
+                <MailOverView MailObjsArray={MailObjsArray} ContactAdminId={MailOverViewAdminId}></MailOverView>
             )}
         </div>
     </>
@@ -184,10 +195,10 @@ const MailListView = ({MailObj, ListMailClick, AdminContactId, ClickInboxAction}
 
 
 // component definition of the MailOverView
-const MailOverView = ({MailObjsArray}) => {
+const MailOverView = ({MailObjsArray, ContactAdminId}) => {
 
     const Overflow_InnerInbox = useRef(null);
-
+    const { clientuserId } = useContext(ClientUserContext);
 
     useEffect(() => {
 
@@ -197,20 +208,48 @@ const MailOverView = ({MailObjsArray}) => {
 
     }, [])
 
+
+
+
+    const [ReplyButtonState, SetReplyButtonState] = useState(false);
+
+    const ReplyActivate = () => {
+        SetReplyButtonState(true);
+    }
+
     return(
         <>
             {/* <!-- mail content view --> */}
             <div ref={Overflow_InnerInbox} className="w-3/4 flex flex-col border border-darkColor rounded-e overflow-y-auto">
 
                 {MailObjsArray.map((MailObj) => {
-                    return(
-                        <MailInnerView MailObj={MailObj}></MailInnerView>
-                    )
+                    // return(
+
+                    //     //conditional logic here to determine the component to render for receiver and sender
+                    //     //<MailInnerView MailObj={MailObj}></MailInnerView>
+                    // )
+
+                    if(MailObj.senderID == clientuserId){
+                        return(
+                            <MailInnerViewUserSender MailObj={MailObj}></MailInnerViewUserSender>
+                        )
+                    }else{
+                        return(
+                            <MailInnerView MailObj={MailObj}></MailInnerView>
+                        )
+                    }
                 })}
 
-                <div className="px-5 flex gap-5 justify-around font-medium">
+                <div className="px-5 flex gap-5 justify-around font-medium mb-2">
                     <button className="py-2 w-full border border-darkColor rounded scaleHover hover:bg-extra-light">Forward</button>
-                    <button className="py-2 w-full rounded text-white bg-primary-light scaleHover">Reply</button>
+                    <button className="py-2 w-full rounded text-white bg-primary-light scaleHover" onClick={() => {ReplyActivate()}}>Reply</button>
+                    
+                </div>
+
+                {/* {ReplyButtonState == true && <Replyform></Replyform>} */}
+                <div className="h-auto">
+                    {ReplyButtonState == true && <Replyform ContactAdminId={ContactAdminId}></Replyform>}                    
+
                 </div>
             </div>
         </>
@@ -222,16 +261,32 @@ const MailInnerView = ({MailObj}) => {
     return(
         <>
              <div className='m-2 border-4 border-gray-300  rounded-lg'>
-                <div className="p-4 flex flex-col gap-1 bg-extra-extra-light rounded-tr" id="takenHeight">
+                <div className="p-4 flex flex-col gap-1 bg-extra-light rounded-tr" id="takenHeight">
                         <h3 className="text-xl md:text-center font-medium break-words">{MailObj.subject}</h3>
-                        <div className="flex flex-col md:flex-row gap-1 justify-between">
-                            <h5 className="font-light md:order-last"></h5>
-                            <h4 className="font-light">From: <span className="font-medium">{MailObj.senderID}</span></h4>
+                        <div className="flex flex-row justify-center">
+                            <div className="mr-44">
+                                <div className="flex flex-col md:flex-row gap-1 justify-between">
+                                    <h5 className="font-light md:order-last"></h5>
+                                    <h4 className="font-light">From: <span className="font-medium">{MailObj.senderID}</span></h4>
+                                </div>
+                                <div className="flex flex-col md:flex-row gap-1 justify-between">
+                                    <h5 className="font-light md:order-last"></h5>
+                                    <h4 className="font-light">To: <span className="font-medium">{MailObj.receiverID}</span></h4>
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <div>
+                                    <h5 className="font-light md:order-last"></h5>
+                                    <h4 className="font-light">date <span className="font-medium">00/00/00</span></h4>
+                                </div>
+                                <div>
+                                <h5 className="font-light md:order-last"></h5>
+                                <h4 className="font-light">time <span className="font-medium">00:00</span></h4>
+                                </div>
+                            </div>
                         </div>
-                        <div className="flex flex-col md:flex-row gap-1 justify-between">
-                            <h5 className="font-light md:order-last"></h5>
-                            <h4 className="font-light">To: <span className="font-medium">{MailObj.receiverID}</span></h4>
-                        </div>
+
                     </div>
                     {/* <!-- body --> */}
                     <div className="p-4 flex flex-col gap-6 overflow-auto relative" id="remainingHeight">
@@ -239,6 +294,79 @@ const MailInnerView = ({MailObj}) => {
                     
                     </div>
              </div>
+        </>
+    )
+}
+
+const MailInnerViewUserSender = ({MailObj}) => {
+    return(
+        <>
+             <div className='m-2 border-4 border-gray-300  rounded-lg'>
+             <div className="p-4 flex flex-col gap-1 bg-extra-extra-light rounded-tr" id="takenHeight">
+                        <h3 className="text-xl md:text-center font-medium break-words">{MailObj.subject}</h3>
+                        <div className="flex flex-row justify-center">
+                            <div className="mr-44">
+                                <div className="flex flex-col md:flex-row gap-1 justify-between">
+                                    <h5 className="font-light md:order-last"></h5>
+                                    <h4 className="font-light">From: <span className="font-medium">{MailObj.senderID}</span></h4>
+                                </div>
+                                <div className="flex flex-col md:flex-row gap-1 justify-between">
+                                    <h5 className="font-light md:order-last"></h5>
+                                    <h4 className="font-light">To: <span className="font-medium">{MailObj.receiverID}</span></h4>
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <div>
+                                    <h5 className="font-light md:order-last"></h5>
+                                    <h4 className="font-light">date <span className="font-medium">00/00/00</span></h4>
+                                </div>
+                                <div>
+                                <h5 className="font-light md:order-last"></h5>
+                                <h4 className="font-light">time <span className="font-medium">00:00</span></h4>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    {/* <!-- body --> */}
+                    <div className="p-4 flex flex-col gap-6 overflow-auto relative" id="remainingHeight">
+                        {MailObj.body}
+                    
+                    </div>
+             </div>
+        </>
+    )
+
+}
+
+
+
+const Replyform = ({ContactAdminId}) => {
+    
+
+    return(
+        <>
+         <div className="px-3 pb-5 h-dvh flex justify-center rounded overflow-auto">
+          {/* <!-- form container --> */}
+          <form method="post" className="p-2 w-full md:w-9/10 flex flex-col gap-5 rounded">
+              <div className="w-full flex items-center gap-4">
+                  <label className="w-16 pl-2" htmlFor="">To:</label>
+                  {/* <input className="grow py-2 px-4 rounded bg-white" type="text"/> */}
+                  <input className="grow py-2 px-4 rounded bg-white" type="text" value={ContactAdminId} required/>
+              </div>
+              <div className="w-full flex items-center gap-4">
+                  <label className="w-16 pl-2" htmlFor="">Subject:</label>
+                  <input className="grow py-2 px-4 rounded bg-white" type="text"  required/>
+              </div>
+              {/* <!-- <label className="opacity-70" for="">To:</label> --> */}
+              <textarea className="w-full h-full py-2 px-4 rounded bg-white" name="" id="" cols="30" rows="10"  required></textarea>
+              <div className="w-2/6 mx-auto text-center">
+                  <button className="w-full py-2 rounded text-white bg-primary-light scaleHover">Send</button>
+              </div>
+          </form>
+      </div>
+        
         </>
     )
 }
