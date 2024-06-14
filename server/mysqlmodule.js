@@ -264,6 +264,24 @@ async function FetchAdminInboxFromClient(adminId) {
   }
 }
 
+async function FetchAdminIboxes(adminId){
+  //retrun an array of senderIDs associated with given adminId parameter as the receiverID
+
+  try{
+
+    const [AdminInboxes] = await pool.execute(`
+      SELECT senderID 
+      FROM mail_sent 
+      WHERE receiverID = ? 
+      ORDER BY STR_TO_DATE(CONCAT(date_sent, " ", time_sent), "%Y-%m-%d %H:%i:%s") DESC LIMIT 1000;
+      `, [adminId]);
+
+  }catch(error){
+    throw error;
+    
+  }
+}
+
 
 async function getAdmin(){
     
@@ -386,6 +404,47 @@ const MyDateTime = {
 // }
 
 // show();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // mysql query for the clientuser
 
@@ -619,6 +678,7 @@ module.exports = {
   job_post_edit,
   deletePost,
   FetchAdminInboxFromClient,
+  FetchAdminIboxes,
   getAdmin,
   AdminMailInsert,
   GetSentMail,

@@ -387,24 +387,27 @@ app.post("/adminLoginSession", async (req, res) => {
 app.get("/FetchMailInbox/Admin/:AdminId", async (req, res) => {
   const AdminId = req.params.AdminId;
 
-  try {
-    const InboxesData = await FetchAdminInboxFromClient(AdminId);
+  // try {
+  //   const InboxesData = await FetchAdminInboxFromClient(AdminId);
 
-    if (InboxesData.length > 0) {
-      res.send(InboxesData);
-    } else {
-      res.send([]);
-    }
-  } catch (error) {
-    throw error;
-  }
+  //   if (InboxesData.length > 0) {
+  //     res.send(InboxesData);
+  //   } else {
+  //     res.send([]);
+  //   }
+  // } catch (error) {
+  //   throw error;
+  // }
 
   //new logic
 
 
+  // must return the array of the senderIDs
 
+  
 
 });
+
 
 
 

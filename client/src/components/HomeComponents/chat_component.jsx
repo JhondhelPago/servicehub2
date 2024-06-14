@@ -38,7 +38,7 @@ const ChatSection = () => {
                 <div className="mx-5 mb-5 flex flex-col gap-5 items-center">
                     <div className="w-full flex md:text-xl gap-0.5 rounded border border-darkColor bg-extra-extra-light">
                         <button className="p-2 w-full flex justify-center activeMail" onClick={() => {SelectComponent('inbox')}} >Inbox</button>
-                        <button className="p-2 w-full flex justify-center hoverMail" onClick={() => {SelectComponent('sent')}}>Sent</button>
+                        {/* <button className="p-2 w-full flex justify-center hoverMail" onClick={() => {SelectComponent('sent')}}>Sent</button> */}
                         <button className="p-2 w-full flex justify-center hoverMail" onClick={() => {SelectComponent('compose')}}>Compose</button>
                     </div>
                 </div>
