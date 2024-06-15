@@ -55,7 +55,7 @@ const Inquiries = () => {
                 <div className="flex flex-col items-center gap-5 mx-5 mb-5">
                     <div className="w-full flex md:text-xl gap-0.5 rounded border border-darkColor bg-extra-extra-light">
                         <button className="flex justify-center w-full p-2 hoverMail" onClick={() => { SelectComponent('inbox') }}>Inbox</button>
-                        <button className="flex justify-center w-full p-2 hoverMail" onClick={() => { SelectComponent('sent') }}>Sent</button>
+                        {/* <button className="flex justify-center w-full p-2 hoverMail" onClick={() => { SelectComponent('sent') }}>Sent</button> */}
                         <button className="flex justify-center w-full p-2 hoverMail" onClick={() => { SelectComponent('compose') }}>Compose</button>
                     </div>
                 </div>

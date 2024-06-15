@@ -404,9 +404,71 @@ app.get("/FetchMailInbox/Admin/:AdminId", async (req, res) => {
 
   // must return the array of the senderIDs
 
-  
 
+  try{
+
+    const ClientInboxIdsArray = await FetchAdminInboxFromClient(AdminId);
+
+    // return ClientInboxIdsArray;
+    console.log(ClientInboxIdsArray);
+
+    // const ClientIdsUnique = [...new Set(ClientInboxIdsArray)];
+
+    // console.log(ClientIdsUnique);
+
+    let ClientIdsUnique = []
+
+
+    ClientInboxIdsArray.forEach((element) => {
+      
+      if(!ClientIdsUnique.includes(element.senderID)){
+        ClientIdsUnique.push(element.senderID)
+      }   
+    });
+
+
+    console.log(ClientIdsUnique);
+
+    res.send(ClientIdsUnique);
+
+  }catch(error){
+    throw error;
+  }
 });
+
+
+
+app.get(`/GetAdmin/Convo/WithClient/:adminId/:clientId`, async(req, res) => {
+
+  const adminId = req.params.adminId;
+  const clientId = req.params.clientId;
+
+  //logic here to get the mail of the admin using the paramter senderID = adminId AND receiverID = clientId ||||| to get the mail of the client using the parameter senderId = clientId AND receiverID = adminId
+
+  try{
+
+    const Admin_SendMailArray = await ALL_SendMaiL(adminId, clientId);
+
+    const Client_SendArray = await ALL_SendMaiL(clientId, adminId);
+
+    
+    
+    
+    let MergeSendmail = Admin_SendMailArray.concat(Client_SendArray);
+
+    MergeSendmail.sort((a, b) => a.send_id - b.send_id);
+
+
+    res.send(MergeSendmail);
+
+    // res.send('this route is running at the line 441');
+
+  }catch(error){
+    throw error;
+  }
+
+
+})
 
 
 
@@ -428,6 +490,23 @@ app.get('/Dashboard/Information', async(req, res) => {
     throw error;
   }
 })
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
