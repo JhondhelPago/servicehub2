@@ -61,8 +61,9 @@ async function GetAllClientInformation(){
 
   try{
 
+    //return the total registered user
     const ClientDataInformationRow = await pool.execute( `
-      SELECT COUNT(*)
+      SELECT COUNT(*) 
       FROM user
     `);
 
@@ -73,6 +74,11 @@ async function GetAllClientInformation(){
     console.log(error);
   }
 }
+
+
+//another function to count number of female and male
+//another function to count the registred memeber lived in manila, qc, pasay
+//another function to count the regitered member manila district 1, 2
 
 async function post_EventJob(
   Type,
@@ -230,19 +236,49 @@ async function deletePost(id, post_type) {
 
 async function FetchAdminInboxFromClient(adminId) {
   try {
-    const [row] = await pool.execute(
-      `
-        SELECT mail_sent.*, user.firstName
-        FROM mail_sent 
-        JOIN user ON mail_sent.senderID = user.id COLLATE utf8mb4_general_ci
-        WHERE mail_sent.receiverID = ?
-        `,
+    // const [row] = await pool.execute(
+    //   `
+    //     SELECT mail_sent.*, user.firstName
+    //     FROM mail_sent 
+    //     JOIN user ON mail_sent.senderID = user.id COLLATE utf8mb4_general_ci
+    //     WHERE mail_sent.receiverID = ?
+    //     `,
+    //   [adminId]
+    // );
+    // return row;
+
+    const [row] = await pool.execute(`
+      SELECT senderID
+      FROM mail_sent
+      WHERE receiverID = ? 
+      ORDER BY STR_TO_DATE(CONCAT(date_sent, " ", time_sent), "%Y-%m-%d %H:%i:%s")
+      DESC LIMIT 1000;
+      `,
       [adminId]
     );
 
-    return row;
+    return row
+
   } catch (error) {
     throw error;
+  }
+}
+
+async function FetchAdminIboxes(adminId){
+  //retrun an array of senderIDs associated with given adminId parameter as the receiverID
+
+  try{
+
+    const [AdminInboxes] = await pool.execute(`
+      SELECT senderID 
+      FROM mail_sent 
+      WHERE receiverID = ? 
+      ORDER BY STR_TO_DATE(CONCAT(date_sent, " ", time_sent), "%Y-%m-%d %H:%i:%s") DESC LIMIT 1000;
+      `, [adminId]);
+
+  }catch(error){
+    throw error;
+    
   }
 }
 
@@ -368,6 +404,47 @@ const MyDateTime = {
 // }
 
 // show();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // mysql query for the clientuser
 
@@ -529,22 +606,55 @@ async function FetchInboxOfClient(id){
 
   try{
 
-    const [ClientInbox] = await pool.execute(`
-      SELECT mail_sent.*, admin.firstName, admin.lastName 
-      FROM mail_sent 
-      JOIN admin ON mail_sent.senderID = admin.id 
-      COLLATE utf8mb4_general_ci WHERE mail_sent.receiverID = ?
-      ORDER BY STR_TO_DATE(CONCAT(mail_sent.date_sent, ' ', mail_sent.time_sent), '%Y-%m-%d %H:%i:%s') DESC
-    `,[id]);
+    // const [ClientInbox] = await pool.execute(`
+    //   SELECT mail_sent.*, admin.firstName, admin.lastName 
+    //   FROM mail_sent 
+    //   JOIN admin ON mail_sent.senderID = admin.id 
+    //   COLLATE utf8mb4_general_ci WHERE mail_sent.receiverID = ?
+    //   ORDER BY STR_TO_DATE(CONCAT(mail_sent.date_sent, ' ', mail_sent.time_sent), '%Y-%m-%d %H:%i:%s') DESC
+    // `,[id]);
 
+    // return ClientInbox;
 
-    return ClientInbox;
+    const  [ClientInbox] = await pool.execute(`
+      SELECT senderID
+      FROM mail_sent
+      WHERE receiverID = ?
+      ORDER BY STR_TO_DATE(CONCAT(date_sent, " ", time_sent), "%Y-%m-%d %H:%i:%s") DESC 
+      LIMIT 1000;
+      `, [id]);
+
+      return ClientInbox;
+
 
   }catch(error){
 
   }
 
 }
+
+
+async function ALL_SendMaiL(ClientReceiver_id, SenderAdminId){
+
+  try{
+
+    const [SendMails] = await pool.execute(`
+      SELECT * 
+      FROM mail_sent
+      WHERE senderID = ? AND receiverID = ?
+      ORDER BY STR_TO_DATE(CONCAT(date_sent, " ", time_sent), "%Y-%m-%d %H:%i:%s") DESC;
+      `, [ClientReceiver_id, SenderAdminId]);
+
+      return SendMails;
+
+  }catch(error){
+    console.log(error);
+    throw error;
+  }
+
+}
+
+
 
 
 
@@ -568,6 +678,7 @@ module.exports = {
   job_post_edit,
   deletePost,
   FetchAdminInboxFromClient,
+  FetchAdminIboxes,
   getAdmin,
   AdminMailInsert,
   GetSentMail,
@@ -581,7 +692,8 @@ module.exports = {
   clientInformation,
   ClientMailInsert,
   GetClientSentMail,
-  FetchInboxOfClient
+  FetchInboxOfClient,
+  ALL_SendMaiL
     
 };
 

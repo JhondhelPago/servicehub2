@@ -33,7 +33,8 @@ const {
     clientInformation,
     ClientMailInsert,
     GetClientSentMail,
-    FetchInboxOfClient
+    FetchInboxOfClient,
+    ALL_SendMaiL
 
 } = require('./mysqlmodule.js');
 
@@ -386,18 +387,89 @@ app.post("/adminLoginSession", async (req, res) => {
 app.get("/FetchMailInbox/Admin/:AdminId", async (req, res) => {
   const AdminId = req.params.AdminId;
 
-  try {
-    const InboxesData = await FetchAdminInboxFromClient(AdminId);
+  // try {
+  //   const InboxesData = await FetchAdminInboxFromClient(AdminId);
 
-    if (InboxesData.length > 0) {
-      res.send(InboxesData);
-    } else {
-      res.send([]);
-    }
-  } catch (error) {
+  //   if (InboxesData.length > 0) {
+  //     res.send(InboxesData);
+  //   } else {
+  //     res.send([]);
+  //   }
+  // } catch (error) {
+  //   throw error;
+  // }
+
+  //new logic
+
+
+  // must return the array of the senderIDs
+
+
+  try{
+
+    const ClientInboxIdsArray = await FetchAdminInboxFromClient(AdminId);
+
+    // return ClientInboxIdsArray;
+    console.log(ClientInboxIdsArray);
+
+    // const ClientIdsUnique = [...new Set(ClientInboxIdsArray)];
+
+    // console.log(ClientIdsUnique);
+
+    let ClientIdsUnique = []
+
+
+    ClientInboxIdsArray.forEach((element) => {
+      
+      if(!ClientIdsUnique.includes(element.senderID)){
+        ClientIdsUnique.push(element.senderID)
+      }   
+    });
+
+
+    console.log(ClientIdsUnique);
+
+    res.send(ClientIdsUnique);
+
+  }catch(error){
     throw error;
   }
 });
+
+
+
+app.get(`/GetAdmin/Convo/WithClient/:adminId/:clientId`, async(req, res) => {
+
+  const adminId = req.params.adminId;
+  const clientId = req.params.clientId;
+
+  //logic here to get the mail of the admin using the paramter senderID = adminId AND receiverID = clientId ||||| to get the mail of the client using the parameter senderId = clientId AND receiverID = adminId
+
+  try{
+
+    const Admin_SendMailArray = await ALL_SendMaiL(adminId, clientId);
+
+    const Client_SendArray = await ALL_SendMaiL(clientId, adminId);
+
+    
+    
+    
+    let MergeSendmail = Admin_SendMailArray.concat(Client_SendArray);
+
+    MergeSendmail.sort((a, b) => a.send_id - b.send_id);
+
+
+    res.send(MergeSendmail);
+
+    // res.send('this route is running at the line 441');
+
+  }catch(error){
+    throw error;
+  }
+
+
+})
+
 
 
 
@@ -408,13 +480,33 @@ app.get('/Dashboard/Information', async(req, res) => {
     const [totalUser] = await GetAllClientInformation();
     console.log(`total user count: ${totalUser[0]['COUNT(*)']}`);
 
-    res.send(totalUser[0]);
+    res.send({
+      'TotalRegistered': totalUser[0],
+      'percentageMale' : 10/totalUser[0]['COUNT(*)']
+    });
 
   }catch(error){
     console.log(error);
     throw error;
   }
 })
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -587,18 +679,34 @@ app.get('/ClientSentMail/:senderID', async(req, res) => {
 app.get('/FetchMailInbox/Client/:clienduserId', async(req, res) => {
 
   const clientId = req.params.clienduserId;
-  console.log(clientId);
 
   try{
 
+    let adminIdArray = [];
+
     const clientInboxArray = await FetchInboxOfClient(clientId);
 
-    res.send(clientInboxArray);
+    console.log(clientInboxArray);
+
+    clientInboxArray.forEach((senderObj) => {
+      
+        if(!adminIdArray.includes(senderObj.senderID)){
+          adminIdArray.push(senderObj.senderID);
+        }
+    });
+
+
+    console.log(`\nadminIdArray: ${adminIdArray}`);
+
+    res.send(adminIdArray);
 
   }catch(error){
     console.log(error);
     throw error;
   }
+
+
+  //new logic 
 
 })
 
@@ -626,6 +734,38 @@ app.get("/ClientDataRequest/:id", async (req, res) => {
 
   //backend logic to connect to the actual database
   //call the function from the mysqlmodule.js
+});
+
+
+app.get('/GetClient/Convo/WithAdmin/:clientuserId/:adminId', async(req, res) => {
+
+  const clientuserId =  req.params.clientuserId;
+  const adminId = req.params.adminId;
+
+  //logic here to get the mail of the client using the parameter senderID = clientuserId AND receiverID = adminId ||||| to get the mail of the admin using the parameter senderID = adminID AND receiverID = clientuserId
+  
+  try{
+
+    //get the mail of client
+    const Client_MailSendArray = await ALL_SendMaiL(clientuserId, adminId);
+
+
+    //get the mail of the admin 
+    const Admin_MailSendArray = await ALL_SendMaiL(adminId, clientuserId);
+
+
+    //mergre adn sort the Client_MailSendArray & Admin_MailSendArray
+
+    let MergedSendmail = Client_MailSendArray.concat(Admin_MailSendArray);
+
+    MergedSendmail.sort((a, b) => a.send_id - b.send_id);
+
+    res.send(MergedSendmail);
+
+  }catch(error){
+    throw error;
+  }
+
 });
 
 
