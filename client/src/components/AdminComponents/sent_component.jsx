@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect} from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { UserContext } from "../LoginComponents/UserContext";
 import axios from "axios";
 
@@ -8,18 +8,18 @@ const SentComponent = () => {
 
     // //variable storage for detail view of mail, this is the container for the MailObj
     const [MailDetailsObj, SetMailObj] = useState(null);
-    
+
     const [SentItems, SetSentItems] = useState([]);
 
-    const FetchAdminSentItems = async() => {
+    const FetchAdminSentItems = async () => {
 
-        try{
+        try {
 
-            const response =  await axios.get(`/AdminSentItem/${AdminId}`);
-            const SentItemsArray= response.data;
-            
+            const response = await axios.get(`/AdminSentItem/${AdminId}`);
+            const SentItemsArray = response.data;
+
             SetSentItems(SentItemsArray);
-        }catch(error){
+        } catch (error) {
             console.log(error);
             throw error;
         }
@@ -32,19 +32,19 @@ const SentComponent = () => {
 
 
     useEffect(() => {
-        
+
         FetchAdminSentItems();
         console.log(SentItems);
 
     }, [])
- 
+
     return (
         <>
             {/* <!-- inbox list/content container --> */}
-            <div className="flex px-5 pb-5 overflow-auto rounded h-svh">
+            <div className="flex h-full px-5 pb-5 overflow-auto rounded">
                 {/* <!-- mail list container --> */}
-                <div className="flex flex-col w-full overflow-hidden border-l min-w-80 border-y border-darkColor rounded-s">
-                    <div className="flex justify-between w-full p-2 border-b border-r border-darkColor bg-extra-extra-light">
+                <div className="flex flex-col w-full overflow-hidden border border-l min-w-80 border-darkColor rounded-s">
+                    <div className="flex justify-between w-full p-2 border-b border-darkColor bg-extra-extra-light">
                         <div className="flex gap-2">
                             <input type="checkbox" />
                             <label for="">Select All</label>
@@ -55,7 +55,7 @@ const SentComponent = () => {
                         </button>
                     </div>
                     {/* <!-- mail items container --> */}
-                    <div className="pb-5 overflow-auto border-r border-darkColor h-svh">
+                    <div className="pb-5 overflow-auto">
 
                         {/*  Inbox ba ay not null &&==then  Inbox.map()=loop for every element */}
                         {SentItems && SentItems.map((MailData) => { //MailData is Default parameter, ang value nyan is yung object sa current map
@@ -67,19 +67,19 @@ const SentComponent = () => {
                         })}
 
                         {/* <!-- mail active sample --> */}
-                        <div className="grid grid-cols-7 gap-4 p-2 border-b border-darkColor activeMailItem group/del">
+                        {/* <div className="grid grid-cols-7 gap-4 p-2 border-b border-darkColor activeMailItem group/del">
                             <label className="flex col-span-2 gap-2" for="">
                                 <input type="checkbox" />
-                                {/* <!-- from --> */}
+                                <!-- from -->
                                 <h6 className="truncate">User1 User1User1</h6>
                             </label>
-                            {/* <!-- subject --> */}
+                            <!-- subject -->
                             <h6 className="col-span-3 truncate">SubjectasdadSubjectasdad</h6>
                             <h6 className="col-span-2 my-auto text-xs justify-self-end group-hover/del:hidden">00/00/00</h6>
                             <button className="hidden col-span-2 justify-self-end group-hover/del:inline hover:text-red-600">
                                 <svg className="h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" d="M6 19a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V7H6zM8 9h8v10H8zm7.5-5l-1-1h-5l-1 1H5v2h14V4z" /></svg>
                             </button>
-                        </div>
+                        </div> */}
                     </div>
                 </div>
                 {/* <!-- mail content view --> */}
@@ -98,11 +98,11 @@ const SentComponent = () => {
 // component definition of the MailListView
 const MailListView = (props) => {
 
-    
+
 
     return (
         <>
-            <div className="grid grid-cols-7 gap-4 p-2 border-b border-darkColor hoverMailItem group/del" onClick={() => {props.ListMailClick(props.MailObj)}}>
+            <div className="grid grid-cols-7 gap-4 p-2 border-b border-darkColor hoverMailItem group/del" onClick={() => { props.ListMailClick(props.MailObj) }}>
                 <label className="flex col-span-2 gap-2" for="">
                     <input type="checkbox" />
                     {/* <!-- from --> */}
