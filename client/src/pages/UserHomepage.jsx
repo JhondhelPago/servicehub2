@@ -108,11 +108,31 @@ const UserHomepage = () => {
                                 <a href="">Profile</a>
                             </li> */}
 
-                                <button className="font-medium userNavHover" onClick={() => { SetSelectedComponent('EventPosting') }}>Events</button>
-                                <button className="font-medium userNavHover" onClick={() => { SetSelectedComponent('JobPosting') }}>Find a Job</button>
-                                <button className="font-medium userNavHover" onClick={() => { SetSelectedComponent('Chat') }}>Chat</button>
-                                <button className="font-medium userNavHover" onClick={() => SetSelectedComponent('Tickets')}>Tickets</button>
-                                <button className="font-medium userNavHover" onClick={() => { SetSelectedComponent('Profile') }}>Profile</button>
+                                <button
+                                    className={`font-medium ${ActiveComponent === 'EventPosting' ? 'activeUserLink' : 'userNavHover'}`}
+                                    onClick={() => { SetSelectedComponent('EventPosting') }}
+                                >Events</button>
+
+                                <button
+                                    className={`font-medium ${ActiveComponent === 'JobPosting' ? 'activeUserLink' : 'userNavHover'}`}
+                                    onClick={() => { SetSelectedComponent('JobPosting') }}
+                                >Find a Job</button>
+
+                                <button
+                                    className={`font-medium ${ActiveComponent === 'Chat' ? 'activeUserLink' : 'userNavHover'}`}
+                                    onClick={() => { SetSelectedComponent('Chat') }}
+                                >Chat</button>
+
+                                <button
+                                    className={`font-medium ${ActiveComponent === 'Tickets' ? 'activeUserLink' : 'userNavHover'}`}
+                                    onClick={() => SetSelectedComponent('Tickets')}
+                                >Tickets</button>
+
+                                <button
+                                    className={`font-medium ${ActiveComponent === 'Profile' ? 'activeUserLink' : 'userNavHover'}`}
+                                    onClick={() => { SetSelectedComponent('Profile') }}
+                                >Profile</button>
+
                             </ul>
                         </div>
                     </nav>
