@@ -120,7 +120,7 @@ class Dashboard {
         'Huntington\'s Disease': 0,
         'Tuberous Sclerosis': 0,
         'others': 0,
-    },
+        },
       mental: {
         'Autism Spectrum Disorder (ASD)': 0,
         'Attention Deficit Hyperactivity Disorder (ADHD)': 0,
@@ -173,9 +173,102 @@ class Dashboard {
         'Turner Syndrome': 0,
         'Phenylketonuria (PKU) with cognitive impairments': 0,
         'others': 0,
-    }
+        }
+    };
+
     
-    }
+
+
+    this.Religion = {
+      'Roman Catholicism' : 0,
+      'Islam' : 0,
+      'Iglesia ni Cristo' : 0,
+      'Evangelical Christianity' : 0,
+      'Aglipayan Church' : 0,
+      'Buddhism' : 0,
+      'Hinduism' : 0,
+      'Judaism' : 0,
+      'Jehovah\'s Witnesses' : 0,
+      'Seventh-day Adventist Church' : 0,
+      'Chruch of Jesus Christ of Latter-day Saints' : 0,
+      'Othrodox Christianity' : 0,
+      'Baha\'i Faith' : 0,
+      'Taosim' : 0,
+      'Animism' : 0,
+
+
+
+      getReligionCount : function(){
+
+        const religionList = Object.keys(this);
+
+
+        let ReligionCountList = [];
+
+        // religionList.forEach((religion) => {
+
+        //   if(this.hasOwnProperty(religion) && typeof this[religion] !== 'function'){
+        //     ReligionCountList.push(religion);
+        //   }
+  
+        // });
+
+
+
+        for(let i = 0; i < religionList.length;  i++){
+
+          ReligionCountList.push([religionList[i], this[religionList[i]]])
+          
+
+          if(religionList[i] == 'Animism'){
+            break;
+          }
+        }
+
+        //return a list with element and count 
+        return ReligionCountList;
+        
+
+      }
+
+    };
+
+
+    this.Civil = {
+      'single' : 0,
+      'married' : 0,
+      'others' : 0,
+
+
+      getSingleCount : function(){
+        return this.single;
+      },
+      getMarriedCount : function(){
+        return this.married;
+      },
+      getOthersCount : function(){
+        return this.others;
+      }
+
+    };
+
+    this.Employment = {
+      'employed' : 0,
+      'unemployed' : 0,
+      'others' : 0,
+
+      getEmployed : function(){
+        return this.employed;
+      },
+      getUnemployed : function(){
+        return this.unemployed;
+      },
+      getOthers : function(){
+        return this.others;
+      }
+    };
+
+
 
 
     this.InitialMethod();
@@ -191,11 +284,36 @@ class Dashboard {
 
 
     this.user_data.forEach((row_data) => {
+
+      //check the rows gender
       if(row_data.gender.toLowerCase() == 'male'){
         this.Gender.male_count++;
       }else{
         this.Gender.female_count++;
       }
+
+      //gets the religion of the row. then increment to the object thas has the same region category
+      
+      const religionOfThisRow = row_data.religion;
+
+      this.Religion[religionOfThisRow] += 1;
+
+      
+
+
+      //gets the civil status of the row. then incerement the objecct that has the same civil catgegory
+      const civilStatusOfThisRow = row_data.civil;
+
+      this.Civil[civilStatusOfThisRow] += 1;
+
+
+
+      //gets the civil status of the row. then increment the object that has the same employment category
+      const employmentStatusOfThisRow = row_data.employment;
+
+      this.Employment[employmentStatusOfThisRow] += 1;
+
+   
 
     });
 
@@ -206,7 +324,9 @@ class Dashboard {
     
     console.log(`Male Percentage: ${this.Gender.GetMalePercentage()}`);
     console.log(`Female Percentage: ${this.Gender.GetFemalePercentage()}`);
-
+    console.log(`Religion Count List : ${this.Religion.getReligionCount()}`);
+    console.log(`Civil Count List : single=${this.Civil.getSingleCount()}, married=${this.Civil.getMarriedCount()}, others=${this.Civil.getOthersCount()}`);
+    console.log(`Employment Count: employed=${this.Employment.getEmployed()}, unemployed=${this.Employment.getUnemployed()}, others=${this.Employment.getOthers()}`);
   }
 
 

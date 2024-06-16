@@ -1,7 +1,27 @@
-const id = '1000';
+let religion = {
+    'catholic' : 0,
+    'iglesia' : 0,
 
 
-console.log(id.includes('admin'));
+    getKeys : function(){
+        return Object.keys(this);
+    }
+}
 
 
-console.log(`${id.includes('admin') ? 'admin' : 'user'}`);
+const variable  = 'iglesia';
+
+
+for(let i = 0 ;  i < 5; i++ ){
+
+    religion[variable]+=1;
+
+}
+
+console.log(religion);
+
+console.log(religion.getKeys());
+
+
+console.log(religion.hasOwnProperty('getKeys'));
+console.log(typeof religion['catholic']);
