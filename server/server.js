@@ -769,6 +769,17 @@ app.get('/GetClient/Convo/WithAdmin/:clientuserId/:adminId', async(req, res) => 
 });
 
 
+app.post('/UserRegister/Event', async(req, res) => {
+
+  const { TicketCode }= req.body;
+
+
+  console.log(TicketCode);
+
+
+});
+
+
 app.get("/sample_res", (req, res) => {
   res.send("this is a response");
   res.end();
