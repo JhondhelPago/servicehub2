@@ -52,17 +52,163 @@ class Dashboard {
 
   constructor (userDataArray){
     this.user_data = userDataArray;
-
     this.Gender = {
       male_count : 0,
+      male_percentage : 0,
+      female_percentage : 0,
       female_count : 0,
+      
+      MalePercentage: function(){
+        this.male_percentage = (this.male_count / (this.male_count + this.female_count));
+      },
 
-      MalePercentage : function() {
-        return (this.male_count / (this.male_count + this.female_count)) 
+      FemalePercentage: function(){
+        this.female_percentage = (this.female_count / (this.male_count + this.female_count));
+      },
+
+      GetMalePercentage : function(){
+        this.MalePercentage();
+        return this.male_percentage ;
+      },
+      GetFemalePercentage : function(){
+        this.FemalePercentage();
+        return this.female_percentage;
       }
+
+    };
+
+    this.Disability = {
+      physical: {
+        'Amputation': 0,
+        'Cerebral Palsy': 0,
+        'Spinal Cord Injury': 0,
+        'Muscular Dystrophy': 0,
+        'Multiple Sclerosis': 0,
+        'Spina Bifida': 0,
+        'Arthritis': 0,
+        'Osteogenesis Imperfecta': 0,
+        'Poliomyelitis (Polio)': 0,
+        'Stroke': 0,
+        'Traumatic Brain Injury': 0,
+        'Dwarfism': 0,
+        'Chronic Pain': 0,
+        'Fibromyalgia': 0,
+        'Lou Gehrig\'s Disease (ALS)': 0,
+        'Parkinson\'s Disease': 0,
+        'Myasthenia Gravis': 0,
+        'Guillain-Barré Syndrome': 0,
+        'Chronic Fatigue Syndrome': 0,
+        'Scoliosis': 0,
+        'Cerebrovascular Disease': 0,
+        'Peripheral Neuropathy': 0,
+        'Complex Regional Pain Syndrome (CRPS)': 0,
+        'Ehlers-Danlos Syndrome': 0,
+        'Ankylosing Spondylitis': 0,
+        'Rheumatoid Arthritis': 0,
+        'Lupus': 0,
+        'Chronic Obstructive Pulmonary Disease (COPD)': 0,
+        'Cystic Fibrosis': 0,
+        'Epilepsy': 0,
+        'Hemiplegia': 0,
+        'Paraplegia': 0,
+        'Quadriplegia': 0,
+        'Visual Impairment (Blindness)': 0,
+        'Hearing Impairment (Deafness)': 0,
+        'Osteoporosis': 0,
+        'Marfan Syndrome': 0,
+        'Charcot-Marie-Tooth Disease': 0,
+        'Huntington\'s Disease': 0,
+        'Tuberous Sclerosis': 0,
+        'others': 0,
+    },
+      mental: {
+        'Autism Spectrum Disorder (ASD)': 0,
+        'Attention Deficit Hyperactivity Disorder (ADHD)': 0,
+        'Down Syndrome': 0,
+        'Intellectual Disability': 0,
+        'Fragile X Syndrome': 0,
+        'Fetal Alcohol Spectrum Disorders (FASD)': 0,
+        'Prader-Willi Syndrome': 0,
+        'Williams Syndrome': 0,
+        'Rett Syndrome': 0,
+        'Angelman Syndrome': 0,
+        'Tourette Syndrome': 0,
+        'Dyslexia': 0,
+        'Dyscalculia': 0,
+        'Dysgraphia': 0,
+        'Specific Learning Disabilities (SLD)': 0,
+        'Developmental Coordination Disorder (DCD)': 0,
+        'Oppositional Defiant Disorder (ODD)': 0,
+        'Conduct Disorder': 0,
+        'Schizophrenia': 0,
+        'Bipolar Disorder': 0,
+        'Major Depressive Disorder': 0,
+        'Anxiety Disorders': 0,
+        'Obsessive-Compulsive Disorder (OCD)': 0,
+        'Post-Traumatic Stress Disorder (PTSD)': 0,
+        'Borderline Personality Disorder': 0,
+        'Antisocial Personality Disorder': 0,
+        'Schizoaffective Disorder': 0,
+        'Psychotic Disorders': 0,
+        'Pervasive Developmental Disorders (PDD)': 0,
+        'Communication Disorders': 0,
+        'Social (Pragmatic) Communication Disorder': 0,
+        'Selective Mutism': 0,
+        'Reactive Attachment Disorder': 0,
+        'Disinhibited Social Engagement Disorder': 0,
+        'Intermittent Explosive Disorder': 0,
+        'Neurocognitive Disorders (e.g., Dementia, Alzheimer\'s Disease)': 0,
+        'Traumatic Brain Injury (TBI) with cognitive impairments': 0,
+        'Huntington\'s Disease with cognitive impairments': 0,
+        'Parkinson\'s Disease with cognitive impairments': 0,
+        'Multiple Sclerosis with cognitive impairments': 0,
+        'Epilepsy with cognitive impairments': 0,
+        'Learning Disabilities': 0,
+        'Speech and Language Disorders': 0,
+        'Global Developmental Delay': 0,
+        'Nonverbal Learning Disorder (NLD)': 0,
+        'Sensory Processing Disorder (SPD)': 0,
+        'Chronic Traumatic Encephalopathy (CTE)': 0,
+        'Klinefelter Syndrome': 0,
+        'Turner Syndrome': 0,
+        'Phenylketonuria (PKU) with cognitive impairments': 0,
+        'others': 0,
     }
     
+    }
+
+
+    this.InitialMethod();
+
+
   }
+
+
+  InitialMethod = function() {
+    //how do i access tge this.userdata in this scope?
+    console.log(`log from InitialMethod`)
+    console.log(this.user_data.length);
+
+
+    this.user_data.forEach((row_data) => {
+      if(row_data.gender.toLowerCase() == 'male'){
+        this.Gender.male_count++;
+      }else{
+        this.Gender.female_count++;
+      }
+
+    });
+
+
+    //after the loop format the counted data
+
+    console.log('After the read of loop');
+    
+    console.log(`Male Percentage: ${this.Gender.GetMalePercentage()}`);
+    console.log(`Female Percentage: ${this.Gender.GetFemalePercentage()}`);
+
+  }
+
 
   ReadData  = function() {
     console.log('read data operation')
@@ -877,33 +1023,31 @@ app.get('/Fetch/Dashboard', async(req, res) => {
 
     const userAllData = await dashboardQuery();
 
-    console.log(userAllData);
-    console.log(`number of data: ${userAllData.length}`)
+    // console.log(userAllData);
+    // console.log(`number of data: ${userAllData.length}`)
 
 
-    userAllData.forEach((rowdata) => {
+    // userAllData.forEach((rowdata) => {
       
-      if(rowdata.gender.toLowerCase() == 'male'){
-        gender.male_count += 1
-      }else{
-        gender.female_count += 1
-      }
+    //   if(rowdata.gender.toLowerCase() == 'male'){
+    //     gender.male_count += 1
+    //   }else{
+    //     gender.female_count += 1
+    //   }
 
-    })
+    // })
 
 
-    console.log(`gender male count = ${gender.male_count}`);
-    console.log(`gender female count = ${gender.female_count}`);
-    console.log(`male percent: ${gender.MalePercentage()}`);
-    console.log(`female percentage: ${gender.FemalePercentage()}`);
+    // console.log(`gender male count = ${gender.male_count}`);
+    // console.log(`gender female count = ${gender.female_count}`);
+    // console.log(`male percent: ${gender.MalePercentage()}`);
+    // console.log(`female percentage: ${gender.FemalePercentage()}`);
 
     
 
     let myDashboard = new Dashboard(userAllData);
 
-    myDashboard.ReadData();
-
-    console.log(`Data length of the return sql: ${myDashboard.DataLength()}`);
+    //should log the initial method();
 
 
   }catch(error){
