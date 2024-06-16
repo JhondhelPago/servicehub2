@@ -36,7 +36,7 @@ const Inquiries = () => {
             {/* <div id="mainContentContainer" className="pb-0.5 w-full h-screen flex flex-col flex-grow bg-gray-100 text-darkColor overflow-hidden">
                 <div className="sticky top-0 flex items-center justify-between gap-2 px-5 py-5 mb-5 bg-gray-100">
                     <h1 className="text-2xl font-medium md:text-4xl"> */}
-            <div id="mainContentContainer" Class="pb-5 flex flex-col flex-grow bg-gray-100 text-darkColor">
+            <div id="mainContentContainer" Class="pb-5 flex flex-col flex-grow h-screen bg-gray-100 text-darkColor">
                 <div className="sticky top-0 flex items-center justify-between gap-2 px-5 py-5 mb-5 bg-gray-100 ">
                     <h1 className="flex text-2xl font-medium md:text-4xl">
                         Manage Inquiries
@@ -55,7 +55,7 @@ const Inquiries = () => {
                 <div className="flex flex-col items-center gap-5 mx-5 mb-5">
                     <div className="w-full flex md:text-xl gap-0.5 rounded border border-darkColor bg-extra-extra-light">
                         <button className="flex justify-center w-full p-2 hoverMail" onClick={() => { SelectComponent('inbox') }}>Inbox</button>
-                        <button className="flex justify-center w-full p-2 hoverMail" onClick={() => { SelectComponent('sent') }}>Sent</button>
+                        {/* <button className="flex justify-center w-full p-2 hoverMail" onClick={() => { SelectComponent('sent') }}>Sent</button> */}
                         <button className="flex justify-center w-full p-2 hoverMail" onClick={() => { SelectComponent('compose') }}>Compose</button>
                     </div>
                 </div>

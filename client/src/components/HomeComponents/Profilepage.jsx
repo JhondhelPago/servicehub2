@@ -29,7 +29,7 @@ const Profilepage = () => {
       <head>
         <title>Profile</title>
       </head>
-      <div className="container flex flex-col justify-center gap-5 p-5 mx-auto">
+      <div className="container flex flex-col h-full gap-5 px-5 pb-5 mx-auto overflow-auto">
         <h1 className="text-6xl font-semibold text-center font-noto">My Profile </h1>
         <div className="w-full border rounded-md border-darkColor">
           <table className="border-collapse">

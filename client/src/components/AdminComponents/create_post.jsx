@@ -3,6 +3,9 @@ import { useNavigate } from 'react-router-dom';
 import upload_icon from '../../assets/upload.png'
 import { renderIntoDocument } from 'react-dom/test-utils';
 
+import sample from '../../assets/sample_img.jpg'
+import sample2 from '../../assets/sample2.jpg'
+import sample3 from '../../assets/sample3.jpg'
 
 import { useContext } from 'react';
 import { UserContext } from '../LoginComponents/UserContext';
@@ -43,7 +46,7 @@ const PostForm = ({ onClick }) => {
                     const imgElement = document.createElement("img");
                     imgElement.src = imageUrl;
                     imgElement.alt = 'Uploaded Image';
-                    imgElement.classList.add('w-[600px]', 'h-[300px]', 'rounded-lg', 'mb-4');
+                    imgElement.classList.add('mt-5', 'mr-5', 'min-w-[300px]', 'rounded-lg',);
                     imageContainerDiv.appendChild(imgElement);
                 };
                 reader.readAsDataURL(file);
@@ -97,11 +100,11 @@ const PostForm = ({ onClick }) => {
 
 
 
-                <div className="flex flex-row justify-center flex-grow pt-8 pb-8 bg-gray-100 text-darkColor">
+                <div className="flex flex-row justify-center flex-grow gap-2 pr-5 bg-gray-100 text-darkColor">
 
-                    <div className="flex flex-col">
+                    <div className="flex flex-col grow">
 
-                        <div className="flex items-center justify-between gap-2 px-5 py-5 mb-3 bg-gray-100 ">
+                        <div className="flex items-center justify-between gap-2 py-5 pl-5 mb-3 ">
                             <h1 className="flex text-2xl font-medium md:text-4xl">
                                 Create Post
                             </h1>
@@ -109,29 +112,29 @@ const PostForm = ({ onClick }) => {
                         </div>
 
 
-                        <div className="flex flex-col gap-5 px-5 md:items-center">
+                        <div className="flex flex-col gap-5 pl-5 md:mx-10 ">
                             <form className="flex flex-col gap-3" method="post" encType="multipart/form-data" id="postForm" onSubmit={handleSubmit}>
-                                <div className="flex flex-col gap-3 md:flex-row">
-                                    <div className="flex flex-col gap-3">
+                                <div className="flex flex-col w-full gap-3 md:flex-row">
+                                    <div className="flex flex-col w-full gap-3">
                                         {/* <!-- post type selection --> */}
-                                        <select className="w-full py-2 pl-2 bg-white border border-gray-200 rounded-lg" name="category" required>
+                                        <select className="w-full py-2 pl-2 bg-white border rounded-lg border-darkColor" name="category" required>
                                             <option defaultValue>-Choose Post Type-</option>
                                             <option value="event">Event Posting</option>
                                             <option value="job">Job Posting</option>
                                         </select>
                                         {/* <!-- Title Input --> */}
-                                        <input className="w-full px-3 py-2 bg-white border border-gray-200 rounded-lg" type="text" name="title" placeholder="Title" required />
+                                        <input className="w-full px-3 py-2 bg-white border rounded-lg border-darkColor" type="text" name="title" placeholder="Title" required />
                                         {/* <!-- Date and Time Input --> */}
                                         <div className="flex flex-col gap-3 md:flex-row">
                                             <div className="w-full md:w-1/2">
-                                                <input className="w-full px-3 py-2 mr-5 bg-white border border-gray-200 rounded-lg" type="date" name="date" />
+                                                <input className="w-full px-3 py-2 mr-5 bg-white border rounded-lg border-darkColor" type="date" name="date" />
                                             </div>
                                             <div className="w-full md:w-1/2">
-                                                <input className="w-full px-3 py-2 bg-white border border-gray-200 rounded-lg" type="time" name="time" placeholder="01/01/2024" />
+                                                <input className="w-full px-3 py-2 bg-white border rounded-lg border-darkColor" type="time" name="time" placeholder="01/01/2024" />
                                             </div>
                                         </div>
                                         {/* <!-- location --> */}
-                                        <input className="w-full px-3 py-2 bg-white border border-gray-200 rounded-lg " name="location" placeholder="Location" />
+                                        <input className="w-full px-3 py-2 bg-white border rounded-lg border-darkColor " name="location" placeholder="Location" />
                                     </div>
                                     {/* <!-- this is area is for file uploading --> */}
                                     <div className="">
@@ -140,7 +143,7 @@ const PostForm = ({ onClick }) => {
                                             {/* <!-- Image display sample here  -->
                                             
                                             <!-- upload button --> */}
-                                            <div className="flex items-center justify-center w-full bg-white border border-gray-200 rounded-lg h-52 md:w-52 " >
+                                            <div className="flex items-center justify-center w-full bg-white border rounded-lg border-darkColor h-52 md:w-52 " >
                                                 {/* <!-- image upload icon --> */}
                                                 <img className="h-20" src={upload_icon} alt="upload image icon" />
                                                 <input id="imageInput" className="absolute inset-0 opacity-0 cursor-pointer" type="file" name="uploadImages" placeholder="upload file" multiple />
@@ -149,18 +152,36 @@ const PostForm = ({ onClick }) => {
                                     </div>
                                 </div>
                                 {/* <!-- Textarea for event description --> */}
-                                <textarea className="px-3 py-2 border border-gray-200 rounded-md" type="textarea" name="description" placeholder="Event Description" rows="10"></textarea>
+                                <textarea className="px-3 py-2 border rounded-md border-darkColor" type="textarea" name="description" placeholder="Event Description" rows="10"></textarea>
 
                                 {/* <!-- select tag for selecting audience or selection multiple audience --> */}
-                                <div className="rounded-lg">
-                                    <label className="">Target Audience Selection</label>
-                                    <select id="targetAudienceSelection" name="targetAudience" required multiple>
-                                        <option value="Disability 1" >Select All</option>
-                                        <option value="Disability 2">Disability 1</option>
-                                        <option value="Disability 3">Disability 2</option>
-                                        <option value="Disability 4">Disability 3</option>
-                                        <option value="Disability 5">Disability 4</option>
-                                    </select>
+                                <div className='flex items-center p-2 bg-white border rounded-lg border-darkColor'>
+                                    <p className='pr-2'>Target Audience:</p>
+
+                                    {/* selected container */}
+                                    <div className='flex flex-wrap gap-2 grow'>
+
+                                        {/* disability container */}
+                                        <button className='flex items-center justify-center gap-2 px-4 py-2 border rounded-full bg-extra-light border-darkColor group'>
+                                            {/* disability name */}
+                                            <p className='text-lg'>Disability 1</p>
+                                            <svg className='hidden h-5 text-red-600 cursor-pointer group-hover:flex' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><g fill="none" fill-rule="evenodd"><path d="M24 0v24H0V0zM12.593 23.258l-.011.002l-.071.035l-.02.004l-.014-.004l-.071-.035c-.01-.004-.019-.001-.024.005l-.004.01l-.017.428l.005.02l.01.013l.104.074l.015.004l.012-.004l.104-.074l.012-.016l.004-.017l-.017-.427c-.002-.01-.009-.017-.017-.018m.265-.113l-.013.002l-.185.093l-.01.01l-.003.011l.018.43l.005.012l.008.007l.201.093c.012.004.023 0 .029-.008l.004-.014l-.034-.614c-.003-.012-.01-.02-.02-.022m-.715.002a.023.023 0 0 0-.027.006l-.006.014l-.034.614c0 .012.007.02.017.024l.015-.002l.201-.093l.01-.008l.004-.011l.017-.43l-.003-.012l-.01-.01z" /><path fill="currentColor" d="m12 14.122l5.303 5.303a1.5 1.5 0 0 0 2.122-2.122L14.12 12l5.304-5.303a1.5 1.5 0 1 0-2.122-2.121L12 9.879L6.697 4.576a1.5 1.5 0 1 0-2.122 2.12L9.88 12l-5.304 5.304a1.5 1.5 0 1 0 2.122 2.12z" /></g></svg>
+                                        </button>
+
+                                    </div>
+
+                                </div>
+
+                                {/* options container */}
+                                <div className='flex flex-wrap justify-center gap-2 mt-2 md:justify-start'>
+
+                                    {/* disability container */}
+                                    <button className='flex items-center justify-center gap-2 px-4 py-2 border rounded-full border-darkColor group'>
+                                        {/* disability name */}
+                                        <p className=''>Disablity 2</p>
+                                        <svg className='hidden h-5 text-green-600 cursor-pointer group-hover:flex' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"><path fill="currentColor" d="M228 128a12 12 0 0 1-12 12h-76v76a12 12 0 0 1-24 0v-76H40a12 12 0 0 1 0-24h76V40a12 12 0 0 1 24 0v76h76a12 12 0 0 1 12 12" /></svg>
+                                    </button>
+
                                 </div>
                                 <input id="creator_id" type="hidden" name="creator_id" value={AdminId} />
                                 <button className="w-2/4 p-3 mx-auto my-3 text-white rounded-lg bg-primary-light scaleHover" type="submit" >Post</button>
@@ -169,8 +190,18 @@ const PostForm = ({ onClick }) => {
 
                     </div>
 
-                    <div id="imageContainerDiv" className="w-auto h-full overflow-y-hidden ">
-
+                    {/* <div id="imageContainerDiv"> */}
+                    <div className="flex flex-col gap-4 w-fit">
+                        <div id="imageContainerDiv" ></div>
+                        {/* <SampleImg
+                            imgsrc={sample}
+                        ></SampleImg>
+                        <SampleImg
+                            imgsrc={sample2}
+                        ></SampleImg>
+                        <SampleImg
+                            imgsrc={sample3}
+                        ></SampleImg> */}
                     </div>
 
 
@@ -181,5 +212,17 @@ const PostForm = ({ onClick }) => {
 
 
 }
+
+// const SampleImg = ({
+//     imgsrc,
+// }) => {
+//     {
+//         return (
+//             <>
+//                 <img className="rounded-lg" src={imgsrc} alt="" />
+//             </>
+//         )
+//     }
+// }
 
 export default PostForm;

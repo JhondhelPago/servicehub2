@@ -25,7 +25,7 @@ const EventPostComponent = ({ eventdata }) => {
           </div>
           {/* <!-- desc --> */}
           <p className="pr-2 mt-4 overflow-auto text-justify max-h-52">{eventdata.description}</p>
-          <button className="w-10/12 p-4 mx-auto text-xl font-medium text-white rounded-md bg-primary-light scaleHover">Join</button>
+          <button className="w-10/12 p-4 mx-auto mt-auto text-xl font-medium text-white rounded-md bg-primary-light scaleHover">Join</button>
         </div>
         {/* <!-- img container --> */}
         <div className="order-first w-full xl:w-1/2 xl:order-last">
