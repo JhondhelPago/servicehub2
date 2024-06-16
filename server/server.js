@@ -34,7 +34,8 @@ const {
     ClientMailInsert,
     GetClientSentMail,
     FetchInboxOfClient,
-    ALL_SendMaiL
+    ALL_SendMaiL,
+    dashboardQuery
 
 } = require('./mysqlmodule.js');
 
@@ -765,6 +766,82 @@ app.get('/GetClient/Convo/WithAdmin/:clientuserId/:adminId', async(req, res) => 
   }catch(error){
     throw error;
   }
+
+});
+
+
+app.get('/Fetch/Dashboard', async(req, res) => {
+
+  let gender = {
+    male_count : 0,
+    female_count : 0
+  }
+
+  let religion = {
+    catholic : 0,
+    others : 0
+  }
+
+  let civil = {
+    single : 0, 
+    married : 0
+  }
+
+
+  let cities = {
+    'Caloocan': 0,
+    'Las Piñas' : 0,
+    'Makati': 0,
+    'Malabon' : 0,
+    'Mandaluyong' : 0,
+    'Manila' : 0,
+    'Marikina' : 0,
+    'Muntinlupa': 0, 
+    'Navotas' : 0,
+    'Parañaque' : 0,
+    'Pasay' : 0,
+    'Pasig' : 0,
+    'Quezon City' : 0,
+    'San Juan' : 0,
+    'Taguig' : 0,
+    'Valenzuela' : 0,
+    'Pateros' : 0  
+  }
+
+  let occupation = {
+    employed : 0,
+    unemployed: 0,
+    others : 0,
+  }
+
+
+  let disability = {
+    physical : 0,
+    mental : 0,
+    others : 0
+  }
+
+
+  let status = {
+    active : 0,
+    former : 0
+  }
+
+  
+  try{
+
+    const userAllData = await dashboardQuery();
+
+    console.log(userAllData);
+    console.log(`number of data: ${userAllData.length}`)
+
+  }catch(error){
+    throw error;
+  }
+
+
+
+
 
 });
 
