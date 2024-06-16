@@ -4,6 +4,11 @@ const path = require("path");
 const bodyParser = require("body-parser");
 const fs = require("fs");
 
+
+
+
+
+
 //functions from mysqlmodule connection
 const {
     //user function imports
@@ -39,6 +44,37 @@ const {
 
 } = require('./mysqlmodule.js');
 
+
+
+//Dashboard Class for Dashboard Utilities
+
+class Dashboard {
+
+  constructor (userDataArray){
+    this.user_data = userDataArray;
+
+    this.Gender = {
+      male_count : 0,
+      female_count : 0,
+
+      MalePercentage : function() {
+        return (this.male_count / (this.male_count + this.female_count)) 
+      }
+    }
+    
+  }
+
+  ReadData  = function() {
+    console.log('read data operation')
+
+  }
+
+  DataLength = function() {
+    return this.user_data.length;
+  }
+  
+ 
+}
 
 //function to delete the images to the directory
 
@@ -774,7 +810,16 @@ app.get('/Fetch/Dashboard', async(req, res) => {
 
   let gender = {
     male_count : 0,
-    female_count : 0
+    female_count : 0,
+
+    MalePercentage : function() {
+      return this.male_count / (this.male_count + this.female_count);
+    },
+
+    FemalePercentage : function() {
+      return this.female_count / (this.male_count + this.female_count);
+    }
+
   }
 
   let religion = {
@@ -834,6 +879,32 @@ app.get('/Fetch/Dashboard', async(req, res) => {
 
     console.log(userAllData);
     console.log(`number of data: ${userAllData.length}`)
+
+
+    userAllData.forEach((rowdata) => {
+      
+      if(rowdata.gender.toLowerCase() == 'male'){
+        gender.male_count += 1
+      }else{
+        gender.female_count += 1
+      }
+
+    })
+
+
+    console.log(`gender male count = ${gender.male_count}`);
+    console.log(`gender female count = ${gender.female_count}`);
+    console.log(`male percent: ${gender.MalePercentage()}`);
+    console.log(`female percentage: ${gender.FemalePercentage()}`);
+
+    
+
+    let myDashboard = new Dashboard(userAllData);
+
+    myDashboard.ReadData();
+
+    console.log(`Data length of the return sql: ${myDashboard.DataLength()}`);
+
 
   }catch(error){
     throw error;

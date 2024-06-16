@@ -41,6 +41,22 @@ class ImageStringUtils {
 }
 
 
+
+
+
+
+
+
+
+
+
+
+class StringManipulate {
+    static ToLowerCase(string){
+        return string.toLowerCase();
+    }
+}
+
 function sampleEdit(props){
     // const obj_props = {title: newTitle, creator: newCreatorName};
     const obj_props = props;

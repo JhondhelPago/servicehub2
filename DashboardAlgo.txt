@@ -7,3 +7,53 @@
 4. Define the varible to be a counters
 
 5. construct an object containing the calculated data.
+
+
+
+
+
+
+key information to process
+
+Gender 
+    Male percetange
+    Female percentage
+
+Disability 
+    Disability 1 : 0,
+    Disability 2 : 0,
+    Disability 3 : 0,
+    Disability 4 : 0,
+    Disability 5 : 0,
+    others : 0 
+    
+Age 
+    18below
+    19-29
+    30-39
+    40-49
+    50above
+
+religion
+    catholic
+    iglesia
+    muslim
+    others
+
+civil
+    single
+    married
+    others
+
+city 
+    city1 : 0, 
+    city2 : 0,
+    city3 : 0,
+
+district
+    district1
+    district2
+
+Employment
+    unemployed : 0
+    employed : 0
