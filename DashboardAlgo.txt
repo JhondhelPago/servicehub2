@@ -1,0 +1,9 @@
+1. Fetch all the row in the database -> mysqlmodule.json
+
+2. Setup the server to receiver the Fetched data from the mysqlmodule.
+
+3. make a logic to count the vital information inside the server logic route
+
+4. Define the varible to be a counters
+
+5. construct an object containing the calculated data.
