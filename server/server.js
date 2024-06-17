@@ -52,6 +52,7 @@ class Dashboard {
 
   constructor (userDataArray){
     this.user_data = userDataArray;
+    this.user_data_length = this.user_data.length;
     this.Gender = {
       male_count : 0,
       male_percentage : 0,
@@ -313,6 +314,9 @@ class Dashboard {
 
       this.Employment[employmentStatusOfThisRow] += 1;
 
+
+      
+
    
 
     });
@@ -338,8 +342,68 @@ class Dashboard {
   DataLength = function() {
     return this.user_data.length;
   }
-  
- 
+
+  ProcessedSelfInfo = function() {
+
+    const ProcessInformation = {
+      MetaInfo : {
+        length : this.user_data_length
+      },
+
+      Gender : {
+        male_count : this.Gender.male_count,
+        female_count : this.Gender.female_count,
+        male_percentage : `${Math.floor(this.Gender.male_percentage * 100)}%` ,
+        female_percentage : `${Math.floor(this.Gender.female_percentage * 100)}%`
+      },
+
+      Disability : {
+        physical : { 
+          count : Object.keys(this.Disability.physical).map(disability_name => this.Disability.physical[disability_name]).reduce((accumulator, currentValue) => accumulator + currentValue, 0),
+          disability : this.Disability.physical
+        },
+
+        mental : {
+          count : Object.keys(this.Disability.mental).map(disabilit_name => this.Disability.mental[disabilit_name]).reduce((accumulator, currentValue) => accumulator + currentValue, 0),
+          disability : this.Disability.mental
+        }
+      },
+
+      Religion : {
+        'Roman Catholicism' : this.Religion['Roman Catholicism'],
+        'Islam' : this.Religion['Islam'],
+        'Iglesia ni Cristo' : this.Religion['Iglesia ni Cristo'],
+        'Evangelical Christianity' : this.Religion['Evangelical Christianity'],
+        'Aglipayan Church' : this.Religion['Aglipayan Church'],
+        'Buddhism' : this.Religion['Buddhism'],
+        'Hinduism' : this.Religion['Hinduism'],
+        'Judaism' : this.Religion['Judaism'],
+        'Jehovah\'s Witnesses' : this.Religion['Jehovah\'s Witnesses'],
+        'Seventh-day Adventist Church' : this.Religion['Seventh-day Adventist Church'],
+        'Chruch of Jesus Christ of Latter-day Saints' : this.Religion['Chruch of Jesus Christ of Latter-day Saints'],
+        'Othrodox Christianity' : this.Religion['Othrodox Christianity'],
+        'Baha\'i Faith' : this.Religion['Baha\'i Faith'],
+        'Taosim' : this.Religion['Taosim'],
+        'Animism' : this.Religion['Animism'],
+      },
+
+      Civil : {
+        'single' : this.Civil.single,
+        'married' : this.Civil.married,
+      },
+
+      Employment : {
+        'employed' : this.Employment.employed,
+        'unemployed' : this.Employment.unemployed,
+        'others' : this.Employment.others
+      }
+
+    
+    }
+
+    return ProcessInformation;
+
+  }
 }
 
 //function to delete the images to the directory
@@ -1166,9 +1230,16 @@ app.get('/Fetch/Dashboard', async(req, res) => {
     
 
     let myDashboard = new Dashboard(userAllData);
-
+    //initial executed
     //should log the initial method();
 
+    //return the processed information
+
+    console.log('\nthis is the return of the processed information method\n');
+    console.log(myDashboard.ProcessedSelfInfo());
+
+    res.send(myDashboard.ProcessedSelfInfo());
+    
 
   }catch(error){
     throw error;
