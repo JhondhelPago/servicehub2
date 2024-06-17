@@ -75,6 +75,12 @@ const InboxComponent = () => {
         }
     }
 
+    const CloseMailOverViewAction = () => {
+        SetMailOverViewBoolean(null);
+        SetMailOverViewAdminId(null);
+        SetMailObjsArray(null);
+    }
+
     const FetchConvo_Client_Admin = async(SenderAdminId) => {
 
         try{
@@ -156,7 +162,7 @@ const InboxComponent = () => {
             {/* 5. another child component */}
             {/* yung boung view ng Email  */}
             {MailOverViewBoolean && (
-                <MailOverView MailObjsArray={MailObjsArray} ContactAdminId={MailOverViewAdminId}></MailOverView>
+                <MailOverView MailObjsArray={MailObjsArray} ContactAdminId={MailOverViewAdminId} CloseMailOverViewAction={CloseMailOverViewAction}></MailOverView>
             )}
         </div>
     </>
@@ -195,7 +201,7 @@ const MailListView = ({MailObj, ListMailClick, AdminContactId, ClickInboxAction}
 
 
 // component definition of the MailOverView
-const MailOverView = ({MailObjsArray, ContactAdminId}) => {
+const MailOverView = ({MailObjsArray, ContactAdminId, CloseMailOverViewAction}) => {
 
     const Overflow_InnerInbox = useRef(null);
     const { clientuserId } = useContext(ClientUserContext);
@@ -219,9 +225,14 @@ const MailOverView = ({MailObjsArray, ContactAdminId}) => {
 
     return(
         <>
-            {/* <!-- mail content view --> */}
-            <div ref={Overflow_InnerInbox} className="w-3/4 flex flex-col border border-darkColor rounded-e overflow-y-auto">
 
+            {/* <!-- mail content view --> */}
+            {/*  vin need ko dito ng div na pag lalagyan ng close button 
+                pag nag clcick sa button mag disappear yung MailOverView
+            */}
+            
+            <div ref={Overflow_InnerInbox} className="w-3/4 flex flex-col border border-darkColor rounded-e overflow-y-auto">
+            
                 {MailObjsArray.map((MailObj) => {
                     // return(
 

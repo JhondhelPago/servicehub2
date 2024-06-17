@@ -1,0 +1,9 @@
+client/src/components/AdminComponents/inbox_component.jsx
+
+line 201-205
+
+
+
+client/src/components/HomeComponents/inbox_component.jsx
+
+line 229-232 may comment ako dun 

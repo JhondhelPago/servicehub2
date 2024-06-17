@@ -199,6 +199,10 @@ const MailOverView = ({MailObjsArray, ContactClientId}) => {
     return(
         <>
             {/* <!-- mail content view --> */}
+            {/* <!-- mail content view --> */}
+            {/*  vin need ko dito ng div na pag lalagyan ng close button 
+                pag nag clcick sa button mag disappear yung MailOverView
+            */}
             <div ref={Overflow_InnerInbox} className="w-3/4 flex flex-col border border-darkColor rounded-e overflow-y-auto">
 
                 {MailObjsArray.map((MailObj) => {
