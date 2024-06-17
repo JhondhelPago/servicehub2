@@ -39,11 +39,9 @@ const ChatSection = () => {
                 {/* activeMail */}
                 <div className="flex flex-col items-center gap-5 mb-5">
                     <div className="w-full flex md:text-xl gap-0.5 rounded border border-darkColor bg-extra-extra-light">
-
-                        <button className="p-2 w-full flex justify-center activeMail" onClick={() => {SelectComponent('inbox')}} >Inbox</button>
-                        {/* <button className="p-2 w-full flex justify-center hoverMail" onClick={() => {SelectComponent('sent')}}>Sent</button> */}
-                        <button className="p-2 w-full flex justify-center hoverMail" onClick={() => {SelectComponent('compose')}}>Compose</button>
-
+                        <button className={`flex justify-center w-full p-2 ${ActiveComponent === 'inbox' ? 'activeMail' : 'hoverMail'}`} onClick={() => { SelectComponent('inbox') }} >Inbox</button>
+                        {/* <button className="flex justify-center w-full p-2 hoverMail" onClick={() => { SelectComponent('sent') }}>Sent</button> */}
+                        <button className={`flex justify-center w-full p-2 ${ActiveComponent === 'compose' ? 'activeMail' : 'hoverMail'}`} onClick={() => { SelectComponent('compose') }}>Compose</button>
                     </div>
                 </div>
 
