@@ -189,18 +189,18 @@ const Homeprompt = () => {
                                 <h6>Male</h6>
                             </div>
                             <div className='flex flex-col items-center justify-center flex-grow rounded-lg p-7 bg-gray-50 hover:shadow-lg hover:bg-white'>
-                                <h3 className='text-4xl'>{UserInformation && UserInformation.Gender.female_count}</h3>
-                                <h3 className='text-4xl'>{UserInformation && UserInformation.Gender.female_percentage}</h3>
+                                <h3 className='text-4xl'>Count: {UserInformation && UserInformation.Gender.female_count}</h3>
+                                <h3 className='text-4xl'>Percent: {UserInformation && UserInformation.Gender.female_percentage}</h3>
                                 <h6>Female</h6>
                             </div>
                             <div className='flex flex-col items-center justify-center flex-grow rounded-lg p-7 bg-gray-50 hover:shadow-lg hover:bg-white'>
-                                <h3 className='text-4xl'>{UserInformation && UserInformation.Disability.physical.count}</h3>
-                                <h3 className='text-4xl'>{UserInformation && UserInformation.Disability.physical_percentage}</h3>
+                                <h3 className='text-4xl'>Count: {UserInformation && UserInformation.Disability.physical.count}</h3>
+                                <h3 className='text-4xl'>Percent: {UserInformation && UserInformation.Disability.physical_percentage}</h3>
                                 <h6>With Physical Disability</h6>
                             </div>
                             <div className='flex flex-col items-center justify-center flex-grow rounded-lg p-7 bg-gray-50 hover:shadow-lg hover:bg-white'>
-                                <h3 className='text-4xl'>{UserInformation && UserInformation.Disability.mental.count}</h3>
-                                <h3 className='text-4xl'>{UserInformation && UserInformation.Disability.mental_percentage}</h3>
+                                <h3 className='text-4xl'>Count: {UserInformation && UserInformation.Disability.mental.count}</h3>
+                                <h3 className='text-4xl'>Percent: {UserInformation && UserInformation.Disability.mental_percentage}</h3>
                                 <h6>With Mental Disability</h6>
                             </div>
                             {/* <div className='flex flex-col items-center justify-center flex-grow rounded-lg p-7 bg-gray-50 hover:shadow-lg hover:bg-white'>
@@ -213,38 +213,38 @@ const Homeprompt = () => {
                         <div className='flex flex-wrap flex-grow gap-5'>
                             {/* add or remove lang ng div depende sa kailangan */}
                             <div className='flex flex-col items-center justify-center flex-grow rounded-lg p-7 bg-gray-50 hover:shadow-lg hover:bg-white'>
-                                <h3 className='text-4xl'>{UserInformation && UserInformation.Civil.single.count}</h3>
-                                <h3 className='text-4xl'>{UserInformation && UserInformation.Civil.single_percentage}</h3>
+                                <h3 className='text-4xl'>Count: {UserInformation && UserInformation.Civil.single.count}</h3>
+                                <h3 className='text-4xl'>Percent: {UserInformation && UserInformation.Civil.single_percentage}</h3>
                                 <h6>Single</h6>
                             </div>
                             <div className='flex flex-col items-center justify-center flex-grow rounded-lg p-7 bg-gray-50 hover:shadow-lg hover:bg-white'>
-                                <h3 className='text-4xl'>{UserInformation && UserInformation.Civil.married.count}</h3>
-                                <h3 className='text-4xl'>{UserInformation && UserInformation.Civil.married_percentage}</h3>
+                                <h3 className='text-4xl'>Count: {UserInformation && UserInformation.Civil.married.count}</h3>
+                                <h3 className='text-4xl'>Percent: {UserInformation && UserInformation.Civil.married_percentage}</h3>
                                 <h6>Married</h6>
                             </div>
                             <div className='flex flex-col items-center justify-center flex-grow rounded-lg p-7 bg-gray-50 hover:shadow-lg hover:bg-white'>
-                                <h3 className='text-4xl'>{UserInformation && UserInformation.Employment.unemployed.count}</h3>
-                                <h3 className='text-4xl'>{UserInformation && UserInformation.Employment.unemployed_percentage}</h3>
+                                <h3 className='text-4xl'>Count: {UserInformation && UserInformation.Employment.unemployed.count}</h3>
+                                <h3 className='text-4xl'>Percent: {UserInformation && UserInformation.Employment.unemployed_percentage}</h3>
                                 <h6>Unemployed</h6>
                             </div>
                             <div className='flex flex-col items-center justify-center flex-grow rounded-lg p-7 bg-gray-50 hover:shadow-lg hover:bg-white'>
-                                <h3 className='text-4xl'>{UserInformation && UserInformation.Employment.unemployed.count}</h3>
-                                <h3 className='text-4xl'>{UserInformation && UserInformation.Employment.unemployed_percentage}</h3>
+                                <h3 className='text-4xl'>Count: {UserInformation && UserInformation.Employment.unemployed.count}</h3>
+                                <h3 className='text-4xl'>Percent: {UserInformation && UserInformation.Employment.unemployed_percentage}</h3>
                                 <h6>Employed</h6>
                             </div>
                             <div className='flex flex-col items-center justify-center flex-grow rounded-lg p-7 bg-gray-50 hover:shadow-lg hover:bg-white'>
-                                <h3 className='text-4xl'>{UserInformation && UserInformation.Employment.unemployed.count}</h3>
-                                <h3 className='text-4xl'>{UserInformation && UserInformation.Employment.unemployed_percentage}</h3>
+                                <h3 className='text-4xl'>Count: {UserInformation && UserInformation.Age.minor_count}</h3>
+                                <h3 className='text-4xl'>Percent: {UserInformation && UserInformation.Age.minor_percentage}</h3>
                                 <h6>minor</h6>
                             </div>
                             <div className='flex flex-col items-center justify-center flex-grow rounded-lg p-7 bg-gray-50 hover:shadow-lg hover:bg-white'>
-                                <h3 className='text-4xl'>{UserInformation && UserInformation.Employment.unemployed.count}</h3>
-                                <h3 className='text-4xl'>{UserInformation && UserInformation.Employment.unemployed_percentage}</h3>
+                                <h3 className='text-4xl'>Count: {UserInformation && UserInformation.Age.adult_count}</h3>
+                                <h3 className='text-4xl'>Percent: {UserInformation && UserInformation.Age.adult_percentage}</h3>
                                 <h6>Adult</h6>
                             </div>
                             <div className='flex flex-col items-center justify-center flex-grow rounded-lg p-7 bg-gray-50 hover:shadow-lg hover:bg-white'>
-                                <h3 className='text-4xl'>{UserInformation && UserInformation.Employment.unemployed.count}</h3>
-                                <h3 className='text-4xl'>{UserInformation && UserInformation.Employment.unemployed_percentage}</h3>
+                                <h3 className='text-4xl'>Count: {UserInformation && UserInformation.Age.senior_count}</h3>
+                                <h3 className='text-4xl'>Percent: {UserInformation && UserInformation.Age.senior_percentage}</h3>
                                 <h6>Senior</h6>
                             </div>
                         </div>
