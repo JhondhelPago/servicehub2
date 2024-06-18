@@ -360,11 +360,13 @@ class Dashboard {
       Disability : {
         physical : { 
           count : Object.keys(this.Disability.physical).map(disability_name => this.Disability.physical[disability_name]).reduce((accumulator, currentValue) => accumulator + currentValue, 0),
+          percentage :  Object.keys(this.Disability.physical).map(disability_name => this.Disability.physical[disability_name]).reduce((accumulator, currentValue) => accumulator + currentValue, 0) / this.user_data_length,
           disability : this.Disability.physical
         },
 
         mental : {
           count : Object.keys(this.Disability.mental).map(disabilit_name => this.Disability.mental[disabilit_name]).reduce((accumulator, currentValue) => accumulator + currentValue, 0),
+          percentage : Object.keys(this.Disability.mental).map(disabilit_name => this.Disability.mental[disabilit_name]).reduce((accumulator, currentValue) => accumulator + currentValue, 0) / this.user_data_length, 
           disability : this.Disability.mental
         }
       },
@@ -389,13 +391,18 @@ class Dashboard {
 
       Civil : {
         'single' : this.Civil.single,
+        'single_percentage' : this.Civil.single / this.user_data_length,
         'married' : this.Civil.married,
+        'married_percentage' : this.Civil.married / this.user_data_length
       },
 
       Employment : {
-        'employed' : this.Employment.employed,
+        'employed' : this.Employment.employed, 
+        'employment_percentage' : this.Employment.employed / this.user_data_length,
         'unemployed' : this.Employment.unemployed,
-        'others' : this.Employment.others
+        'unemployment_percentage' : this.Employment.unemployed / this.user_data_length,
+        'others' : this.Employment.others,
+        'others_percentage' : this.otehrs / this.user_data_length
       }
 
     
