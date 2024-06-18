@@ -53,6 +53,14 @@ class Dashboard {
   constructor (userDataArray){
     this.user_data = userDataArray;
     this.user_data_length = this.user_data.length;
+
+    this.Age = {
+      minor_count : 0,
+      adult_count : 0,
+      senior_count : 0,
+    }
+
+
     this.Gender = {
       male_count : 0,
       male_percentage : 0,
@@ -286,6 +294,17 @@ class Dashboard {
 
     this.user_data.forEach((row_data) => {
 
+
+      //checks the rows age and assigned to associated age range or category
+      if(row_data.age < 18){
+        this.Age.minor_count++;
+      } else if (row_data.age >= 18 && row_data.age <= 59) {
+        this.Age.adult_count++;
+      } else{
+        this.Age.senior_count++;
+      }
+
+
       //check the rows gender
       if(row_data.gender.toLowerCase() == 'male'){
         this.Gender.male_count++;
@@ -348,6 +367,15 @@ class Dashboard {
     const ProcessInformation = {
       MetaInfo : {
         length : this.user_data_length
+      },
+
+      Age : {
+        minor_count : this.Age.minor_count, 
+        minor_percentage : Math.floor((this.Age.minor_count / this.user_data_length) * 100) + '%',
+        adult_count : this.Age.adult_count,
+        adult_percentage : Math.floor((this.Age.adult_count / this.user_data_length) * 100) + '%',
+        senior_count : this.Age.senior_count,
+        senior_percentage : Math.floor((this.Age.senior_count / this.user_data_length) * 100) + '%'
       },
 
       Gender : {
