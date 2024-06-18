@@ -391,18 +391,18 @@ class Dashboard {
 
       Civil : {
         'single' : this.Civil.single,
-        'single_percentage' : this.Civil.single / this.user_data_length,
+        'single_percentage' : Math.floor((this.Civil.single / this.user_data_length) * 100) + '%' ,
         'married' : this.Civil.married,
-        'married_percentage' : this.Civil.married / this.user_data_length
+        'married_percentage' : Math.floor((this.Civil.married / this.user_data_length) * 100) + '%'
       },
 
       Employment : {
         'employed' : this.Employment.employed, 
-        'employment_percentage' : this.Employment.employed / this.user_data_length,
+        'employment_percentage' : Math.floor((this.Employment.employed / this.user_data_length) * 100) + '%' ,
         'unemployed' : this.Employment.unemployed,
-        'unemployment_percentage' : this.Employment.unemployed / this.user_data_length,
+        'unemployment_percentage' : Math.floor((this.Employment.unemployed / this.user_data_length) * 100) + '%',
         'others' : this.Employment.others,
-        'others_percentage' : this.otehrs / this.user_data_length
+        'others_percentage' : Math.floor((this.otehrs / this.user_data_length) * 100) + '%' 
       }
 
     
