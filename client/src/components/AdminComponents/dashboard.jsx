@@ -233,10 +233,6 @@ const Homeprompt = () => {
                                 <h6>Employed</h6>
                             </div>
                             <div className='flex flex-col items-center justify-center flex-grow rounded-lg p-7 bg-gray-50 hover:shadow-lg hover:bg-white'>
-                                <h3 className='text-4xl'>40%</h3>
-                                <h6>Label</h6>
-                            </div>
-                            <div className='flex flex-col items-center justify-center flex-grow rounded-lg p-7 bg-gray-50 hover:shadow-lg hover:bg-white'>
                                 <h3 className='text-4xl'>{UserInformation && UserInformation.Employment.unemployed.count}</h3>
                                 <h3 className='text-4xl'>{UserInformation && UserInformation.Employment.unemployed_percentage}</h3>
                                 <h6>minor</h6>
