@@ -1171,6 +1171,15 @@ app.get('/GetClient/Convo/WithAdmin/:clientuserId/:adminId', async(req, res) => 
 });
 
 
+
+app.post('/UserRegister/Event', async(req, res) => {
+
+  const { TicketCode }= req.body;
+
+
+  console.log(TicketCode);
+});
+
 app.get('/Fetch/Dashboard', async(req, res) => {
 
   let gender = {
@@ -1279,9 +1288,6 @@ app.get('/Fetch/Dashboard', async(req, res) => {
   }catch(error){
     throw error;
   }
-
-
-
 
 
 });

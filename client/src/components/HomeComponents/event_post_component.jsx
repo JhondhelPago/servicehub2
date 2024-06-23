@@ -1,11 +1,56 @@
-import React from "react";
+import React, { useContext } from "react";
 import { TimeUtils, ImageStringUtils } from '../../module-script/util';
+import { ClientUserContext } from "../../pages/ClientUserContext";
+import { CodeGenerator } from "../../utils";
+import axios from "axios";
 // import sample_img from '../../assets/sample_img.jpg';
 
 const EventPostComponent = ({ eventdata }) => {
 
   //to be foloowed
   //using useffect populate an array containing the image from the FileUpload folder by passing the imagefiles->filname, then display the image
+
+
+  //logic here to register this client user when the join button is hit
+
+  const { clientuserId } = useContext(ClientUserContext);
+
+
+  const JoinButtonAction = async() => {
+    
+    //importat note: do not allow the user to join multiple times.
+    //check if the user has already joined the event before allowing them to join again
+    //function here to get all the ticketcode. then process an find if this event.id is associated a certain ticketcode
+
+
+    //if not generateTicketCode and register this event to this user.
+
+
+
+
+    console.log(eventdata);
+    alert(`join button is click`);
+
+
+    const thisEventId = eventdata.id;
+    const thisUserId = clientuserId;
+
+    console.log(thisEventId);
+    console.log(thisUserId);
+
+    const generatedCode = CodeGenerator.EventCodeGenerator(thisEventId, thisUserId);
+    
+    console.log(generatedCode);
+
+
+    const response = await axios.post(`/UserRegister/Event`, {TicketCode: generatedCode});
+
+
+    if(response.status >= 200 && response.status <= 299){
+      console.log('registered');
+    }
+  
+  }
 
   return (
     <>
@@ -25,7 +70,7 @@ const EventPostComponent = ({ eventdata }) => {
           </div>
           {/* <!-- desc --> */}
           <p className="pr-2 mt-4 overflow-auto text-justify max-h-52">{eventdata.description}</p>
-          <button className="w-10/12 p-4 mx-auto mt-auto text-xl font-medium text-white rounded-md bg-primary-light scaleHover">Join</button>
+          <button className="w-10/12 p-4 mx-auto mt-auto text-xl font-medium text-white rounded-md bg-primary-light scaleHover" onClick={() => {JoinButtonAction()}}>Join</button>
         </div>
         {/* <!-- img container --> */}
         <div className="order-first w-full xl:w-1/2 xl:order-last">
