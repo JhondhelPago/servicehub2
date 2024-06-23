@@ -1,8 +1,9 @@
-import React from 'react';
+import React , { useEffect, useState }from 'react';
 
 import childCom from './sampeReact';
 
 import Chart from "react-apexcharts";
+import axios from 'axios';
 
 // chart link
 // https://www.material-tailwind.com/docs/react/plugins/charts
@@ -12,7 +13,7 @@ const barChartConfig = {
     series: [
         {
             name: "Sales",
-            data: [50, 40, 300, 320, 500, 350, 200, 230, 500],
+            data: [500, 40, 300, 320, 500, 350, 200, 230, 1000],
         },
     ],
     options: {
@@ -131,16 +132,38 @@ const pieChartConfig = {
         colors: ["#CD890A", "#B17709", "#966D22", "#A44F00", "#424B54", "#3A4147"],
         legend: {
             show: false,
-            // fontFamily: "Poppins, sans-serif",
-            // customLegendItems: ["Legend 1", "Legend 1", "Legend 1", "Legend 1", "Legend 1", "Legend 1"],
-            // // onItemClick: { toggleDataSeries: true, },
-            // labels: { useSeriesColors: true },
-            // onItemHover: { highlightDataSeries: true },
+            fontFamily: "Poppins, sans-serif",
+            customLegendItems: ["Legend 1", "Legend 1", "Legend 1", "Legend 1", "Legend 1", "Legend 1"],
+            onItemClick: { toggleDataSeries: true, },
+            labels: { useSeriesColors: true },
+            onItemHover: { highlightDataSeries: true },
         },
     },
 };
 
 const Homeprompt = () => {
+
+
+    const [UserInformation, SetUserInformation] = useState(null);
+
+    const FetchUserInformation = async() =>{
+        
+        try{
+
+            const response = await axios.get(`/Fetch/Dashboard`);
+            SetUserInformation(response.data);
+
+            console.log(response.data);
+
+        }catch(error){
+            throw error;
+        }
+    }
+
+    useEffect(() => {
+        FetchUserInformation();
+    }, [])
+
     return (
         <>
             <head>
@@ -161,49 +184,68 @@ const Homeprompt = () => {
                         <div className='flex flex-wrap flex-grow gap-5'>
                             {/* add or remove lang ng div depende sa kailangan */}
                             <div className='flex flex-col items-center justify-center flex-grow rounded-lg p-7 bg-gray-50 hover:shadow-lg hover:bg-white'>
-                                <h3 className='text-4xl'>40%</h3>
-                                <h6>Label</h6>
+                                <h3 className='text-4xl'>Count:{UserInformation && UserInformation.Gender.male_count}</h3>
+                                <h3 className='text-4xl'>Percent: {UserInformation && UserInformation.Gender.male_percentage}</h3>
+                                <h6>Male</h6>
                             </div>
                             <div className='flex flex-col items-center justify-center flex-grow rounded-lg p-7 bg-gray-50 hover:shadow-lg hover:bg-white'>
-                                <h3 className='text-4xl'>40%</h3>
-                                <h6>Label</h6>
+                                <h3 className='text-4xl'>Count: {UserInformation && UserInformation.Gender.female_count}</h3>
+                                <h3 className='text-4xl'>Percent: {UserInformation && UserInformation.Gender.female_percentage}</h3>
+                                <h6>Female</h6>
                             </div>
                             <div className='flex flex-col items-center justify-center flex-grow rounded-lg p-7 bg-gray-50 hover:shadow-lg hover:bg-white'>
-                                <h3 className='text-4xl'>40%</h3>
-                                <h6>Label</h6>
+                                <h3 className='text-4xl'>Count: {UserInformation && UserInformation.Disability.physical.count}</h3>
+                                <h3 className='text-4xl'>Percent: {UserInformation && UserInformation.Disability.physical_percentage}</h3>
+                                <h6>With Physical Disability</h6>
                             </div>
                             <div className='flex flex-col items-center justify-center flex-grow rounded-lg p-7 bg-gray-50 hover:shadow-lg hover:bg-white'>
+                                <h3 className='text-4xl'>Count: {UserInformation && UserInformation.Disability.mental.count}</h3>
+                                <h3 className='text-4xl'>Percent: {UserInformation && UserInformation.Disability.mental_percentage}</h3>
+                                <h6>With Mental Disability</h6>
+                            </div>
+                            {/* <div className='flex flex-col items-center justify-center flex-grow rounded-lg p-7 bg-gray-50 hover:shadow-lg hover:bg-white'>
                                 <h3 className='text-4xl'>40%</h3>
                                 <h6>Label</h6>
-                            </div>
-                            <div className='flex flex-col items-center justify-center flex-grow rounded-lg p-7 bg-gray-50 hover:shadow-lg hover:bg-white'>
-                                <h3 className='text-4xl'>40%</h3>
-                                <h6>Label</h6>
-                            </div>
+                            </div> */}
                         </div>
                     </div>
                     <div className='flex flex-wrap w-full'>
                         <div className='flex flex-wrap flex-grow gap-5'>
                             {/* add or remove lang ng div depende sa kailangan */}
                             <div className='flex flex-col items-center justify-center flex-grow rounded-lg p-7 bg-gray-50 hover:shadow-lg hover:bg-white'>
-                                <h3 className='text-4xl'>40%</h3>
-                                <h6>Label</h6>
+                                <h3 className='text-4xl'>Count: {UserInformation && UserInformation.Civil.single.count}</h3>
+                                <h3 className='text-4xl'>Percent: {UserInformation && UserInformation.Civil.single_percentage}</h3>
+                                <h6>Single</h6>
                             </div>
                             <div className='flex flex-col items-center justify-center flex-grow rounded-lg p-7 bg-gray-50 hover:shadow-lg hover:bg-white'>
-                                <h3 className='text-4xl'>40%</h3>
-                                <h6>Label</h6>
+                                <h3 className='text-4xl'>Count: {UserInformation && UserInformation.Civil.married.count}</h3>
+                                <h3 className='text-4xl'>Percent: {UserInformation && UserInformation.Civil.married_percentage}</h3>
+                                <h6>Married</h6>
                             </div>
                             <div className='flex flex-col items-center justify-center flex-grow rounded-lg p-7 bg-gray-50 hover:shadow-lg hover:bg-white'>
-                                <h3 className='text-4xl'>40%</h3>
-                                <h6>Lorem ipsum dolor sit amet.</h6>
+                                <h3 className='text-4xl'>Count: {UserInformation && UserInformation.Employment.unemployed.count}</h3>
+                                <h3 className='text-4xl'>Percent: {UserInformation && UserInformation.Employment.unemployed_percentage}</h3>
+                                <h6>Unemployed</h6>
                             </div>
                             <div className='flex flex-col items-center justify-center flex-grow rounded-lg p-7 bg-gray-50 hover:shadow-lg hover:bg-white'>
-                                <h3 className='text-4xl'>40%</h3>
-                                <h6>Label</h6>
+                                <h3 className='text-4xl'>Count: {UserInformation && UserInformation.Employment.unemployed.count}</h3>
+                                <h3 className='text-4xl'>Percent: {UserInformation && UserInformation.Employment.unemployed_percentage}</h3>
+                                <h6>Employed</h6>
                             </div>
                             <div className='flex flex-col items-center justify-center flex-grow rounded-lg p-7 bg-gray-50 hover:shadow-lg hover:bg-white'>
-                                <h3 className='text-4xl'>40%</h3>
-                                <h6>Label</h6>
+                                <h3 className='text-4xl'>Count: {UserInformation && UserInformation.Age.minor_count}</h3>
+                                <h3 className='text-4xl'>Percent: {UserInformation && UserInformation.Age.minor_percentage}</h3>
+                                <h6>minor</h6>
+                            </div>
+                            <div className='flex flex-col items-center justify-center flex-grow rounded-lg p-7 bg-gray-50 hover:shadow-lg hover:bg-white'>
+                                <h3 className='text-4xl'>Count: {UserInformation && UserInformation.Age.adult_count}</h3>
+                                <h3 className='text-4xl'>Percent: {UserInformation && UserInformation.Age.adult_percentage}</h3>
+                                <h6>Adult</h6>
+                            </div>
+                            <div className='flex flex-col items-center justify-center flex-grow rounded-lg p-7 bg-gray-50 hover:shadow-lg hover:bg-white'>
+                                <h3 className='text-4xl'>Count: {UserInformation && UserInformation.Age.senior_count}</h3>
+                                <h3 className='text-4xl'>Percent: {UserInformation && UserInformation.Age.senior_percentage}</h3>
+                                <h6>Senior</h6>
                             </div>
                         </div>
                     </div>
