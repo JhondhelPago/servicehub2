@@ -613,6 +613,41 @@ async function dashboardQuery() {
   }
 }
 
+async function getEventRegistry(userId){
+
+  try{
+
+    const [registrtArray] = await pool.execute(`
+      SELECT event_id
+      FROM event_registry
+      WHERE user_id = ?
+      `, [userId]);
+
+      return registrtArray;
+
+  }catch(error){
+    throw error;
+  }
+}
+
+
+async function getJobRegistry(userId){
+
+  try{
+
+    const [RegistryArray] = await pool.execute(`
+        SELECT job_id
+        FROM job_registry
+        WHERE user_id = ?
+      `, [userId]);
+
+
+      return RegistryArray;
+    
+  }catch(error){
+    throw error;
+  }
+}
 
 module.exports = {
   //user function exports
@@ -644,4 +679,6 @@ module.exports = {
   FetchInboxOfClient,
   ALL_SendMaiL,
   dashboardQuery,
+  getEventRegistry,
+  getJobRegistry
 };

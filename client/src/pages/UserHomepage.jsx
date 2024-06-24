@@ -24,6 +24,7 @@ const UserHomepage = () => {
     // Array container for JobPost
     const [JobData, SetJobData] = useState([]);
 
+    //fetching the Eventpost from the database
     const FetchEventData = async () => {
 
         try {
@@ -42,6 +43,7 @@ const UserHomepage = () => {
         }
     };
 
+    //fetching the Jobpost from the database
     const FetchJobData = async () => {
         try {
             //using the axios get the data from the server
@@ -65,6 +67,57 @@ const UserHomepage = () => {
 
 
 
+    //useState Variable for the Registry of event_post and job_post
+    const [EventRegistry, SetEventRegistry] = useState([]);
+    const [JobRegistry, SetJobRegistry] = useState([]);
+
+
+    const AppendJoinedEventPostId = (eventPostId) => {
+
+        SetEventRegistry(prevState => [...prevState, eventPostId]);
+
+    }
+
+    const AppendJoinedJobPostId = (jobPostId) => {
+        SetJobRegistry(prevState => [...prevState, jobPostId]);
+    }
+
+
+
+
+    //fetcing the EventRegistry
+    const FetchEventRegistry = async() => {
+        try{
+
+            const response = await axios(`/EventRegistered/${clientuserId}`);
+            const data = response.data;
+            console.log(data);
+
+            //assiging to the useState variable
+            SetEventRegistry(data);
+
+        }catch(error){
+            throw error;
+        }
+    };
+
+    //fetch the JobRegistry
+    const FetchJobRegistry = async() => {
+        try{
+
+            const response = await axios.get(`/jobRegistered/${clientuserId}`);
+            const data = response.data;
+            console.log(data);
+
+            //assigning to the useState variable
+            SetJobRegistry(data);
+
+        }catch(error){
+            throw error;
+        }
+    };
+
+
 
     useEffect(() => {
         document.title = 'Homepage'
@@ -72,7 +125,10 @@ const UserHomepage = () => {
         FetchEventData();
 
         FetchJobData();
-        console.log(EventData);
+        // console.log(EventData);
+
+        FetchEventRegistry();
+        FetchJobRegistry();
     }, [])
 
     return (
@@ -146,8 +202,14 @@ const UserHomepage = () => {
                                 <h1 className="text-6xl font-semibold text-center font-noto">My Profile </h1>
                             </div> */}
                             {ActiveComponent === 'EventPosting' && EventData.map((eventItem) => {
+
+                                // let RegisteredBoolean = false;
+                                // if(EventRegistry.includes(eventItem.id)){
+                                //     RegisteredBoolean = true;
+                                // }
+
                                 return (
-                                    <EventPostComponent key={eventItem.id} eventdata={eventItem}></EventPostComponent>
+                                    <EventPostComponent key={eventItem.id} eventdata={eventItem} RegistredBoolean={EventRegistry.includes(eventItem)}></EventPostComponent>
                                 )
                             })}
                         </div>

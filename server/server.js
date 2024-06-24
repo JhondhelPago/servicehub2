@@ -40,7 +40,9 @@ const {
     GetClientSentMail,
     FetchInboxOfClient,
     ALL_SendMaiL,
-    dashboardQuery
+    dashboardQuery,
+    getEventRegistry,
+    getJobRegistry
 
 } = require('./mysqlmodule.js');
 
@@ -1290,6 +1292,42 @@ app.get('/Fetch/Dashboard', async(req, res) => {
   }
 
 
+});
+
+app.get('/EventRegistered/:clientuserId', async(req, res) => {
+
+  const userId = req.params.clientuserId;
+
+  try{
+
+      const EventRegistredArray = await getEventRegistry(userId);
+
+
+      // res.send(EventRegistredArray);
+      res.send(['data from EvenRegistered api']);
+
+    
+  }catch(error){
+    throw error;
+  }
+
+});
+
+app.get('/JobRegistered/:clientuserId', async(req, res) => {
+
+  const userId =req.params.clientuserId;
+
+  try{
+
+    const JobRegisteredArray = await getJobRegistry(userId);
+
+    // res.send(JobRegisteredArray);
+
+    res.send(['data from JobRegistred api']);
+
+  }catch(error){
+    throw error;
+  }
 });
 
 

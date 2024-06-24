@@ -5,7 +5,7 @@ import { CodeGenerator } from "../../utils";
 import axios from "axios";
 // import sample_img from '../../assets/sample_img.jpg';
 
-const EventPostComponent = ({ eventdata }) => {
+const EventPostComponent = ({ eventdata , RegistredBoolean}) => {
 
   //to be foloowed
   //using useffect populate an array containing the image from the FileUpload folder by passing the imagefiles->filname, then display the image
@@ -24,9 +24,6 @@ const EventPostComponent = ({ eventdata }) => {
 
 
     //if not generateTicketCode and register this event to this user.
-
-
-
 
     console.log(eventdata);
     alert(`join button is click`);
@@ -70,7 +67,21 @@ const EventPostComponent = ({ eventdata }) => {
           </div>
           {/* <!-- desc --> */}
           <p className="pr-2 mt-4 overflow-auto text-justify max-h-52">{eventdata.description}</p>
+          {/* <button className="w-10/12 p-4 mx-auto mt-auto text-xl font-medium text-white rounded-md bg-primary-light scaleHover" onClick={() => {JoinButtonAction()}}>Join</button> */}
+          
+         {//control flow here to render the right button for this event post if the clientuser is already registered or not yet registered. the button is dynamically rendered based on the the status of this user about this event post
+
+         RegistredBoolean ? ( //this buttion is rendered if the clientuser is already registered in this post
+          
+          <button className="w-10/12 p-4 mx-auto mt-auto text-xl font-medium text-white rounded-md bg-gray-400 scaleHover">Joined</button>
+
+         ) : ( // this button is rendered if  the clientuser is not yet registered in this post
+
           <button className="w-10/12 p-4 mx-auto mt-auto text-xl font-medium text-white rounded-md bg-primary-light scaleHover" onClick={() => {JoinButtonAction()}}>Join</button>
+
+         )
+          
+         }
         </div>
         {/* <!-- img container --> */}
         <div className="order-first w-full xl:w-1/2 xl:order-last">
