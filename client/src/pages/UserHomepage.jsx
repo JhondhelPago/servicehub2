@@ -78,7 +78,7 @@ const UserHomepage = () => {
     return (
         <>
 
-            <title>Welcome to ServiceHub</title>
+         
 
             <div className='min-h-screen bg-gray-100 min-w-screen'>
                 <div className="flex flex-col h-screen px-5 font-poppins text-darkColor">

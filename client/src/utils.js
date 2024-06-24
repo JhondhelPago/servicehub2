@@ -62,7 +62,6 @@ class CodeGenerator {
 
 
 
-
 class StringManipulate {
     static ToLowerCase(string){
         return string.toLowerCase();
@@ -93,6 +92,7 @@ export {
     TimeUtils,
     ImageStringUtils,
     CodeGenerator,
+    StringManipulate,
     sampleEdit
 }
 
