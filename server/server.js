@@ -1180,6 +1180,8 @@ app.post('/UserRegister/Event', async(req, res) => {
 
 
   console.log(TicketCode);
+
+  res.send();
 });
 
 app.get('/Fetch/Dashboard', async(req, res) => {

@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { TimeUtils, ImageStringUtils } from '../../module-script/util';
 import { ClientUserContext } from "../../pages/ClientUserContext";
 import { CodeGenerator } from "../../utils";
@@ -14,6 +14,10 @@ const EventPostComponent = ({ eventdata , RegistredBoolean}) => {
   //logic here to register this client user when the join button is hit
 
   const { clientuserId } = useContext(ClientUserContext);
+
+
+  //useState variable that will determine what is the button to render if there an action trigger
+  const [JoinedStatus, SetJoinedStatus] = useState(RegistredBoolean);
 
 
   const JoinButtonAction = async() => {
@@ -39,14 +43,26 @@ const EventPostComponent = ({ eventdata , RegistredBoolean}) => {
     
     console.log(generatedCode);
 
+    console.log('execute before resposne.');
 
-    const response = await axios.post(`/UserRegister/Event`, {TicketCode: generatedCode});
+    try{
+
+      const response = await axios.post(`/UserRegister/Event`, {TicketCode: generatedCode});
+      console.log(response);
+
+      //why the code below do not executer but this code blocks i executing?
+      if(response.status >= 200 && response.status <= 299){
+        console.log('registered');
+      }
 
 
-    if(response.status >= 200 && response.status <= 299){
-      console.log('registered');
+      console.log('execute after response.');
+      //changing the state value of the JoinedStatus to render the right button    
+      SetJoinedStatus(true);
+    
+    }catch(error){
+      throw error;
     }
-  
   }
 
   return (
@@ -71,7 +87,7 @@ const EventPostComponent = ({ eventdata , RegistredBoolean}) => {
           
          {//control flow here to render the right button for this event post if the clientuser is already registered or not yet registered. the button is dynamically rendered based on the the status of this user about this event post
 
-         RegistredBoolean ? ( //this buttion is rendered if the clientuser is already registered in this post
+         JoinedStatus ? ( //this buttion is rendered if the clientuser is already registered in this post
           
           <button className="w-10/12 p-4 mx-auto mt-auto text-xl font-medium text-white rounded-md bg-gray-400 scaleHover">Joined</button>
 
