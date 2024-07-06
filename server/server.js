@@ -42,7 +42,8 @@ const {
     ALL_SendMaiL,
     dashboardQuery,
     getEventRegistry,
-    getJobRegistry
+    getJobRegistry,
+    InsertTikcetCodeEvent
 
 } = require('./mysqlmodule.js');
 
@@ -1180,8 +1181,31 @@ app.post('/UserRegister/Event', async(req, res) => {
 
 
   console.log(TicketCode);
+  // console.log('split ticket code');
 
-  res.send();
+  // const ticket_code_array = TicketCode.split('-');
+
+  // const event_id = ticket_code_array[0];
+  // const code = ticket_code_array[1];
+  // const user_id = ticket_code_array[2];
+
+
+  // console.log(ticket_code_array);
+
+
+  //logic here to insert the ticket cdoe to the database
+  let control_flow_result = null;
+  try{
+    InsertTikcetCodeEvent(TicketCode);
+    control_flow_result = true;
+  }catch(error){
+    control_flow_result = false;
+    throw error;
+  }finally{
+    res.send({insetion_query: control_flow_result});
+  }
+
+  
 });
 
 app.get('/Fetch/Dashboard', async(req, res) => {
