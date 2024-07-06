@@ -123,6 +123,9 @@ const UserHomepage = () => {
         FetchRegistry();
     }, [])
 
+
+   
+
     return (
         <>
 
@@ -199,6 +202,7 @@ const UserHomepage = () => {
                                 // if(EventRegistry.includes(eventItem.id)){
                                 //     RegisteredBoolean = true;
                                 // }
+                                console.log()
                                 console.log( `boolean if this post id is in the array of registered ${eventItem.id} : ` + event_registry.includes(eventItem.id));
                                 return (
                                     <EventPostComponent key={eventItem.id} eventdata={eventItem} RegistredBoolean={event_registry.includes(eventItem.id)} ReInvokeFetchRegistry={FetchRegistry}></EventPostComponent>
@@ -212,7 +216,7 @@ const UserHomepage = () => {
                             {/* job post component */}
                             {ActiveComponent === 'JobPosting' && JobData.map((jobItem) => {
                                 return (
-                                    <JobPostComponent key={jobItem.id} jobdata={jobItem}></JobPostComponent>
+                                    <JobPostComponent key={jobItem.id} jobdata={jobItem} RegisteredBoolean={job_registry.includes(jobItem.id)} ReInvokeFetchRegistry={FetchRegistry}></JobPostComponent>
                                 )
                             })}
                         </div>
@@ -221,7 +225,7 @@ const UserHomepage = () => {
                         {ActiveComponent === 'Chat' && (<ChatSection></ChatSection>)}
 
                         <div className='flex flex-col gap-5 px-2 overflow-auto'>
-                            {ActiveComponent === 'Tickets' && (<TicketPage></TicketPage>)}
+                            {ActiveComponent === 'Tickets' && (<TicketPage event_registry={event_registry} job_registry={job_registry}></TicketPage>)}
                         </div>
                         {/* Profile */}
                         {ActiveComponent === 'Profile' && (<Profilepage UserId={clientuserId}></Profilepage>)}

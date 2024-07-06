@@ -740,6 +740,33 @@ async function InsertTikcetCodeEvent(ticket_code){
 
 }
 
+async function InsertTicketCodeJob(ticket_code){
+
+  const registration_code = ticket_code;
+  const ticket_code_array = ticket_code.split('-');
+
+  const job_id = ticket_code_array[0];
+  const code = ticket_code_array[1];
+  const user_id = ticket_code_array[2];
+
+
+  //query here to insert data to the database at job_registry
+
+  try{
+    await pool.execute(`
+      INSERT INTO job_registry
+      (job_id, user_id, registration_code)
+      VALUES (?, ?, ?);
+      `,
+      [job_id, user_id, registration_code]
+    );
+
+  }catch(error){
+    throw error;
+  }
+
+}
+
 module.exports = {
   //user function exports
   get_userId,
@@ -773,5 +800,6 @@ module.exports = {
   dashboardQuery,
   getEventRegistry,
   getJobRegistry,
-  InsertTikcetCodeEvent
+  InsertTikcetCodeEvent,
+  InsertTicketCodeJob
 };

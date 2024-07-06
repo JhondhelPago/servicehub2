@@ -44,7 +44,8 @@ const {
     dashboardQuery,
     getEventRegistry,
     getJobRegistry,
-    InsertTikcetCodeEvent
+    InsertTikcetCodeEvent,
+    InsertTicketCodeJob
 
 } = require('./mysqlmodule.js');
 
@@ -1197,15 +1198,33 @@ app.post('/UserRegister/Event', async(req, res) => {
   //logic here to insert the ticket cdoe to the database
   let control_flow_result = null;
   try{
-    InsertTikcetCodeEvent(TicketCode);
+    await InsertTikcetCodeEvent(TicketCode);
     control_flow_result = true;
   }catch(error){
     control_flow_result = false;
     throw error;
   }finally{
-    res.send({insetion_query: control_flow_result});
+    res.send({insertion_query: control_flow_result});
   }
 
+
+});
+
+app.post('/UserRegister/Job', async(req, res) => {
+
+  const { TicketCode }= req.body;
+  let control_flow_result = null;
+  try{
+    console.log(TicketCode);
+    await InsertTicketCodeJob(TicketCode);
+    control_flow_result = true;
+
+  }catch(error){
+    control_flow_result = false;
+    throw error;
+  }
+  
+  res.send({insertion_query: control_flow_result});
 
 });
 
@@ -1245,7 +1264,7 @@ app.get('/ExtractRegistry/:userId', async(req, res) => {
     });
 
 
-    job_id_registered.forEach((row) => {
+    job_registry.forEach((row) => {
       job_id_registered.push(row.job_id);
     })
 

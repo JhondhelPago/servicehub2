@@ -35,7 +35,7 @@ const EventPostComponent = ({ eventdata , RegistredBoolean, ReInvokeFetchRegistr
     <div className="flex flex-wrap gap-4 p-4 bg-gray-50 xl:flex-nowrap eventCard">
       <div className="flex flex-col w-full gap-4 text-center lg:text-start xl:w-1/2">
         <h1 className="text-4xl font-semibold lg:text-6xl text-balance font-noto">
-          {eventdata.event_title}
+          {eventdata.event_title + " " + RegistredBoolean}
         </h1>
         <div className="flex flex-wrap justify-center gap-4 text-sm font-medium lg:text-lg lg:justify-start">
           <h3 className="tagBG">{eventdata.scheduled_date}</h3>
