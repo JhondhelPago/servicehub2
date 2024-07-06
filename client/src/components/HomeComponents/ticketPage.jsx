@@ -1,6 +1,21 @@
-import React from 'react'
+import React, {useEffect, useState} from 'react'
 
-const TicketPage = ({ }) => {
+const TicketPage = ({ event_registry, job_registry }) => {
+
+  // const [event_regsitered, SetEvent_registered] = useState(event_registry);
+  // const [job_registered, SetJob_registered] = useState(job_registry);
+
+  // useEffect(() => {
+  //   SetEvent_registered(event_registry);
+  // }, [event_registry]);
+
+  // useEffect(() => {
+  //   SetJob_registered(job_registry);
+  // }, [job_registry]);
+
+
+
+
   return (
     <>
       <h1 className='flex justify-center flex-grow text-2xl'>No Tickets Yet...</h1>
