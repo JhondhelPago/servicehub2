@@ -29,6 +29,7 @@ const {
     GetSentMail,
     GetAllClientInformation,
     getRegistry,
+    getRegistryInnerJoinPost,
 
 
 
@@ -1283,6 +1284,25 @@ app.get('/ExtractRegistry/:userId', async(req, res) => {
   }
   res.send(NewRegistryObj);
 })
+
+
+app.get('/ExtractRegistry/Object/:userId', async(req, res) => {
+
+  const { userId } = req.params;
+
+  let RegistryObject;
+
+  try{
+
+    RegistryObject = await getRegistryInnerJoinPost(userId);
+
+  }catch(error){
+    throw error;
+  }
+
+  res.send(RegistryObject);
+
+});
 
 app.get('/Fetch/Dashboard', async(req, res) => {
 

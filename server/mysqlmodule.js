@@ -390,6 +390,42 @@ async function getRegistry(userId){
   }
 }
 
+async function getRegistryInnerJoinPost(userId){
+
+ 
+
+  try{
+
+    const [EventRegistryInnerJoinEvent] = await pool.execute(`
+      SELECT event_registry.event_id, event_registry.user_id, event_registry.registration_code, event_post.*
+      FROM event_registry
+      INNER JOIN event_post ON event_registry.event_id = event_post.id
+      WHERE user_id = ?
+      `, [userId]
+    )
+
+    const [JobRegistryInnerJoinPost] = await pool.execute(`
+      SELECT job_registry.job_id, job_registry.user_id, job_registry.registration_code, job_post.* 
+      FROM job_registry
+      INNER JOIN job_post ON job_registry.job_id = job_post.id
+      WHERE user_id = ?
+      `, [userId]
+    );
+
+    const RegistryInnerJoinedPost = {
+      eventInnerJoinPost: EventRegistryInnerJoinEvent,
+      jobInnerJoinPost: JobRegistryInnerJoinPost
+    }
+
+    return RegistryInnerJoinedPost;
+
+
+  }catch(error){
+    throw error;
+  }
+
+}
+
 // async function AdminSentItems(id){
 
 //   try{
@@ -788,6 +824,7 @@ module.exports = {
   GetSentMail,
   GetAllClientInformation,
   getRegistry,
+  getRegistryInnerJoinPost,
 
   //function query for the clientuser
   clientuserLoginSession,
