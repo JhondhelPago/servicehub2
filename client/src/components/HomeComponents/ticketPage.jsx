@@ -1,6 +1,7 @@
-import React, {useEffect, useState} from 'react'
-
-const TicketPage = ({ event_registry, job_registry }) => {
+import React , {useEffect, useStatem, useContext}from 'react'
+import { ClientUserContext } from '../../pages/ClientUserContext'
+import axios from 'axios'
+const TicketPage = ({ }) => {
 
   // const [event_regsitered, SetEvent_registered] = useState(event_registry);
   // const [job_registered, SetJob_registered] = useState(job_registry);
@@ -13,12 +14,17 @@ const TicketPage = ({ event_registry, job_registry }) => {
   //   SetJob_registered(job_registry);
   // }, [job_registry]);
 
+  const { clientuserId } = useContext(ClientUserContext);
 
+
+  //make a function to retrived all the registered event and job using the userId
+
+  
 
 
   return (
     <>
-      <h1 className='flex justify-center flex-grow text-2xl'>No Tickets Yet...</h1>
+      <h1 className='flex justify-center flex-grow text-2xl'>No Tickets Yet... {clientuserId}</h1>
 
       <div className="flex flex-wrap gap-4 p-4 border-2 border-dashed rounded-lg border-primary-light">
         <div className="flex flex-col flex-wrap flex-grow gap-4 md:flex-row">
