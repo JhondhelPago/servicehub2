@@ -41,6 +41,34 @@ class ImageStringUtils {
 }
 
 
+
+class CodeGenerator {
+
+    static EventCodeGenerator(eventId,userId){
+        const characterSet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+        const codeLength = 6;
+        let code = '';
+        
+        
+        for(let i = 0; i < codeLength; i++){
+
+            code += characterSet.charAt(Math.floor(Math.random() * characterSet.length));
+            
+        }
+
+        return `${eventId}-${code}-${userId}`;
+    }
+}
+
+
+
+class StringManipulate {
+    static ToLowerCase(string){
+        return string.toLowerCase();
+    }
+}
+
+
 function sampleEdit(props){
     // const obj_props = {title: newTitle, creator: newCreatorName};
     const obj_props = props;
@@ -63,6 +91,8 @@ function sampleEdit(props){
 export {
     TimeUtils,
     ImageStringUtils,
+    CodeGenerator,
+    StringManipulate,
     sampleEdit
 }
 

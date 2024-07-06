@@ -56,25 +56,19 @@ async function get_adminId(email, password, role) {
   }
 }
 
-async function GetAllClientInformation(){
-
-
-  try{
-
+async function GetAllClientInformation() {
+  try {
     //return the total registered user
-    const ClientDataInformationRow = await pool.execute( `
+    const ClientDataInformationRow = await pool.execute(`
       SELECT COUNT(*) 
       FROM user
     `);
 
-
     return ClientDataInformationRow;
-
-  }catch(error){
+  } catch (error) {
     console.log(error);
   }
 }
-
 
 //another function to count number of female and male
 //another function to count the registred memeber lived in manila, qc, pasay
@@ -239,7 +233,7 @@ async function FetchAdminInboxFromClient(adminId) {
     // const [row] = await pool.execute(
     //   `
     //     SELECT mail_sent.*, user.firstName
-    //     FROM mail_sent 
+    //     FROM mail_sent
     //     JOIN user ON mail_sent.senderID = user.id COLLATE utf8mb4_general_ci
     //     WHERE mail_sent.receiverID = ?
     //     `,
@@ -247,7 +241,8 @@ async function FetchAdminInboxFromClient(adminId) {
     // );
     // return row;
 
-    const [row] = await pool.execute(`
+    const [row] = await pool.execute(
+      `
       SELECT senderID
       FROM mail_sent
       WHERE receiverID = ? 
@@ -257,55 +252,50 @@ async function FetchAdminInboxFromClient(adminId) {
       [adminId]
     );
 
-    return row
-
+    return row;
   } catch (error) {
     throw error;
   }
 }
 
-async function FetchAdminIboxes(adminId){
+async function FetchAdminIboxes(adminId) {
   //retrun an array of senderIDs associated with given adminId parameter as the receiverID
 
-  try{
-
-    const [AdminInboxes] = await pool.execute(`
+  try {
+    const [AdminInboxes] = await pool.execute(
+      `
       SELECT senderID 
       FROM mail_sent 
       WHERE receiverID = ? 
       ORDER BY STR_TO_DATE(CONCAT(date_sent, " ", time_sent), "%Y-%m-%d %H:%i:%s") DESC LIMIT 1000;
-      `, [adminId]);
-
-  }catch(error){
+      `,
+      [adminId]
+    );
+  } catch (error) {
     throw error;
-    
   }
 }
 
+async function getAdmin() {
+  try {
+    const [AdminIdRow] = await pool.execute(
+      `SELECT id FROM admin WHERE role="regular"`
+    );
 
-async function getAdmin(){
-    
-    try{
-
-        const [AdminIdRow] = await pool.execute(`SELECT id FROM admin WHERE role="regular"`);
-
-        if(AdminIdRow.length == 0){
-            return null;
-        }else{
-            return AdminIdRow;
-        }
-
-    }catch(error){
-        throw error;
+    if (AdminIdRow.length == 0) {
+      return null;
+    } else {
+      return AdminIdRow;
     }
+  } catch (error) {
+    throw error;
+  }
 }
 
-
-
-async function AdminMailInsert(MailObj){
-
-    try{
-        await pool.execute(`
+async function AdminMailInsert(MailObj) {
+  try {
+    await pool.execute(
+      `
         INSERT INTO mail_sent
         (send_id,
         senderID,
@@ -317,20 +307,30 @@ async function AdminMailInsert(MailObj){
         documentfile,
         imagefile,
         read_status)
-        VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`, [0, MailObj.SenderId, MyDateTime.Datenow(), MyDateTime.Timenow(), MailObj.ReceiverId, MailObj.Subject, MailObj.Body, 'docu.pdf,docu1.docx', 'img7.png,img8.jpg', 'unread']);
-    }catch(error){
-        throw error;
-    }
+        VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      [
+        0,
+        MailObj.SenderId,
+        MyDateTime.Datenow(),
+        MyDateTime.Timenow(),
+        MailObj.ReceiverId,
+        MailObj.Subject,
+        MailObj.Body,
+        "docu.pdf,docu1.docx",
+        "img7.png,img8.jpg",
+        "unread",
+      ]
+    );
+  } catch (error) {
+    throw error;
+  }
 }
 
+async function GetSentMail(id) {
+  try {
+    // const [SentMailArray] = await pool.execute(`SELECT * FROM mail_sent WHERE senderID = "${id}" ORDER BY STR_TO_DATE(CONCAT(date_sent, ' ', time_sent), '%Y-%m-%d %H:%i:%s') DESC`);
 
-async function GetSentMail(id){
-
-  try{
-
-      // const [SentMailArray] = await pool.execute(`SELECT * FROM mail_sent WHERE senderID = "${id}" ORDER BY STR_TO_DATE(CONCAT(date_sent, ' ', time_sent), '%Y-%m-%d %H:%i:%s') DESC`);
-
-      const[SentMailArray] = await pool.execute(`
+    const [SentMailArray] = await pool.execute(`
         SELECT 
         mail_sent.send_id,
         mail_sent.senderID,
@@ -349,22 +349,89 @@ async function GetSentMail(id){
         FROM mail_sent JOIN user ON mail_sent.receiverID = user.id
         COLLATE utf8mb4_unicode_ci WHERE mail_sent.senderID = "${id}"
         COLLATE utf8mb4_unicode_ci ORDER BY STR_TO_DATE(CONCAT(mail_sent.date_sent, ' ', mail_sent.time_sent), '%Y-%m-%d %H:%i:%s') DESC;
-      `)
-      return SentMailArray;
+      `);
+    return SentMailArray;
+  } catch (error) {
+    throw error;
+  }
+}
+
+
+async function getRegistry(userId){
+
+  try{
+    //get the even_registry and job_registry, "where @ userId" 
+
+    const [event_registry_array] = await pool.execute(`
+      SELECT * 
+      FROM event_registry
+      WHERE user_id = ?
+      `, [userId]);
+    
+
+
+    const [job_registry_array] = await pool.execute(`
+      SELECT *
+      FROM job_registry
+      WHERE user_id = ?
+      `, [userId]);
+
+
+    const RegistryObj ={
+      event_registry: event_registry_array,
+      job_registry: job_registry_array
+    }
+
+
+    return RegistryObj;
 
   }catch(error){
-      throw error;
+    throw error;
+  }
+}
+
+async function getRegistryInnerJoinPost(userId){
+
+ 
+
+  try{
+
+    const [EventRegistryInnerJoinEvent] = await pool.execute(`
+      SELECT event_registry.event_id, event_registry.user_id, event_registry.registration_code, event_post.*
+      FROM event_registry
+      INNER JOIN event_post ON event_registry.event_id = event_post.id
+      WHERE user_id = ?
+      `, [userId]
+    )
+
+    const [JobRegistryInnerJoinPost] = await pool.execute(`
+      SELECT job_registry.job_id, job_registry.user_id, job_registry.registration_code, job_post.* 
+      FROM job_registry
+      INNER JOIN job_post ON job_registry.job_id = job_post.id
+      WHERE user_id = ?
+      `, [userId]
+    );
+
+    const RegistryInnerJoinedPost = {
+      eventInnerJoinPost: EventRegistryInnerJoinEvent,
+      jobInnerJoinPost: JobRegistryInnerJoinPost
+    }
+
+    return RegistryInnerJoinedPost;
+
+
+  }catch(error){
+    throw error;
   }
 
 }
 
-
 // async function AdminSentItems(id){
-  
+
 //   try{
 
 //     const [SentItemsArray] = await pool.execute(`
-      
+
 //       `)
 
 //   }catch(error){
@@ -404,25 +471,6 @@ const MyDateTime = {
 // }
 
 // show();
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -488,12 +536,9 @@ async function ClientData(id) {
   }
 }
 
-
-
-async function clientInformation(id){
-
-    try{
-        /*
+async function clientInformation(id) {
+  try {
+    /*
         information to from the user table
 
         Username
@@ -506,8 +551,8 @@ async function clientInformation(id){
         Contact No.
         Member Status
         */
-        const [clientInformationRow] = await pool.execute(
-            `
+    const [clientInformationRow] = await pool.execute(
+      `
             SELECT (
                 firstName,
                 lastName,
@@ -521,33 +566,25 @@ async function clientInformation(id){
                 phone,
                 status
             ) FROM user WHERE id = ${id}
-            `)
+            `
+    );
 
-        if(clientInformationRow.length != 0){
-            
-            return clientInformationRow[0]
-
-        }else{
-            
-            return null;
-
-        }
-
-
-    }catch(error){
-        throw error;
+    if (clientInformationRow.length != 0) {
+      return clientInformationRow[0];
+    } else {
+      return null;
     }
-
+  } catch (error) {
+    throw error;
+  }
 }
 
+async function ClientMailInsert(MailObj) {
+  try {
+    //logic here to insert the MailSend to the mail_sent table on the database
 
-async function ClientMailInsert(MailObj){
-
-    try{
-
-        //logic here to insert the MailSend to the mail_sent table on the database
-
-        await pool.execute(`
+    await pool.execute(
+      `
         INSERT INTO mail_sent
         (send_id,
         senderID,
@@ -559,22 +596,30 @@ async function ClientMailInsert(MailObj){
         documentfile,
         imagefile,
         read_status)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`, [0, MailObj.SenderId, MyDateTime.Datenow(), MyDateTime.Timenow(), MailObj.AssignedAdmin, MailObj.MailSubject, MailObj.MailBody, 'sample.pdf', 'img5.jpg,img6.png', 'unread']);
-
-
-    }catch(error){
-        throw error;
-    }
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      [
+        0,
+        MailObj.SenderId,
+        MyDateTime.Datenow(),
+        MyDateTime.Timenow(),
+        MailObj.AssignedAdmin,
+        MailObj.MailSubject,
+        MailObj.MailBody,
+        "sample.pdf",
+        "img5.jpg,img6.png",
+        "unread",
+      ]
+    );
+  } catch (error) {
+    throw error;
+  }
 }
 
+async function GetClientSentMail(id) {
+  try {
+    // const [SentMailArray] = await pool.execute(`SELECT * FROM mail_sent WHERE senderID = "${id}" ORDER BY STR_TO_DATE(CONCAT(date_sent, ' ', time_sent), '%Y-%m-%d %H:%i:%s') DESC`);
 
-async function GetClientSentMail(id){
-
-    try{
-
-        // const [SentMailArray] = await pool.execute(`SELECT * FROM mail_sent WHERE senderID = "${id}" ORDER BY STR_TO_DATE(CONCAT(date_sent, ' ', time_sent), '%Y-%m-%d %H:%i:%s') DESC`);
-
-        const[SentMailArray] = await pool.execute(`
+    const [SentMailArray] = await pool.execute(`
           SELECT 
           mail_sent.send_id,
           mail_sent.senderID,
@@ -592,84 +637,179 @@ async function GetClientSentMail(id){
           FROM mail_sent JOIN admin ON mail_sent.receiverID = admin.id
           COLLATE utf8mb4_unicode_ci WHERE mail_sent.senderID = "${id}"
           COLLATE utf8mb4_unicode_ci ORDER BY STR_TO_DATE(CONCAT(mail_sent.date_sent, ' ', mail_sent.time_sent), '%Y-%m-%d %H:%i:%s') DESC;
-        `)
-        return SentMailArray;
-
-    }catch(error){
-        throw error;
-    }
-
+        `);
+    return SentMailArray;
+  } catch (error) {
+    throw error;
+  }
 }
 
-
-async function FetchInboxOfClient(id){
-
-  try{
-
+async function FetchInboxOfClient(id) {
+  try {
     // const [ClientInbox] = await pool.execute(`
-    //   SELECT mail_sent.*, admin.firstName, admin.lastName 
-    //   FROM mail_sent 
-    //   JOIN admin ON mail_sent.senderID = admin.id 
+    //   SELECT mail_sent.*, admin.firstName, admin.lastName
+    //   FROM mail_sent
+    //   JOIN admin ON mail_sent.senderID = admin.id
     //   COLLATE utf8mb4_general_ci WHERE mail_sent.receiverID = ?
     //   ORDER BY STR_TO_DATE(CONCAT(mail_sent.date_sent, ' ', mail_sent.time_sent), '%Y-%m-%d %H:%i:%s') DESC
     // `,[id]);
 
     // return ClientInbox;
 
-    const  [ClientInbox] = await pool.execute(`
+    const [ClientInbox] = await pool.execute(
+      `
       SELECT senderID
       FROM mail_sent
       WHERE receiverID = ?
       ORDER BY STR_TO_DATE(CONCAT(date_sent, " ", time_sent), "%Y-%m-%d %H:%i:%s") DESC 
       LIMIT 1000;
-      `, [id]);
+      `,
+      [id]
+    );
 
-      return ClientInbox;
-
-
-  }catch(error){
-
-  }
-
+    return ClientInbox;
+  } catch (error) {}
 }
 
-
-async function ALL_SendMaiL(ClientReceiver_id, SenderAdminId){
-
-  try{
-
-    const [SendMails] = await pool.execute(`
+async function ALL_SendMaiL(ClientReceiver_id, SenderAdminId) {
+  try {
+    const [SendMails] = await pool.execute(
+      `
       SELECT * 
       FROM mail_sent
       WHERE senderID = ? AND receiverID = ?
       ORDER BY STR_TO_DATE(CONCAT(date_sent, " ", time_sent), "%Y-%m-%d %H:%i:%s") DESC;
-      `, [ClientReceiver_id, SenderAdminId]);
+      `,
+      [ClientReceiver_id, SenderAdminId]
+    );
 
-      return SendMails;
+    return SendMails;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+}
+
+async function dashboardQuery() {
+  // id = 1000
+  //select (user, fist , last , addres) from user where id = id
+
+  try {
+    const [rowdata] = await pool.execute(`SELECT * FROM user`);
+
+    return rowdata;
+
+    // query statement
+  } catch (error) {
+    throw error;
+  }
+}
+
+async function getEventRegistry(userId){
+
+  try{
+
+    const [registrtArray] = await pool.execute(`
+      SELECT event_id
+      FROM event_registry
+      WHERE user_id = ?
+      `, [userId]);
+
+      return registrtArray;
 
   }catch(error){
-    console.log(error);
+    throw error;
+  }
+}
+
+
+async function getJobRegistry(userId){
+
+  try{
+
+    const [RegistryArray] = await pool.execute(`
+        SELECT job_id
+        FROM job_registry
+        WHERE user_id = ?
+      `, [userId]);
+
+
+      return RegistryArray;
+    
+  }catch(error){
+    throw error;
+  }
+}
+
+
+async function InsertTikcetCodeEvent(ticket_code){
+
+  //divide the ticket into 3 parts
+  // 1. event_id
+  //2. ticket code
+  //3. user_id
+
+  const registration_code = ticket_code;
+  const ticket_code_array = ticket_code.split('-');
+
+  const event_id = ticket_code_array[0];
+  const code = ticket_code_array[1];
+  const user_id = ticket_code_array[2];
+
+
+  //query here to insert data to the database at event_registry
+
+  try{
+
+    await pool.execute(`
+      INSERT INTO event_registry
+      (event_id, user_id, registration_code)
+      VALUES (?, ?, ?);
+      `,
+      [event_id, user_id, registration_code]
+    );
+
+
+  }catch(error){
     throw error;
   }
 
 }
 
+async function InsertTicketCodeJob(ticket_code){
+
+  const registration_code = ticket_code;
+  const ticket_code_array = ticket_code.split('-');
+
+  const job_id = ticket_code_array[0];
+  const code = ticket_code_array[1];
+  const user_id = ticket_code_array[2];
 
 
+  //query here to insert data to the database at job_registry
 
+  try{
+    await pool.execute(`
+      INSERT INTO job_registry
+      (job_id, user_id, registration_code)
+      VALUES (?, ?, ?);
+      `,
+      [job_id, user_id, registration_code]
+    );
 
+  }catch(error){
+    throw error;
+  }
 
+}
 
 module.exports = {
   //user function exports
   get_userId,
 
-
-
   //admin function exports
 
   MyDateTime, // Object
-
 
   get_adminId, //gettig the adminId
   post_EventJob, //inserting the Event or Job data information to the database
@@ -683,8 +823,8 @@ module.exports = {
   AdminMailInsert,
   GetSentMail,
   GetAllClientInformation,
-
-
+  getRegistry,
+  getRegistryInnerJoinPost,
 
   //function query for the clientuser
   clientuserLoginSession,
@@ -693,7 +833,10 @@ module.exports = {
   ClientMailInsert,
   GetClientSentMail,
   FetchInboxOfClient,
-  ALL_SendMaiL
-    
+  ALL_SendMaiL,
+  dashboardQuery,
+  getEventRegistry,
+  getJobRegistry,
+  InsertTikcetCodeEvent,
+  InsertTicketCodeJob
 };
-

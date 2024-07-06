@@ -23,6 +23,15 @@ class StringManipulate {
 
 
 
+class DashBoardTools {
+    static greet() {
+        return 'hellow world';
+    }
+}
+
+
+
+
 module.exports = {
     StringManipulate
 };
