@@ -28,6 +28,8 @@ const {
     AdminMailInsert,
     GetSentMail,
     GetAllClientInformation,
+    getRegistry,
+    getRegistryInnerJoinPost,
 
 
 
@@ -40,7 +42,11 @@ const {
     GetClientSentMail,
     FetchInboxOfClient,
     ALL_SendMaiL,
-    dashboardQuery
+    dashboardQuery,
+    getEventRegistry,
+    getJobRegistry,
+    InsertTikcetCodeEvent,
+    InsertTicketCodeJob
 
 } = require('./mysqlmodule.js');
 
@@ -1178,6 +1184,124 @@ app.post('/UserRegister/Event', async(req, res) => {
 
 
   console.log(TicketCode);
+  // console.log('split ticket code');
+
+  // const ticket_code_array = TicketCode.split('-');
+
+  // const event_id = ticket_code_array[0];
+  // const code = ticket_code_array[1];
+  // const user_id = ticket_code_array[2];
+
+
+  // console.log(ticket_code_array);
+
+
+  //logic here to insert the ticket cdoe to the database
+  let control_flow_result = null;
+  try{
+    await InsertTikcetCodeEvent(TicketCode);
+    control_flow_result = true;
+  }catch(error){
+    control_flow_result = false;
+    throw error;
+  }finally{
+    res.send({insertion_query: control_flow_result});
+  }
+
+
+});
+
+app.post('/UserRegister/Job', async(req, res) => {
+
+  const { TicketCode }= req.body;
+  let control_flow_result = null;
+  try{
+    console.log(TicketCode);
+    await InsertTicketCodeJob(TicketCode);
+    control_flow_result = true;
+
+  }catch(error){
+    control_flow_result = false;
+    throw error;
+  }
+  
+  res.send({insertion_query: control_flow_result});
+
+});
+
+
+app.get('/ExtractRegistry/:userId', async(req, res) => {
+  
+  
+  const { userId } = req.params;
+
+  let query_result = false;
+
+  let RegistryObj;
+  let NewRegistryObj;
+
+  try{
+
+    RegistryObj = await getRegistry(userId);
+
+    const { event_registry } = RegistryObj;
+    const { job_registry } = RegistryObj;
+
+    console.log('event registry query result: ');
+    console.log(event_registry);
+
+    console.log('job registry query result: ');
+    console.log(job_registry);
+
+
+
+    let event_id_registered = [];
+    let job_id_registered = []
+    
+
+    //getting only the id from the array object
+    event_registry.forEach((row) => {
+      event_id_registered.push(row.event_id);
+    });
+
+
+    job_registry.forEach((row) => {
+      job_id_registered.push(row.job_id);
+    })
+
+
+    NewRegistryObj = {
+      event_registry : event_id_registered,
+      job_registry : job_id_registered
+    }
+
+
+
+
+  }catch(error){
+    throw error;
+
+  }
+  res.send(NewRegistryObj);
+})
+
+
+app.get('/ExtractRegistry/Object/:userId', async(req, res) => {
+
+  const { userId } = req.params;
+
+  let RegistryObject;
+
+  try{
+
+    RegistryObject = await getRegistryInnerJoinPost(userId);
+
+  }catch(error){
+    throw error;
+  }
+
+  res.send(RegistryObject);
+
 });
 
 app.get('/Fetch/Dashboard', async(req, res) => {
@@ -1289,6 +1413,25 @@ app.get('/Fetch/Dashboard', async(req, res) => {
     throw error;
   }
 
+
+});
+
+app.get('/EventRegistered/:clientuserId', async(req, res) => {
+
+  const userId = req.params.clientuserId;
+
+  try{
+
+      const EventRegistredArray = await getEventRegistry(userId);
+
+
+      // res.send(EventRegistredArray);
+      res.send(['data from EvenRegistered api']);
+
+    
+  }catch(error){
+    throw error;
+  }
 
 });
 

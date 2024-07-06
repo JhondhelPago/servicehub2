@@ -356,6 +356,76 @@ async function GetSentMail(id) {
   }
 }
 
+
+async function getRegistry(userId){
+
+  try{
+    //get the even_registry and job_registry, "where @ userId" 
+
+    const [event_registry_array] = await pool.execute(`
+      SELECT * 
+      FROM event_registry
+      WHERE user_id = ?
+      `, [userId]);
+    
+
+
+    const [job_registry_array] = await pool.execute(`
+      SELECT *
+      FROM job_registry
+      WHERE user_id = ?
+      `, [userId]);
+
+
+    const RegistryObj ={
+      event_registry: event_registry_array,
+      job_registry: job_registry_array
+    }
+
+
+    return RegistryObj;
+
+  }catch(error){
+    throw error;
+  }
+}
+
+async function getRegistryInnerJoinPost(userId){
+
+ 
+
+  try{
+
+    const [EventRegistryInnerJoinEvent] = await pool.execute(`
+      SELECT event_registry.event_id, event_registry.user_id, event_registry.registration_code, event_post.*
+      FROM event_registry
+      INNER JOIN event_post ON event_registry.event_id = event_post.id
+      WHERE user_id = ?
+      `, [userId]
+    )
+
+    const [JobRegistryInnerJoinPost] = await pool.execute(`
+      SELECT job_registry.job_id, job_registry.user_id, job_registry.registration_code, job_post.* 
+      FROM job_registry
+      INNER JOIN job_post ON job_registry.job_id = job_post.id
+      WHERE user_id = ?
+      `, [userId]
+    );
+
+    const RegistryInnerJoinedPost = {
+      eventInnerJoinPost: EventRegistryInnerJoinEvent,
+      jobInnerJoinPost: JobRegistryInnerJoinPost
+    }
+
+    return RegistryInnerJoinedPost;
+
+
+  }catch(error){
+    throw error;
+  }
+
+}
+
 // async function AdminSentItems(id){
 
 //   try{
@@ -401,6 +471,28 @@ const MyDateTime = {
 // }
 
 // show();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // mysql query for the clientuser
 
@@ -613,6 +705,103 @@ async function dashboardQuery() {
   }
 }
 
+async function getEventRegistry(userId){
+
+  try{
+
+    const [registrtArray] = await pool.execute(`
+      SELECT event_id
+      FROM event_registry
+      WHERE user_id = ?
+      `, [userId]);
+
+      return registrtArray;
+
+  }catch(error){
+    throw error;
+  }
+}
+
+
+async function getJobRegistry(userId){
+
+  try{
+
+    const [RegistryArray] = await pool.execute(`
+        SELECT job_id
+        FROM job_registry
+        WHERE user_id = ?
+      `, [userId]);
+
+
+      return RegistryArray;
+    
+  }catch(error){
+    throw error;
+  }
+}
+
+
+async function InsertTikcetCodeEvent(ticket_code){
+
+  //divide the ticket into 3 parts
+  // 1. event_id
+  //2. ticket code
+  //3. user_id
+
+  const registration_code = ticket_code;
+  const ticket_code_array = ticket_code.split('-');
+
+  const event_id = ticket_code_array[0];
+  const code = ticket_code_array[1];
+  const user_id = ticket_code_array[2];
+
+
+  //query here to insert data to the database at event_registry
+
+  try{
+
+    await pool.execute(`
+      INSERT INTO event_registry
+      (event_id, user_id, registration_code)
+      VALUES (?, ?, ?);
+      `,
+      [event_id, user_id, registration_code]
+    );
+
+
+  }catch(error){
+    throw error;
+  }
+
+}
+
+async function InsertTicketCodeJob(ticket_code){
+
+  const registration_code = ticket_code;
+  const ticket_code_array = ticket_code.split('-');
+
+  const job_id = ticket_code_array[0];
+  const code = ticket_code_array[1];
+  const user_id = ticket_code_array[2];
+
+
+  //query here to insert data to the database at job_registry
+
+  try{
+    await pool.execute(`
+      INSERT INTO job_registry
+      (job_id, user_id, registration_code)
+      VALUES (?, ?, ?);
+      `,
+      [job_id, user_id, registration_code]
+    );
+
+  }catch(error){
+    throw error;
+  }
+
+}
 
 module.exports = {
   //user function exports
@@ -634,6 +823,8 @@ module.exports = {
   AdminMailInsert,
   GetSentMail,
   GetAllClientInformation,
+  getRegistry,
+  getRegistryInnerJoinPost,
 
   //function query for the clientuser
   clientuserLoginSession,
@@ -644,4 +835,8 @@ module.exports = {
   FetchInboxOfClient,
   ALL_SendMaiL,
   dashboardQuery,
+  getEventRegistry,
+  getJobRegistry,
+  InsertTikcetCodeEvent,
+  InsertTicketCodeJob
 };
