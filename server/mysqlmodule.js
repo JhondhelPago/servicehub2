@@ -356,6 +356,40 @@ async function GetSentMail(id) {
   }
 }
 
+
+async function getRegistry(userId){
+
+  try{
+    //get the even_registry and job_registry, "where @ userId" 
+
+    const [event_registry_array] = await pool.execute(`
+      SELECT * 
+      FROM event_registry
+      WHERE user_id = ?
+      `, [userId]);
+    
+
+
+    const [job_registry_array] = await pool.execute(`
+      SELECT *
+      FROM job_registry
+      WHERE user_id = ?
+      `, [userId]);
+
+
+    const RegistryObj ={
+      event_registry: event_registry_array,
+      job_registry: job_registry_array
+    }
+
+
+    return RegistryObj;
+
+  }catch(error){
+    throw error;
+  }
+}
+
 // async function AdminSentItems(id){
 
 //   try{
@@ -401,6 +435,28 @@ const MyDateTime = {
 // }
 
 // show();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // mysql query for the clientuser
 
@@ -704,6 +760,7 @@ module.exports = {
   AdminMailInsert,
   GetSentMail,
   GetAllClientInformation,
+  getRegistry,
 
   //function query for the clientuser
   clientuserLoginSession,

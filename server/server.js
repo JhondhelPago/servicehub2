@@ -28,6 +28,7 @@ const {
     AdminMailInsert,
     GetSentMail,
     GetAllClientInformation,
+    getRegistry,
 
 
 
@@ -1205,8 +1206,64 @@ app.post('/UserRegister/Event', async(req, res) => {
     res.send({insetion_query: control_flow_result});
   }
 
-  
+
 });
+
+
+app.get('/ExtractRegistry/:userId', async(req, res) => {
+  
+  
+  const { userId } = req.params;
+
+  let query_result = false;
+
+  let RegistryObj;
+  let NewRegistryObj;
+
+  try{
+
+    RegistryObj = await getRegistry(userId);
+
+    const { event_registry } = RegistryObj;
+    const { job_registry } = RegistryObj;
+
+    console.log('event registry query result: ');
+    console.log(event_registry);
+
+    console.log('job registry query result: ');
+    console.log(job_registry);
+
+
+
+    let event_id_registered = [];
+    let job_id_registered = []
+    
+
+    //getting only the id from the array object
+    event_registry.forEach((row) => {
+      event_id_registered.push(row.event_id);
+    });
+
+
+    job_id_registered.forEach((row) => {
+      job_id_registered.push(row.job_id);
+    })
+
+
+    NewRegistryObj = {
+      event_registry : event_id_registered,
+      job_registry : job_id_registered
+    }
+
+
+
+
+  }catch(error){
+    throw error;
+
+  }
+  res.send(NewRegistryObj);
+})
 
 app.get('/Fetch/Dashboard', async(req, res) => {
 
@@ -1337,23 +1394,6 @@ app.get('/EventRegistered/:clientuserId', async(req, res) => {
     throw error;
   }
 
-});
-
-app.get('/JobRegistered/:clientuserId', async(req, res) => {
-
-  const userId =req.params.clientuserId;
-
-  try{
-
-    const JobRegisteredArray = await getJobRegistry(userId);
-
-    // res.send(JobRegisteredArray);
-
-    res.send(['data from JobRegistred api']);
-
-  }catch(error){
-    throw error;
-  }
 });
 
 

@@ -24,6 +24,14 @@ const UserHomepage = () => {
     // Array container for JobPost
     const [JobData, SetJobData] = useState([]);
 
+    // Array container for event_registry of this user
+    const [event_registry, SetEvent_registry] = useState([]);
+
+    //Array container for job_registry of this user
+    const [job_registry, SetJob_registry] = useState([]);
+
+
+
     //fetching the Eventpost from the database
     const FetchEventData = async () => {
 
@@ -67,55 +75,37 @@ const UserHomepage = () => {
 
 
 
-    //useState Variable for the Registry of event_post and job_post
-    const [EventRegistry, SetEventRegistry] = useState([]);
-    const [JobRegistry, SetJobRegistry] = useState([]);
+  
+    
 
 
-    const AppendJoinedEventPostId = (eventPostId) => {
+    //fetching the Registry
+    const FetchRegistry = async() => {
 
-        SetEventRegistry(prevState => [...prevState, eventPostId]);
-
-    }
-
-    const AppendJoinedJobPostId = (jobPostId) => {
-        SetJobRegistry(prevState => [...prevState, jobPostId]);
-    }
-
-
-
-
-    //fetcing the EventRegistry
-    const FetchEventRegistry = async() => {
         try{
 
-            const response = await axios(`/EventRegistered/${clientuserId}`);
-            const data = response.data;
-            console.log(data);
+            const response = await axios(`/ExtractRegistry/${clientuserId}`);
+            const RegistryObj = response.data;
 
-            //assiging to the useState variable
-            SetEventRegistry(data);
+            const { event_registry } = RegistryObj;
+            const { job_registry } = RegistryObj;
+
+            console.log('Registry array of event');
+            console.log(event_registry);
+
+            //assign to the useState variable of event_registry
+            SetEvent_registry(event_registry);
+
+            console.log('Registry array of job');
+            console.log(job_registry);
+
+            //assign to the useState variable of job_registry
+            SetJob_registry(job_registry);
 
         }catch(error){
             throw error;
         }
-    };
-
-    //fetch the JobRegistry
-    const FetchJobRegistry = async() => {
-        try{
-
-            const response = await axios.get(`/jobRegistered/${clientuserId}`);
-            const data = response.data;
-            console.log(data);
-
-            //assigning to the useState variable
-            SetJobRegistry(data);
-
-        }catch(error){
-            throw error;
-        }
-    };
+    }
 
 
 
@@ -127,8 +117,10 @@ const UserHomepage = () => {
         FetchJobData();
         // console.log(EventData);
 
-        FetchEventRegistry();
-        FetchJobRegistry();
+       
+
+
+        FetchRegistry();
     }, [])
 
     return (
@@ -207,9 +199,10 @@ const UserHomepage = () => {
                                 // if(EventRegistry.includes(eventItem.id)){
                                 //     RegisteredBoolean = true;
                                 // }
-
+                                console.log( `boolean if this post id is in the array of registered ${eventItem.id} : ` + event_registry.includes(eventItem.id));
                                 return (
-                                    <EventPostComponent key={eventItem.id} eventdata={eventItem} RegistredBoolean={EventRegistry.includes(eventItem)}></EventPostComponent>
+                                    <EventPostComponent key={eventItem.id} eventdata={eventItem} RegistredBoolean={event_registry.includes(eventItem.id)} ReInvokeFetchRegistry={FetchRegistry}></EventPostComponent>
+                                    
                                 )
                             })}
                         </div>
