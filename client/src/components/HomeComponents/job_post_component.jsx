@@ -4,6 +4,8 @@ import { ClientUserContext } from "../../pages/ClientUserContext";
 import { CodeGenerator } from "../../utils";
 import axios from "axios";
 import sample_img from '../../assets/sample_img.jpg';
+import { Carousel } from "react-responsive-carousel";
+import 'react-responsive-carousel/lib/styles/carousel.min.css';
 
 const JobPostComponent = ({ jobdata, RegisteredBoolean, ReInvokeFetchRegistry}) => {
 
@@ -75,7 +77,19 @@ const JobPostComponent = ({ jobdata, RegisteredBoolean, ReInvokeFetchRegistry}) 
         {/* <!-- img container --> */}
         <div className="order-first w-full xl:w-1/2 xl:order-last">
           {/* <!-- id="smallImg" onclick="enlargeImg()" --> */}
-          <img className="object-cover w-full h-full rounded-md" src={require(`../../../../server/FileUpload/${ImageStringUtils.FirstImageElement(jobdata.imagefiles)}`)} alt="img" />
+          {/* <img className="object-cover w-full h-full rounded-md" src={require(`../../../../server/FileUpload/${ImageStringUtils.FirstImageElement(jobdata.imagefiles)}`)} alt="img" /> */}
+
+          {/* Carousel component link */}
+          {/* https://cloudinary.com/blog/add-a-responsive-image-carousel-to-your-react-app */}
+          <Carousel
+            useKeyboardArrows={true}
+            autoPlay={true}
+            infiniteLoop={true}
+          >
+            <img className="object-cover w-full h-full rounded-md" alt="sample_file" src={require(`../../../../server/FileUpload/${ImageStringUtils.FirstImageElement(jobdata.imagefiles)}`)} />
+            {/* <img className="object-cover w-full h-full rounded-md" alt="sample_file" src={require(`../../assets/sample2.jpg`)} /> */}
+          </Carousel>
+
         </div>
         {/* <!-- join btn --> */}
       </div>

@@ -19,7 +19,6 @@ const ChatSection = () => {
         setActiveComponent('sent');
     }
 
-
     return (
         <>
             {/* <div id="mainContentContainer" className="pb-0.5 w-full h-screen flex flex-col flex-grow bg-gray-100 text-darkColor overflow-hidden"> */}
@@ -38,7 +37,7 @@ const ChatSection = () => {
                 {/* <!-- inbox/sent/compose --> */}
                 {/* activeMail */}
                 <div className="flex flex-col items-center gap-5 mb-5">
-                    <div className="w-full flex md:text-xl gap-0.5 rounded border border-darkColor bg-extra-extra-light">
+                    <div className="flex w-full overflow-hidden border rounded md:text-xl border-darkColor bg-extra-extra-light">
                         <button className={`flex justify-center w-full p-2 ${ActiveComponent === 'inbox' ? 'activeMail' : 'hoverMail'}`} onClick={() => { SelectComponent('inbox') }} >Inbox</button>
                         {/* <button className="flex justify-center w-full p-2 hoverMail" onClick={() => { SelectComponent('sent') }}>Sent</button> */}
                         <button className={`flex justify-center w-full p-2 ${ActiveComponent === 'compose' ? 'activeMail' : 'hoverMail'}`} onClick={() => { SelectComponent('compose') }}>Compose</button>
