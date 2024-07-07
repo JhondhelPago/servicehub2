@@ -6,6 +6,7 @@ import axios from "axios";
 const InboxComponent = () => {
 
 
+
     const { AdminId } = useContext(UserContext); // 0. AdminId useContext ang laman is yung AdminId netong loginSession
 
     const [InboxClientIds, SetInboxClientIds] = useState([]);
@@ -81,61 +82,154 @@ const InboxComponent = () => {
 
 
 
-
-
-
-
-
+    const [viewProfile, setViewProfile] = useState(false)
+    const handleViewProfile = () => {
+        if (viewProfile) setViewProfile(false)
+        else setViewProfile(true)
+    }
 
     // redering return ng InboxComponent
     return (
         <>
             {/* <!-- inbox list/content container --> */}
-            <div className="flex h-full px-5 pb-5 overflow-auto rounded">
-                {/* <!-- mail list container --> */}
-                <div className="flex flex-col w-full overflow-hidden border border-l min-w-80 border-darkColor rounded-s">
-                    <div className="flex justify-between w-full p-2 border-b border-darkColor bg-extra-extra-light">
-                        <div className="flex gap-2">
-                            <input type="checkbox" />
-                            <label for="">Select All {InboxClientIds && InboxClientIds.length}</label>
-
-                        </div>
-                        <button className="hover:text-red-600">
-                            <svg className="h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" d="M6 19a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V7H6zM8 9h8v10H8zm7.5-5l-1-1h-5l-1 1H5v2h14V4z" /></svg>
+            <div className="flex h-full px-5 pb-5 overflow-auto ">
+                {viewProfile ? (
+                    <div className="relative w-full overflow-hidden border border-darkColor">
+                        <button className="absolute right-0 p-3 hover:text-red-600" onClick={handleViewProfile}>
+                            <svg className="h-7" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" d="M18.3 5.71a.996.996 0 0 0-1.41 0L12 10.59L7.11 5.7A.996.996 0 1 0 5.7 7.11L10.59 12L5.7 16.89a.996.996 0 1 0 1.41 1.41L12 13.41l4.89 4.89a.996.996 0 1 0 1.41-1.41L13.41 12l4.89-4.89c.38-.38.38-1.02 0-1.4" /></svg>
                         </button>
+                        <div className="flex flex-col h-full p-5 overflow-auto px-7">
+                            <h1 className="pb-5 text-4xl font-semibold text-center font-noto">User Name Profile </h1>
+                            <div className="w-full border rounded-md border-darkColor">
+                                <table className="border-collapse">
+                                    <tr>
+                                        <th className="p-5 border-b border-r border-darkColor">ID</th>
+                                        <td className="w-full p-5 border-b border-darkColor">
+                                            Lorem ipsum dolor sit, amet consectetur adipisicing elit.
+                                            Distinctio, cupiditate? Consequuntur libero voluptatem quam a
+                                            repellendus laudantium earum temporibus assumenda. Lorem ipsum dolor sit amet consectetur, adipisicing elit. Sunt, eveniet voluptatum sequi eaque ratione magni aut optio voluptatibus quae deleniti?
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th className="p-5 border-b border-r border-darkColor">
+                                            Username
+                                        </th>
+                                        <td className="w-full p-5 border-b border-darkColor">
+                                            {/* {ClientData && `${ClientData[0].firstName}`} */}
+                                            asdd
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th className="p-5 border-b border-r border-darkColor">Name</th>
+                                        <td className="w-full p-5 border-b border-darkColor">
+                                            {/* {ClientData &&
+                                                `${ClientData[0].firstName} ${ClientData[0].middleName} ${ClientData[0].Lastname}`} */}
+                                            aksdgasd
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th className="p-5 border-b border-r border-darkColor">Age</th>
+                                        <td className="w-full p-5 border-b border-darkColor">
+                                            {/* {ClientData && `${ClientData[0].age}`} */}
+                                            lajshdahd
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th className="p-5 border-b border-r border-darkColor">Gender</th>
+                                        <td className="w-full p-5 border-b border-darkColor">
+                                            {/* {ClientData && `${ClientData[0].gender}`} */}
+                                            lasdkasd
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th className="p-5 border-b border-r border-darkColor">
+                                            Address
+                                        </th>
+                                        <td className="w-full p-5 border-b border-darkColor">
+                                            {/* {ClientData &&
+                                                `${ClientData[0].houseno} ${ClientData[0].street} ${ClientData[0].barangay} ${ClientData[0].city} ${ClientData[0].district} ${ClientData[0].zipcode}`} */}
+                                            asljkhdlkasd
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th className="p-5 border-b border-r border-darkColor">City</th>
+                                        <td className="w-full p-5 border-b border-darkColor">
+                                            {/* {ClientData && `${ClientData[0].city}`} */}
+                                            ajnksdakjdha
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th className="p-5 border-b border-r border-darkColor">
+                                            District
+                                        </th>
+                                        <td className="w-full p-5 border-b border-darkColor">
+                                            {/* {ClientData && `${ClientData[0].district}`} */}
+                                            aljkshdkashd
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th className="p-5 border-b border-r border-darkColor">
+                                            Contact No.
+                                        </th>
+                                        <td className="w-full p-5 border-b border-darkColor">
+                                            {/* {ClientData && `${ClientData[0].phone}`} */}
+                                            aklsndaksdh
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th className="p-5 border-r border-darkColor">Member Status</th>
+                                        <td className="w-full p-5">
+                                            {/* {ClientData && `${ClientData[0].status}`} */}
+                                            alsjkhdakjsdh
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
                     </div>
-                    {/* <!-- mail items container --> */}
-                    <div className="pb-5 overflow-auto">
-
-                        {InboxClientIds && InboxClientIds.map((clientId) => {
-                            return (
-                                <MailListView clientId={clientId} ClickInboxAction={ClickInboxAction}></MailListView>
-                            )
-                        })}
-
-                        {/* <!-- mail active sample --> */}
-                        {/* <div className="grid grid-cols-7 gap-4 p-2 border-b border-darkColor activeMailItem group/del">
-                            <label className="flex col-span-2 gap-2" for="">
+                ) : (
+                    <div className="flex flex-col w-full overflow-hidden border border-l min-w-80 border-darkColor rounded-s">
+                        <div className="flex justify-between w-full p-2 border-b border-darkColor bg-extra-extra-light">
+                            <div className="flex gap-2">
                                 <input type="checkbox" />
-                                <!-- from -->
-                                <h6 className="truncate">User1 User1User1</h6>
-                            </label>
-                            <!-- subject -->
-                            <h6 className="col-span-3 truncate">SubjectasdadSubjectasdad</h6>
-                            <h6 className="col-span-2 my-auto text-xs justify-self-end group-hover/del:hidden">00/00/00</h6>
-                            <button className="hidden col-span-2 justify-self-end group-hover/del:inline hover:text-red-600">
+                                <label for="">Select All {InboxClientIds && InboxClientIds.length}</label>
+
+                            </div>
+                            <button className="hover:text-red-600">
                                 <svg className="h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" d="M6 19a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V7H6zM8 9h8v10H8zm7.5-5l-1-1h-5l-1 1H5v2h14V4z" /></svg>
                             </button>
-                        </div> */}
-                    </div>
-                </div>
-                {/* <!-- mail content view --> */}
-                {/* 5. another child component */}
-                {/* yung boung view ng Email  */}
+                        </div>
+                        <div className="pb-5 overflow-auto">
 
-                {MailOverViewBoolean && (
-                    <MailOverView MailObjsArray={MailObjsArray} ContactClientId={MailOverViewClientId}></MailOverView>
+                            {InboxClientIds && InboxClientIds.map((clientId) => {
+                                return (
+                                    <MailListView clientId={clientId} ClickInboxAction={ClickInboxAction} ></MailListView>
+                                )
+                            })}
+
+                            {/* <!-- mail active sample --> */}
+                            {/* <div className="grid grid-cols-7 gap-4 p-2 border-b border-darkColor activeMailItem group/del">
+                                <label className="flex col-span-2 gap-2" for="">
+                                    <input type="checkbox" />
+                                    <!-- from -->
+                                    <h6 className="truncate">User1 User1User1</h6>
+                                </label>
+                                <!-- subject -->
+                                <h6 className="col-span-3 truncate">SubjectasdadSubjectasdad</h6>
+                                <h6 className="col-span-2 my-auto text-xs justify-self-end group-hover/del:hidden">00/00/00</h6>
+                                <button className="hidden col-span-2 justify-self-end group-hover/del:inline hover:text-red-600">
+                                    <svg className="h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" d="M6 19a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V7H6zM8 9h8v10H8zm7.5-5l-1-1h-5l-1 1H5v2h14V4z" /></svg>
+                                </button>
+                            </div> */}
+                        </div>
+                    </div>
+
+
                 )}
+                {MailOverViewBoolean && !viewProfile && (
+                    <MailOverView MailObjsArray={MailObjsArray} ContactClientId={MailOverViewClientId} handleViewProfile={handleViewProfile}></MailOverView>
+                )}
+
             </div>
         </>
     )
@@ -145,6 +239,8 @@ const InboxComponent = () => {
 
 // component definition of the MailListView
 const MailListView = ({ clientId, ClickInboxAction }) => {
+
+
 
     const { AdminId } = useContext(UserContext);
     const ClientIdReference = clientId;
@@ -174,7 +270,9 @@ const MailListView = ({ clientId, ClickInboxAction }) => {
 
 
 // component definition of the MailOverView
-const MailOverView = ({ MailObjsArray, ContactClientId }) => {
+const MailOverView = ({ MailObjsArray, ContactClientId, handleViewProfile }) => {
+
+
 
     const Overflow_InnerInbox = useRef(null);
     const { AdminId } = useContext(UserContext);
@@ -196,6 +294,15 @@ const MailOverView = ({ MailObjsArray, ContactClientId }) => {
         SetReplyButtonState(true);
     }
 
+
+    // const [viewProfile, setViewProfile] = useState(false)
+    // const handleViewProfile = () => {
+    //     if (viewProfile) setViewProfile(false)
+    //     else setViewProfile(true)
+    // }
+
+
+
     return (
         <>
             {/* <!-- mail content view --> */}
@@ -205,9 +312,12 @@ const MailOverView = ({ MailObjsArray, ContactClientId }) => {
             */}
             <div ref={Overflow_InnerInbox} className="relative flex flex-col w-3/4 overflow-auto border-t border-b border-r border-darkColor">
 
-                <div className="sticky top-0 z-10 w-full bg-black">
+                <div className="sticky top-0 z-10 w-full">
                     <div className="flex justify-between w-full p-2 border-b border-darkColor bg-extra-extra-light">
-                        <p className="">User Name</p>
+                        <div className="flex flex-row gap-2 px-2 rounded cursor-pointer hover:bg-extra-light" onClick={handleViewProfile}>
+                            <svg className="h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" d="M12 12q-1.65 0-2.825-1.175T8 8t1.175-2.825T12 4t2.825 1.175T16 8t-1.175 2.825T12 12m-8 8v-2.8q0-.85.438-1.562T5.6 14.55q1.55-.775 3.15-1.162T12 13t3.25.388t3.15 1.162q.725.375 1.163 1.088T20 17.2V20z" /></svg>
+                            <p className="">User Name</p>
+                        </div>
                         {/* <p className="">Subj</p> */}
 
                         {/* close btn */}
@@ -267,8 +377,9 @@ const MailInnerView = ({ MailObj }) => {
 
                 <h3 className="text-xl font-medium text-center break-words">{MailObj.subject}</h3>
                 {/* <!-- body --> */}
-                <div className="flex overflow-auto" id="remainingHeight">
-                    {MailObj.body}
+                <div className="flex flex-col overflow-auto" id="remainingHeight">
+                    {/* <img className="max-h-[30vh] mx-auto w-fit mb-2 object-contain rounded-md" src={require("../../assets/sample2.jpg")}></img> */}
+                    <p>{MailObj.body}</p>
                 </div>
             </div>
         </>
@@ -289,8 +400,9 @@ const MailInnerViewUserSender = ({ MailObj }) => {
 
                 <h3 className="text-xl font-medium text-center break-words">{MailObj.subject}</h3>
                 {/* <!-- body --> */}
-                <div className="flex overflow-auto" id="remainingHeight">
-                    {MailObj.body}
+                <div className="flex flex-col overflow-auto" id="remainingHeight">
+                    {/* <img className="max-h-[30vh] mx-auto w-fit mb-2 object-contain rounded-md" src={require("../../assets/sample2.jpg")}></img> */}
+                    <p>{MailObj.body}</p>
                 </div>
             </div>
         </>

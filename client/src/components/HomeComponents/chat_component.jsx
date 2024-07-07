@@ -19,7 +19,6 @@ const ChatSection = () => {
         setActiveComponent('sent');
     }
 
-
     return (
         <>
             {/* <div id="mainContentContainer" className="pb-0.5 w-full h-screen flex flex-col flex-grow bg-gray-100 text-darkColor overflow-hidden"> */}
