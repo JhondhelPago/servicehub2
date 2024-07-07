@@ -236,14 +236,14 @@ const Homeprompt = () => {
                                 <h6>Married</h6>
                             </div> */}
                             <div className='flex flex-col items-center justify-center flex-grow rounded-lg p-7 bg-gray-50 hover:shadow-lg hover:bg-white'>
-                                <h3 className='text-2xl'>Count: {UserInformation && UserInformation.Employment.unemployed.count}</h3>
-                                <h3 className='text-2xl'> {UserInformation && UserInformation.Employment.unemployed_percentage}</h3>
+                                <h3 className='text-2xl'>Count: {UserInformation && UserInformation.Employment.unemployed}</h3>
+                                <h3 className='text-2xl'> {UserInformation && UserInformation.Employment.unemployment_percentage}</h3>
                                 <img className='w-18 h-24' src={Unemployed}></img>
                                 <h6>Unemployed</h6>
                             </div>
                             <div className='flex flex-col items-center justify-center flex-grow rounded-lg p-7 bg-gray-50 hover:shadow-lg hover:bg-white'>
-                                <h3 className='text-2xl'>Count: {UserInformation && UserInformation.Employment.unemployed.count}</h3>
-                                <h3 className='text-2xl'> {UserInformation && UserInformation.Employment.unemployed_percentage}</h3>
+                                <h3 className='text-2xl'>Count: {UserInformation && UserInformation.Employment.employed}</h3>
+                                <h3 className='text-2xl'> {UserInformation && UserInformation.Employment.employment_percentage}</h3>
                                 <img className='w-18 h-24' src={Employed}></img>
                                 <h6>Employed</h6>
                             </div>
