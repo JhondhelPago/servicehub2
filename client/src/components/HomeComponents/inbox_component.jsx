@@ -64,7 +64,7 @@ const InboxComponent = () => {
 
         await FetchConvo_Client_Admin(adminId);
 
-        if (MailOverViewAdminId != adminId) {
+        if (MailOverViewAdminId !== adminId) {
             SetMailOverViewBoolean(null);
             SetMailOverViewAdminId(null);
             SetMailOverViewAdminId([]);
@@ -173,7 +173,7 @@ const MailListView = ({ MailObj, ListMailClick, AdminContactId, ClickInboxAction
     // activeMailItem
     // hoverMailItem
 
-    const { clientuserId } = useContext(ClientUserContext);
+    // const { clientuserId } = useContext(ClientUserContext);
 
     const SenderAdminId = AdminContactId;
 
@@ -252,7 +252,7 @@ const MailOverView = ({ MailObjsArray, ContactAdminId, CloseMailOverViewAction }
                     //     //<MailInnerView MailObj={MailObj}></MailInnerView>
                     // )
 
-                    if (MailObj.senderID == clientuserId) {
+                    if (MailObj.senderID === clientuserId) {
                         return (
                             <MailInnerViewUserSender MailObj={MailObj}></MailInnerViewUserSender>
                         )
@@ -272,7 +272,7 @@ const MailOverView = ({ MailObjsArray, ContactAdminId, CloseMailOverViewAction }
 
                 {/* {ReplyButtonState == true && <Replyform></Replyform>} */}
                 <div className="h-auto">
-                    {ReplyButtonState == true && <Replyform ContactAdminId={ContactAdminId}></Replyform>}
+                    {ReplyButtonState === true && <Replyform ContactAdminId={ContactAdminId}></Replyform>}
 
                 </div>
             </div>
@@ -296,8 +296,9 @@ const MailInnerView = ({ MailObj }) => {
 
                 <h3 className="text-xl font-medium text-center break-words">{MailObj.subject}</h3>
                 {/* <!-- body --> */}
-                <div className="flex overflow-auto" id="remainingHeight">
-                    {MailObj.body}
+                <div className="flex flex-col overflow-auto" id="remainingHeight">
+                    {/* <img className="max-h-[30vh] mx-auto w-fit mb-2 object-contain rounded-md" src={require("../../assets/sample2.jpg")}></img> */}
+                    <p>{MailObj.body}</p>
                 </div>
             </div>
         </>
@@ -318,8 +319,9 @@ const MailInnerViewUserSender = ({ MailObj }) => {
 
                 <h3 className="text-xl font-medium text-center break-words">{MailObj.subject}</h3>
                 {/* <!-- body --> */}
-                <div className="flex overflow-auto" id="remainingHeight">
-                    {MailObj.body}
+                <div className="flex flex-col overflow-auto" id="remainingHeight">
+                    {/* <img className="max-h-[30vh] mx-auto w-fit mb-2 object-contain rounded-md" src={require("../../assets/sample2.jpg")}></img> */}
+                    <p>{MailObj.body}</p>
                 </div>
             </div>
         </>

@@ -50,11 +50,11 @@
 }
 
 .activeMail {
-  @apply rounded bg-extra-light;
+  @apply bg-extra-light;
 }
 
 .hoverMail {
-  @apply transition ease-in-out hover:bg-extra-light hover:rounded;
+  @apply transition ease-in-out hover:bg-extra-light;
 }
 
 .hoverMailItem {
