@@ -1,12 +1,38 @@
 import React, { useEffect, useState } from "react";
 import { TimeUtils, ImageStringUtils } from '../../module-script/util';
+import { ClientUserContext } from "../../pages/ClientUserContext";
+import { CodeGenerator } from "../../utils";
+import axios from "axios";
 import { Carousel } from "react-responsive-carousel";
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 
-const EventPostComponent = ({ eventdata }) => {
 
-  //to be foloowed
-  //using useffect populate an array containing the image from the FileUpload folder by passing the imagefiles->filname, then display the image
+const EventPostComponent = ({ eventdata , RegistredBoolean, ReInvokeFetchRegistry }) => {
+
+  const { clientuserId } = useContext(ClientUserContext);
+
+  // Initialize JoinedStatus based on RegistredBoolean prop
+  const [JoinedStatus, SetJoinedStatus] = useState(RegistredBoolean);
+
+  const JoinButtonAction = async() => {
+    const thisEventId = eventdata.id;
+    const thisUserId = clientuserId;
+    const generatedCode = CodeGenerator.EventCodeGenerator(thisEventId, thisUserId);
+
+    try {
+      const response = await axios.post(`/UserRegister/Event`, { TicketCode: generatedCode });
+      if (response.status >= 200 && response.status <= 299) {
+        SetJoinedStatus(true);
+        ReInvokeFetchRegistry();
+      }
+    } catch (error) {
+      console.error("Error joining event:", error);
+    }
+  }
+
+  useEffect(() => {
+    SetJoinedStatus(RegistredBoolean);
+  }, [RegistredBoolean]);
 
   // console.log("eventdata: ", eventdata);
 
@@ -38,7 +64,17 @@ const EventPostComponent = ({ eventdata }) => {
           </div>
           {/* <!-- desc --> */}
           <p className="pr-2 mt-4 overflow-auto text-justify max-h-52">{eventdata.description}</p>
-          <button className="w-10/12 p-4 mx-auto mt-auto text-xl font-medium text-white rounded-md bg-primary-light scaleHover">Join</button>
+          {
+            JoinedStatus ? (
+              <button className="w-10/12 p-4 mx-auto mt-auto text-xl font-medium text-white rounded-md bg-gray-400 scaleHover">
+                Joined
+              </button>
+            ) : (
+              <button className="w-10/12 p-4 mx-auto mt-auto text-xl font-medium text-white rounded-md bg-primary-light scaleHover" onClick={JoinButtonAction}>
+                Join
+              </button>
+            )
+          }
         </div>
         {/* <!-- img container --> */}
         <div className="order-first w-full xl:w-1/2 xl:order-last">
@@ -55,11 +91,8 @@ const EventPostComponent = ({ eventdata }) => {
             <img className="object-cover w-full h-full rounded-md" alt="sample_file" src={require(`../../../../server/FileUpload/${ImageStringUtils.FirstImageElement(eventdata.imagefiles)}`)} />
             {/* <img className="object-cover w-full h-full rounded-md" alt="sample_file" src={require(`../../assets/sample2.jpg`)} /> */}
           </Carousel>
-
         </div>
-        {/* <!-- join btn --> */}
       </div>
-    </>
   )
 }
 

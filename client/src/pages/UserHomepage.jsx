@@ -24,6 +24,15 @@ const UserHomepage = () => {
     // Array container for JobPost
     const [JobData, SetJobData] = useState([]);
 
+    // Array container for event_registry of this user
+    const [event_registry, SetEvent_registry] = useState([]);
+
+    //Array container for job_registry of this user
+    const [job_registry, SetJob_registry] = useState([]);
+
+
+
+    //fetching the Eventpost from the database
     const FetchEventData = async () => {
 
         try {
@@ -42,6 +51,7 @@ const UserHomepage = () => {
         }
     };
 
+    //fetching the Jobpost from the database
     const FetchJobData = async () => {
         try {
             //using the axios get the data from the server
@@ -65,6 +75,39 @@ const UserHomepage = () => {
 
 
 
+  
+    
+
+
+    //fetching the Registry
+    const FetchRegistry = async() => {
+
+        try{
+
+            const response = await axios(`/ExtractRegistry/${clientuserId}`);
+            const RegistryObj = response.data;
+
+            const { event_registry } = RegistryObj;
+            const { job_registry } = RegistryObj;
+
+            console.log('Registry array of event');
+            console.log(event_registry);
+
+            //assign to the useState variable of event_registry
+            SetEvent_registry(event_registry);
+
+            console.log('Registry array of job');
+            console.log(job_registry);
+
+            //assign to the useState variable of job_registry
+            SetJob_registry(job_registry);
+
+        }catch(error){
+            throw error;
+        }
+    }
+
+
 
     useEffect(() => {
         document.title = 'Homepage'
@@ -72,13 +115,21 @@ const UserHomepage = () => {
         FetchEventData();
 
         FetchJobData();
-        console.log(EventData);
+        // console.log(EventData);
+
+       
+
+
+        FetchRegistry();
     }, [])
+
+
+   
 
     return (
         <>
 
-            <title>Welcome to ServiceHub</title>
+         
 
             <div className='min-h-screen bg-gray-100 min-w-screen'>
                 <div className="flex flex-col h-screen px-5 font-poppins text-darkColor">
@@ -146,8 +197,16 @@ const UserHomepage = () => {
                                 <h1 className="text-6xl font-semibold text-center font-noto">My Profile </h1>
                             </div> */}
                             {ActiveComponent === 'EventPosting' && EventData.map((eventItem) => {
+
+                                // let RegisteredBoolean = false;
+                                // if(EventRegistry.includes(eventItem.id)){
+                                //     RegisteredBoolean = true;
+                                // }
+                                console.log()
+                                console.log( `boolean if this post id is in the array of registered ${eventItem.id} : ` + event_registry.includes(eventItem.id));
                                 return (
-                                    <EventPostComponent key={eventItem.id} eventdata={eventItem}></EventPostComponent>
+                                    <EventPostComponent key={eventItem.id} eventdata={eventItem} RegistredBoolean={event_registry.includes(eventItem.id)} ReInvokeFetchRegistry={FetchRegistry}></EventPostComponent>
+                                    
                                 )
                             })}
                         </div>
@@ -157,7 +216,7 @@ const UserHomepage = () => {
                             {/* job post component */}
                             {ActiveComponent === 'JobPosting' && JobData.map((jobItem) => {
                                 return (
-                                    <JobPostComponent key={jobItem.id} jobdata={jobItem}></JobPostComponent>
+                                    <JobPostComponent key={jobItem.id} jobdata={jobItem} RegisteredBoolean={job_registry.includes(jobItem.id)} ReInvokeFetchRegistry={FetchRegistry}></JobPostComponent>
                                 )
                             })}
                         </div>
@@ -166,7 +225,7 @@ const UserHomepage = () => {
                         {ActiveComponent === 'Chat' && (<ChatSection></ChatSection>)}
 
                         <div className='flex flex-col gap-5 px-2 overflow-auto'>
-                            {ActiveComponent === 'Tickets' && (<TicketPage></TicketPage>)}
+                            {ActiveComponent === 'Tickets' && (<TicketPage event_registry={event_registry} job_registry={job_registry}></TicketPage>)}
                         </div>
                         {/* Profile */}
                         {ActiveComponent === 'Profile' && (<Profilepage UserId={clientuserId}></Profilepage>)}
