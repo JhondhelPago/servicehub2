@@ -86,7 +86,16 @@ const JobPostComponent = ({ jobdata, RegisteredBoolean, ReInvokeFetchRegistry}) 
             autoPlay={true}
             infiniteLoop={true}
           >
-            <img className="object-cover w-full h-full rounded-md" alt="sample_file" src={require(`../../../../server/FileUpload/${ImageStringUtils.FirstImageElement(jobdata.imagefiles)}`)} />
+            {(() => {
+              let ImageArray = ImageStringUtils.ToArray(jobdata.imagefiles);
+
+              return ImageArray.map((filename, index) => (
+                <img key={index} className="object-cover w-full h-full rounded-md" alt="sample_file" src={require(`../../../../server/FileUpload/${filename}`)} />
+              ));
+
+            })()}
+
+            {/* <img className="object-cover w-full h-full rounded-md" alt="sample_file" src={require(`../../../../server/FileUpload/${ImageStringUtils.FirstImageElement(jobdata.imagefiles)}`)} /> */}
             {/* <img className="object-cover w-full h-full rounded-md" alt="sample_file" src={require(`../../assets/sample2.jpg`)} /> */}
           </Carousel>
 

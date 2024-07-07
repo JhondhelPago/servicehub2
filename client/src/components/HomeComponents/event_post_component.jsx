@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, {useContext, useEffect, useState } from "react";
 import { TimeUtils, ImageStringUtils } from '../../module-script/util';
 import { ClientUserContext } from "../../pages/ClientUserContext";
 import { CodeGenerator } from "../../utils";
@@ -88,11 +88,24 @@ const EventPostComponent = ({ eventdata , RegistredBoolean, ReInvokeFetchRegistr
             autoPlay={true}
             infiniteLoop={true}
           >
-            <img className="object-cover w-full h-full rounded-md" alt="sample_file" src={require(`../../../../server/FileUpload/${ImageStringUtils.FirstImageElement(eventdata.imagefiles)}`)} />
+            {/*why this initial invoked function expression is not rendering?  */}
+            {(() => {
+              let ImageArray = ImageStringUtils.ToArray(eventdata.imagefiles);
+
+              return ImageArray.map((filename, index) => (
+                <img key={index} className="object-cover w-full h-full rounded-md" alt="sample_file" src={require(`../../../../server/FileUpload/${filename}`)} />
+              ));
+            })()}
+
+
+
+            {/* why this is rendering */}
+            {/* <img className="object-cover w-full h-full rounded-md" alt="sample_file" src={require(`../../../../server/FileUpload/${ImageStringUtils.FirstImageElement(eventdata.imagefiles)}`)} /> */}
             {/* <img className="object-cover w-full h-full rounded-md" alt="sample_file" src={require(`../../assets/sample2.jpg`)} /> */}
           </Carousel>
         </div>
       </div>
+    </>
   )
 }
 
