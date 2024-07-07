@@ -6,7 +6,7 @@ const TicketPage = ({ }) => {
 
   return (
     <>
-      <div className="flex flex-row w-full overflow-hidden text-xl border rounded-lg border-darkColor">
+      <div className="flex flex-row w-full overflow-hidden text-xl border rounded border-darkColor bg-extra-extra-light">
         <button className={`w-full px-5 py-2 ${isEventsTicketActive ? 'activeMail' : 'hoverMail'}`} onClick={() => { if (!isEventsTicketActive) setIsEventsTicketActive(true) }}>Events Ticket</button>
         <button className={`w-full px-5 py-2 ${!isEventsTicketActive ? 'activeMail' : 'hoverMail'}`} onClick={() => { if (isEventsTicketActive) setIsEventsTicketActive(false) }}>Jobs Ticket</button>
       </div>

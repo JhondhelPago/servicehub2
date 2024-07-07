@@ -61,6 +61,7 @@ const UserHomepage = () => {
 
         setActiveComponent(ComponentName);
 
+        setIsNavOpen(false)
     };
 
 
@@ -74,6 +75,8 @@ const UserHomepage = () => {
         FetchJobData();
         console.log(EventData);
     }, [])
+
+    const [isNavOpen, setIsNavOpen] = useState(false)
 
     return (
         <>
@@ -89,11 +92,14 @@ const UserHomepage = () => {
                             <img className="h-10 select-none" src={nav_logo} alt="logo" />
                         </div>
                         {/* <!-- menu btn --> */}
-                        <button className="flex h-full ml-auto rounded lg:hidden text-primary-light focus:outline-none focus:ring-primary-light focus:ring-1" id="navBtn" >
+                        <button className="flex h-full ml-auto rounded lg:hidden text-primary-light focus:outline-none focus:ring-primary-light focus:ring-1" onClick={() => {
+                            if (isNavOpen) setIsNavOpen(false)
+                            else setIsNavOpen(true)
+                        }}>
                             <svg className="h-full" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" d="M4 6a1 1 0 0 1 1-1h14a1 1 0 1 1 0 2H5a1 1 0 0 1-1-1m0 12a1 1 0 0 1 1-1h14a1 1 0 1 1 0 2H5a1 1 0 0 1-1-1m7-7a1 1 0 1 0 0 2h8a1 1 0 1 0 0-2z" /></svg>
                         </button>
                         {/* <!-- links container --> */}
-                        <div className="hidden col-span-2 font-medium lg:ml-auto lg:col-span-1 lg:flex" id="navLinksContainer">
+                        <div className={`col-span-2 font-medium lg:ml-auto lg:col-span-1 lg:flex ${isNavOpen ? '' : 'hidden'}`}>
                             <ul className="grid gap-10 pt-5 mx-auto font-bold text-center w-fit lg:pt-0 lg:flex lg:gap-20 lg:w-auto">
                                 {/* <li className="activeUserLink">
                                 <a href="">Events</a>
@@ -125,7 +131,7 @@ const UserHomepage = () => {
 
                                 <button
                                     className={`font-medium ${ActiveComponent === 'Tickets' ? 'activeUserLink' : 'userNavHover'}`}
-                                    onClick={() => SetSelectedComponent('Tickets')}
+                                    onClick={() => { SetSelectedComponent('Tickets') }}
                                 >Tickets</button>
 
                                 <button
