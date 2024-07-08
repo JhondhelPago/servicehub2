@@ -68,19 +68,26 @@ const TicketPage = ({ }) => {
 
       {isEventsTicketActive ? (
 
+        <div>
+          {EventRegistryObjArray && EventRegistryObjArray.map((eventRegistryObj) => {
+            (
+              <EventTicketCard dataObj={eventRegistryObj}></EventTicketCard>
+            )
+          })}
+        </div>
 
-        { EventRegistryObjArray && EventRegistryObjArray.map((eventRegistryObj) => {
-          return (<EventTicketCard dataObj={eventRegistryObj}></EventTicketCard>
-          )
-        })}
-      ):(
-      {JobRegistryObjArray && JobRegistryObjArray.map((jobRegistryObj) => {
-        return (
-          <JobTicketCard dataObj={jobRegistryObj}></JobTicketCard>
-        )
-      })}
+      ) : (
 
-        )}
+        <div>
+          {JobRegistryObjArray && JobRegistryObjArray.map((jobRegistryObj) => {
+            (
+              <JobTicketCard dataObj={jobRegistryObj}></JobTicketCard>
+            )
+          })}
+        </div>
+
+      )}
+
     </>
   )
 }

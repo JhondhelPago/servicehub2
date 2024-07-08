@@ -44,13 +44,13 @@ const PostForm = ({ onClick }) => {
     const AddDisability = (disability) => {
 
         let Copy_SelectedDisabilities = [...SelectedDisabilities];
-    
+
         //remove from the PreListDisabilities
         let Copy_PreListDisabilities = [...PreListDisabilities];
 
         let indexOf_disabilitiy = Copy_PreListDisabilities.indexOf(disability);
 
-        if(indexOf_disabilitiy !== -1){
+        if (indexOf_disabilitiy !== -1) {
 
             //if found remove the element on the array using the splice method
             Copy_PreListDisabilities.splice(indexOf_disabilitiy, 1);
@@ -86,7 +86,7 @@ const PostForm = ({ onClick }) => {
 
         let indexOf_disabilitiy = Copy_SelectedDisabilities.indexOf(disability);
 
-        if(indexOf_disabilitiy !== -1){
+        if (indexOf_disabilitiy !== -1) {
             //if found remove the element on the array using the splice method
             Copy_SelectedDisabilities.splice(indexOf_disabilitiy, 1);
 
@@ -104,7 +104,7 @@ const PostForm = ({ onClick }) => {
 
             // SortPreListDisabilities();
             // SortSelectedDisabilities();
-        }else{
+        } else {
             console.log('remove function disability not found')
         }
 
@@ -226,7 +226,6 @@ const PostForm = ({ onClick }) => {
                             <p>{AdminId}</p>
                         </div>
 
-
                         <div className="flex flex-col gap-5 pl-5 md:mx-10 ">
                             <form className="flex flex-col gap-3" method="post" encType="multipart/form-data" id="postForm" onSubmit={handleSubmit}>
                                 <div className="flex flex-col w-full gap-3 md:flex-row">
@@ -270,37 +269,25 @@ const PostForm = ({ onClick }) => {
                                 <textarea className="px-3 py-2 border rounded-md border-darkColor" type="textarea" name="description" placeholder="Event Description" rows="10"></textarea>
 
                                 {/* <!-- select tag for selecting audience or selection multiple audience --> */}
-                                <div className='flex items-center p-2 bg-white border rounded-lg border-darkColor'>
+                                <div className='flex flex-wrap items-center gap-2 p-2 bg-white border rounded-lg border-darkColor'>
                                     <p className='pr-2'>Target Audience:</p>
-
-                                    {/* selected container */}
-                                    <div className='flex flex-wrap gap-2 grow'>
-
-                                        {/* disability container */}
-                                        <button className='flex items-center justify-center gap-2 px-4 py-2 border rounded-full bg-extra-light border-darkColor group'>
-                                            {/* disability name */}
-                                            <p className='text-lg'>Disability 1</p>
-                                            <svg className='hidden h-5 text-red-600 cursor-pointer group-hover:flex' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><g fill="none" fill-rule="evenodd"><path d="M24 0v24H0V0zM12.593 23.258l-.011.002l-.071.035l-.02.004l-.014-.004l-.071-.035c-.01-.004-.019-.001-.024.005l-.004.01l-.017.428l.005.02l.01.013l.104.074l.015.004l.012-.004l.104-.074l.012-.016l.004-.017l-.017-.427c-.002-.01-.009-.017-.017-.018m.265-.113l-.013.002l-.185.093l-.01.01l-.003.011l.018.43l.005.012l.008.007l.201.093c.012.004.023 0 .029-.008l.004-.014l-.034-.614c-.003-.012-.01-.02-.02-.022m-.715.002a.023.023 0 0 0-.027.006l-.006.014l-.034.614c0 .012.007.02.017.024l.015-.002l.201-.093l.01-.008l.004-.011l.017-.43l-.003-.012l-.01-.01z" /><path fill="currentColor" d="m12 14.122l5.303 5.303a1.5 1.5 0 0 0 2.122-2.122L14.12 12l5.304-5.303a1.5 1.5 0 1 0-2.122-2.121L12 9.879L6.697 4.576a1.5 1.5 0 1 0-2.122 2.12L9.88 12l-5.304 5.304a1.5 1.5 0 1 0 2.122 2.12z" /></g></svg>
-                                        </button>
-
-                                    </div>
 
 
                                     {SelectedDisabilities && SelectedDisabilities.map((Disability) => {
                                         return (
                                             <>
                                                 {/* selected container */}
-                                                <div className='flex flex-wrap gap-2 grow'>
+                                                <div className='flex flex-wrap gap-2'>
 
-                                                {/* disability container */}
-                                                <button className='flex items-center justify-center gap-2 px-4 py-2 border rounded-full bg-extra-light border-darkColor group' onClick={() => {RemoveAddedDisabilitiy(Disability)}}>
-                                                    {/* disability name */}
-                                                    <p className='text-lg'>{Disability}</p>
-                                                    <svg className='hidden h-5 text-red-600 cursor-pointer group-hover:flex' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><g fill="none" fill-rule="evenodd"><path d="M24 0v24H0V0zM12.593 23.258l-.011.002l-.071.035l-.02.004l-.014-.004l-.071-.035c-.01-.004-.019-.001-.024.005l-.004.01l-.017.428l.005.02l.01.013l.104.074l.015.004l.012-.004l.104-.074l.012-.016l.004-.017l-.017-.427c-.002-.01-.009-.017-.017-.018m.265-.113l-.013.002l-.185.093l-.01.01l-.003.011l.018.43l.005.012l.008.007l.201.093c.012.004.023 0 .029-.008l.004-.014l-.034-.614c-.003-.012-.01-.02-.02-.022m-.715.002a.023.023 0 0 0-.027.006l-.006.014l-.034.614c0 .012.007.02.017.024l.015-.002l.201-.093l.01-.008l.004-.011l.017-.43l-.003-.012l-.01-.01z" /><path fill="currentColor" d="m12 14.122l5.303 5.303a1.5 1.5 0 0 0 2.122-2.122L14.12 12l5.304-5.303a1.5 1.5 0 1 0-2.122-2.121L12 9.879L6.697 4.576a1.5 1.5 0 1 0-2.122 2.12L9.88 12l-5.304 5.304a1.5 1.5 0 1 0 2.122 2.12z" /></g></svg>
-                                                </button>
+                                                    {/* disability container */}
+                                                    <button className='flex items-center justify-center gap-2 px-4 py-2 border rounded-full bg-extra-light border-darkColor group' onClick={() => { RemoveAddedDisabilitiy(Disability) }}>
+                                                        {/* disability name */}
+                                                        <p className='text-lg'>{Disability}</p>
+                                                        <svg className='hidden h-5 text-red-600 cursor-pointer group-hover:flex' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><g fill="none" fill-rule="evenodd"><path d="M24 0v24H0V0zM12.593 23.258l-.011.002l-.071.035l-.02.004l-.014-.004l-.071-.035c-.01-.004-.019-.001-.024.005l-.004.01l-.017.428l.005.02l.01.013l.104.074l.015.004l.012-.004l.104-.074l.012-.016l.004-.017l-.017-.427c-.002-.01-.009-.017-.017-.018m.265-.113l-.013.002l-.185.093l-.01.01l-.003.011l.018.43l.005.012l.008.007l.201.093c.012.004.023 0 .029-.008l.004-.014l-.034-.614c-.003-.012-.01-.02-.02-.022m-.715.002a.023.023 0 0 0-.027.006l-.006.014l-.034.614c0 .012.007.02.017.024l.015-.002l.201-.093l.01-.008l.004-.011l.017-.43l-.003-.012l-.01-.01z" /><path fill="currentColor" d="m12 14.122l5.303 5.303a1.5 1.5 0 0 0 2.122-2.122L14.12 12l5.304-5.303a1.5 1.5 0 1 0-2.122-2.121L12 9.879L6.697 4.576a1.5 1.5 0 1 0-2.122 2.12L9.88 12l-5.304 5.304a1.5 1.5 0 1 0 2.122 2.12z" /></g></svg>
+                                                    </button>
 
                                                 </div>
-                                            
+
                                             </>
                                         )
                                     })}
@@ -308,26 +295,27 @@ const PostForm = ({ onClick }) => {
                                 </div>
 
                                 {/* options container */}
-                                
 
-                                {PreListDisabilities && PreListDisabilities.map((Disability) => {
-                                    return (
-                                        <>
-                                            <div className='flex flex-wrap justify-center gap-2 mt-2 md:justify-start'>
+                                <div className='flex flex-row gap-2'>
+                                    {PreListDisabilities && PreListDisabilities.map((Disability) => {
+                                        return (
+                                            <>
+                                                <div className='flex gap-2 mt-2 w-fit md:justify-start'>
 
-                                            {/* disability container */}
-                                            <button className='flex items-center justify-center gap-2 px-4 py-2 border rounded-full border-darkColor group' onClick={() => {AddDisability(Disability)}}>
-                                                {/* disability name */}
-                                                <p className=''>{Disability}</p>
-                                                <svg className='hidden h-5 text-green-600 cursor-pointer group-hover:flex' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"><path fill="currentColor" d="M228 128a12 12 0 0 1-12 12h-76v76a12 12 0 0 1-24 0v-76H40a12 12 0 0 1 0-24h76V40a12 12 0 0 1 24 0v76h76a12 12 0 0 1 12 12" /></svg>
-                                            </button>
+                                                    {/* disability container */}
+                                                    <button className='flex items-center justify-center gap-2 px-4 py-2 border rounded-full border-darkColor group' onClick={() => { AddDisability(Disability) }}>
+                                                        {/* disability name */}
+                                                        <p className=''>{Disability}</p>
+                                                        <svg className='hidden h-5 text-green-600 cursor-pointer group-hover:flex' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"><path fill="currentColor" d="M228 128a12 12 0 0 1-12 12h-76v76a12 12 0 0 1-24 0v-76H40a12 12 0 0 1 0-24h76V40a12 12 0 0 1 24 0v76h76a12 12 0 0 1 12 12" /></svg>
+                                                    </button>
 
-                                            </div>
-                                        </>
-                                    )
-                                })}
+                                                </div>
+                                            </>
+                                        )
+                                    })}
+                                </div>
 
-                                
+
 
 
 

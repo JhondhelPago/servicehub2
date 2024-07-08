@@ -79,8 +79,6 @@ const UserHomepage = () => {
 
 
 
-
-
     //fetching the Registry
     const FetchRegistry = async () => {
 
