@@ -106,8 +106,10 @@ async function post_EventJob(
         description,
         target_group,
         post_type,
-        imagefiles)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+        imagefiles,
+        archive_status
+        )
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
       [
         Creator_id,
         MyDateTime.Datenow(),
@@ -120,6 +122,7 @@ async function post_EventJob(
         Disability,
         Table,
         filesArray,
+        false
       ]
     );
   } catch (error) {
