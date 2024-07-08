@@ -198,6 +198,7 @@ class Dashboard {
         'Sensory Processing Disorder (SPD)'
       ],
       SensoryDisability_count: 0,
+      SensoryDisability_percentage: 0,
     
       PhysicalDisability: [
         'Amputation',
@@ -239,6 +240,7 @@ class Dashboard {
         'Tuberous Sclerosis'
       ],
       PhysicalDisability_count: 0,
+      PhysicalDisability_percentage: 0,
 
       MentalHealthDisability: [
         'Schizophrenia',
@@ -259,6 +261,7 @@ class Dashboard {
         'Intermittent Explosive Disorder'
       ],
       MentalHealthDisability_count: 0,
+      MentalHealthDisability_percentage: 0,
 
       IntellectualDisability: [
         'Down Syndrome',
@@ -277,6 +280,7 @@ class Dashboard {
         'Phenylketonuria (PKU) with cognitive impairments'
       ],
       IntellectualDisability_count: 0,
+      IntellectualDisability_percentage: 0,
 
       LearningDisability: [
         'Autism Spectrum Disorder (ASD)',
@@ -292,6 +296,7 @@ class Dashboard {
         'Speech and Language Disorders'
       ],
       LearningDisability_count: 0,
+      LearningDisability_percentage: 0,
 
       InvisibleDisability: [
         'Chronic Fatigue Syndrome',
@@ -304,7 +309,16 @@ class Dashboard {
         'Epilepsy with cognitive impairments',
         'Chronic Traumatic Encephalopathy (CTE)'
       ],
-      InvisibleDisability_count: 0
+      InvisibleDisability_count: 0,
+      InvisibleDisability_percetage: 0,
+
+      OtherDisability : [],
+      OtherDisability_count: 0,
+      OtherDisability_percentage: 0
+
+
+
+
     };
     
     // console.log(disabilities);
@@ -510,6 +524,31 @@ class Dashboard {
     // console.log(`Religion Count List : ${this.Religion.getReligionCount()}`);
     // console.log(`Civil Count List : single=${this.Civil.getSingleCount()}, married=${this.Civil.getMarriedCount()}, others=${this.Civil.getOthersCount()}`);
     // console.log(`Employment Count: employed=${this.Employment.getEmployed()}, unemployed=${this.Employment.getUnemployed()}, others=${this.Employment.getOthers()}`);
+
+
+    //assign percentage value to the Disability Property of this object
+
+    this.Disability.SensoryDisability_percentage = this.Disability.SensoryDisability_count / this.user_data_length;
+    
+    this.Disability.PhysicalDisability_percentage = this.Disability.PhysicalDisability_count / this.user_data_length;
+
+    this.Disability.MentalHealthDisability_percentage = this.Disability.MentalHealthDisability_count / this.user_data_length;
+
+    this.Disability.IntellectualDisability_percentage = this.Disability.IntellectualDisability_count / this.user_data_length;
+
+    this.Disability.LearningDisability_percentage = this.Disability.LearningDisability_count / this.user_data_length;
+
+    this.Disability.InvisibleDisability_percentage = this.Disability.InvisibleDisability_count / this.user_data_length;
+
+    //getting the missing values from the loop
+
+    this.Disability.OtherDisability_count  =  this.user_data_length - 
+      (
+        this.Disability.SensoryDisability_count + this.Disability.PhysicalDisability_count + this.Disability.MentalHealthDisability_count + this.Disability.IntellectualDisability_count +
+        this.Disability.LearningDisability_count + this.Disability.InvisibleDisability_count
+      )
+
+      
   }
 
 
