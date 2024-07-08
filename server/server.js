@@ -1096,6 +1096,18 @@ app.get('/Dashboard/Information', async(req, res) => {
 
 
 
+app.post('/Event/Archive/StatusTrue', async(req, res) => {
+
+  const { EventObjDetails } = req.body;
+  
+  
+  console.log(EventObjDetails);
+
+  
+
+});
+
+
 
 
 
