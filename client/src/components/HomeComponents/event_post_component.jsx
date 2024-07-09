@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { TimeUtils, ImageStringUtils } from '../../module-script/util';
 import { ClientUserContext } from "../../pages/ClientUserContext";
 import { CodeGenerator } from "../../utils";
@@ -6,15 +6,13 @@ import axios from "axios";
 import { Carousel } from "react-responsive-carousel";
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 
-
-const EventPostComponent = ({ eventdata , RegistredBoolean, ReInvokeFetchRegistry }) => {
-
+const EventPostComponent = ({ eventdata, RegistredBoolean, ReInvokeFetchRegistry }) => {
   const { clientuserId } = useContext(ClientUserContext);
 
   // Initialize JoinedStatus based on RegistredBoolean prop
   const [JoinedStatus, SetJoinedStatus] = useState(RegistredBoolean);
 
-  const JoinButtonAction = async() => {
+  const JoinButtonAction = async () => {
     const thisEventId = eventdata.id;
     const thisUserId = clientuserId;
     const generatedCode = CodeGenerator.EventCodeGenerator(thisEventId, thisUserId);
@@ -33,18 +31,6 @@ const EventPostComponent = ({ eventdata , RegistredBoolean, ReInvokeFetchRegistr
   useEffect(() => {
     SetJoinedStatus(RegistredBoolean);
   }, [RegistredBoolean]);
-
-  // console.log("eventdata: ", eventdata);
-
-  // const [images, setImages] = useState([]);
-
-  // useEffect(() => {
-  //   if (Array.isArray(eventdata.imagefiles)) {
-  //     const imageUrls = eventdata.imagefiles.map(filename => require(`../../../../server/FileUpload/${filename}`));
-  //     setImages(imageUrls);
-  //   }
-  // }, [eventdata.imagefiles]);
-
 
   return (
     <>
@@ -66,7 +52,7 @@ const EventPostComponent = ({ eventdata , RegistredBoolean, ReInvokeFetchRegistr
           <p className="pr-2 mt-4 overflow-auto text-justify max-h-52">{eventdata.description}</p>
           {
             JoinedStatus ? (
-              <button className="w-10/12 p-4 mx-auto mt-auto text-xl font-medium text-white rounded-md bg-gray-400 scaleHover">
+              <button className="w-10/12 p-4 mx-auto mt-auto text-xl font-medium text-white bg-gray-400 rounded-md scaleHover">
                 Joined
               </button>
             ) : (
@@ -80,7 +66,6 @@ const EventPostComponent = ({ eventdata , RegistredBoolean, ReInvokeFetchRegistr
         <div className="order-first w-full xl:w-1/2 xl:order-last">
           {/* <!-- id="smallImg" onclick="enlargeImg()" --> */}
           {/* <img className="object-cover w-full h-full rounded-md" src={require(`../../../../server/FileUpload/${ImageStringUtils.FirstImageElement(eventdata.imagefiles)}`)} alt="img" /> */}
-
           {/* Carousel component link */}
           {/* https://cloudinary.com/blog/add-a-responsive-image-carousel-to-your-react-app */}
           <Carousel
@@ -88,20 +73,12 @@ const EventPostComponent = ({ eventdata , RegistredBoolean, ReInvokeFetchRegistr
             autoPlay={true}
             infiniteLoop={true}
           >
-            {/*why this initial invoked function expression is not rendering?  */}
             {(() => {
               let ImageArray = ImageStringUtils.ToArray(eventdata.imagefiles);
-
               return ImageArray.map((filename, index) => (
                 <img key={index} className="object-cover w-full h-full rounded-md" alt="sample_file" src={require(`../../../../server/FileUpload/${filename}`)} />
               ));
             })()}
-
-
-
-            {/* why this is rendering */}
-            {/* <img className="object-cover w-full h-full rounded-md" alt="sample_file" src={require(`../../../../server/FileUpload/${ImageStringUtils.FirstImageElement(eventdata.imagefiles)}`)} /> */}
-            {/* <img className="object-cover w-full h-full rounded-md" alt="sample_file" src={require(`../../assets/sample2.jpg`)} /> */}
           </Carousel>
         </div>
       </div>

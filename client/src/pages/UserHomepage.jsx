@@ -14,8 +14,6 @@ import Profilepage from '../components/HomeComponents/Profilepage.jsx';
 import TicketPage from '../components/HomeComponents/ticketPage.jsx';
 
 const UserHomepage = () => {
-
-
     const { clientuserId } = useContext(ClientUserContext);
 
     // Array container for the EventPost
@@ -30,22 +28,16 @@ const UserHomepage = () => {
     //Array container for job_registry of this user
     const [job_registry, SetJob_registry] = useState([]);
 
-
+    const [isNavOpen, setIsNavOpen] = useState(false);
 
     //fetching the Eventpost from the database
     const FetchEventData = async () => {
-
         try {
-
             // getting the data from the middle server
             const response = await axios.get('/fetchingEventPost');
             const data = response.data;
-
             console.log(data);
             SetEventData(data);
-
-
-
         } catch (error) {
             console.error(error);
         }
@@ -64,16 +56,11 @@ const UserHomepage = () => {
         }
     }
 
-
-
     const [ActiveComponent, setActiveComponent] = useState('EventPosting');
 
     const SetSelectedComponent = (ComponentName) => {
-
         setActiveComponent(ComponentName);
-
-
-        //reInvoked useState based on the component selected
+        setIsNavOpen(false);
 
         switch(ComponentName){
             case 'EventPosting':
@@ -83,71 +70,41 @@ const UserHomepage = () => {
                 FetchJobData();
                 break;
 
-            default: 
+            default:
 
                 break;
         }
-
     };
 
-
-
-  
-    
-
-
     //fetching the Registry
-    const FetchRegistry = async() => {
-
-        try{
-
+    const FetchRegistry = async () => {
+        try {
             const response = await axios(`/ExtractRegistry/${clientuserId}`);
             const RegistryObj = response.data;
-
             const { event_registry } = RegistryObj;
             const { job_registry } = RegistryObj;
-
             console.log('Registry array of event');
             console.log(event_registry);
-
             //assign to the useState variable of event_registry
             SetEvent_registry(event_registry);
-
             console.log('Registry array of job');
             console.log(job_registry);
-
             //assign to the useState variable of job_registry
             SetJob_registry(job_registry);
-
-        }catch(error){
+        } catch (error) {
             throw error;
         }
     }
 
-
-
     useEffect(() => {
-        document.title = 'Homepage'
-
+        document.title = 'Homepage';
         FetchEventData();
-
         FetchJobData();
-        // console.log(EventData);
-
-       
-
-
         FetchRegistry();
     }, [])
 
-
-   
-
     return (
         <>
-
-         
-
             <div className='min-h-screen bg-gray-100 min-w-screen'>
                 <div className="flex flex-col h-screen px-5 font-poppins text-darkColor">
                     {/* <!-- nav --> */}
@@ -157,111 +114,65 @@ const UserHomepage = () => {
                             <img className="h-10 select-none" src={nav_logo} alt="logo" />
                         </div>
                         {/* <!-- menu btn --> */}
-                        <button className="flex h-full ml-auto rounded lg:hidden text-primary-light focus:outline-none focus:ring-primary-light focus:ring-1" id="navBtn" >
+                        <button className="flex h-full ml-auto rounded lg:hidden text-primary-light focus:outline-none focus:ring-primary-light focus:ring-1" onClick={() => setIsNavOpen(!isNavOpen)}>
                             <svg className="h-full" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" d="M4 6a1 1 0 0 1 1-1h14a1 1 0 1 1 0 2H5a1 1 0 0 1-1-1m0 12a1 1 0 0 1 1-1h14a1 1 0 1 1 0 2H5a1 1 0 0 1-1-1m7-7a1 1 0 1 0 0 2h8a1 1 0 1 0 0-2z" /></svg>
                         </button>
                         {/* <!-- links container --> */}
-                        <div className="hidden col-span-2 font-medium lg:ml-auto lg:col-span-1 lg:flex" id="navLinksContainer">
+                        <div className={`col-span-2 font-medium lg:ml-auto lg:col-span-1 lg:flex ${isNavOpen ? '' : 'hidden'}`}>
                             <ul className="grid gap-10 pt-5 mx-auto font-bold text-center w-fit lg:pt-0 lg:flex lg:gap-20 lg:w-auto">
-                                {/* <li className="activeUserLink">
-                                <a href="">Events</a>
-                            </li>
-                            <li className="userNavHover">
-                                <a href="">Find a Job</a>
-                            </li>
-                            <li className="userNavHover">
-                                <a href="">Chat</a>
-                            </li>
-                            <li className="userNavHover">
-                                <a href="">Profile</a>
-                            </li> */}
-
                                 <button
                                     className={`font-medium ${ActiveComponent === 'EventPosting' ? 'activeUserLink' : 'userNavHover'}`}
                                     onClick={() => { SetSelectedComponent('EventPosting') }}
                                 >Events</button>
-
                                 <button
                                     className={`font-medium ${ActiveComponent === 'JobPosting' ? 'activeUserLink' : 'userNavHover'}`}
                                     onClick={() => { SetSelectedComponent('JobPosting') }}
                                 >Find a Job</button>
-
                                 <button
                                     className={`font-medium ${ActiveComponent === 'Chat' ? 'activeUserLink' : 'userNavHover'}`}
                                     onClick={() => { SetSelectedComponent('Chat') }}
                                 >Chat</button>
-
                                 <button
                                     className={`font-medium ${ActiveComponent === 'Tickets' ? 'activeUserLink' : 'userNavHover'}`}
-                                    onClick={() => SetSelectedComponent('Tickets')}
+                                    onClick={() => { SetSelectedComponent('Tickets') }}
                                 >Tickets</button>
-
                                 <button
                                     className={`font-medium ${ActiveComponent === 'Profile' ? 'activeUserLink' : 'userNavHover'}`}
                                     onClick={() => { SetSelectedComponent('Profile') }}
                                 >Profile</button>
-
                             </ul>
                         </div>
                     </nav>
-                    {/* <!-- main content container --> */}
-                    {/* <p>output {clientuserId ?  clientuserId : 'null'}</p> */}
 
+                    {/* <!-- main content container --> */}
                     <div className="container flex flex-col h-full pt-5 mx-auto overflow-hidden">
                         {/* <!-- event post container --> */}
                         <div className='flex flex-col gap-5 px-2 overflow-auto'>
-                            {/* <div>
-                                <h1 className="text-6xl font-semibold text-center font-noto">My Profile </h1>
-                            </div> */}
                             {ActiveComponent === 'EventPosting' && EventData.map((eventItem) => {
-
-                                // let RegisteredBoolean = false;
-                                // if(EventRegistry.includes(eventItem.id)){
-                                //     RegisteredBoolean = true;
-                                // }
-                                console.log()
-                                console.log( `boolean if this post id is in the array of registered ${eventItem.id} : ` + event_registry.includes(eventItem.id));
-                                // return (
-                                //     <EventPostComponent key={eventItem.id} eventdata={eventItem} RegistredBoolean={event_registry.includes(eventItem.id)} ReInvokeFetchRegistry={FetchRegistry}></EventPostComponent>
-                                    
-                                // )
-
-                                if(eventItem.archive_status == 'false'){
+                                console.log(`boolean if this post id is in the array of registered ${eventItem.id} : ` + event_registry.includes(eventItem.id));
+                                if (eventItem.archive_status == 'false') {
                                     return (
                                         <EventPostComponent key={eventItem.id} eventdata={eventItem} RegistredBoolean={event_registry.includes(eventItem.id)} ReInvokeFetchRegistry={FetchRegistry}></EventPostComponent>
-                                        
                                     )
                                 }
                             })}
                         </div>
-
                         <div className='flex flex-col gap-5 px-2 overflow-auto'>
-                            {/* {ActiveComponent === 'EventPosting' && <EventPostComponent></EventPostComponent>} */}
-                            {/* job post component */}
                             {ActiveComponent === 'JobPosting' && JobData.map((jobItem) => {
-                                // return (
-                                //     <JobPostComponent key={jobItem.id} jobdata={jobItem} RegisteredBoolean={job_registry.includes(jobItem.id)} ReInvokeFetchRegistry={FetchRegistry}></JobPostComponent>
-                                // )
-
-                                if(jobItem.archive_status == 'false'){
+                                if (jobItem.archive_status == 'false') {
                                     return (
                                         <JobPostComponent key={jobItem.id} jobdata={jobItem} RegisteredBoolean={job_registry.includes(jobItem.id)} ReInvokeFetchRegistry={FetchRegistry}></JobPostComponent>
                                     )
                                 }
                             })}
                         </div>
-
                         {/* InboxComponent */}
                         {ActiveComponent === 'Chat' && (<ChatSection></ChatSection>)}
-
                         <div className='flex flex-col gap-5 px-2 overflow-auto'>
                             {ActiveComponent === 'Tickets' && (<TicketPage event_registry={event_registry} job_registry={job_registry}></TicketPage>)}
                         </div>
                         {/* Profile */}
                         {ActiveComponent === 'Profile' && (<Profilepage UserId={clientuserId}></Profilepage>)}
-
-
-
                     </div>
                 </div>
             </div>
