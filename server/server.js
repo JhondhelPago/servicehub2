@@ -729,15 +729,9 @@ app.post(
     const time = formData.time;
     const location = formData.location;
     const description = formData.description;
-    let targetAudience = formData.targetAudience;
+    const targetAudience = formData.targetAudience;
     let filenames = req.files.map((file) => file.filename);
-
-    //reformating the array values to strings
-    targetAudience = StringManipulate.RemoveSqrBrac(targetAudience.toString());
     filenames = StringManipulate.RemoveSqrBrac(filenames.toString());
-
-    // this is the variable that hold the files
-    // let filenames;
 
     console.log(creator_id);
     console.log(postType);
@@ -746,8 +740,27 @@ app.post(
     console.log(time);
     console.log(location);
     console.log(description);
-    console.log(StringManipulate.RemoveSqrBrac(targetAudience.toString()));
-    console.log(StringManipulate.RemoveSqrBrac(filenames.toString()));
+    console.log(targetAudience);
+    console.log(filenames);
+
+
+
+    //reformating the array values to strings
+    // targetAudience = StringManipulate.RemoveSqrBrac(targetAudience.toString());
+    // filenames = StringManipulate.RemoveSqrBrac(filenames.toString());
+
+    // this is the variable that hold the files
+    // let filenames;
+
+    // console.log(creator_id);
+    // console.log(postType);
+    // console.log(title);
+    // console.log(date);
+    // console.log(time);
+    // console.log(location);
+    // console.log(description);
+    // console.log(StringManipulate.RemoveSqrBrac(targetAudience.toString()));
+    // console.log(StringManipulate.RemoveSqrBrac(filenames.toString()));
 
     try {
       await post_EventJob(

@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import upload_icon from '../../assets/upload.png';
+import axios from 'axios';
 
 import { UserContext } from '../LoginComponents/UserContext';
 
@@ -84,8 +85,31 @@ const PostForm = ({ onClick }) => {
     const handleSubmit = async (event) => {
         event.preventDefault();
 
-        const formData = new FormData(event.target);
+        // const formData = new FormData(document.getElementById('postForm'));
 
+        // const Data = {
+        //     category: formData.get('category'),
+        //     title: formData.get('title'),
+        //     date: formData.get('date'),
+        //     time: formData.get('time'),
+        //     location: formData.get('location'),
+        //     description: formData.get('description'),
+        //     uploadImages: formData.getAll('uploadImages'),
+        //     target_audience: SelectedDisabilities
+        // }
+        
+        // console.log(Data);
+
+        // const response = await axios.post(`/Posting`, Data);
+
+
+        // Logging formData for debugging
+        // for (var pair of formData.entries()) {
+        //     console.log(pair[0] + ': ' + pair[1]);
+        // }
+
+        const formData = new FormData(event.target);
+       
         try {
             const response = await fetch('/Posting', {
                 method: 'POST',
@@ -100,6 +124,8 @@ const PostForm = ({ onClick }) => {
         } catch (error) {
             console.error(error);
         }
+
+        
     }
 
     return (
@@ -116,6 +142,8 @@ const PostForm = ({ onClick }) => {
 
                         <div className="flex flex-col gap-5 pl-5 md:mx-10">
                             <form className="flex flex-col gap-3" method="post" encType="multipart/form-data" id="postForm" onSubmit={handleSubmit}>
+                                <input name="creator_id" type="hidden" value={AdminId}></input>
+                                <input name="targetAudience" type="hidden" value={SelectedDisabilities}></input>
                                 <div className="flex flex-col w-full gap-3 md:flex-row">
                                     <div className="flex flex-col w-full gap-3">
                                         <select className="w-full py-2 pl-2 bg-white border rounded-lg border-darkColor" name="category" required>
@@ -161,7 +189,7 @@ const PostForm = ({ onClick }) => {
                                             </svg>
                                         </button>
                                     ))}
-                                    {PreListDisabilities.map((Disability) => (
+                                    {/* {PreListDisabilities.map((Disability) => (
                                         <button
                                             key={Disability}
                                             className='flex items-center justify-center gap-2 px-4 py-2 border rounded-full bg-extra-light border-darkColor group'
@@ -172,8 +200,20 @@ const PostForm = ({ onClick }) => {
                                                 <path fill="currentColor" d="M19 13H5v-2h14v2z" />
                                             </svg>
                                         </button>
-                                    ))}
+                                    ))} */}
                                 </div>
+                                {PreListDisabilities.map((Disability) => (
+                                    <button
+                                        key={Disability}
+                                        className='flex items-center justify-center gap-2 px-4 py-2 border rounded-full bg-extra-light border-darkColor group'
+                                        onClick={() => AddDisability(Disability)}
+                                    >
+                                        <p className='text-lg'>{Disability}</p>
+                                        <svg className='hidden h-5 text-green-600 cursor-pointer group-hover:flex' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                            <path fill="currentColor" d="M19 13H5v-2h14v2z" />
+                                        </svg>
+                                    </button>
+                                ))}
                                 <button className="px-5 py-2 my-5 text-lg font-medium text-white border rounded-md bg-darkColor border-darkColor" type="submit">Post</button>
                             </form>
                         </div>

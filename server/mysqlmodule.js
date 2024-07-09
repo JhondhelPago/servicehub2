@@ -122,7 +122,7 @@ async function post_EventJob(
         Disability,
         Table,
         filesArray,
-        false
+        "false"
       ]
     );
   } catch (error) {
