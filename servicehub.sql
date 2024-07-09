@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 16, 2024 at 05:24 AM
+-- Generation Time: Jul 07, 2024 at 05:01 PM
 -- Server version: 10.4.24-MariaDB
 -- PHP Version: 8.1.6
 
@@ -96,7 +96,7 @@ CREATE TABLE `event_post` (
 
 INSERT INTO `event_post` (`id`, `creator`, `date_created`, `time_created`, `scheduled_date`, `scheduled_time`, `location`, `event_title`, `description`, `imagefiles`, `target_group`, `post_type`) VALUES
 (66, 'admin1000', '2024-5-20', '16:01:27', '2024-05-31', '08:00', 'somwhere else', 'sample event posting pago post', 'sample event posting. lorem ipsum blah blahblah', '\"uploadImages-1716192087762-377921277.jpg,uploadImages-1716192087764-291662646.jpg\"', '\"Disability 2\"', 'event_post'),
-(67, 'admin1000', '2024-5-20', '23:04:32', '2024-05-26', '16:00', '', 'second event posting para sa mga senior pwd', 'lkngjdfl;adfdlkff;ksd;fkf;aksf;lfdna;ksflkAKSDHLKAhfhDLHFLKSFLKhkfhaFAksfnsLKNFLKSAnflknaskNFKASNFKNASknflkSANFASknflkASNFLKNasknflkasnFKNSNKASNCCLKASNFLKNALKNFLASFLKNAKNFASFNLKANSF ASFALKSNFFLKASNFLKNASKFNKASNFKANSFNA;JFLKANTNUOAHTA,BFAIHTABFANSHRAJRAJFLKALKTALURBFMBSdgbgfnsdmnfkjasl;fjalsjram fknqlksjfalhfam,bfabflkaskfaskjcanaskf;asra,mdalksnljfalskjflasfasnclksskfsfksnkdalksfdlkasflkanvaritgakfnsnanvewfnaslfpafamfnlkansopramc kewhglkafagkdnfnajfmqwmasdnvkankndfasjfj;agamfiodwfbeiognlkenfvkanegnawkeg', '\"uploadImages-1716217472542-298328458.png,uploadImages-1716217472577-167915135.jpg\"', '\"Disability 4\"', 'event_post');
+(67, 'admin1000', '2024-5-20', '23:04:32', '2024-05-26', '16:00', '', 'second event posting para sa mga senior pwd', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\n', '\"uploadImages-1716217472542-298328458.png,uploadImages-1716217472577-167915135.jpg\"', '\"Disability 4\"', 'event_post');
 
 -- --------------------------------------------------------
 
@@ -107,8 +107,17 @@ INSERT INTO `event_post` (`id`, `creator`, `date_created`, `time_created`, `sche
 CREATE TABLE `event_registry` (
   `registration_id` int(11) NOT NULL,
   `event_id` int(11) NOT NULL,
-  `user_id` int(11) NOT NULL
+  `user_id` varchar(11) NOT NULL,
+  `registration_code` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `event_registry`
+--
+
+INSERT INTO `event_registry` (`registration_id`, `event_id`, `user_id`, `registration_code`) VALUES
+(1, 66, '1000', '66-jcxegb-1000'),
+(3, 67, '1000', '67-k6tK0m-1000');
 
 -- --------------------------------------------------------
 
@@ -149,8 +158,17 @@ INSERT INTO `job_post` (`id`, `creator`, `date_created`, `time_created`, `schedu
 CREATE TABLE `job_registry` (
   `registration_id` int(11) NOT NULL,
   `job_id` int(11) NOT NULL,
-  `user_id` int(11) NOT NULL
+  `user_id` varchar(11) NOT NULL,
+  `registration_code` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `job_registry`
+--
+
+INSERT INTO `job_registry` (`registration_id`, `job_id`, `user_id`, `registration_code`) VALUES
+(1, 24, '1000', '24-g8rlj7-1000'),
+(2, 25, '1000', '25-wsHPeT-1000');
 
 -- --------------------------------------------------------
 
@@ -258,47 +276,47 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`id`, `createdAt`, `firstName`, `middleName`, `lastName`, `suffix`, `age`, `birthdate`, `birthplace`, `gender`, `religion`, `citizenship`, `civil`, `email`, `phone`, `landline`, `houseno`, `street`, `barangay`, `district`, `city`, `province`, `zipcode`, `elementary`, `attain`, `highschool`, `attain1`, `senior`, `attain2`, `college`, `attain3`, `employment`, `occupation`, `yearEmploy`, `skill1`, `skill2`, `blood`, `height`, `weight`, `disability`, `visibility`, `made_disabled`, `status`, `device`, `specificDevice`, `medicine`, `specificMedicine`, `others`, `password`, `refreshToken`, `role`) VALUES
-('1000', '2024-03-26 23:02:49.826', 'sample1000', 'sample1000s', 'sample1000smax', NULL, 24, '01/01/2001', 'qc', 'male', 'catholic', 'filipino', '', 'sample1000@gmail.com', '09191859313', NULL, '15', 'mabilis', 'pinyahan', 'second district', 'quezon city', NULL, '1100', '', '', '', '', '', '', '', '', '', NULL, NULL, NULL, NULL, '', '', '', '', '', '', '1', '', NULL, '', NULL, '', '1234', NULL, ''),
-('1001', '2024-03-27 01:02:43.313', 'Second1001', 'AA', 'AA', 'AA', 0, '01/01/1999', 'marikina', 'female', 'catholic', 'filipino', '', 'second1001@gmail.com', '09191919131', NULL, '111', 'bago', 'luma', 'district 3', 'qc', NULL, '1119', '', '', '', '', '', '', '', '', '', NULL, NULL, NULL, NULL, '', '', '', '', '', '', '', '', NULL, '', NULL, '', '1234', NULL, ''),
-('1002', '2024-03-26 23:02:49.826', 'A', 'A', 'A', NULL, 24, '01/01/2002', 'qc', 'Female', 'christian', 'filipino', '', 'sample1002@gmail.com', '09192939411', NULL, '15', 'A', 'New', 'second district', 'quezon city', NULL, '1111', '', '', '', '', '', '', '', '', '', NULL, NULL, NULL, NULL, '', '', '', '', '', '', '1', '', NULL, '', NULL, '', '1234', NULL, ''),
-('1003', '2024-03-26 23:02:49.826', 'AAA', 'AAA', 'AAA', NULL, 24, '01/01/2002', 'qc', 'MALE', 'CATHOLIC', 'filipino', '', 'sample1003@gmail.com', '09191949191', NULL, '15', 'B', 'BAS', 'first district', 'quezon city', NULL, '1151', '', '', '', '', '', '', '', '', '', NULL, NULL, NULL, NULL, '', '', '', '', '', '', '1', '', NULL, '', NULL, '', '1234', NULL, ''),
-('1004', '2024-03-26 23:02:49.826', 'AAAA', 'AAAA', 'AAAA', NULL, 24, '01/01/2004', 'AAAA', 'MALE', 'CATHOLIC', 'filipino', '', 'sample1003@gmail.com', '09191949191', NULL, '15', 'B', 'BAS', 'first district', 'quezon city', NULL, '1151', '', '', '', '', '', '', '', '', '', NULL, NULL, NULL, NULL, '', '', '', '', '', '', '1', '', NULL, '', NULL, '', '1234', NULL, ''),
-('1005', '2024-03-26 23:02:49.826', 'AAAA', 'AAAA', 'AAAA', NULL, 24, '01/01/2004', 'AAAA', 'MALE', 'CATHOLIC', 'filipino', '', 'sample1003@gmail.com', '09191949191', NULL, '15', 'B', 'BAS', 'first district', 'quezon city', NULL, '1151', '', '', '', '', '', '', '', '', '', NULL, NULL, NULL, NULL, '', '', '', '', '', '', '1', '', NULL, '', NULL, '', '1234', NULL, ''),
-('1006', '2024-03-26 23:02:49.826', 'AAAA', 'AAAA', 'AAAA', NULL, 24, '01/01/2004', 'AAAA', 'MALE', 'CATHOLIC', 'filipino', '', 'sample1003@gmail.com', '09191949191', NULL, '15', 'B', 'BAS', 'first district', 'quezon city', NULL, '1151', '', '', '', '', '', '', '', '', '', NULL, NULL, NULL, NULL, '', '', '', '', '', '', '1', '', NULL, '', NULL, '', '1234', NULL, ''),
-('1007', '2024-03-26 23:02:49.826', 'AAAA', 'AAAA', 'AAAA', NULL, 24, '01/01/2004', 'AAAA', 'MALE', 'CATHOLIC', 'filipino', '', 'sample1003@gmail.com', '09191949191', NULL, '15', 'B', 'BAS', 'first district', 'quezon city', NULL, '1151', '', '', '', '', '', '', '', '', '', NULL, NULL, NULL, NULL, '', '', '', '', '', '', '1', '', NULL, '', NULL, '', '1234', NULL, ''),
-('1008', '2024-03-26 23:02:49.826', 'AAAA', 'AAAA', 'AAAA', NULL, 24, '01/01/2004', 'AAAA', 'MALE', 'CATHOLIC', 'filipino', '', 'sample1003@gmail.com', '09191949191', NULL, '15', 'B', 'BAS', 'first district', 'quezon city', NULL, '1151', '', '', '', '', '', '', '', '', '', NULL, NULL, NULL, NULL, '', '', '', '', '', '', '1', '', NULL, '', NULL, '', '1234', NULL, ''),
-('1009', '2024-03-26 23:02:49.826', 'AAAA', 'AAAA', 'AAAA', NULL, 24, '01/01/2004', 'AAAA', 'MALE', 'CATHOLIC', 'filipino', '', 'sample1003@gmail.com', '09191949191', NULL, '15', 'B', 'BAS', 'first district', 'quezon city', NULL, '1151', '', '', '', '', '', '', '', '', '', NULL, NULL, NULL, NULL, '', '', '', '', '', '', '1', '', NULL, '', NULL, '', '1234', NULL, ''),
-('1010', '2024-03-26 23:02:49.826', 'AAAA', 'AAAA', 'AAAA', NULL, 24, '01/01/2004', 'AAAA', 'MALE', 'CATHOLIC', 'filipino', '', 'sample1003@gmail.com', '09191949191', NULL, '15', 'B', 'BAS', 'first district', 'quezon city', NULL, '1151', '', '', '', '', '', '', '', '', '', NULL, NULL, NULL, NULL, '', '', '', '', '', '', '1', '', NULL, '', NULL, '', '1234', NULL, ''),
-('1011', '2024-03-26 23:02:49.826', 'AAAA', 'AAAA', 'AAAA', NULL, 24, '01/01/2004', 'AAAA', 'MALE', 'CATHOLIC', 'filipino', '', 'sample1003@gmail.com', '09191949191', NULL, '15', 'B', 'BAS', 'first district', 'quezon city', NULL, '1151', '', '', '', '', '', '', '', '', '', NULL, NULL, NULL, NULL, '', '', '', '', '', '', '1', '', NULL, '', NULL, '', '1234', NULL, ''),
-('1012', '2024-03-26 23:02:49.826', 'AAAA', 'AAAA', 'AAAA', NULL, 24, '01/01/2004', 'AAAA', 'MALE', 'CATHOLIC', 'filipino', '', 'sample1003@gmail.com', '09191949191', NULL, '15', 'B', 'BAS', 'first district', 'quezon city', NULL, '1151', '', '', '', '', '', '', '', '', '', NULL, NULL, NULL, NULL, '', '', '', '', '', '', '1', '', NULL, '', NULL, '', '1234', NULL, ''),
-('1013', '2024-03-26 23:02:49.826', 'AAAA', 'AAAA', 'AAAA', NULL, 24, '01/01/2004', 'AAAA', 'MALE', 'CATHOLIC', 'filipino', '', 'sample1003@gmail.com', '09191949191', NULL, '15', 'B', 'BAS', 'first district', 'quezon city', NULL, '1151', '', '', '', '', '', '', '', '', '', NULL, NULL, NULL, NULL, '', '', '', '', '', '', '1', '', NULL, '', NULL, '', '1234', NULL, ''),
-('1014', '2024-03-26 23:02:49.826', 'AAAA', 'AAAA', 'AAAA', NULL, 24, '01/01/2004', 'AAAA', 'MALE', 'CATHOLIC', 'filipino', '', 'sample1003@gmail.com', '09191949191', NULL, '15', 'B', 'BAS', 'first district', 'quezon city', NULL, '1151', '', '', '', '', '', '', '', '', '', NULL, NULL, NULL, NULL, '', '', '', '', '', '', '1', '', NULL, '', NULL, '', '1234', NULL, ''),
-('1015', '2024-03-26 23:02:49.826', 'AAAA', 'AAAA', 'AAAA', NULL, 24, '01/01/2004', 'AAAA', 'MALE', 'CATHOLIC', 'filipino', '', 'sample1003@gmail.com', '09191949191', NULL, '15', 'B', 'BAS', 'first district', 'quezon city', NULL, '1151', '', '', '', '', '', '', '', '', '', NULL, NULL, NULL, NULL, '', '', '', '', '', '', '1', '', NULL, '', NULL, '', '1234', NULL, ''),
-('1016', '2024-03-26 23:02:49.826', 'AAAA', 'AAAA', 'AAAA', NULL, 24, '01/01/2004', 'AAAA', 'MALE', 'CATHOLIC', 'filipino', '', 'sample1003@gmail.com', '09191949191', NULL, '15', 'B', 'BAS', 'first district', 'quezon city', NULL, '1151', '', '', '', '', '', '', '', '', '', NULL, NULL, NULL, NULL, '', '', '', '', '', '', '1', '', NULL, '', NULL, '', '1234', NULL, ''),
-('1017', '2024-03-26 23:02:49.826', 'AAAA', 'AAAA', 'AAAA', NULL, 24, '01/01/2004', 'AAAA', 'MALE', 'CATHOLIC', 'filipino', '', 'sample1003@gmail.com', '09191949191', NULL, '15', 'B', 'BAS', 'first district', 'quezon city', NULL, '1151', '', '', '', '', '', '', '', '', '', NULL, NULL, NULL, NULL, '', '', '', '', '', '', '1', '', NULL, '', NULL, '', '1234', NULL, ''),
-('1018', '2024-03-26 23:02:49.826', 'AAAA', 'AAAA', 'AAAA', NULL, 24, '01/01/2004', 'AAAA', 'MALE', 'CATHOLIC', 'filipino', '', 'sample1003@gmail.com', '09191949191', NULL, '15', 'B', 'BAS', 'first district', 'quezon city', NULL, '1151', '', '', '', '', '', '', '', '', '', NULL, NULL, NULL, NULL, '', '', '', '', '', '', '1', '', NULL, '', NULL, '', '1234', NULL, ''),
-('1019', '2024-03-26 23:02:49.826', 'AAAA', 'AAAA', 'AAAA', NULL, 24, '01/01/2004', 'AAAA', 'MALE', 'CATHOLIC', 'filipino', '', 'sample1003@gmail.com', '09191949191', NULL, '15', 'B', 'BAS', 'first district', 'quezon city', NULL, '1151', '', '', '', '', '', '', '', '', '', NULL, NULL, NULL, NULL, '', '', '', '', '', '', '1', '', NULL, '', NULL, '', '1234', NULL, ''),
-('1020', '2024-03-26 23:02:49.826', 'AAAA', 'AAAA', 'AAAA', NULL, 24, '01/01/2004', 'AAAA', 'MALE', 'CATHOLIC', 'filipino', '', 'sample1003@gmail.com', '09191949191', NULL, '15', 'B', 'BAS', 'first district', 'quezon city', NULL, '1151', '', '', '', '', '', '', '', '', '', NULL, NULL, NULL, NULL, '', '', '', '', '', '', '1', '', NULL, '', NULL, '', '1234', NULL, ''),
-('1021', '2024-03-26 23:02:49.826', 'AAAA', 'AAAA', 'AAAA', NULL, 24, '01/01/2004', 'AAAA', 'MALE', 'CATHOLIC', 'filipino', '', 'sample1003@gmail.com', '09191949191', NULL, '15', 'B', 'BAS', 'first district', 'quezon city', NULL, '1151', '', '', '', '', '', '', '', '', '', NULL, NULL, NULL, NULL, '', '', '', '', '', '', '1', '', NULL, '', NULL, '', '1234', NULL, ''),
-('1022', '2024-03-26 23:02:49.826', 'AAAA', 'AAAA', 'AAAA', NULL, 24, '01/01/2004', 'AAAA', 'MALE', 'CATHOLIC', 'filipino', '', 'sample1003@gmail.com', '09191949191', NULL, '15', 'B', 'BAS', 'first district', 'quezon city', NULL, '1151', '', '', '', '', '', '', '', '', '', NULL, NULL, NULL, NULL, '', '', '', '', '', '', '1', '', NULL, '', NULL, '', '1234', NULL, ''),
-('1023', '2024-03-26 23:02:49.826', 'AAAA', 'AAAA', 'AAAA', NULL, 24, '01/01/2004', 'AAAA', 'MALE', 'CATHOLIC', 'filipino', '', 'sample1003@gmail.com', '09191949191', NULL, '15', 'B', 'BAS', 'first district', 'quezon city', NULL, '1151', '', '', '', '', '', '', '', '', '', NULL, NULL, NULL, NULL, '', '', '', '', '', '', '1', '', NULL, '', NULL, '', '1234', NULL, ''),
-('1024', '2024-03-26 23:02:49.826', 'AAAA', 'AAAA', 'AAAA', NULL, 24, '01/01/2004', 'AAAA', 'MALE', 'CATHOLIC', 'filipino', '', 'sample1003@gmail.com', '09191949191', NULL, '15', 'B', 'BAS', 'first district', 'quezon city', NULL, '1151', '', '', '', '', '', '', '', '', '', NULL, NULL, NULL, NULL, '', '', '', '', '', '', '1', '', NULL, '', NULL, '', '1234', NULL, ''),
-('1025', '2024-03-26 23:02:49.826', 'AAAA', 'AAAA', 'AAAA', NULL, 24, '01/01/2004', 'AAAA', 'MALE', 'CATHOLIC', 'filipino', '', 'sample1003@gmail.com', '09191949191', NULL, '15', 'B', 'BAS', 'first district', 'quezon city', NULL, '1151', '', '', '', '', '', '', '', '', '', NULL, NULL, NULL, NULL, '', '', '', '', '', '', '1', '', NULL, '', NULL, '', '1234', NULL, ''),
-('1026', '2024-03-26 23:02:49.826', 'AAAA', 'AAAA', 'AAAA', NULL, 24, '01/01/2004', 'AAAA', 'MALE', 'CATHOLIC', 'filipino', '', 'sample1003@gmail.com', '09191949191', NULL, '15', 'B', 'BAS', 'first district', 'quezon city', NULL, '1151', '', '', '', '', '', '', '', '', '', NULL, NULL, NULL, NULL, '', '', '', '', '', '', '1', '', NULL, '', NULL, '', '1234', NULL, ''),
-('1027', '2024-03-26 23:02:49.826', 'AAAA', 'AAAA', 'AAAA', NULL, 24, '01/01/2004', 'AAAA', 'MALE', 'CATHOLIC', 'filipino', '', 'sample1003@gmail.com', '09191949191', NULL, '15', 'B', 'BAS', 'first district', 'quezon city', NULL, '1151', '', '', '', '', '', '', '', '', '', NULL, NULL, NULL, NULL, '', '', '', '', '', '', '1', '', NULL, '', NULL, '', '1234', NULL, ''),
-('1028', '2024-03-26 23:02:49.826', 'AAAA', 'AAAA', 'AAAA', NULL, 24, '01/01/2004', 'AAAA', 'MALE', 'CATHOLIC', 'filipino', '', 'sample1003@gmail.com', '09191949191', NULL, '15', 'B', 'BAS', 'first district', 'quezon city', NULL, '1151', '', '', '', '', '', '', '', '', '', NULL, NULL, NULL, NULL, '', '', '', '', '', '', '1', '', NULL, '', NULL, '', '1234', NULL, ''),
-('1029', '2024-03-26 23:02:49.826', 'AAAA', 'AAAA', 'AAAA', NULL, 24, '01/01/2004', 'AAAA', 'MALE', 'CATHOLIC', 'filipino', '', 'sample1003@gmail.com', '09191949191', NULL, '15', 'B', 'BAS', 'first district', 'quezon city', NULL, '1151', '', '', '', '', '', '', '', '', '', NULL, NULL, NULL, NULL, '', '', '', '', '', '', '1', '', NULL, '', NULL, '', '1234', NULL, ''),
-('1030', '2024-03-26 23:02:49.826', 'AAAA', 'AAAA', 'AAAA', NULL, 24, '01/01/2004', 'AAAA', 'MALE', 'CATHOLIC', 'filipino', '', 'sample1003@gmail.com', '09191949191', NULL, '15', 'B', 'BAS', 'first district', 'quezon city', NULL, '1151', '', '', '', '', '', '', '', '', '', NULL, NULL, NULL, NULL, '', '', '', '', '', '', '1', '', NULL, '', NULL, '', '1234', NULL, ''),
-('1031', '2024-03-26 23:02:49.826', 'AAAA', 'AAAA', 'AAAA', NULL, 24, '01/01/2004', 'AAAA', 'MALE', 'CATHOLIC', 'filipino', '', 'sample1003@gmail.com', '09191949191', NULL, '15', 'B', 'BAS', 'first district', 'quezon city', NULL, '1151', '', '', '', '', '', '', '', '', '', NULL, NULL, NULL, NULL, '', '', '', '', '', '', '1', '', NULL, '', NULL, '', '1234', NULL, ''),
-('1032', '2024-03-26 23:02:49.826', 'AAAA', 'AAAA', 'AAAA', NULL, 24, '01/01/2004', 'AAAA', 'MALE', 'CATHOLIC', 'filipino', '', 'sample1003@gmail.com', '09191949191', NULL, '15', 'B', 'BAS', 'first district', 'quezon city', NULL, '1151', '', '', '', '', '', '', '', '', '', NULL, NULL, NULL, NULL, '', '', '', '', '', '', '1', '', NULL, '', NULL, '', '1234', NULL, ''),
-('1033', '2024-03-27 01:02:43.313', 'Second1001', 'AA', 'AA', 'AA', 0, '01/01/1999', 'marikina', 'female', 'catholic', 'filipino', '', 'second1001@gmail.com', '09191919131', NULL, '111', 'bago', 'luma', 'district 3', 'qc', NULL, '1119', '', '', '', '', '', '', '', '', '', NULL, NULL, NULL, NULL, '', '', '', '', '', '', '', '', NULL, '', NULL, '', '1234', NULL, ''),
-('1034\r\n', '2024-03-26 23:02:49.826', 'sample1000', 'sample1000s', 'sample1000smax', NULL, 24, '01/01/2001', 'qc', 'male', 'catholic', 'filipino', '', 'sample1000@gmail.com', '09191859313', NULL, '15', 'mabilis', 'pinyahan', 'second district', 'quezon city', NULL, '1100', '', '', '', '', '', '', '', '', '', NULL, NULL, NULL, NULL, '', '', '', '', '', '', '1', '', NULL, '', NULL, '', '1234', NULL, ''),
-('1035', '2024-03-26 23:02:49.826', 'sample1000', 'sample1000s', 'sample1000smax', NULL, 24, '01/01/2001', 'qc', 'male', 'catholic', 'filipino', '', 'sample1000@gmail.com', '09191859313', NULL, '15', 'mabilis', 'pinyahan', 'second district', 'quezon city', NULL, '1100', '', '', '', '', '', '', '', '', '', NULL, NULL, NULL, NULL, '', '', '', '', '', '', '1', '', NULL, '', NULL, '', '1234', NULL, ''),
-('1036', '2024-03-26 23:02:49.826', 'sample1000', 'sample1000s', 'sample1000smax', NULL, 24, '01/01/2001', 'qc', 'male', 'catholic', 'filipino', '', 'sample1000@gmail.com', '09191859313', NULL, '15', 'mabilis', 'pinyahan', 'second district', 'quezon city', NULL, '1100', '', '', '', '', '', '', '', '', '', NULL, NULL, NULL, NULL, '', '', '', '', '', '', '1', '', NULL, '', NULL, '', '1234', NULL, ''),
-('1037', '2024-03-26 23:02:49.826', 'sample1000', 'sample1000s', 'sample1000smax', NULL, 24, '01/01/2001', 'qc', 'male', 'catholic', 'filipino', '', 'sample1000@gmail.com', '09191859313', NULL, '15', 'mabilis', 'pinyahan', 'second district', 'quezon city', NULL, '1100', '', '', '', '', '', '', '', '', '', NULL, NULL, NULL, NULL, '', '', '', '', '', '', '1', '', NULL, '', NULL, '', '1234', NULL, ''),
-('1038', '2024-03-27 01:02:43.313', 'Second1001', 'AA', 'AA', 'AA', 0, '01/01/1999', 'marikina', 'female', 'catholic', 'filipino', '', 'second1001@gmail.com', '09191919131', NULL, '111', 'bago', 'luma', 'district 3', 'qc', NULL, '1119', '', '', '', '', '', '', '', '', '', NULL, NULL, NULL, NULL, '', '', '', '', '', '', '', '', NULL, '', NULL, '', '1234', NULL, ''),
-('1039', '2024-03-26 23:02:49.826', 'sample1000', 'sample1000s', 'sample1000smax', NULL, 24, '01/01/2001', 'qc', 'male', 'catholic', 'filipino', '', 'sample1000@gmail.com', '09191859313', NULL, '15', 'mabilis', 'pinyahan', 'second district', 'quezon city', NULL, '1100', '', '', '', '', '', '', '', '', '', NULL, NULL, NULL, NULL, '', '', '', '', '', '', '1', '', NULL, '', NULL, '', '1234', NULL, ''),
-('1040', '2024-03-26 23:02:49.826', 'AAAA', 'AAAA', 'AAAA', NULL, 24, '01/01/2004', 'AAAA', 'MALE', 'CATHOLIC', 'filipino', '', 'sample1003@gmail.com', '09191949191', NULL, '15', 'B', 'BAS', 'first district', 'quezon city', NULL, '1151', '', '', '', '', '', '', '', '', '', NULL, NULL, NULL, NULL, '', '', '', '', '', '', '1', '', NULL, '', NULL, '', '1234', NULL, '');
+('1000', '2024-03-26 23:02:49.826', 'sample1000', 'sample1000s', 'sample1000smax', NULL, 20, '01/01/2001', 'qc', 'male', 'catholic', 'filipino', 'single', 'sample1000@gmail.com', '09191859313', NULL, '15', 'mabilis', 'pinyahan', 'second district', 'quezon city', NULL, '1100', '', '', '', '', '', '', '', '', 'unemployed', NULL, NULL, NULL, NULL, '', '', '', '', '', '', '1', '', NULL, '', NULL, '', '1234', NULL, ''),
+('1001', '2024-03-27 01:02:43.313', 'Second1001', 'AA', 'AA', 'AA', 16, '01/01/1999', 'marikina', 'female', 'catholic', 'filipino', 'single', 'second1001@gmail.com', '09191919131', NULL, '111', 'bago', 'luma', 'district 3', 'qc', NULL, '1119', '', '', '', '', '', '', '', '', 'unemployed', NULL, NULL, NULL, NULL, '', '', '', '', '', '', '', '', NULL, '', NULL, '', '1234', NULL, ''),
+('1002', '2024-03-26 23:02:49.826', 'A', 'A', 'A', NULL, 24, '01/01/2002', 'qc', 'Female', 'christian', 'filipino', 'married', 'sample1002@gmail.com', '09192939411', NULL, '15', 'A', 'New', 'second district', 'quezon city', NULL, '1111', '', '', '', '', '', '', '', '', 'employed', NULL, NULL, NULL, NULL, '', '', '', '', '', '', '1', '', NULL, '', NULL, '', '1234', NULL, ''),
+('1003', '2024-03-26 23:02:49.826', 'AAA', 'AAA', 'AAA', NULL, 21, '01/01/2002', 'qc', 'MALE', 'CATHOLIC', 'filipino', 'single', 'sample1003@gmail.com', '09191949191', NULL, '15', 'B', 'BAS', 'first district', 'quezon city', NULL, '1151', '', '', '', '', '', '', '', '', 'employed', NULL, NULL, NULL, NULL, '', '', '', '', '', '', '1', '', NULL, '', NULL, '', '1234', NULL, ''),
+('1004', '2024-03-26 23:02:49.826', 'AAAA', 'AAAA', 'AAAA', NULL, 26, '01/01/2004', 'AAAA', 'MALE', 'CATHOLIC', 'filipino', 'married', 'sample1003@gmail.com', '09191949191', NULL, '15', 'B', 'BAS', 'first district', 'quezon city', NULL, '1151', '', '', '', '', '', '', '', '', 'unemployed', NULL, NULL, NULL, NULL, '', '', '', '', '', '', '1', '', NULL, '', NULL, '', '1234', NULL, ''),
+('1005', '2024-03-26 23:02:49.826', 'AAAA', 'AAAA', 'AAAA', NULL, 55, '01/01/2004', 'AAAA', 'MALE', 'CATHOLIC', 'filipino', 'married', 'sample1003@gmail.com', '09191949191', NULL, '15', 'B', 'BAS', 'first district', 'quezon city', NULL, '1151', '', '', '', '', '', '', '', '', 'employed', NULL, NULL, NULL, NULL, '', '', '', '', '', '', '1', '', NULL, '', NULL, '', '1234', NULL, ''),
+('1006', '2024-03-26 23:02:49.826', 'AAAA', 'AAAA', 'AAAA', NULL, 17, '01/01/2004', 'AAAA', 'MALE', 'CATHOLIC', 'filipino', 'married', 'sample1003@gmail.com', '09191949191', NULL, '15', 'B', 'BAS', 'first district', 'quezon city', NULL, '1151', '', '', '', '', '', '', '', '', 'employed', NULL, NULL, NULL, NULL, '', '', '', '', '', '', '1', '', NULL, '', NULL, '', '1234', NULL, ''),
+('1007', '2024-03-26 23:02:49.826', 'AAAA', 'AAAA', 'AAAA', NULL, 38, '01/01/2004', 'AAAA', 'MALE', 'CATHOLIC', 'filipino', 'single', 'sample1003@gmail.com', '09191949191', NULL, '15', 'B', 'BAS', 'first district', 'quezon city', NULL, '1151', '', '', '', '', '', '', '', '', 'employed', NULL, NULL, NULL, NULL, '', '', '', '', '', '', '1', '', NULL, '', NULL, '', '1234', NULL, ''),
+('1008', '2024-03-26 23:02:49.826', 'AAAA', 'AAAA', 'AAAA', NULL, 51, '01/01/2004', 'AAAA', 'MALE', 'CATHOLIC', 'filipino', 'married', 'sample1003@gmail.com', '09191949191', NULL, '15', 'B', 'BAS', 'first district', 'quezon city', NULL, '1151', '', '', '', '', '', '', '', '', 'employed', NULL, NULL, NULL, NULL, '', '', '', '', '', '', '1', '', NULL, '', NULL, '', '1234', NULL, ''),
+('1009', '2024-03-26 23:02:49.826', 'AAAA', 'AAAA', 'AAAA', NULL, 37, '01/01/2004', 'AAAA', 'MALE', 'CATHOLIC', 'filipino', 'married', 'sample1003@gmail.com', '09191949191', NULL, '15', 'B', 'BAS', 'first district', 'quezon city', NULL, '1151', '', '', '', '', '', '', '', '', 'unemployed', NULL, NULL, NULL, NULL, '', '', '', '', '', '', '1', '', NULL, '', NULL, '', '1234', NULL, ''),
+('1010', '2024-03-26 23:02:49.826', 'AAAA', 'AAAA', 'AAAA', NULL, 18, '01/01/2004', 'AAAA', 'MALE', 'CATHOLIC', 'filipino', 'single', 'sample1003@gmail.com', '09191949191', NULL, '15', 'B', 'BAS', 'first district', 'quezon city', NULL, '1151', '', '', '', '', '', '', '', '', 'employed', NULL, NULL, NULL, NULL, '', '', '', '', '', '', '1', '', NULL, '', NULL, '', '1234', NULL, ''),
+('1011', '2024-03-26 23:02:49.826', 'AAAA', 'AAAA', 'AAAA', NULL, 20, '01/01/2004', 'AAAA', 'MALE', 'CATHOLIC', 'filipino', 'single', 'sample1003@gmail.com', '09191949191', NULL, '15', 'B', 'BAS', 'first district', 'quezon city', NULL, '1151', '', '', '', '', '', '', '', '', 'employed', NULL, NULL, NULL, NULL, '', '', '', '', '', '', '1', '', NULL, '', NULL, '', '1234', NULL, ''),
+('1012', '2024-03-26 23:02:49.826', 'AAAA', 'AAAA', 'AAAA', NULL, 60, '01/01/2004', 'AAAA', 'MALE', 'CATHOLIC', 'filipino', 'married', 'sample1003@gmail.com', '09191949191', NULL, '15', 'B', 'BAS', 'first district', 'quezon city', NULL, '1151', '', '', '', '', '', '', '', '', 'employed', NULL, NULL, NULL, NULL, '', '', '', '', '', '', '1', '', NULL, '', NULL, '', '1234', NULL, ''),
+('1013', '2024-03-26 23:02:49.826', 'AAAA', 'AAAA', 'AAAA', NULL, 15, '01/01/2004', 'AAAA', 'MALE', 'CATHOLIC', 'filipino', 'married', 'sample1003@gmail.com', '09191949191', NULL, '15', 'B', 'BAS', 'first district', 'quezon city', NULL, '1151', '', '', '', '', '', '', '', '', 'unemployed', NULL, NULL, NULL, NULL, '', '', '', '', '', '', '1', '', NULL, '', NULL, '', '1234', NULL, ''),
+('1014', '2024-03-26 23:02:49.826', 'AAAA', 'AAAA', 'AAAA', NULL, 61, '01/01/2004', 'AAAA', 'MALE', 'CATHOLIC', 'filipino', 'married', 'sample1003@gmail.com', '09191949191', NULL, '15', 'B', 'BAS', 'first district', 'quezon city', NULL, '1151', '', '', '', '', '', '', '', '', 'employed', NULL, NULL, NULL, NULL, '', '', '', '', '', '', '1', '', NULL, '', NULL, '', '1234', NULL, ''),
+('1015', '2024-03-26 23:02:49.826', 'AAAA', 'AAAA', 'AAAA', NULL, 17, '01/01/2004', 'AAAA', 'MALE', 'CATHOLIC', 'filipino', 'single', 'sample1003@gmail.com', '09191949191', NULL, '15', 'B', 'BAS', 'first district', 'quezon city', NULL, '1151', '', '', '', '', '', '', '', '', 'employed', NULL, NULL, NULL, NULL, '', '', '', '', '', '', '1', '', NULL, '', NULL, '', '1234', NULL, ''),
+('1016', '2024-03-26 23:02:49.826', 'AAAA', 'AAAA', 'AAAA', NULL, 64, '01/01/2004', 'AAAA', 'MALE', 'CATHOLIC', 'filipino', 'single', 'sample1003@gmail.com', '09191949191', NULL, '15', 'B', 'BAS', 'first district', 'quezon city', NULL, '1151', '', '', '', '', '', '', '', '', 'employed', NULL, NULL, NULL, NULL, '', '', '', '', '', '', '1', '', NULL, '', NULL, '', '1234', NULL, ''),
+('1017', '2024-03-26 23:02:49.826', 'AAAA', 'AAAA', 'AAAA', NULL, 65, '01/01/2004', 'AAAA', 'MALE', 'CATHOLIC', 'filipino', 'married', 'sample1003@gmail.com', '09191949191', NULL, '15', 'B', 'BAS', 'first district', 'quezon city', NULL, '1151', '', '', '', '', '', '', '', '', 'unemployed', NULL, NULL, NULL, NULL, '', '', '', '', '', '', '1', '', NULL, '', NULL, '', '1234', NULL, ''),
+('1018', '2024-03-26 23:02:49.826', 'AAAA', 'AAAA', 'AAAA', NULL, 32, '01/01/2004', 'AAAA', 'MALE', 'CATHOLIC', 'filipino', 'married', 'sample1003@gmail.com', '09191949191', NULL, '15', 'B', 'BAS', 'first district', 'quezon city', NULL, '1151', '', '', '', '', '', '', '', '', 'unemployed', NULL, NULL, NULL, NULL, '', '', '', '', '', '', '1', '', NULL, '', NULL, '', '1234', NULL, ''),
+('1019', '2024-03-26 23:02:49.826', 'AAAA', 'AAAA', 'AAAA', NULL, 71, '01/01/2004', 'AAAA', 'MALE', 'CATHOLIC', 'filipino', 'single', 'sample1003@gmail.com', '09191949191', NULL, '15', 'B', 'BAS', 'first district', 'quezon city', NULL, '1151', '', '', '', '', '', '', '', '', 'employed', NULL, NULL, NULL, NULL, '', '', '', '', '', '', '1', '', NULL, '', NULL, '', '1234', NULL, ''),
+('1020', '2024-03-26 23:02:49.826', 'AAAA', 'AAAA', 'AAAA', NULL, 31, '01/01/2004', 'AAAA', 'MALE', 'CATHOLIC', 'filipino', 'single', 'sample1003@gmail.com', '09191949191', NULL, '15', 'B', 'BAS', 'first district', 'quezon city', NULL, '1151', '', '', '', '', '', '', '', '', 'employed', NULL, NULL, NULL, NULL, '', '', '', '', '', '', '1', '', NULL, '', NULL, '', '1234', NULL, ''),
+('1021', '2024-03-26 23:02:49.826', 'AAAA', 'AAAA', 'AAAA', NULL, 72, '01/01/2004', 'AAAA', 'MALE', 'CATHOLIC', 'filipino', 'single', 'sample1003@gmail.com', '09191949191', NULL, '15', 'B', 'BAS', 'first district', 'quezon city', NULL, '1151', '', '', '', '', '', '', '', '', 'employed', NULL, NULL, NULL, NULL, '', '', '', '', '', '', '1', '', NULL, '', NULL, '', '1234', NULL, ''),
+('1022', '2024-03-26 23:02:49.826', 'AAAA', 'AAAA', 'AAAA', NULL, 87, '01/01/2004', 'AAAA', 'MALE', 'CATHOLIC', 'filipino', 'married', 'sample1003@gmail.com', '09191949191', NULL, '15', 'B', 'BAS', 'first district', 'quezon city', NULL, '1151', '', '', '', '', '', '', '', '', 'employed', NULL, NULL, NULL, NULL, '', '', '', '', '', '', '1', '', NULL, '', NULL, '', '1234', NULL, ''),
+('1023', '2024-03-26 23:02:49.826', 'AAAA', 'AAAA', 'AAAA', NULL, 11, '01/01/2004', 'AAAA', 'MALE', 'CATHOLIC', 'filipino', 'married', 'sample1003@gmail.com', '09191949191', NULL, '15', 'B', 'BAS', 'first district', 'quezon city', NULL, '1151', '', '', '', '', '', '', '', '', 'unemployed', NULL, NULL, NULL, NULL, '', '', '', '', '', '', '1', '', NULL, '', NULL, '', '1234', NULL, ''),
+('1024', '2024-03-26 23:02:49.826', 'AAAA', 'AAAA', 'AAAA', NULL, 69, '01/01/2004', 'AAAA', 'MALE', 'CATHOLIC', 'filipino', 'single', 'sample1003@gmail.com', '09191949191', NULL, '15', 'B', 'BAS', 'first district', 'quezon city', NULL, '1151', '', '', '', '', '', '', '', '', 'unemployed', NULL, NULL, NULL, NULL, '', '', '', '', '', '', '1', '', NULL, '', NULL, '', '1234', NULL, ''),
+('1025', '2024-03-26 23:02:49.826', 'AAAA', 'AAAA', 'AAAA', NULL, 15, '01/01/2004', 'AAAA', 'MALE', 'CATHOLIC', 'filipino', 'married', 'sample1003@gmail.com', '09191949191', NULL, '15', 'B', 'BAS', 'first district', 'quezon city', NULL, '1151', '', '', '', '', '', '', '', '', 'employed', NULL, NULL, NULL, NULL, '', '', '', '', '', '', '1', '', NULL, '', NULL, '', '1234', NULL, ''),
+('1026', '2024-03-26 23:02:49.826', 'AAAA', 'AAAA', 'AAAA', NULL, 9, '01/01/2004', 'AAAA', 'MALE', 'CATHOLIC', 'filipino', 'married', 'sample1003@gmail.com', '09191949191', NULL, '15', 'B', 'BAS', 'first district', 'quezon city', NULL, '1151', '', '', '', '', '', '', '', '', 'employed', NULL, NULL, NULL, NULL, '', '', '', '', '', '', '1', '', NULL, '', NULL, '', '1234', NULL, ''),
+('1027', '2024-03-26 23:02:49.826', 'AAAA', 'AAAA', 'AAAA', NULL, 65, '01/01/2004', 'AAAA', 'MALE', 'CATHOLIC', 'filipino', 'married', 'sample1003@gmail.com', '09191949191', NULL, '15', 'B', 'BAS', 'first district', 'quezon city', NULL, '1151', '', '', '', '', '', '', '', '', 'employed', NULL, NULL, NULL, NULL, '', '', '', '', '', '', '1', '', NULL, '', NULL, '', '1234', NULL, ''),
+('1028', '2024-03-26 23:02:49.826', 'AAAA', 'AAAA', 'AAAA', NULL, 67, '01/01/2004', 'AAAA', 'MALE', 'CATHOLIC', 'filipino', 'married', 'sample1003@gmail.com', '09191949191', NULL, '15', 'B', 'BAS', 'first district', 'quezon city', NULL, '1151', '', '', '', '', '', '', '', '', 'employed', NULL, NULL, NULL, NULL, '', '', '', '', '', '', '1', '', NULL, '', NULL, '', '1234', NULL, ''),
+('1029', '2024-03-26 23:02:49.826', 'AAAA', 'AAAA', 'AAAA', NULL, 70, '01/01/2004', 'AAAA', 'MALE', 'CATHOLIC', 'filipino', 'single', 'sample1003@gmail.com', '09191949191', NULL, '15', 'B', 'BAS', 'first district', 'quezon city', NULL, '1151', '', '', '', '', '', '', '', '', 'unemployed', NULL, NULL, NULL, NULL, '', '', '', '', '', '', '1', '', NULL, '', NULL, '', '1234', NULL, ''),
+('1030', '2024-03-26 23:02:49.826', 'AAAA', 'AAAA', 'AAAA', NULL, 80, '01/01/2004', 'AAAA', 'MALE', 'CATHOLIC', 'filipino', 'married', 'sample1003@gmail.com', '09191949191', NULL, '15', 'B', 'BAS', 'first district', 'quezon city', NULL, '1151', '', '', '', '', '', '', '', '', 'unemployed', NULL, NULL, NULL, NULL, '', '', '', '', '', '', '1', '', NULL, '', NULL, '', '1234', NULL, ''),
+('1031', '2024-03-26 23:02:49.826', 'AAAA', 'AAAA', 'AAAA', NULL, 90, '01/01/2004', 'AAAA', 'MALE', 'CATHOLIC', 'filipino', 'single', 'sample1003@gmail.com', '09191949191', NULL, '15', 'B', 'BAS', 'first district', 'quezon city', NULL, '1151', '', '', '', '', '', '', '', '', 'employed', NULL, NULL, NULL, NULL, '', '', '', '', '', '', '1', '', NULL, '', NULL, '', '1234', NULL, ''),
+('1032', '2024-03-26 23:02:49.826', 'AAAA', 'AAAA', 'AAAA', NULL, 87, '01/01/2004', 'AAAA', 'MALE', 'CATHOLIC', 'filipino', 'married', 'sample1003@gmail.com', '09191949191', NULL, '15', 'B', 'BAS', 'first district', 'quezon city', NULL, '1151', '', '', '', '', '', '', '', '', 'employed', NULL, NULL, NULL, NULL, '', '', '', '', '', '', '1', '', NULL, '', NULL, '', '1234', NULL, ''),
+('1033', '2024-03-27 01:02:43.313', 'Second1001', 'AA', 'AA', 'AA', 62, '01/01/1999', 'marikina', 'female', 'catholic', 'filipino', 'single', 'second1001@gmail.com', '09191919131', NULL, '111', 'bago', 'luma', 'district 3', 'qc', NULL, '1119', '', '', '', '', '', '', '', '', 'unemployed', NULL, NULL, NULL, NULL, '', '', '', '', '', '', '', '', NULL, '', NULL, '', '1234', NULL, ''),
+('1034\r\n', '2024-03-26 23:02:49.826', 'sample1000', 'sample1000s', 'sample1000smax', NULL, 63, '01/01/2001', 'qc', 'male', 'catholic', 'filipino', 'single', 'sample1000@gmail.com', '09191859313', NULL, '15', 'mabilis', 'pinyahan', 'second district', 'quezon city', NULL, '1100', '', '', '', '', '', '', '', '', 'employed', NULL, NULL, NULL, NULL, '', '', '', '', '', '', '1', '', NULL, '', NULL, '', '1234', NULL, ''),
+('1035', '2024-03-26 23:02:49.826', 'sample1000', 'sample1000s', 'sample1000smax', NULL, 52, '01/01/2001', 'qc', 'male', 'catholic', 'filipino', 'married', 'sample1000@gmail.com', '09191859313', NULL, '15', 'mabilis', 'pinyahan', 'second district', 'quezon city', NULL, '1100', '', '', '', '', '', '', '', '', 'employed', NULL, NULL, NULL, NULL, '', '', '', '', '', '', '1', '', NULL, '', NULL, '', '1234', NULL, ''),
+('1036', '2024-03-26 23:02:49.826', 'sample1000', 'sample1000s', 'sample1000smax', NULL, 33, '01/01/2001', 'qc', 'male', 'catholic', 'filipino', 'single', 'sample1000@gmail.com', '09191859313', NULL, '15', 'mabilis', 'pinyahan', 'second district', 'quezon city', NULL, '1100', '', '', '', '', '', '', '', '', 'employed', NULL, NULL, NULL, NULL, '', '', '', '', '', '', '1', '', NULL, '', NULL, '', '1234', NULL, ''),
+('1037', '2024-03-26 23:02:49.826', 'sample1000', 'sample1000s', 'sample1000smax', NULL, 25, '01/01/2001', 'qc', 'male', 'catholic', 'filipino', 'married', 'sample1000@gmail.com', '09191859313', NULL, '15', 'mabilis', 'pinyahan', 'second district', 'quezon city', NULL, '1100', '', '', '', '', '', '', '', '', 'employed', NULL, NULL, NULL, NULL, '', '', '', '', '', '', '1', '', NULL, '', NULL, '', '1234', NULL, ''),
+('1038', '2024-03-27 01:02:43.313', 'Second1001', 'AA', 'AA', 'AA', 30, '01/01/1999', 'marikina', 'female', 'catholic', 'filipino', 'married', 'second1001@gmail.com', '09191919131', NULL, '111', 'bago', 'luma', 'district 3', 'qc', NULL, '1119', '', '', '', '', '', '', '', '', 'employed', NULL, NULL, NULL, NULL, '', '', '', '', '', '', '', '', NULL, '', NULL, '', '1234', NULL, ''),
+('1039', '2024-03-26 23:02:49.826', 'sample1000', 'sample1000s', 'sample1000smax', NULL, 13, '01/01/2001', 'qc', 'male', 'catholic', 'filipino', 'married', 'sample1000@gmail.com', '09191859313', NULL, '15', 'mabilis', 'pinyahan', 'second district', 'quezon city', NULL, '1100', '', '', '', '', '', '', '', '', 'employed', NULL, NULL, NULL, NULL, '', '', '', '', '', '', '1', '', NULL, '', NULL, '', '1234', NULL, ''),
+('1040', '2024-03-26 23:02:49.826', 'AAAA', 'AAAA', 'AAAA', NULL, 29, '01/01/2004', 'AAAA', 'MALE', 'CATHOLIC', 'filipino', 'single', 'sample1003@gmail.com', '09191949191', NULL, '15', 'B', 'BAS', 'first district', 'quezon city', NULL, '1151', '', '', '', '', '', '', '', '', 'unemployed', NULL, NULL, NULL, NULL, '', '', '', '', '', '', '1', '', NULL, '', NULL, '', '1234', NULL, '');
 
 --
 -- Indexes for dumped tables
@@ -317,10 +335,22 @@ ALTER TABLE `event_post`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `event_registry`
+--
+ALTER TABLE `event_registry`
+  ADD PRIMARY KEY (`registration_id`);
+
+--
 -- Indexes for table `job_post`
 --
 ALTER TABLE `job_post`
   ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `job_registry`
+--
+ALTER TABLE `job_registry`
+  ADD PRIMARY KEY (`registration_id`);
 
 --
 -- Indexes for table `mail_sent`
@@ -345,10 +375,22 @@ ALTER TABLE `event_post`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=68;
 
 --
+-- AUTO_INCREMENT for table `event_registry`
+--
+ALTER TABLE `event_registry`
+  MODIFY `registration_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
 -- AUTO_INCREMENT for table `job_post`
 --
 ALTER TABLE `job_post`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
+
+--
+-- AUTO_INCREMENT for table `job_registry`
+--
+ALTER TABLE `job_registry`
+  MODIFY `registration_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `mail_sent`

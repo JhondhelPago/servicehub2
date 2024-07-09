@@ -1,8 +1,46 @@
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { TimeUtils, ImageStringUtils } from "../../module-script/util";
+import { ClientUserContext } from "../../pages/ClientUserContext"; 
+import { CodeGenerator } from "../../utils";
+import axios from "axios";
 import sample_img from '../../assets/sample_img.jpg';
+import { Carousel } from "react-responsive-carousel";
+import 'react-responsive-carousel/lib/styles/carousel.min.css';
 
-const JobPostComponent = ({ jobdata }) => {
+const JobPostComponent = ({ jobdata, RegisteredBoolean, ReInvokeFetchRegistry}) => {
+
+  const { clientuserId } = useContext(ClientUserContext);
+
+  const [JoinedStatus, SetJoinedStatus] = useState(RegisteredBoolean);
+
+
+  const JoinButtonAction = async() => {
+
+    const thisJobId = jobdata.id;
+    const thisUserId = clientuserId;
+    const generatedCode = CodeGenerator.EventCodeGenerator(thisJobId, thisUserId);
+    ;
+
+    try{
+
+      const response = await axios.post(`/UserRegister/Job`, { TicketCode: generatedCode});
+      if(response.status >= 200 && response.status <=299){
+        SetJoinedStatus(true);
+        ReInvokeFetchRegistry();
+      }
+       
+
+    }catch(error){
+      throw error;
+    }
+
+
+  }
+
+  useEffect(() => {
+    SetJoinedStatus(RegisteredBoolean);
+  }, [RegisteredBoolean]);
+
   return (
     <>
       {/* <!-- event post container --> */}
@@ -24,12 +62,43 @@ const JobPostComponent = ({ jobdata }) => {
           </div>
           {/* <!-- desc --> */}
           <p className="px-2 mt-4 overflow-auto text-justify max-h-52">{jobdata.description}</p>
-          <button className="w-10/12 p-4 mx-auto mt-auto text-xl font-medium text-white rounded-md bg-primary-light scaleHover">Join</button>
+          {
+            JoinedStatus ? (
+              <button className="w-10/12 p-4 mx-auto mt-auto text-xl font-medium text-white rounded-md bg-gray-400 scaleHover">
+              Joined
+            </button>
+            ) : (
+              <button className="w-10/12 p-4 mx-auto mt-auto text-xl font-medium text-white rounded-md bg-primary-light scaleHover" onClick={JoinButtonAction}>
+              Join
+            </button>
+            )
+          }
         </div>
         {/* <!-- img container --> */}
         <div className="order-first w-full xl:w-1/2 xl:order-last">
           {/* <!-- id="smallImg" onclick="enlargeImg()" --> */}
-          <img className="object-cover w-full h-full rounded-md" src={require(`../../../../server/FileUpload/${ImageStringUtils.FirstImageElement(jobdata.imagefiles)}`)} alt="img" />
+          {/* <img className="object-cover w-full h-full rounded-md" src={require(`../../../../server/FileUpload/${ImageStringUtils.FirstImageElement(jobdata.imagefiles)}`)} alt="img" /> */}
+
+          {/* Carousel component link */}
+          {/* https://cloudinary.com/blog/add-a-responsive-image-carousel-to-your-react-app */}
+          <Carousel
+            useKeyboardArrows={true}
+            autoPlay={true}
+            infiniteLoop={true}
+          >
+            {(() => {
+              let ImageArray = ImageStringUtils.ToArray(jobdata.imagefiles);
+
+              return ImageArray.map((filename, index) => (
+                <img key={index} className="object-cover w-full h-full rounded-md" alt="sample_file" src={require(`../../../../server/FileUpload/${filename}`)} />
+              ));
+
+            })()}
+
+            {/* <img className="object-cover w-full h-full rounded-md" alt="sample_file" src={require(`../../../../server/FileUpload/${ImageStringUtils.FirstImageElement(jobdata.imagefiles)}`)} /> */}
+            {/* <img className="object-cover w-full h-full rounded-md" alt="sample_file" src={require(`../../assets/sample2.jpg`)} /> */}
+          </Carousel>
+
         </div>
         {/* <!-- join btn --> */}
       </div>
