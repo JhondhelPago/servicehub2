@@ -1671,6 +1671,15 @@ app.get('/EventRegistered/:clientuserId', async(req, res) => {
 });
 
 
+app.post('/sendMail', async(req, res) => {
+  
+  const mailObj = req.body;
+
+
+  console.log(mailObj);
+});
+
+
 app.get("/sample_res", (req, res) => {
   res.send("this is a response");
   res.end();
