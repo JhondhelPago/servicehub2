@@ -204,10 +204,17 @@ const UserHomepage = () => {
                                 // }
                                 console.log()
                                 console.log( `boolean if this post id is in the array of registered ${eventItem.id} : ` + event_registry.includes(eventItem.id));
-                                return (
-                                    <EventPostComponent key={eventItem.id} eventdata={eventItem} RegistredBoolean={event_registry.includes(eventItem.id)} ReInvokeFetchRegistry={FetchRegistry}></EventPostComponent>
+                                // return (
+                                //     <EventPostComponent key={eventItem.id} eventdata={eventItem} RegistredBoolean={event_registry.includes(eventItem.id)} ReInvokeFetchRegistry={FetchRegistry}></EventPostComponent>
                                     
-                                )
+                                // )
+
+                                if(eventItem.archive_status == 'false'){
+                                    return (
+                                        <EventPostComponent key={eventItem.id} eventdata={eventItem} RegistredBoolean={event_registry.includes(eventItem.id)} ReInvokeFetchRegistry={FetchRegistry}></EventPostComponent>
+                                        
+                                    )
+                                }
                             })}
                         </div>
 

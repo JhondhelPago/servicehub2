@@ -13,12 +13,12 @@ const EventPosting = ({ TriggerSetEditData }) => {
 
     useEffect(() => {
 
-        jobData();
+        eventData();
 
     }, []);
 
 
-    const jobData = async () => {
+    const eventData = async () => {
 
         try {
             const response = await fetch('/fetchingEventPost');
@@ -56,7 +56,7 @@ const EventPosting = ({ TriggerSetEditData }) => {
                 {/* <!--all posts container --> */}
 
                 {Data.map((item, index) => (
-                    <PostInfoDiv key={index} data={item} TriggerSetEditData={TriggerSetEditData} ReInitiateUseState={jobData}></PostInfoDiv>
+                    <PostInfoDiv key={index} data={item} TriggerSetEditData={TriggerSetEditData} ReInitiateUseState={eventData}></PostInfoDiv>
                 ))}
             </div>
 
@@ -112,11 +112,45 @@ const PostInfoDiv = (props) => {
         ReInitiateUseState();
     }
 
-    const archiveFnc = () => {
+    const archiveFnc = async(event_id) => {
         console.log('archiving');
 
+        let EventObj = {
+            table : 'event_post',
+            event_post_id: event_id,
+            status : "true"
+        }
 
-        const response = axios.post(`/Event/Archive/StatusTrue`, {EventObjDetails: 'testing route'});
+
+        const response = await axios.post(`/Event/Archive/StatusChange`, EventObj);
+        
+
+        //if post request is successfull
+        if(response.status >= 200 && response.status <= 299){
+            ReInitiateUseState();
+        }
+
+    }
+
+
+    const UndoArchiveFnc = async(event_id) => {
+        console.log('undoing archive');
+
+
+        let EventObj = {
+            table : 'event_post',
+            event_post_id: event_id,
+            status : "false"
+        }
+
+
+        const response = await axios.post(`/Event/Archive/StatusChange`, EventObj);
+        
+
+        //if post request is successfull
+        if(response.status >= 200 && response.status <= 299){
+            ReInitiateUseState();
+        }
 
     }
 
@@ -141,12 +175,20 @@ const PostInfoDiv = (props) => {
                             </div>
                         </div>
                         {/* <!-- buttons --> */}
-                        <div className="grid gap-5 text-white grid-flow-dense lg:grid-flow-col">
+                        <div className="grid gap-5 text-white grid-flow-dense lg:grid-flow-col">s
 
-                            <button className="flex items-center justify-between w-4/5 gap-2 p-3 mx-auto bg-orange-600 rounded-lg lg:mx-0 lg:w-auto scaleHover" onClick={() => {archiveFnc()}}>
-                                Archive
-                                <svg className="h-7" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"><path fill="currentColor" d="M224 48H32a16 16 0 0 0-16 16v24a16 16 0 0 0 16 16v88a16 16 0 0 0 16 16h160a16 16 0 0 0 16-16v-88a16 16 0 0 0 16-16V64a16 16 0 0 0-16-16m-16 144H48v-88h160Zm16-104H32V64h192zM96 136a8 8 0 0 1 8-8h48a8 8 0 0 1 0 16h-48a8 8 0 0 1-8-8" /></svg>
-                            </button>
+
+                            {props.data.archive_status == 'true' ? (
+                                <button className="flex items-center justify-between w-4/5 gap-2 p-3 mx-auto bg-orange-600 rounded-lg lg:mx-0 lg:w-auto scaleHover" onClick={() => {UndoArchiveFnc(props.data.id)}}>
+                                   Undo Archived
+                                    <svg className="h-7" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"><path fill="currentColor" d="M224 48H32a16 16 0 0 0-16 16v24a16 16 0 0 0 16 16v88a16 16 0 0 0 16 16h160a16 16 0 0 0 16-16v-88a16 16 0 0 0 16-16V64a16 16 0 0 0-16-16m-16 144H48v-88h160Zm16-104H32V64h192zM96 136a8 8 0 0 1 8-8h48a8 8 0 0 1 0 16h-48a8 8 0 0 1-8-8" /></svg>
+                                </button>
+                            ) : (
+                                <button className="flex items-center justify-between w-4/5 gap-2 p-3 mx-auto bg-blue-600 rounded-lg lg:mx-0 lg:w-auto scaleHover" onClick={() => {archiveFnc(props.data.id)}}>
+                                   Archive
+                                    <svg className="h-7" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"><path fill="currentColor" d="M224 48H32a16 16 0 0 0-16 16v24a16 16 0 0 0 16 16v88a16 16 0 0 0 16 16h160a16 16 0 0 0 16-16v-88a16 16 0 0 0 16-16V64a16 16 0 0 0-16-16m-16 144H48v-88h160Zm16-104H32V64h192zM96 136a8 8 0 0 1 8-8h48a8 8 0 0 1 0 16h-48a8 8 0 0 1-8-8" /></svg>
+                                </button>
+                            )}
 
                             <button className="flex items-center justify-between w-4/5 gap-2 p-3 mx-auto rounded-lg lg:mx-0 lg:w-auto scaleHover bg-darkColor">
                                 View Stats
