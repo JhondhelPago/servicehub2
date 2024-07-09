@@ -65,11 +65,28 @@ const UserHomepage = () => {
     }
 
 
+
     const [ActiveComponent, setActiveComponent] = useState('EventPosting');
 
     const SetSelectedComponent = (ComponentName) => {
 
         setActiveComponent(ComponentName);
+
+
+        //reInvoked useState based on the component selected
+
+        switch(ComponentName){
+            case 'EventPosting':
+                FetchEventData();
+                break;
+            case 'JobPosting':
+                FetchJobData();
+                break;
+
+            default: 
+
+                break;
+        }
 
     };
 
@@ -204,10 +221,17 @@ const UserHomepage = () => {
                                 // }
                                 console.log()
                                 console.log( `boolean if this post id is in the array of registered ${eventItem.id} : ` + event_registry.includes(eventItem.id));
-                                return (
-                                    <EventPostComponent key={eventItem.id} eventdata={eventItem} RegistredBoolean={event_registry.includes(eventItem.id)} ReInvokeFetchRegistry={FetchRegistry}></EventPostComponent>
+                                // return (
+                                //     <EventPostComponent key={eventItem.id} eventdata={eventItem} RegistredBoolean={event_registry.includes(eventItem.id)} ReInvokeFetchRegistry={FetchRegistry}></EventPostComponent>
                                     
-                                )
+                                // )
+
+                                if(eventItem.archive_status == 'false'){
+                                    return (
+                                        <EventPostComponent key={eventItem.id} eventdata={eventItem} RegistredBoolean={event_registry.includes(eventItem.id)} ReInvokeFetchRegistry={FetchRegistry}></EventPostComponent>
+                                        
+                                    )
+                                }
                             })}
                         </div>
 
@@ -215,9 +239,15 @@ const UserHomepage = () => {
                             {/* {ActiveComponent === 'EventPosting' && <EventPostComponent></EventPostComponent>} */}
                             {/* job post component */}
                             {ActiveComponent === 'JobPosting' && JobData.map((jobItem) => {
-                                return (
-                                    <JobPostComponent key={jobItem.id} jobdata={jobItem} RegisteredBoolean={job_registry.includes(jobItem.id)} ReInvokeFetchRegistry={FetchRegistry}></JobPostComponent>
-                                )
+                                // return (
+                                //     <JobPostComponent key={jobItem.id} jobdata={jobItem} RegisteredBoolean={job_registry.includes(jobItem.id)} ReInvokeFetchRegistry={FetchRegistry}></JobPostComponent>
+                                // )
+
+                                if(jobItem.archive_status == 'false'){
+                                    return (
+                                        <JobPostComponent key={jobItem.id} jobdata={jobItem} RegisteredBoolean={job_registry.includes(jobItem.id)} ReInvokeFetchRegistry={FetchRegistry}></JobPostComponent>
+                                    )
+                                }
                             })}
                         </div>
 

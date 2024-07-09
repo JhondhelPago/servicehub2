@@ -31,7 +31,7 @@ const {
     GetAllClientInformation,
     getRegistry,
     getRegistryInnerJoinPost,
-
+    ArchivingPost,
 
 
 
@@ -1094,6 +1094,33 @@ app.get('/Dashboard/Information', async(req, res) => {
   }
 })
 
+
+
+app.post('/Event/Archive/StatusChange', async(req, res) => {
+
+  const { table } =  req.body;
+  const { event_post_id } = req.body;
+  const { status } = req.body;
+  
+  console.log(table);
+  console.log(event_post_id);
+  console.log(status);
+
+
+
+  //updating the column of this post from event_post
+  try{
+
+    await ArchivingPost(table, event_post_id, status);
+
+  }catch(error){
+    throw error;
+  }
+  console.log('successfully updated.')
+  res.send();
+  
+
+});
 
 
 

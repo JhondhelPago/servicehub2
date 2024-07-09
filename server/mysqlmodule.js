@@ -429,6 +429,24 @@ async function getRegistryInnerJoinPost(userId){
 
 }
 
+
+async function ArchivingPost(table, post_id, statusBoolean){
+
+  try{
+
+
+    await pool.execute(`
+      UPDATE ${table}
+      SET archive_status = ?
+      WHERE id = ? 
+      `, [statusBoolean, post_id]
+    );
+
+  }catch(error){
+    throw error;
+  }
+}
+
 // async function AdminSentItems(id){
 
 //   try{
@@ -828,6 +846,7 @@ module.exports = {
   GetAllClientInformation,
   getRegistry,
   getRegistryInnerJoinPost,
+  ArchivingPost,
 
   //function query for the clientuser
   clientuserLoginSession,
