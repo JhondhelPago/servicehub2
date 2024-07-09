@@ -65,11 +65,28 @@ const UserHomepage = () => {
     }
 
 
+
     const [ActiveComponent, setActiveComponent] = useState('EventPosting');
 
     const SetSelectedComponent = (ComponentName) => {
 
         setActiveComponent(ComponentName);
+
+
+        //reInvoked useState based on the component selected
+
+        switch(ComponentName){
+            case 'EventPosting':
+                FetchEventData();
+                break;
+            case 'JobPosting':
+                FetchJobData();
+                break;
+
+            default: 
+
+                break;
+        }
 
     };
 
@@ -222,9 +239,15 @@ const UserHomepage = () => {
                             {/* {ActiveComponent === 'EventPosting' && <EventPostComponent></EventPostComponent>} */}
                             {/* job post component */}
                             {ActiveComponent === 'JobPosting' && JobData.map((jobItem) => {
-                                return (
-                                    <JobPostComponent key={jobItem.id} jobdata={jobItem} RegisteredBoolean={job_registry.includes(jobItem.id)} ReInvokeFetchRegistry={FetchRegistry}></JobPostComponent>
-                                )
+                                // return (
+                                //     <JobPostComponent key={jobItem.id} jobdata={jobItem} RegisteredBoolean={job_registry.includes(jobItem.id)} ReInvokeFetchRegistry={FetchRegistry}></JobPostComponent>
+                                // )
+
+                                if(jobItem.archive_status == 'false'){
+                                    return (
+                                        <JobPostComponent key={jobItem.id} jobdata={jobItem} RegisteredBoolean={job_registry.includes(jobItem.id)} ReInvokeFetchRegistry={FetchRegistry}></JobPostComponent>
+                                    )
+                                }
                             })}
                         </div>
 
