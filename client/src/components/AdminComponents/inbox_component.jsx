@@ -238,7 +238,7 @@ const InboxComponent = () => {
 
                 )}
                 {MailOverViewBoolean && !viewProfile && (
-                    <MailOverView MailObjsArray={MailObjsArray} ContactClientId={MailOverViewClientId} handleViewProfile={handleViewProfile}></MailOverView>
+                    <MailOverView MailObjsArray={MailObjsArray} ContactClientId={MailOverViewClientId} handleViewProfile={handleViewProfile} FetchConvo_Admin_Client={FetchConvo_Admin_Client}></MailOverView>
                 )}
 
             </div>
@@ -281,7 +281,7 @@ const MailListView = ({ clientId, ClickInboxAction }) => {
 
 
 // component definition of the MailOverView
-const MailOverView = ({ MailObjsArray, ContactClientId, handleViewProfile }) => {
+const MailOverView = ({ MailObjsArray, ContactClientId, handleViewProfile, FetchConvo_Admin_Client }) => {
 
 
 
@@ -305,6 +305,9 @@ const MailOverView = ({ MailObjsArray, ContactClientId, handleViewProfile }) => 
         SetReplyButtonState(true);
     }
 
+    const ReplyDeactivate = () => {
+        SetReplyButtonState(false);
+    }
 
     // const [viewProfile, setViewProfile] = useState(false)
     // const handleViewProfile = () => {
@@ -364,7 +367,7 @@ const MailOverView = ({ MailObjsArray, ContactClientId, handleViewProfile }) => 
 
                 {/* {ReplyButtonState == true && <Replyform></Replyform>} */}
                 <div className="h-auto">
-                    {ReplyButtonState == true && <Replyform ContactClientId={ContactClientId}></Replyform>}
+                    {ReplyButtonState == true && <Replyform ContactClientId={ContactClientId} ReplyDeactivate={ReplyDeactivate} FetchConvo_Admin_Client={FetchConvo_Admin_Client}></Replyform>}
 
                 </div>
             </div>
@@ -423,7 +426,7 @@ const MailInnerViewUserSender = ({ MailObj }) => {
 
 
 
-const Replyform = ({ ContactClientId }) => {
+const Replyform = ({ ContactClientId, ReplyDeactivate, FetchConvo_Admin_Client }) => {
 
     const { AdminId } = useContext(UserContext);
     
@@ -457,6 +460,8 @@ const Replyform = ({ ContactClientId }) => {
 
             console.log(`status: ${response.data}`);
             //outside function here to complete this block
+            ReplyDeactivate();
+            FetchConvo_Admin_Client(ContactClientId);
 
 
         }catch(error){
