@@ -333,11 +333,18 @@ const MailInnerViewUserSender = ({ MailObj }) => {
 
 const Replyform = ({ ContactAdminId }) => {
 
+
+    const insertReply = async() => {
+
+        const response = await axios.post(`/sendMail`, {message: 'hello world'});
+
+    }
+
     return (
         <>
             <div className="flex mx-auto w-full p-5 lg:w-[80%]">
                 {/* <!-- form container --> */}
-                <form method='post' className="flex flex-col w-full gap-5 rounded">
+                <form method='post' className="flex flex-col w-full gap-5 rounded" onSubmit={insertReply}>
                     <div className="flex flex-wrap items-center w-full gap-2">
                         <h4 className="flex shrink" >To: {ContactAdminId}</h4>
                         <input className="flex px-4 py-2 bg-white border rounded border-darkColor grow" type="hidden" value={ContactAdminId} />

@@ -100,87 +100,98 @@ const InboxComponent = () => {
                         </button>
                         <div className="flex flex-col h-full p-5 overflow-auto px-7">
                             <h1 className="pb-5 text-4xl font-semibold text-center font-noto">User Name Profile </h1>
-                            <div className="w-full border rounded-md border-darkColor">
-                                <table className="border-collapse">
+                            <div className="container mx-auto border rounded-md border-darkColor">
+                                <table className="w-full border-collapse">
                                     <tr>
-                                        <th className="p-5 border-b border-r border-darkColor">ID</th>
-                                        <td className="w-full p-5 border-b border-darkColor">
+                                        <th className="h-full p-5 border-b border-r border-darkColor">ID</th>
+                                        <td className="p-5 border-b border-darkColor">
                                             Lorem ipsum dolor sit, amet consectetur adipisicing elit.
                                             Distinctio, cupiditate? Consequuntur libero voluptatem quam a
-                                            repellendus laudantium earum temporibus assumenda. Lorem ipsum dolor sit amet consectetur, adipisicing elit. Sunt, eveniet voluptatum sequi eaque ratione magni aut optio voluptatibus quae deleniti?
+                                            <input placeholder="Enter here" className="w-full p-3 mt-3 border rounded border-darkColor"></input>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <th className="p-5 border-b border-r border-darkColor">
+                                        <th className="h-full p-5 border-b border-r border-darkColor">
                                             Username
                                         </th>
-                                        <td className="w-full p-5 border-b border-darkColor">
+                                        <td className="p-5 border-b border-darkColor">
                                             {/* {ClientData && `${ClientData[0].firstName}`} */}
-                                            asdd
+                                            Asdd
+                                            <input placeholder="Enter here" className="w-full p-3 mt-3 border rounded border-darkColor"></input>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <th className="p-5 border-b border-r border-darkColor">Name</th>
-                                        <td className="w-full p-5 border-b border-darkColor">
+                                        <th className="h-full p-5 border-b border-r border-darkColor">Name</th>
+                                        <td className="p-5 border-b border-darkColor">
                                             {/* {ClientData &&
                                                 `${ClientData[0].firstName} ${ClientData[0].middleName} ${ClientData[0].Lastname}`} */}
                                             aksdgasd
+                                            <input placeholder="Enter here" className="w-full p-3 mt-3 border rounded border-darkColor"></input>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <th className="p-5 border-b border-r border-darkColor">Age</th>
-                                        <td className="w-full p-5 border-b border-darkColor">
+                                        <th className="h-full p-5 border-b border-r border-darkColor">Age</th>
+                                        <td className="p-5 border-b border-darkColor">
                                             {/* {ClientData && `${ClientData[0].age}`} */}
                                             lajshdahd
+                                            <input placeholder="Enter here" className="w-full p-3 mt-3 border rounded border-darkColor"></input>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <th className="p-5 border-b border-r border-darkColor">Gender</th>
-                                        <td className="w-full p-5 border-b border-darkColor">
+                                        <th className="h-full p-5 border-b border-r border-darkColor">Gender</th>
+                                        <td className="p-5 border-b border-darkColor">
                                             {/* {ClientData && `${ClientData[0].gender}`} */}
                                             lasdkasd
+                                            <input placeholder="Enter here" className="w-full p-3 mt-3 border rounded border-darkColor"></input>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <th className="p-5 border-b border-r border-darkColor">
+                                        <th className="h-full p-5 border-b border-r border-darkColor">
                                             Address
                                         </th>
-                                        <td className="w-full p-5 border-b border-darkColor">
+                                        <td className="p-5 border-b border-darkColor">
                                             {/* {ClientData &&
                                                 `${ClientData[0].houseno} ${ClientData[0].street} ${ClientData[0].barangay} ${ClientData[0].city} ${ClientData[0].district} ${ClientData[0].zipcode}`} */}
-                                            asljkhdlkasd
+                                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorem blanditiis nisi quo earum odit repudiandae dolores velit saepe quam autem?
+                                            <input placeholder="Enter here" className="w-full p-3 mt-3 border rounded border-darkColor"></input>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <th className="p-5 border-b border-r border-darkColor">City</th>
-                                        <td className="w-full p-5 border-b border-darkColor">
+                                        <th className="h-full p-5 border-b border-r border-darkColor">City</th>
+                                        <td className="p-5 border-b border-darkColor">
                                             {/* {ClientData && `${ClientData[0].city}`} */}
                                             ajnksdakjdha
+                                            <input placeholder="Enter here" className="w-full p-3 mt-3 border rounded border-darkColor"></input>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <th className="p-5 border-b border-r border-darkColor">
+                                        <th className="h-full p-5 border-b border-r border-darkColor">
                                             District
                                         </th>
-                                        <td className="w-full p-5 border-b border-darkColor">
+                                        <td className="p-5 border-b border-darkColor">
                                             {/* {ClientData && `${ClientData[0].district}`} */}
                                             aljkshdkashd
+                                            <input placeholder="Enter here" className="w-full p-3 mt-3 border rounded border-darkColor"></input>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <th className="p-5 border-b border-r border-darkColor">
+                                        <th className="h-full p-5 border-b border-r border-darkColor">
                                             Contact No.
                                         </th>
-                                        <td className="w-full p-5 border-b border-darkColor">
+                                        <td className="p-5 border-b border-darkColor">
                                             {/* {ClientData && `${ClientData[0].phone}`} */}
-                                            aklsndaksdh
+                                            pilay
+                                            <input placeholder="Enter here" className="w-full p-3 mt-3 border rounded border-darkColor"></input>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <th className="p-5 border-r border-darkColor">Member Status</th>
-                                        <td className="w-full p-5">
+                                        <th className="h-full p-5 border-r border-darkColor">
+                                            Member Status
+                                        </th>
+                                        <td className="p-5">
                                             {/* {ClientData && `${ClientData[0].status}`} */}
-                                            alsjkhdakjsdh
+                                            pilay
+                                            <input placeholder="Enter here" className="w-full p-3 mt-3 border rounded border-darkColor"></input>
                                         </td>
                                     </tr>
                                 </table>
