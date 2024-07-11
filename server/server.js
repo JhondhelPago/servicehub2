@@ -1737,6 +1737,23 @@ app.post('/sendMail', EventUpload.array('files', 10), async(req, res) => {
 });
 
 
+app.post('/sendmail/dummy', async(req, res) => {
+
+  const { senderAdminId , receiverClientId, subject, message } = req.body;
+
+  const MailObj = {
+    SenderId : senderAdminId,
+    AssignedAdmin : receiverClientId,
+    MailSubject: subject,
+    MailBody: message
+  }
+
+
+  console.log(MailObj);
+
+
+});
+
 app.get("/sample_res", (req, res) => {
   res.send("this is a response");
   res.end();

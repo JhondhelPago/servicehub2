@@ -425,27 +425,77 @@ const MailInnerViewUserSender = ({ MailObj }) => {
 
 const Replyform = ({ ContactClientId }) => {
 
+    const { AdminId } = useContext(UserContext); 
+    
+    const [subject, setSubject] = useState('');
+    const [message, setMessage] = useState('');
+    const [files, setFiles] = useState([]);
+
+
+
+
+    //function to handle the formdata and pass to the server logic
+    const handleReplyForm = async(event) => {
+        event.preventDefault();
+
+        const formData = new FormData();
+
+        formData.append('senderAdminId', AdminId);
+        formData.append('receiverClientId', ContactClientId);
+        formData.append('subject', subject);
+        formData.append('message', message);
+
+
+        for (let i = 0; i < files.length; i++) {
+            formData.append('files', files[i]);
+        }
+
+
+        try{
+
+            const response = await axios.post(`sendmail/dummy`, formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                }
+            });
+
+
+            console.log(`status : ${response.data}`);
+            //ReplyDeactivate();
+            //FetchConvo_Client_Admin(ContactAdminId);
+
+
+        }catch(error){
+            console.log('errop at the handleReplyForm at the Adminside', error);
+            throw error;
+        }
+
+    }
+
+    const handleFileChange = (event) => {
+        setFiles(event.target.files);
+    }
 
     return (
         <>
             <div className="flex mx-auto w-full p-5 lg:w-[80%]">
                 {/* <!-- form container --> */}
-                <form method='post' className="flex flex-col w-full gap-5 rounded">
+                <form id="replyForm" method='post' className="flex flex-col w-full gap-5 rounded" onSubmit={handleReplyForm}>
                     <div className="flex flex-wrap items-center w-full gap-2">
-                        <h4 className="flex shrink" >To: {ContactClientId}</h4>
+                        <h4 className="flex shrink" >To: {ContactClientId} </h4>
                         <input className="flex px-4 py-2 bg-white border rounded border-darkColor grow" type="hidden" value={ContactClientId} />
 
                     </div>
                     <div className="flex flex-wrap items-center gap-2">
                         <label className="flex shrink" htmlFor="">Subject:</label>
-                        <input className="flex min-w-full px-4 py-2 bg-white border rounded border-darkColor" type="text" />
+                        <input className="flex min-w-full px-4 py-2 bg-white border rounded border-darkColor" type="text" value={subject} onChange={(e) => setSubject(e.target.value)} />
                     </div>
 
                     {/* <!-- <label className="opacity-70" for="">To:</label> --> */}
-                    <textarea className="w-full h-full min-h-[300px] px-4 py-2 bg-white border rounded border-darkColor" name="" id="" cols="30" rows="10" placeholder="Message goes here."></textarea>
+                    <textarea className="w-full h-full min-h-[300px] px-4 py-2 bg-white border rounded border-darkColor" name="" id="" cols="30" rows="10" placeholder="Message goes here." value={message} onChange={(e) => setMessage(e.target.value)}></textarea>
 
                     <div className="flex items-center w-full mx-auto border rounded border-darkColor">
-                        <input class="file:mr-4 w-full file:py-4 file:border-darkColor file:px-4 file:border-r file:border-l-0 file:border-t-0 file:border-b-0 file:font-medium file:bg-transparent file:text-primary-light hover:file:text-white hover:file:bg-primary-light" id="" type="file" multiple />
+                        <input class="file:mr-4 w-full file:py-4 file:border-darkColor file:px-4 file:border-r file:border-l-0 file:border-t-0 file:border-b-0 file:font-medium file:bg-transparent file:text-primary-light hover:file:text-white hover:file:bg-primary-light" id="" type="file" accept="image/*, .pdf, .doc, .docx, .txt" onChange={handleFileChange} multiple />
                     </div>
 
                     <div className="w-full mx-auto text-center">
