@@ -425,16 +425,12 @@ const MailInnerViewUserSender = ({ MailObj }) => {
 
 const Replyform = ({ ContactClientId }) => {
 
-    const { AdminId } = useContext(UserContext); 
+    const { AdminId } = useContext(UserContext);
     
     const [subject, setSubject] = useState('');
     const [message, setMessage] = useState('');
     const [files, setFiles] = useState([]);
 
-
-
-
-    //function to handle the formdata and pass to the server logic
     const handleReplyForm = async(event) => {
         event.preventDefault();
 
@@ -445,35 +441,39 @@ const Replyform = ({ ContactClientId }) => {
         formData.append('subject', subject);
         formData.append('message', message);
 
-
         for (let i = 0; i < files.length; i++) {
             formData.append('files', files[i]);
+            
         }
 
 
         try{
-
-            const response = await axios.post(`sendmail/dummy`, formData, {
+            
+            const response = await axios.post(`/sendMail/Admin`, formData, {
                 headers: {
-                    'Content-Type': 'multipart/form-data',
+                    'Content-Type': 'multipart/form-data'
                 }
             });
 
-
-            console.log(`status : ${response.data}`);
-            //ReplyDeactivate();
-            //FetchConvo_Client_Admin(ContactAdminId);
+            console.log(`status: ${response.data}`);
+            //outside function here to complete this block
 
 
         }catch(error){
-            console.log('errop at the handleReplyForm at the Adminside', error);
+            console.log('error from the handeReplyForm at the ReplyForm on tge Adminside', error);
             throw error;
         }
+
+
+
+        console.log(subject);
+        console.log(message);
+
 
     }
 
     const handleFileChange = (event) => {
-        setFiles(event.target.files);
+        setFiles(event.target.files)
     }
 
     return (
@@ -482,20 +482,20 @@ const Replyform = ({ ContactClientId }) => {
                 {/* <!-- form container --> */}
                 <form id="replyForm" method='post' className="flex flex-col w-full gap-5 rounded" onSubmit={handleReplyForm}>
                     <div className="flex flex-wrap items-center w-full gap-2">
-                        <h4 className="flex shrink" >To: {ContactClientId} </h4>
+                        <h4 className="flex shrink" >To: {ContactClientId}</h4>
                         <input className="flex px-4 py-2 bg-white border rounded border-darkColor grow" type="hidden" value={ContactClientId} />
 
                     </div>
                     <div className="flex flex-wrap items-center gap-2">
                         <label className="flex shrink" htmlFor="">Subject:</label>
-                        <input className="flex min-w-full px-4 py-2 bg-white border rounded border-darkColor" type="text" value={subject} onChange={(e) => setSubject(e.target.value)} />
+                        <input className="flex min-w-full px-4 py-2 bg-white border rounded border-darkColor" type="text" value={subject} onChange={(e) => setSubject(e.target.value)}/>
                     </div>
 
                     {/* <!-- <label className="opacity-70" for="">To:</label> --> */}
                     <textarea className="w-full h-full min-h-[300px] px-4 py-2 bg-white border rounded border-darkColor" name="" id="" cols="30" rows="10" placeholder="Message goes here." value={message} onChange={(e) => setMessage(e.target.value)}></textarea>
 
                     <div className="flex items-center w-full mx-auto border rounded border-darkColor">
-                        <input class="file:mr-4 w-full file:py-4 file:border-darkColor file:px-4 file:border-r file:border-l-0 file:border-t-0 file:border-b-0 file:font-medium file:bg-transparent file:text-primary-light hover:file:text-white hover:file:bg-primary-light" id="" type="file" accept="image/*, .pdf, .doc, .docx, .txt" onChange={handleFileChange} multiple />
+                        <input class="file:mr-4 w-full file:py-4 file:border-darkColor file:px-4 file:border-r file:border-l-0 file:border-t-0 file:border-b-0 file:font-medium file:bg-transparent file:text-primary-light hover:file:text-white hover:file:bg-primary-light" id="file" accept="image/*, .pdf, .doc, .docx, .txt" onChange={handleFileChange} type="file" multiple />
                     </div>
 
                     <div className="w-full mx-auto text-center">

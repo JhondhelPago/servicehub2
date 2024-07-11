@@ -1737,6 +1737,63 @@ app.post('/sendMail', EventUpload.array('files', 10), async(req, res) => {
 });
 
 
+app.post('/sendMail/Admin', EventUpload.array('files', 10), async(req, res) => {
+
+  const { senderAdminId, receiverClientId, subject, message } = req.body;
+  const files = req.files;
+
+  let Filenames = [];
+  let Imagenames = [];
+
+  files.forEach((file) => {
+
+    if(file.filename.includes('.jpg') || file.filename.includes('.jpeg') || file.filename.includes('.png')){
+      
+      Imagenames.push(file.filename);
+
+    }else if(file.filename.includes('.pdf') || file.filename.includes('.doc') || file.filename.includes('.docx') || file.filename.includes('.txt')){
+
+      Filenames.push(file.filename);
+
+    }
+
+  });
+
+  const Filenames_String = Filenames.join(',');
+  const Imagenames_String = Imagenames.join(',');
+
+  
+
+  //passing the parameter to the query
+  try{
+
+    const MailObj = {
+      SenderId: senderAdminId,
+      AssignedClient: receiverClientId,
+      MailSubject: subject,
+      MailBody: message,
+      MailDocFile: Filenames_String,
+      MailImageFile: Imagenames_String
+
+    }
+
+    console.log(MailObj);
+
+
+
+    await AdminMailInsert(MailObj);
+    res.status(200).send('Mail Sent Successfully');
+
+  }catch(error){
+    console.log(`error from the "/sendMail/Admin @server.js file."`, error);
+    throw error;
+  }
+
+
+});
+
+
+
 app.post('/sendmail/dummy', async(req, res) => {
 
   const { senderAdminId , receiverClientId, subject, message } = req.body;
