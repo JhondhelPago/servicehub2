@@ -1671,14 +1671,88 @@ app.get('/EventRegistered/:clientuserId', async(req, res) => {
 });
 
 
-app.post('/sendMail', async(req, res) => {
+app.post('/sendMail', EventUpload.array('files', 10), async(req, res) => {
   
-  const mailObj = req.body;
+  const { senderClientId, receiverAdminId, subject, message } = req.body;
+  const files = req.files;
+
+  // temporary list of modif file names on the req.
+  let Filenames = [];
+  let Imagenames = [];
+  //populating the filenames
+  files.forEach((file) => {
+
+    if(file.filename.includes('.jpg') || file.filename.includes('.jpeg') || file.filename.includes('.png')){
+      
+      Imagenames.push(file.filename);
+
+    }else if(file.filename.includes('.pdf') || file.filename.includes('.doc') || file.filename.includes('.docx') || file.filename.includes('.txt')){
+
+      Filenames.push(file.filename);
+    }
+    
+  });
+
+  const Filenames_String = Filenames.join(',');
+  const Imagenames_String = Imagenames.join(',');
+
+  // query function
+  try{
+
+    //constructing the MailObj what will be pass as the parameter on the query function
+
+    const MailObj = {
+      SenderId : senderClientId,
+      AssignedAdmin : receiverAdminId,
+      MailSubject: subject,
+      MailBody: message,
+      MailDocFile: Filenames_String,
+      MailImageFile: Imagenames_String
+
+    }
+
+    console.log(MailObj);
 
 
-  console.log(mailObj);
+    await ClientMailInsert(MailObj);
+    res.status(200).send("Mail Sent Successfully");
+
+
+
+  }catch(error){
+    console.log(`error at /sendMail route @server.js file`, error);
+    throw error;
+  }
+
+
+  // console.log(`senderClientId: ${senderClientId}`);
+  // console.log(`receiverAdminid: ${receiverAdminId}`);
+  // console.log(`subject: ${subject}`);
+  // console.log(`message: ${message}`);
+
+  files.forEach((file) => {
+    console.log(file);
+  });
+
 });
 
+
+app.post('/sendmail/dummy', async(req, res) => {
+
+  const { senderAdminId , receiverClientId, subject, message } = req.body;
+
+  const MailObj = {
+    SenderId : senderAdminId,
+    AssignedAdmin : receiverClientId,
+    MailSubject: subject,
+    MailBody: message
+  }
+
+
+  console.log(MailObj);
+
+
+});
 
 app.get("/sample_res", (req, res) => {
   res.send("this is a response");

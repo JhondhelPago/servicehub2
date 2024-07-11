@@ -626,8 +626,8 @@ async function ClientMailInsert(MailObj) {
         MailObj.AssignedAdmin,
         MailObj.MailSubject,
         MailObj.MailBody,
-        "sample.pdf",
-        "img5.jpg,img6.png",
+        MailObj.MailDocFile,
+        MailObj.MailImageFile,
         "unread",
       ]
     );
