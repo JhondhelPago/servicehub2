@@ -4,7 +4,7 @@ import axios from "axios";
 import { ClientUserContext } from "../../pages/ClientUserContext";
 
 
-const ComposeComponent = ({ RenderSentItem }) => {
+const ComposeComponent = ({ RenderSentItem, RenderInboxComponent }) => {
 
   const { clientuserId } = useContext(ClientUserContext);
 
@@ -45,6 +45,7 @@ const ComposeComponent = ({ RenderSentItem }) => {
 
       console.log(`status: ${response.data}`);
       //some function here to redirect
+      RenderInboxComponent();
 
 
     }catch(error){

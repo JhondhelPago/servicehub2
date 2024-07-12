@@ -14,6 +14,10 @@ const ChatSection = () => {
         setActiveComponent(ComponentSection);
     }
 
+    const RenderInboxComponent = () => {
+        setActiveComponent('inbox');
+    }
+
 
     const ActivateSentComponent = () => {
         setActiveComponent('sent');
@@ -48,7 +52,7 @@ const ChatSection = () => {
 
                 {ActiveComponent === 'inbox' && (<InboxComponent></InboxComponent>)}
                 {ActiveComponent === 'sent' && (<SentComponent></SentComponent>)}
-                {ActiveComponent === 'compose' && (<ComposeComponent RenderSentItem={ActivateSentComponent}></ComposeComponent>)}
+                {ActiveComponent === 'compose' && (<ComposeComponent RenderSentItem={ActivateSentComponent} RenderInboxComponent={RenderInboxComponent}></ComposeComponent>)}
 
 
 
