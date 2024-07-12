@@ -16,7 +16,7 @@ const InboxComponent = () => {
 
         try {
 
-            const response = await axios.get(`/FetchMailInbox/Client/${clientuserId}`);
+            const response = await axios.get(`/New/FetchMailInbox/Client/${clientuserId}`);
             const InboxListAdmin = response.data;
             
 

@@ -689,8 +689,32 @@ async function FetchInboxOfClient(id) {
     );
 
     return ClientInbox;
-  } catch (error) {}
+  }catch(error){
+    throw error;
+  }
+
 }
+
+async function NewFetchInboxClient(SenderClientId){
+
+  try{
+
+    const [ReceiverAdminIdArray] = await pool.execute(`
+      SELECT receiverID
+      FROM mail_sent
+      WHERE senderID = ?
+      ORDER BY STR_TO_DATE(CONCAT(date_sent, " ", time_sent), "%Y-%m-%d %H:%i:%s") DESC
+      LIMIT 1000;
+      `, [SenderClientId]);
+
+      return ReceiverAdminIdArray;
+
+  }catch(error){
+    console.log(`error at the mysqlmodule.js @ 'NewfetchInboxClient' function.`, error);
+    throw error;
+  }
+}
+
 
 async function ALL_SendMaiL(ClientReceiver_id, SenderAdminId) {
   try {
@@ -855,6 +879,7 @@ module.exports = {
   ClientMailInsert,
   GetClientSentMail,
   FetchInboxOfClient,
+  NewFetchInboxClient,
   ALL_SendMaiL,
   dashboardQuery,
   getEventRegistry,
