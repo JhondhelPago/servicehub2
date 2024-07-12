@@ -580,8 +580,10 @@ class Dashboard {
       Gender : {
         male_count : this.Gender.male_count,
         female_count : this.Gender.female_count,
-        male_percentage : `${Math.floor(this.Gender.male_percentage * 100)}%` ,
-        female_percentage : `${Math.floor(this.Gender.female_percentage * 100)}%`
+        // male_percentage : `${Math.floor(this.Gender.male_percentage * 100)}%` ,
+        // female_percentage : `${Math.floor(this.Gender.female_percentage * 100)}%`
+        male_percentage : `${Math.floor((this.Gender.male_count / this.user_data.length) * 100)}%`,
+        female_percentage : `${Math.floor((this.Gender.female_count / this.user_data.length) * 100)}%`
       },
 
       // Disability : {
