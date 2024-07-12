@@ -393,6 +393,12 @@ const MailInnerView = ({ MailObj }) => {
                 {/* <!-- body --> */}
                 <div className="flex flex-col overflow-auto" id="remainingHeight">
                     {/* <img className="max-h-[30vh] mx-auto w-fit mb-2 object-contain rounded-md" src={require("../../assets/sample2.jpg")}></img> */}
+                    <img className="max-h-[30vh] mx-auto w-fit mb-2 object-contain rounded-md" src={require("../../assets/sample2.jpg")}></img>
+                    {/* 
+                        <div>
+                        <>
+                        </div>
+                    */}
                     <p>{MailObj.body}</p>
                 </div>
             </div>
