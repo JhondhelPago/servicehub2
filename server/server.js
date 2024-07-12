@@ -1206,41 +1206,59 @@ app.get('/ClientData/:id', async(req, res) =>{
 
 
 
-app.post('/ClientSendMail', async(req, res) => {
+app.post('/ClientSendMail', EventUpload.array('files', 10), async(req, res) => {
 
-    const {SenderId, MailType, MailSubject, MailBody} = req.body;
-
-
-    const AdminArray = await getAdmin();
-    let AssignedAdmin;
-
-    const RandomizedIndex = RandomSelectedIndex(AdminArray.length);
-
-    AssignedAdmin = AdminArray[RandomizedIndex].id;
+    const {senderClientId, subject, message} = req.body;
+    const files = req.files;
 
 
-    console.log(SenderId)
-    console.log(MailType);
-    console.log(MailSubject);
-    console.log(MailBody);
-    console.log(`Assigned Admin: ${AssignedAdmin}`);
+    let Filenames = [];
+    let Imagenames = [];
+
+    files.forEach((file) => {
+    
+      if(file.filename.includes('.jpg') || file.filename.includes('.jpeg') || file.filename.includes('.png')){
+        
+        Imagenames.push(file.filename);
+
+      }else if(file.filename.includes('.pdf') || file.filename.includes('.doc') || file.filename.includes('.docx') || file.filename.includes('.txt')){
+
+        Filenames.push(file.filename);
+
+      }
+
+    });
 
 
-    const MailObj = {
-        SenderId: SenderId,
-        MailType: MailType,
-        MailSubject: MailSubject,
-        MailBody: MailBody,
-        AssignedAdmin: AssignedAdmin
-    }
+    const Filenames_String = Filenames.join(',');
+    const Imagenames_String = Imagenames.join(',');
 
 
     try{
 
-        await ClientMailInsert(MailObj);
+      const AdminArray = await getAdmin();
+      let AssignedAdmin;
+
+      const RandomizedIndex = RandomSelectedIndex(AdminArray.length);
+
+      AssignedAdmin = AdminArray[RandomizedIndex].id;
+
+      //constructing ther Object Parameter
+      const MailObj = {
+          'SenderId': senderClientId,
+          'AssignedAdmin': AssignedAdmin,
+          'MailSubject': subject,
+          'MailBody': message,
+          'MailDocFile': Filenames_String,
+          'MailImageFile': Imagenames_String
+      }
 
 
-        res.send(true)
+      await ClientMailInsert(MailObj);
+
+      console.log(MailObj);
+
+      res.status(200).send('Client Mail Compose Sent Successfully');
 
     }catch(error){
         throw error;
