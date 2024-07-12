@@ -316,11 +316,11 @@ async function AdminMailInsert(MailObj) {
         MailObj.SenderId,
         MyDateTime.Datenow(),
         MyDateTime.Timenow(),
-        MailObj.ReceiverId,
-        MailObj.Subject,
-        MailObj.Body,
-        "docu.pdf,docu1.docx",
-        "img7.png,img8.jpg",
+        MailObj.AssignedClient,
+        MailObj.MailSubject,
+        MailObj.MailBody,
+        MailObj.MailDocFile,
+        MailObj.MailImageFile,
         "unread",
       ]
     );
@@ -626,8 +626,8 @@ async function ClientMailInsert(MailObj) {
         MailObj.AssignedAdmin,
         MailObj.MailSubject,
         MailObj.MailBody,
-        "sample.pdf",
-        "img5.jpg,img6.png",
+        MailObj.MailDocFile,
+        MailObj.MailImageFile,
         "unread",
       ]
     );

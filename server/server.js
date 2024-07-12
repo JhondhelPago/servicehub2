@@ -580,8 +580,10 @@ class Dashboard {
       Gender : {
         male_count : this.Gender.male_count,
         female_count : this.Gender.female_count,
-        male_percentage : `${Math.floor(this.Gender.male_percentage * 100)}%` ,
-        female_percentage : `${Math.floor(this.Gender.female_percentage * 100)}%`
+        // male_percentage : `${Math.floor(this.Gender.male_percentage * 100)}%` ,
+        // female_percentage : `${Math.floor(this.Gender.female_percentage * 100)}%`
+        male_percentage : `${Math.floor((this.Gender.male_count / this.user_data.length) * 100)}%`,
+        female_percentage : `${Math.floor((this.Gender.female_count / this.user_data.length) * 100)}%`
       },
 
       // Disability : {
@@ -1204,41 +1206,59 @@ app.get('/ClientData/:id', async(req, res) =>{
 
 
 
-app.post('/ClientSendMail', async(req, res) => {
+app.post('/ClientSendMail', EventUpload.array('files', 10), async(req, res) => {
 
-    const {SenderId, MailType, MailSubject, MailBody} = req.body;
-
-
-    const AdminArray = await getAdmin();
-    let AssignedAdmin;
-
-    const RandomizedIndex = RandomSelectedIndex(AdminArray.length);
-
-    AssignedAdmin = AdminArray[RandomizedIndex].id;
+    const {senderClientId, subject, message} = req.body;
+    const files = req.files;
 
 
-    console.log(SenderId)
-    console.log(MailType);
-    console.log(MailSubject);
-    console.log(MailBody);
-    console.log(`Assigned Admin: ${AssignedAdmin}`);
+    let Filenames = [];
+    let Imagenames = [];
+
+    files.forEach((file) => {
+    
+      if(file.filename.includes('.jpg') || file.filename.includes('.jpeg') || file.filename.includes('.png')){
+        
+        Imagenames.push(file.filename);
+
+      }else if(file.filename.includes('.pdf') || file.filename.includes('.doc') || file.filename.includes('.docx') || file.filename.includes('.txt')){
+
+        Filenames.push(file.filename);
+
+      }
+
+    });
 
 
-    const MailObj = {
-        SenderId: SenderId,
-        MailType: MailType,
-        MailSubject: MailSubject,
-        MailBody: MailBody,
-        AssignedAdmin: AssignedAdmin
-    }
+    const Filenames_String = Filenames.join(',');
+    const Imagenames_String = Imagenames.join(',');
 
 
     try{
 
-        await ClientMailInsert(MailObj);
+      const AdminArray = await getAdmin();
+      let AssignedAdmin;
+
+      const RandomizedIndex = RandomSelectedIndex(AdminArray.length);
+
+      AssignedAdmin = AdminArray[RandomizedIndex].id;
+
+      //constructing ther Object Parameter
+      const MailObj = {
+          'SenderId': senderClientId,
+          'AssignedAdmin': AssignedAdmin,
+          'MailSubject': subject,
+          'MailBody': message,
+          'MailDocFile': Filenames_String,
+          'MailImageFile': Imagenames_String
+      }
 
 
-        res.send(true)
+      await ClientMailInsert(MailObj);
+
+      console.log(MailObj);
+
+      res.status(200).send('Client Mail Compose Sent Successfully');
 
     }catch(error){
         throw error;
@@ -1671,14 +1691,145 @@ app.get('/EventRegistered/:clientuserId', async(req, res) => {
 });
 
 
-app.post('/sendMail', async(req, res) => {
+app.post('/sendMail', EventUpload.array('files', 10), async(req, res) => {
   
-  const mailObj = req.body;
+  const { senderClientId, receiverAdminId, subject, message } = req.body;
+  const files = req.files;
+
+  // temporary list of modif file names on the req.
+  let Filenames = [];
+  let Imagenames = [];
+  //populating the filenames
+  files.forEach((file) => {
+
+    if(file.filename.includes('.jpg') || file.filename.includes('.jpeg') || file.filename.includes('.png')){
+      
+      Imagenames.push(file.filename);
+
+    }else if(file.filename.includes('.pdf') || file.filename.includes('.doc') || file.filename.includes('.docx') || file.filename.includes('.txt')){
+
+      Filenames.push(file.filename);
+    }
+    
+  });
+
+  const Filenames_String = Filenames.join(',');
+  const Imagenames_String = Imagenames.join(',');
+
+  // query function
+  try{
+
+    //constructing the MailObj what will be pass as the parameter on the query function
+
+    const MailObj = {
+      SenderId : senderClientId,
+      AssignedAdmin : receiverAdminId,
+      MailSubject: subject,
+      MailBody: message,
+      MailDocFile: Filenames_String,
+      MailImageFile: Imagenames_String
+
+    }
+
+    console.log(MailObj);
 
 
-  console.log(mailObj);
+    await ClientMailInsert(MailObj);
+    res.status(200).send("Mail Sent Successfully");
+
+
+
+  }catch(error){
+    console.log(`error at /sendMail route @server.js file`, error);
+    throw error;
+  }
+
+
+  // console.log(`senderClientId: ${senderClientId}`);
+  // console.log(`receiverAdminid: ${receiverAdminId}`);
+  // console.log(`subject: ${subject}`);
+  // console.log(`message: ${message}`);
+
+  files.forEach((file) => {
+    console.log(file);
+  });
+
 });
 
+
+app.post('/sendMail/Admin', EventUpload.array('files', 10), async(req, res) => {
+
+  const { senderAdminId, receiverClientId, subject, message } = req.body;
+  const files = req.files;
+
+  let Filenames = [];
+  let Imagenames = [];
+
+  files.forEach((file) => {
+
+    if(file.filename.includes('.jpg') || file.filename.includes('.jpeg') || file.filename.includes('.png')){
+      
+      Imagenames.push(file.filename);
+
+    }else if(file.filename.includes('.pdf') || file.filename.includes('.doc') || file.filename.includes('.docx') || file.filename.includes('.txt')){
+
+      Filenames.push(file.filename);
+
+    }
+
+  });
+
+  const Filenames_String = Filenames.join(',');
+  const Imagenames_String = Imagenames.join(',');
+
+  
+
+  //passing the parameter to the query
+  try{
+
+    const MailObj = {
+      SenderId: senderAdminId,
+      AssignedClient: receiverClientId,
+      MailSubject: subject,
+      MailBody: message,
+      MailDocFile: Filenames_String,
+      MailImageFile: Imagenames_String
+
+    }
+
+    console.log(MailObj);
+
+
+
+    await AdminMailInsert(MailObj);
+    res.status(200).send('Mail Sent Successfully');
+
+  }catch(error){
+    console.log(`error from the "/sendMail/Admin @server.js file."`, error);
+    throw error;
+  }
+
+
+});
+
+
+
+app.post('/sendmail/dummy', async(req, res) => {
+
+  const { senderAdminId , receiverClientId, subject, message } = req.body;
+
+  const MailObj = {
+    SenderId : senderAdminId,
+    AssignedAdmin : receiverClientId,
+    MailSubject: subject,
+    MailBody: message
+  }
+
+
+  console.log(MailObj);
+
+
+});
 
 app.get("/sample_res", (req, res) => {
   res.send("this is a response");

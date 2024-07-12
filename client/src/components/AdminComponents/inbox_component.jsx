@@ -238,7 +238,7 @@ const InboxComponent = () => {
 
                 )}
                 {MailOverViewBoolean && !viewProfile && (
-                    <MailOverView MailObjsArray={MailObjsArray} ContactClientId={MailOverViewClientId} handleViewProfile={handleViewProfile}></MailOverView>
+                    <MailOverView MailObjsArray={MailObjsArray} ContactClientId={MailOverViewClientId} handleViewProfile={handleViewProfile} FetchConvo_Admin_Client={FetchConvo_Admin_Client}></MailOverView>
                 )}
 
             </div>
@@ -281,7 +281,7 @@ const MailListView = ({ clientId, ClickInboxAction }) => {
 
 
 // component definition of the MailOverView
-const MailOverView = ({ MailObjsArray, ContactClientId, handleViewProfile }) => {
+const MailOverView = ({ MailObjsArray, ContactClientId, handleViewProfile, FetchConvo_Admin_Client }) => {
 
 
 
@@ -305,6 +305,9 @@ const MailOverView = ({ MailObjsArray, ContactClientId, handleViewProfile }) => 
         SetReplyButtonState(true);
     }
 
+    const ReplyDeactivate = () => {
+        SetReplyButtonState(false);
+    }
 
     // const [viewProfile, setViewProfile] = useState(false)
     // const handleViewProfile = () => {
@@ -364,7 +367,7 @@ const MailOverView = ({ MailObjsArray, ContactClientId, handleViewProfile }) => 
 
                 {/* {ReplyButtonState == true && <Replyform></Replyform>} */}
                 <div className="h-auto">
-                    {ReplyButtonState == true && <Replyform ContactClientId={ContactClientId}></Replyform>}
+                    {ReplyButtonState == true && <Replyform ContactClientId={ContactClientId} ReplyDeactivate={ReplyDeactivate} FetchConvo_Admin_Client={FetchConvo_Admin_Client}></Replyform>}
 
                 </div>
             </div>
@@ -390,6 +393,12 @@ const MailInnerView = ({ MailObj }) => {
                 {/* <!-- body --> */}
                 <div className="flex flex-col overflow-auto" id="remainingHeight">
                     {/* <img className="max-h-[30vh] mx-auto w-fit mb-2 object-contain rounded-md" src={require("../../assets/sample2.jpg")}></img> */}
+                    <img className="max-h-[30vh] mx-auto w-fit mb-2 object-contain rounded-md" src={require("../../assets/sample2.jpg")}></img>
+                    {/* 
+                        <div>
+                        <>
+                        </div>
+                    */}
                     <p>{MailObj.body}</p>
                 </div>
             </div>
@@ -423,14 +432,66 @@ const MailInnerViewUserSender = ({ MailObj }) => {
 
 
 
-const Replyform = ({ ContactClientId }) => {
+const Replyform = ({ ContactClientId, ReplyDeactivate, FetchConvo_Admin_Client }) => {
 
+    const { AdminId } = useContext(UserContext);
+    
+    const [subject, setSubject] = useState('');
+    const [message, setMessage] = useState('');
+    const [files, setFiles] = useState([]);
+
+    const handleReplyForm = async(event) => {
+        event.preventDefault();
+
+        const formData = new FormData();
+
+        formData.append('senderAdminId', AdminId);
+        formData.append('receiverClientId', ContactClientId);
+        formData.append('subject', subject);
+        formData.append('message', message);
+
+        for (let i = 0; i < files.length; i++) {
+            formData.append('files', files[i]);
+            
+        }
+
+
+        try{
+            
+            const response = await axios.post(`/sendMail/Admin`, formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            });
+
+            console.log(`status: ${response.data}`);
+            //outside function here to complete this block
+            ReplyDeactivate();
+            FetchConvo_Admin_Client(ContactClientId);
+
+
+        }catch(error){
+            console.log('error from the handeReplyForm at the ReplyForm on tge Adminside', error);
+            throw error;
+        }
+
+
+
+        console.log(subject);
+        console.log(message);
+
+
+    }
+
+    const handleFileChange = (event) => {
+        setFiles(event.target.files)
+    }
 
     return (
         <>
             <div className="flex mx-auto w-full p-5 lg:w-[80%]">
                 {/* <!-- form container --> */}
-                <form method='post' className="flex flex-col w-full gap-5 rounded">
+                <form id="replyForm" method='post' className="flex flex-col w-full gap-5 rounded" onSubmit={handleReplyForm}>
                     <div className="flex flex-wrap items-center w-full gap-2">
                         <h4 className="flex shrink" >To: {ContactClientId}</h4>
                         <input className="flex px-4 py-2 bg-white border rounded border-darkColor grow" type="hidden" value={ContactClientId} />
@@ -438,14 +499,14 @@ const Replyform = ({ ContactClientId }) => {
                     </div>
                     <div className="flex flex-wrap items-center gap-2">
                         <label className="flex shrink" htmlFor="">Subject:</label>
-                        <input className="flex min-w-full px-4 py-2 bg-white border rounded border-darkColor" type="text" />
+                        <input className="flex min-w-full px-4 py-2 bg-white border rounded border-darkColor" type="text" value={subject} onChange={(e) => setSubject(e.target.value)}/>
                     </div>
 
                     {/* <!-- <label className="opacity-70" for="">To:</label> --> */}
-                    <textarea className="w-full h-full min-h-[300px] px-4 py-2 bg-white border rounded border-darkColor" name="" id="" cols="30" rows="10" placeholder="Message goes here."></textarea>
+                    <textarea className="w-full h-full min-h-[300px] px-4 py-2 bg-white border rounded border-darkColor" name="" id="" cols="30" rows="10" placeholder="Message goes here." value={message} onChange={(e) => setMessage(e.target.value)}></textarea>
 
                     <div className="flex items-center w-full mx-auto border rounded border-darkColor">
-                        <input class="file:mr-4 w-full file:py-4 file:border-darkColor file:px-4 file:border-r file:border-l-0 file:border-t-0 file:border-b-0 file:font-medium file:bg-transparent file:text-primary-light hover:file:text-white hover:file:bg-primary-light" id="" type="file" multiple />
+                        <input class="file:mr-4 w-full file:py-4 file:border-darkColor file:px-4 file:border-r file:border-l-0 file:border-t-0 file:border-b-0 file:font-medium file:bg-transparent file:text-primary-light hover:file:text-white hover:file:bg-primary-light" id="file" accept="image/*, .pdf, .doc, .docx, .txt" onChange={handleFileChange} type="file" multiple />
                     </div>
 
                     <div className="w-full mx-auto text-center">
