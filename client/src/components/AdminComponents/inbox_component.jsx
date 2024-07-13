@@ -180,7 +180,7 @@ const InboxComponent = () => {
                                         </th>
                                         <td className="p-5 border-b border-darkColor">
                                             {/* {ClientData && `${ClientData[0].phone}`} */}
-                                            pilay
+                                            aksjd
                                             <input placeholder="Enter here" className="w-full p-3 mt-3 border rounded border-darkColor"></input>
                                         </td>
                                     </tr>
@@ -190,12 +190,13 @@ const InboxComponent = () => {
                                         </th>
                                         <td className="p-5">
                                             {/* {ClientData && `${ClientData[0].status}`} */}
-                                            pilay
+                                            akjsdh
                                             <input placeholder="Enter here" className="w-full p-3 mt-3 border rounded border-darkColor"></input>
                                         </td>
                                     </tr>
                                 </table>
                             </div>
+                            <button className="w-2/4 p-3 mx-auto my-3 text-white rounded-lg bg-primary-light scaleHover" type="">Save</button>
                         </div>
                     </div>
                 ) : (
@@ -334,6 +335,11 @@ const MailOverView = ({ MailObjsArray, ContactClientId, handleViewProfile, Fetch
                         </div>
                         {/* <p className="">Subj</p> */}
 
+                        {/* refresh btn */}
+                        <button className="ml-auto mr-5 rounded hover:bg-extra-light">
+                            <svg className="h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" d="M17.65 6.35A7.958 7.958 0 0 0 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08A5.99 5.99 0 0 1 12 18c-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4z" /></svg>
+                        </button>
+
                         {/* close btn */}
                         <button className="hover:text-red-600">
                             <svg className="h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" d="M18.3 5.71a.996.996 0 0 0-1.41 0L12 10.59L7.11 5.7A.996.996 0 1 0 5.7 7.11L10.59 12L5.7 16.89a.996.996 0 1 0 1.41 1.41L12 13.41l4.89 4.89a.996.996 0 1 0 1.41-1.41L13.41 12l4.89-4.89c.38-.38.38-1.02 0-1.4" /></svg>
@@ -392,14 +398,47 @@ const MailInnerView = ({ MailObj }) => {
                 <h3 className="text-xl font-medium text-center break-words">{MailObj.subject}</h3>
                 {/* <!-- body --> */}
                 <div className="flex flex-col overflow-auto" id="remainingHeight">
-                    {/* <img className="max-h-[30vh] mx-auto w-fit mb-2 object-contain rounded-md" src={require("../../assets/sample2.jpg")}></img> */}
-                    <img className="max-h-[30vh] mx-auto w-fit mb-2 object-contain rounded-md" src={require("../../assets/sample2.jpg")}></img>
-                    {/* 
-                        <div>
-                        <>
-                        </div>
-                    */}
-                    <p>{MailObj.body}</p>
+                    <p className="mx-5 mb-3">{MailObj.body}</p>
+
+                    <div className="mx-5">
+                        {/* image */}
+                        <img className="max-h-[30vh] mb-3 w-fit h-fit object-contain rounded-md" src={require("../../assets/sample2.jpg")}></img>
+                    </div>
+
+                    {/* files container */}
+                    <div className="flex flex-row gap-3 px-5 pb-3 overflow-auto">
+
+                        {/* button */}
+                        <button className="flex items-center gap-3 p-2 border rounded border-darkColor group">
+                            {/* docs icon */}
+                            <svg className="text-blue-600 h-7" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" d="M12.186 14.552c-.617 0-.977.587-.977 1.373c0 .791.371 1.35.983 1.35c.617 0 .971-.588.971-1.374c0-.726-.348-1.349-.977-1.349" /><path fill="currentColor" d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8zM9.155 17.454c-.426.354-1.073.521-1.864.521c-.475 0-.81-.03-1.038-.06v-3.971a8.16 8.16 0 0 1 1.235-.083c.768 0 1.266.138 1.655.432c.42.312.684.81.684 1.522c0 .775-.282 1.309-.672 1.639m2.99.546c-1.2 0-1.901-.906-1.901-2.058c0-1.211.773-2.116 1.967-2.116c1.241 0 1.919.929 1.919 2.045c-.001 1.325-.805 2.129-1.985 2.129m4.655-.762c.275 0 .581-.061.762-.132l.138.713c-.168.084-.546.174-1.037.174c-1.397 0-2.117-.869-2.117-2.021c0-1.379.983-2.146 2.207-2.146c.474 0 .833.096.995.18l-.186.726a1.979 1.979 0 0 0-.768-.15c-.726 0-1.29.438-1.29 1.338c0 .809.48 1.318 1.296 1.318M14 9h-1V4l5 5z" /><path fill="currentColor" d="M7.584 14.563c-.203 0-.335.018-.413.036v2.645c.078.018.204.018.317.018c.828.006 1.367-.449 1.367-1.415c.006-.84-.485-1.284-1.271-1.284" /></svg>
+
+                            {/* label */}
+                            <p className="truncate max-w-52 group-hover:underline">ansdjkfndfnan</p>
+                        </button>
+
+                        {/* sample button for pdf icon */}
+                        <button className="flex items-center gap-3 p-2 border rounded border-darkColor group">
+                            {/* docs icon */}
+                            <svg className="text-red-600 h-7" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" d="M8.267 14.68c-.184 0-.308.018-.372.036v1.178c.076.018.171.023.302.023c.479 0 .774-.242.774-.651c0-.366-.254-.586-.704-.586m3.487.012c-.2 0-.33.018-.407.036v2.61c.077.018.201.018.313.018c.817.006 1.349-.444 1.349-1.396c.006-.83-.479-1.268-1.255-1.268" /><path fill="currentColor" d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8zM9.498 16.19c-.309.29-.765.42-1.296.42a2.23 2.23 0 0 1-.308-.018v1.426H7v-3.936A7.558 7.558 0 0 1 8.219 14c.557 0 .953.106 1.22.319c.254.202.426.533.426.923c-.001.392-.131.723-.367.948m3.807 1.355c-.42.349-1.059.515-1.84.515c-.468 0-.799-.03-1.024-.06v-3.917A7.947 7.947 0 0 1 11.66 14c.757 0 1.249.136 1.633.426c.415.308.675.799.675 1.504c0 .763-.279 1.29-.663 1.615M17 14.77h-1.532v.911H16.9v.734h-1.432v1.604h-.906V14.03H17zM14 9h-1V4l5 5z" /></svg>
+
+                            {/* label */}
+                            <p className="truncate max-w-52 group-hover:underline">ansdjkfndfnan</p>
+
+                            {/* <span className="relative truncate max-w-52 group-hover:underline">
+                                <div class="absolute bottom-[calc(100%+0.5rem)] left-[50%] -translate-x-[50%] hidden group-hover:block w-auto">
+                                    <div class="bottom-full right-0 rounded bg-black px-4 py-1 text-xs text-white whitespace-nowrap">
+                                        Tooltip center
+                                    </div>
+                                </div>
+                                <span>
+                                    Lorem ipsum dolor sit amet consectetur, adipisicing elit. Eos vero reprehenderit voluptatum earum sequi deleniti debitis illum sit, quaerat cumque?
+                                </span>
+                            </span> */}
+                        </button>
+
+                    </div>
+
                 </div>
             </div>
         </>
@@ -421,8 +460,35 @@ const MailInnerViewUserSender = ({ MailObj }) => {
                 <h3 className="text-xl font-medium text-center break-words">{MailObj.subject}</h3>
                 {/* <!-- body --> */}
                 <div className="flex flex-col overflow-auto" id="remainingHeight">
-                    {/* <img className="max-h-[30vh] mx-auto w-fit mb-2 object-contain rounded-md" src={require("../../assets/sample2.jpg")}></img> */}
-                    <p>{MailObj.body}</p>
+                    <p className="mx-5 mb-3">{MailObj.body}</p>
+
+                    <div className="mx-5">
+                        {/* image */}
+                        <img className="max-h-[30vh] mb-3 w-fit h-fit object-contain rounded-md" src={require("../../assets/sample2.jpg")}></img>
+                    </div>
+
+                    {/* files container */}
+                    <div className="flex flex-row gap-3 px-5 pb-3 overflow-auto">
+
+                        {/* button */}
+                        <button className="flex items-center gap-3 p-2 border rounded border-darkColor group">
+                            {/* docs icon */}
+                            <svg className="text-blue-600 h-7" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" d="M12.186 14.552c-.617 0-.977.587-.977 1.373c0 .791.371 1.35.983 1.35c.617 0 .971-.588.971-1.374c0-.726-.348-1.349-.977-1.349" /><path fill="currentColor" d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8zM9.155 17.454c-.426.354-1.073.521-1.864.521c-.475 0-.81-.03-1.038-.06v-3.971a8.16 8.16 0 0 1 1.235-.083c.768 0 1.266.138 1.655.432c.42.312.684.81.684 1.522c0 .775-.282 1.309-.672 1.639m2.99.546c-1.2 0-1.901-.906-1.901-2.058c0-1.211.773-2.116 1.967-2.116c1.241 0 1.919.929 1.919 2.045c-.001 1.325-.805 2.129-1.985 2.129m4.655-.762c.275 0 .581-.061.762-.132l.138.713c-.168.084-.546.174-1.037.174c-1.397 0-2.117-.869-2.117-2.021c0-1.379.983-2.146 2.207-2.146c.474 0 .833.096.995.18l-.186.726a1.979 1.979 0 0 0-.768-.15c-.726 0-1.29.438-1.29 1.338c0 .809.48 1.318 1.296 1.318M14 9h-1V4l5 5z" /><path fill="currentColor" d="M7.584 14.563c-.203 0-.335.018-.413.036v2.645c.078.018.204.018.317.018c.828.006 1.367-.449 1.367-1.415c.006-.84-.485-1.284-1.271-1.284" /></svg>
+
+                            {/* label */}
+                            <p className="truncate max-w-52 group-hover:underline">ansdjkfndfnan</p>
+                        </button>
+
+                        {/* sample button for pdf icon */}
+                        <button className="flex items-center gap-3 p-2 border rounded border-darkColor group">
+                            {/* docs icon */}
+                            <svg className="text-red-600 h-7" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" d="M8.267 14.68c-.184 0-.308.018-.372.036v1.178c.076.018.171.023.302.023c.479 0 .774-.242.774-.651c0-.366-.254-.586-.704-.586m3.487.012c-.2 0-.33.018-.407.036v2.61c.077.018.201.018.313.018c.817.006 1.349-.444 1.349-1.396c.006-.83-.479-1.268-1.255-1.268" /><path fill="currentColor" d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8zM9.498 16.19c-.309.29-.765.42-1.296.42a2.23 2.23 0 0 1-.308-.018v1.426H7v-3.936A7.558 7.558 0 0 1 8.219 14c.557 0 .953.106 1.22.319c.254.202.426.533.426.923c-.001.392-.131.723-.367.948m3.807 1.355c-.42.349-1.059.515-1.84.515c-.468 0-.799-.03-1.024-.06v-3.917A7.947 7.947 0 0 1 11.66 14c.757 0 1.249.136 1.633.426c.415.308.675.799.675 1.504c0 .763-.279 1.29-.663 1.615M17 14.77h-1.532v.911H16.9v.734h-1.432v1.604h-.906V14.03H17zM14 9h-1V4l5 5z" /></svg>
+
+                            {/* label */}
+                            <p className="truncate max-w-52 group-hover:underline">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Eos vero reprehenderit voluptatum earum sequi deleniti debitis illum sit, quaerat cumque?</p>
+                        </button>
+
+                    </div>
                 </div>
             </div>
         </>
@@ -435,12 +501,12 @@ const MailInnerViewUserSender = ({ MailObj }) => {
 const Replyform = ({ ContactClientId, ReplyDeactivate, FetchConvo_Admin_Client }) => {
 
     const { AdminId } = useContext(UserContext);
-    
+
     const [subject, setSubject] = useState('');
     const [message, setMessage] = useState('');
     const [files, setFiles] = useState([]);
 
-    const handleReplyForm = async(event) => {
+    const handleReplyForm = async (event) => {
         event.preventDefault();
 
         const formData = new FormData();
@@ -452,12 +518,12 @@ const Replyform = ({ ContactClientId, ReplyDeactivate, FetchConvo_Admin_Client }
 
         for (let i = 0; i < files.length; i++) {
             formData.append('files', files[i]);
-            
+
         }
 
 
-        try{
-            
+        try {
+
             const response = await axios.post(`/sendMail/Admin`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
@@ -470,7 +536,7 @@ const Replyform = ({ ContactClientId, ReplyDeactivate, FetchConvo_Admin_Client }
             FetchConvo_Admin_Client(ContactClientId);
 
 
-        }catch(error){
+        } catch (error) {
             console.log('error from the handeReplyForm at the ReplyForm on tge Adminside', error);
             throw error;
         }
@@ -499,7 +565,7 @@ const Replyform = ({ ContactClientId, ReplyDeactivate, FetchConvo_Admin_Client }
                     </div>
                     <div className="flex flex-wrap items-center gap-2">
                         <label className="flex shrink" htmlFor="">Subject:</label>
-                        <input className="flex min-w-full px-4 py-2 bg-white border rounded border-darkColor" type="text" value={subject} onChange={(e) => setSubject(e.target.value)}/>
+                        <input className="flex min-w-full px-4 py-2 bg-white border rounded border-darkColor" type="text" value={subject} onChange={(e) => setSubject(e.target.value)} />
                     </div>
 
                     {/* <!-- <label className="opacity-70" for="">To:</label> --> */}

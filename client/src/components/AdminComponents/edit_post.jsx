@@ -52,16 +52,16 @@ const EditFormComponent = (props) => {
                 },
                 body: JSON.stringify(InputData)
             })
-            .then(response => {
-                if (response.ok) {
-                    return response.json();
-                } else {
-                    throw new Error('response is not ok in edit_post at SaveChanges() function');
-                }
-            })
-            .catch(error => {
-                console.log(error);
-            })
+                .then(response => {
+                    if (response.ok) {
+                        return response.json();
+                    } else {
+                        throw new Error('response is not ok in edit_post at SaveChanges() function');
+                    }
+                })
+                .catch(error => {
+                    console.log(error);
+                })
 
             alert('The Post has been updated.');
 
@@ -133,7 +133,7 @@ const EditFormComponent = (props) => {
                             <div className='flex flex-row gap-2'>
                                 <div className='flex gap-2 mt-2 w-fit md:justify-start'>
                                     {/* disability container */}
-                                    <button className='flex items-center justify-center gap-2 px-4 py-2 border rounded-full border-darkColor group'>
+                                    <button className='flex items-center justify-center gap-2 px-4 py-2 border rounded-full bg-extra-light border-darkColor group'>
                                         {/* disability name */}
                                         <p className=''>Disability</p>
                                         <svg className='hidden h-5 text-green-600 cursor-pointer group-hover:flex' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"><path fill="currentColor" d="M228 128a12 12 0 0 1-12 12h-76v76a12 12 0 0 1-24 0v-76H40a12 12 0 0 1 0-24h76V40a12 12 0 0 1 24 0v76h76a12 12 0 0 1 12 12" /></svg>
