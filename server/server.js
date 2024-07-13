@@ -42,6 +42,7 @@ const {
     ClientMailInsert,
     GetClientSentMail,
     FetchInboxOfClient,
+    NewFetchInboxClient,
     ALL_SendMaiL,
     getEventRegistry,
     getJobRegistry,
@@ -1371,7 +1372,42 @@ app.get('/FetchMailInbox/Client/:clienduserId', async(req, res) => {
 
   //new logic 
 
-})
+});
+
+app.get('/New/FetchMailInbox/Client/:clientuserId', async(req, res) => {
+
+  const clientId = req.params.clientuserId;
+
+
+  try{
+
+
+    let adminIdArray = [];
+
+    const clientInboxArray = await  NewFetchInboxClient(clientId);
+
+
+    clientInboxArray.forEach((mailObj) => {
+
+      if(!adminIdArray.includes(mailObj.receiverID)){
+        adminIdArray.push(mailObj.receiverID);
+      }
+
+    });
+
+
+    // res.send(clientInboxArray);
+
+    res.send(adminIdArray);
+
+  }catch(error){
+    console.log(`error from the server.js @ '/New/FetchMail/Client/:clientuserId' route. `, error);
+    throw error;
+
+  }
+
+
+});
 
 
 
