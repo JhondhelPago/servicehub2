@@ -311,14 +311,14 @@ const MailInnerView = ({ MailObj }) => {
                     {/* <h4 className="font-light">From: <span className="font-medium">{MailObj.senderID}</span></h4>
                         <h4 className="font-light">To: <span className="font-medium">{MailObj.receiverID}</span></h4> */}
 
-                    <h4 className="text-xs">00/00/00</h4>
-                    <h4 className="text-xs">00:00</h4>
+                    <h4 className="text-xs">{MailObj.date_sent}</h4>
+                    <h4 className="text-xs">{MailObj.time_sent}</h4>
                 </div>
 
                 <h3 className="text-xl font-medium text-center break-words">{MailObj.subject}</h3>
                 {/* <!-- body --> */}
                 <div className="flex flex-col overflow-auto" id="remainingHeight">
-                    {/* <img className="max-h-[30vh] mx-auto w-fit mb-2 object-contain rounded-md" src={require("../../assets/sample2.jpg")}></img> */}
+                    <img className="max-h-[30vh] mx-auto w-fit mb-2 object-contain rounded-md" src={require("../../assets/sample2.jpg")}></img>
                     <p>{MailObj.body}</p>
                 </div>
             </div>
@@ -334,14 +334,14 @@ const MailInnerViewUserSender = ({ MailObj }) => {
                     {/* <h4 className="font-light">From: <span className="font-medium">{MailObj.senderID}</span></h4>
                         <h4 className="font-light">To: <span className="font-medium">{MailObj.receiverID}</span></h4> */}
 
-                    <h4 className="text-xs">00/00/00</h4>
-                    <h4 className="text-xs">00:00</h4>
+                    <h4 className="text-xs">{MailObj.date_sent}</h4>
+                    <h4 className="text-xs">{MailObj.time_sent}</h4>
                 </div>
 
                 <h3 className="text-xl font-medium text-center break-words">{MailObj.subject}</h3>
                 {/* <!-- body --> */}
                 <div className="flex flex-col overflow-auto" id="remainingHeight">
-                    {/* <img className="max-h-[30vh] mx-auto w-fit mb-2 object-contain rounded-md" src={require("../../assets/sample2.jpg")}></img> */}
+                    <img className="max-h-[30vh] mx-auto w-fit mb-2 object-contain rounded-md" src={require("../../assets/sample2.jpg")}></img>
                     <p>{MailObj.body}</p>
                 </div>
             </div>
