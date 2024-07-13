@@ -157,7 +157,7 @@
 //     const [UserInformation, SetUserInformation] = useState(null);
 
 //     const FetchUserInformation = async() =>{
-        
+
 //         try{
 
 //             const response = await axios.get(`/Fetch/Dashboard`);
@@ -335,14 +335,14 @@
 //                             <div className='flex flex-col items-center justify-center flex-grow rounded-lg p-7 bg-gray-50 hover:shadow-lg hover:bg-white'>
 //                                 <h3 className='text-2xl'>Count: {UserInformation && UserInformation.Gender.male_count}</h3>
 //                                 <h3 className='text-2xl'> {UserInformation && UserInformation.Gender.male_percentage}</h3>
-                                
-//                                 <img className='w-18 h-24' src={Male}></img>
+
+//                                 <img className='h-24 w-18' src={Male}></img>
 //                                 <h6>Male</h6>
 //                             </div>
 //                             <div className='flex flex-col items-center justify-center flex-grow rounded-lg p-7 bg-gray-50 hover:shadow-lg hover:bg-white'>
 //                                 <h3 className='text-2xl'>Count: {UserInformation && UserInformation.Gender.female_count}</h3>
 //                                 <h3 className='text-2xl'> {UserInformation && UserInformation.Gender.female_percentage}</h3>
-//                                 <img className='w-18 h-24' src={Female}></img>
+//                                 <img className='h-24 w-18' src={Female}></img>
 //                                 <h6>Female</h6>
 //                             </div>
 //                             {/* <div className='flex flex-col items-center justify-center flex-grow rounded-lg p-7 bg-gray-50 hover:shadow-lg hover:bg-white'>
@@ -377,31 +377,31 @@
 //                             <div className='flex flex-col items-center justify-center flex-grow rounded-lg p-7 bg-gray-50 hover:shadow-lg hover:bg-white'>
 //                                 <h3 className='text-2xl'>Count: {UserInformation && UserInformation.Employment.unemployed}</h3>
 //                                 <h3 className='text-2xl'> {UserInformation && UserInformation.Employment.unemployment_percentage}</h3>
-//                                 <img className='w-18 h-24' src={Unemployed}></img>
+//                                 <img className='h-24 w-18' src={Unemployed}></img>
 //                                 <h6>Unemployed</h6>
 //                             </div>
 //                             <div className='flex flex-col items-center justify-center flex-grow rounded-lg p-7 bg-gray-50 hover:shadow-lg hover:bg-white'>
 //                                 <h3 className='text-2xl'>Count: {UserInformation && UserInformation.Employment.employed}</h3>
 //                                 <h3 className='text-2xl'> {UserInformation && UserInformation.Employment.employment_percentage}</h3>
-//                                 <img className='w-18 h-24' src={Employed}></img>
+//                                 <img className='h-24 w-18' src={Employed}></img>
 //                                 <h6>Employed</h6>
 //                             </div>
 //                             <div className='flex flex-col items-center justify-center flex-grow rounded-lg p-7 bg-gray-50 hover:shadow-lg hover:bg-white'>
 //                                 <h3 className='text-2xl'>Count: {UserInformation && UserInformation.Age.minor_count}</h3>
 //                                 <h3 className='text-2xl'>{UserInformation && UserInformation.Age.minor_percentage}</h3>
-//                                 <img className='w-18 h-24' src={Children}></img>
+//                                 <img className='h-24 w-18' src={Children}></img>
 //                                 <h6>minor</h6>
 //                             </div>
 //                             <div className='flex flex-col items-center justify-center flex-grow rounded-lg p-7 bg-gray-50 hover:shadow-lg hover:bg-white'>
 //                                 <h3 className='text-2xl'>Count: {UserInformation && UserInformation.Age.adult_count}</h3>
 //                                 <h3 className='text-2xl'> {UserInformation && UserInformation.Age.adult_percentage}</h3>
-//                                 <img className='w-18 h-24' src={Adult}></img>
+//                                 <img className='h-24 w-18' src={Adult}></img>
 //                                 <h6>Adult</h6>
 //                             </div>
 //                             <div className='flex flex-col items-center justify-center flex-grow rounded-lg p-7 bg-gray-50 hover:shadow-lg hover:bg-white'>
 //                                 <h3 className='text-2xl'>Count: {UserInformation && UserInformation.Age.senior_count}</h3>
 //                                 <h3 className='text-2xl'>{UserInformation && UserInformation.Age.senior_percentage}</h3>
-//                                 <img className='w-18 h-24' src={Senior}></img>
+//                                 <img className='h-24 w-18' src={Senior}></img>
 //                                 <h6>Senior</h6>
 //                             </div>
 //                         </div>
@@ -437,7 +437,7 @@ const barChartConfig = {
     height: 240,
     series: [
         {
-            name: "Sales",
+            name: "Events",
             data: [500, 40, 300, 320, 500, 350, 200, 230, 1000],
         },
     ],
@@ -479,6 +479,7 @@ const barChartConfig = {
                     fontSize: "12px",
                     fontFamily: "inherit",
                     fontWeight: 400,
+                    fontSize: "16",
                 },
             },
             categories: [
@@ -500,6 +501,7 @@ const barChartConfig = {
                     fontSize: "12px",
                     fontFamily: "inherit",
                     fontWeight: 400,
+                    fontSize: "16",
                 },
             },
         },
@@ -548,8 +550,8 @@ const Homeprompt = () => {
         if (!UserInformation) return null;
         return {
             type: "pie",
-            width: 350,
-            height: 350,
+            width: 450,
+            height: 450,
             series: [
                 // convertToRoundedHundred(UserInformation.Disability.IntellectualDisability_percentage),
                 // convertToRoundedHundred(UserInformation.Disability.InvisibleDisability_percentage),
@@ -562,7 +564,7 @@ const Homeprompt = () => {
                 UserInformation.Disability.LearningDisability_count,
                 UserInformation.Disability.MentalHealthDisability_count,
                 UserInformation.Disability.PhysicalDisability_count,
-                UserInformation.Disability.SensoryDisability_count
+                UserInformation.Disability.SensoryDisability_count,
             ],
             options: {
                 chart: {
@@ -581,11 +583,23 @@ const Homeprompt = () => {
                 },
                 dataLabels: {
                     enabled: true,
+                    style: {
+                        fontSize: "16",
+                        fontWeight: 300,
+                    },
                 },
-                colors: ["#CD890A", "#B17709", "#966D22", "#A44F00", "#424B54", "#3A4147"],
+                colors: [
+                    "#000000",
+                    "#3A4147",
+                    "#5E6F7C",
+                    "#E4AB0E",
+                    "#A44F00",
+                    "#4C2000",
+                ],
                 legend: {
                     show: true,
                     fontFamily: "Poppins, sans-serif",
+                    fontSize: "16",
                     customLegendItems: ["Intellectual", "Invisible", "Learning", "Mental", "Physical", "Sensory"],
                     onItemClick: { toggleDataSeries: true, },
                     labels: { useSeriesColors: true },
@@ -604,12 +618,33 @@ const Homeprompt = () => {
             <head>
                 <title>Dashboard</title>
             </head>
-            <div id="mainContentContainer" className="pb-5 flex flex-col flex-grow bg-gray-100 text-darkColor">
-                <div className="sticky top-0 flex items-center justify-between gap-2 px-5 py-5 mb-5 bg-gray-100 ">
-                    <div className='flex flex-col gap-2'>
-                        <h1 className="flex text-2xl font-medium md:text-4xl">
+            <div id="mainContentContainer" className="flex flex-col flex-grow pb-5 bg-gray-100 text-darkColor">
+                <div className="sticky top-0 z-10 flex items-center justify-between gap-2 px-5 py-5 mb-5 bg-gray-100">
+                    <div className='flex flex-row flex-wrap w-full ustify-between'>
+                        <h1 className="flex mr-auto text-2xl font-medium md:text-4xl">
                             Dashboard
                         </h1>
+
+                        {/* filter */}
+                        <div className='flex flex-wrap gap-5 mt-2'>
+                            {/* district */}
+                            <select className='flex rounded border-darkColor text-darkColor' name="" id="district">
+                                <option defaultValue>-Filter by District-</option>
+                                <option value="">aosdioasjd</option>
+                                <option value="">aosdioasjd</option>
+                                <option value="">aosdioasjd</option>
+                                <option value="">aosdioasjd</option>
+                                <option value="">aosdioasjd</option>
+                            </select>
+
+                            {/* city */}
+                            <select className='flex rounded border-darkColor text-darkColor' name="" id="city">
+                                <option defaultValue>-Filter by City-</option>
+                            </select>
+
+                            {/* export btn */}
+                            <button className='px-5 py-2 text-white rounded scaleHover bg-primary-light'>Export to CSV</button>
+                        </div>
                     </div>
                 </div>
                 <div className="flex flex-col items-center gap-5 px-5">
@@ -625,13 +660,13 @@ const Homeprompt = () => {
                             <div className='flex flex-col items-center justify-center flex-grow rounded-lg p-7 bg-gray-50 hover:shadow-lg hover:bg-white'>
                                 <h3 className='text-2xl'>Count: {UserInformation && UserInformation.Gender.male_count}</h3>
                                 <h3 className='text-2xl'> {UserInformation && UserInformation.Gender.male_percentage}</h3>
-                                <img className='w-18 h-24' src={Male}></img>
+                                <img className='h-24 w-18' src={Male}></img>
                                 <h6>Male</h6>
                             </div>
                             <div className='flex flex-col items-center justify-center flex-grow rounded-lg p-7 bg-gray-50 hover:shadow-lg hover:bg-white'>
                                 <h3 className='text-2xl'>Count: {UserInformation && UserInformation.Gender.female_count}</h3>
                                 <h3 className='text-2xl'> {UserInformation && UserInformation.Gender.female_percentage}</h3>
-                                <img className='w-18 h-24' src={Female}></img>
+                                <img className='h-24 w-18' src={Female}></img>
                                 <h6>Female</h6>
                             </div>
                         </div>
@@ -641,31 +676,31 @@ const Homeprompt = () => {
                             <div className='flex flex-col items-center justify-center flex-grow rounded-lg p-7 bg-gray-50 hover:shadow-lg hover:bg-white'>
                                 <h3 className='text-2xl'>Count: {UserInformation && UserInformation.Employment.unemployed}</h3>
                                 <h3 className='text-2xl'> {UserInformation && UserInformation.Employment.unemployment_percentage}</h3>
-                                <img className='w-18 h-24' src={Unemployed}></img>
+                                <img className='h-24 w-18' src={Unemployed}></img>
                                 <h6>Unemployed</h6>
                             </div>
                             <div className='flex flex-col items-center justify-center flex-grow rounded-lg p-7 bg-gray-50 hover:shadow-lg hover:bg-white'>
                                 <h3 className='text-2xl'>Count: {UserInformation && UserInformation.Employment.employed}</h3>
                                 <h3 className='text-2xl'> {UserInformation && UserInformation.Employment.employment_percentage}</h3>
-                                <img className='w-18 h-24' src={Employed}></img>
+                                <img className='h-24 w-18' src={Employed}></img>
                                 <h6>Employed</h6>
                             </div>
                             <div className='flex flex-col items-center justify-center flex-grow rounded-lg p-7 bg-gray-50 hover:shadow-lg hover:bg-white'>
                                 <h3 className='text-2xl'>Count: {UserInformation && UserInformation.Age.minor_count}</h3>
                                 <h3 className='text-2xl'>{UserInformation && UserInformation.Age.minor_percentage}</h3>
-                                <img className='w-18 h-24' src={Children}></img>
+                                <img className='h-24 w-18' src={Children}></img>
                                 <h6>Minor</h6>
                             </div>
                             <div className='flex flex-col items-center justify-center flex-grow rounded-lg p-7 bg-gray-50 hover:shadow-lg hover:bg-white'>
                                 <h3 className='text-2xl'>Count: {UserInformation && UserInformation.Age.adult_count}</h3>
                                 <h3 className='text-2xl'>{UserInformation && UserInformation.Age.adult_percentage}</h3>
-                                <img className='w-18 h-24' src={Adult}></img>
+                                <img className='h-24 w-18' src={Adult}></img>
                                 <h6>Adult</h6>
                             </div>
                             <div className='flex flex-col items-center justify-center flex-grow rounded-lg p-7 bg-gray-50 hover:shadow-lg hover:bg-white'>
                                 <h3 className='text-2xl'>Count: {UserInformation && UserInformation.Age.senior_count}</h3>
                                 <h3 className='text-2xl'>{UserInformation && UserInformation.Age.senior_percentage}</h3>
-                                <img className='w-18 h-24' src={Senior}></img>
+                                <img className='h-24 w-18' src={Senior}></img>
                                 <h6>Senior</h6>
                             </div>
                         </div>
