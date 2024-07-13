@@ -60,6 +60,12 @@ const InboxComponent = () => {
 
     }
 
+    const CloseMailOverViewAction = () => {
+        SetMailOverViewBoolean(null);
+        SetMailOverViewClientId(null);
+        SetMailObjsArray(null);
+    }
+
 
     const FetchConvo_Admin_Client = async (SenderClientId) => {
 
@@ -238,7 +244,7 @@ const InboxComponent = () => {
 
                 )}
                 {MailOverViewBoolean && !viewProfile && (
-                    <MailOverView MailObjsArray={MailObjsArray} ContactClientId={MailOverViewClientId} handleViewProfile={handleViewProfile} FetchConvo_Admin_Client={FetchConvo_Admin_Client}></MailOverView>
+                    <MailOverView MailObjsArray={MailObjsArray} ContactClientId={MailOverViewClientId} handleViewProfile={handleViewProfile} CloseMailOverViewAction={CloseMailOverViewAction} FetchConvo_Admin_Client={FetchConvo_Admin_Client}></MailOverView>
                 )}
 
             </div>
@@ -281,7 +287,7 @@ const MailListView = ({ clientId, ClickInboxAction }) => {
 
 
 // component definition of the MailOverView
-const MailOverView = ({ MailObjsArray, ContactClientId, handleViewProfile, FetchConvo_Admin_Client }) => {
+const MailOverView = ({ MailObjsArray, ContactClientId, handleViewProfile, CloseMailOverViewAction, FetchConvo_Admin_Client }) => {
 
 
 
@@ -335,7 +341,7 @@ const MailOverView = ({ MailObjsArray, ContactClientId, handleViewProfile, Fetch
                         {/* <p className="">Subj</p> */}
 
                         {/* close btn */}
-                        <button className="hover:text-red-600">
+                        <button className="hover:text-red-600" onClick={CloseMailOverViewAction}>
                             <svg className="h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" d="M18.3 5.71a.996.996 0 0 0-1.41 0L12 10.59L7.11 5.7A.996.996 0 1 0 5.7 7.11L10.59 12L5.7 16.89a.996.996 0 1 0 1.41 1.41L12 13.41l4.89 4.89a.996.996 0 1 0 1.41-1.41L13.41 12l4.89-4.89c.38-.38.38-1.02 0-1.4" /></svg>
                         </button>
                     </div>
@@ -385,8 +391,8 @@ const MailInnerView = ({ MailObj }) => {
                     {/* <h4 className="font-light">From: <span className="font-medium">{MailObj.senderID}</span></h4>
                         <h4 className="font-light">To: <span className="font-medium">{MailObj.receiverID}</span></h4> */}
 
-                    <h4 className="text-xs">00/00/00</h4>
-                    <h4 className="text-xs">00:00</h4>
+                    <h4 className="text-xs">{MailObj.date_sent}</h4>
+                    <h4 className="text-xs">{MailObj.time_sent}</h4>
                 </div>
 
                 <h3 className="text-xl font-medium text-center break-words">{MailObj.subject}</h3>
@@ -414,14 +420,14 @@ const MailInnerViewUserSender = ({ MailObj }) => {
                     {/* <h4 className="font-light">From: <span className="font-medium">{MailObj.senderID}</span></h4>
                         <h4 className="font-light">To: <span className="font-medium">{MailObj.receiverID}</span></h4> */}
 
-                    <h4 className="text-xs">00/00/00</h4>
-                    <h4 className="text-xs">00:00</h4>
+                    <h4 className="text-xs">{MailObj.date_sent}</h4>
+                    <h4 className="text-xs">{MailObj.time_sent}</h4>
                 </div>
 
                 <h3 className="text-xl font-medium text-center break-words">{MailObj.subject}</h3>
                 {/* <!-- body --> */}
                 <div className="flex flex-col overflow-auto" id="remainingHeight">
-                    {/* <img className="max-h-[30vh] mx-auto w-fit mb-2 object-contain rounded-md" src={require("../../assets/sample2.jpg")}></img> */}
+                    <img className="max-h-[30vh] mx-auto w-fit mb-2 object-contain rounded-md" src={require("../../assets/sample2.jpg")}></img>
                     <p>{MailObj.body}</p>
                 </div>
             </div>
