@@ -618,7 +618,7 @@ const Homeprompt = () => {
                                 <h3 className='text-2xl'>Count: {UserInformation && UserInformation.Gender.male_count}</h3>
                                 <h3 className='text-2xl'> {UserInformation && UserInformation.Gender.male_percentage}</h3>
                                 <img className='w-18 h-24' src={Male}></img>
-                                <h6>Male</h6>
+                                <h6>Total Population</h6>
                             </div>
                             <div className='flex flex-col items-center justify-center flex-grow rounded-lg p-7 bg-gray-50 hover:shadow-lg hover:bg-white'>
                                 <h3 className='text-2xl'>Count: {UserInformation && UserInformation.Gender.male_count}</h3>
