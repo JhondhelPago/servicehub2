@@ -680,6 +680,8 @@ app.use(bodyParser.json());
 
 app.use(express.static(path.join(__dirname, "..", "public")));
 
+app.use('/uploads', express.static(path.join(__dirname, 'FileUpload')));
+
 //multer configuration -> EventFile Storage Directory
 const Eventstorage = multer.diskStorage({
   destination: function (req, file, cb) {
