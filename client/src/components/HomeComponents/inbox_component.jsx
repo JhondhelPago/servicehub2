@@ -442,7 +442,7 @@ const MailInnerViewUserSender = ({ MailObj }) => {
     }
 
     const openFileNewTab = (filename) => {
-        const url = `${window.location.origin}/uploads/${filename}`;
+        const url = `${window.location.origin.replace('3000', '8080')}/uploads/${filename}`;
         window.open(url, '_blank');
     }
 
