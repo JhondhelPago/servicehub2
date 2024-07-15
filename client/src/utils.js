@@ -88,6 +88,9 @@ function sampleEdit(props){
     }
 }
 
+const NCR = {
+
+}
 
 const PH_province_cities = {
     "01": {
@@ -49157,7 +49160,8 @@ export {
     CodeGenerator,
     StringManipulate,
     sampleEdit,
-    PH_province_cities
+    PH_province_cities,
+    NCR
 }
 
 

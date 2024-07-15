@@ -545,10 +545,25 @@ const Homeprompt = () => {
         }
     }
 
-    const Philippine_prov_cities = PH_province_cities;
+    // const NCR_cities  = 
+
+    const [City, SetCity] = useState(null);
+
+    const SetSelectedCity = (event) => {
+
+        const city_value = event.target.value;
+        SetCity(city_value);
+        console.log(city_value);
+    }
+    
 
     const handleFilterFetch = async() => {
+        try{
 
+        }catch(error){
+            console.log(`error on the dashboard.jsx on the Homeprompt @ handleFilterFetch function.`, error);
+            throw error;
+        }
 
     }
 
@@ -621,7 +636,7 @@ const Homeprompt = () => {
 
     useEffect(() => {
         FetchUserInformation();
-        console.log(Philippine_prov_cities);
+        
     }, []);
 
     return (
@@ -638,20 +653,40 @@ const Homeprompt = () => {
 
                         {/* filter */}
                         <div className='flex flex-wrap gap-5 mt-2'>
-                            {/* city */}
-                            <select className='flex rounded border-darkColor text-darkColor' name="" id="city">
+                            {/* city */} 
+                            <select className='flex rounded border-darkColor text-darkColor' name="" id="city" onChange={SetSelectedCity}>
                                 <option defaultValue>-Filter by City-</option>
+                                <option value='City of Caloocan'>City of Caloocan</option>
+                                <option value='City of Las Piñas'>City of Las Piñas</option>
+                                <option value='City of Makati'>City of Makati</option>
+                                <option value='City of Malabon'>City of Malabon</option>
+                                <option value='City of Mandaluyong'>City of Mandaluyong</option>
+                                <option value='City of Manila'>City of Manila</option>
+                                <option value='City of Marikina'>City of Marikina</option>
+                                <option value='City of Muntinlupa'>City of Muntinlupa</option>
+                                <option value='City of Navotas'>City of Navotas</option>
+                                <option value='City of Parañaque'>City of Parañaque</option>
+                                <option value='Pasay City'>Pasay City</option>
+                                <option value='City of Pasig'>City of Pasig</option>
+                                <option value='Quezon City'>Quezon City</option>
+                                <option value='City of San Juan'>City of San Juan</option>
+                                <option value='City of Taguig'>City of Taguig</option>
+                                <option value='City of Valenzuela'>City of Valenzuela</option>
+                                <option value='Pateros'>Pateros</option>
+                                
+                                
+                                
                             </select>
 
                              {/* district */}
-                             <select className='flex rounded border-darkColor text-darkColor' name="" id="district">
+                             {/* <select className='flex rounded border-darkColor text-darkColor' name="" id="district">
                                 <option defaultValue>-Filter by District-</option>
                                 <option value="">aosdioasjd</option>
                                 <option value="">aosdioasjd</option>
                                 <option value="">aosdioasjd</option>
                                 <option value="">aosdioasjd</option>
                                 <option value="">aosdioasjd</option>
-                            </select>
+                            </select> */}
 
                             {/* export btn */}
                             <button className='px-5 py-2 text-white rounded scaleHover bg-primary-light'>Export to CSV</button>
