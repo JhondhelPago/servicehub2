@@ -421,6 +421,9 @@ import React, { useEffect, useState } from 'react';
 import Chart from "react-apexcharts";
 import axios from 'axios';
 
+//importing the ph_province_cities json
+import { PH_province_cities } from '../../utils';
+
 import Male from '../../assets/man.png';
 import Female from '../../assets/woman.png';
 import Unemployed from '../../assets/unemployment.png';
@@ -540,7 +543,14 @@ const Homeprompt = () => {
         } catch (error) {
             throw error;
         }
-    };
+    }
+
+    const Philippine_prov_cities = PH_province_cities;
+
+    const handleFilterFetch = async() => {
+
+
+    }
 
     const convertToRoundedHundred = (num) => {
         return Math.round(num * 100);
@@ -611,6 +621,7 @@ const Homeprompt = () => {
 
     useEffect(() => {
         FetchUserInformation();
+        console.log(Philippine_prov_cities);
     }, []);
 
     return (
@@ -627,19 +638,19 @@ const Homeprompt = () => {
 
                         {/* filter */}
                         <div className='flex flex-wrap gap-5 mt-2'>
-                            {/* district */}
-                            <select className='flex rounded border-darkColor text-darkColor' name="" id="district">
+                            {/* city */}
+                            <select className='flex rounded border-darkColor text-darkColor' name="" id="city">
+                                <option defaultValue>-Filter by City-</option>
+                            </select>
+
+                             {/* district */}
+                             <select className='flex rounded border-darkColor text-darkColor' name="" id="district">
                                 <option defaultValue>-Filter by District-</option>
                                 <option value="">aosdioasjd</option>
                                 <option value="">aosdioasjd</option>
                                 <option value="">aosdioasjd</option>
                                 <option value="">aosdioasjd</option>
                                 <option value="">aosdioasjd</option>
-                            </select>
-
-                            {/* city */}
-                            <select className='flex rounded border-darkColor text-darkColor' name="" id="city">
-                                <option defaultValue>-Filter by City-</option>
                             </select>
 
                             {/* export btn */}
