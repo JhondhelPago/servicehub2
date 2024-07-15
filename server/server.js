@@ -24,6 +24,7 @@ const {
     job_post_edit,
     deletePost,
     dashboardQuery,
+    filteredDashboardQuery,
     FetchAdminInboxFromClient,
     getAdmin,
     AdminMailInsert,
@@ -1700,12 +1701,35 @@ app.get('/Fetch/Dashboard', async(req, res) => {
     // console.log(myDashboard.ProcessedSelfInfo());
 
     res.send(myDashboard.ProcessedSelfInfo());
+
+    // res.send(userAllData);
     
 
   }catch(error){
     throw error;
   }
 
+
+});
+
+app.get(`/Fetch/Dashboard/:city`, async(req, res) => {
+  
+  const city = req.params.city;
+
+  console.log(city);
+
+  try{
+
+    const userAllData = await filteredDashboardQuery(city);
+
+    let myDashboard = new Dashboard(userAllData);
+
+    res.send(myDashboard.ProcessedSelfInfo());
+    
+  }catch(error){
+    console.log(`error on server.js @ '/Fetch/Dashboard/:city' route `, error);
+    throw error;
+  }
 
 });
 

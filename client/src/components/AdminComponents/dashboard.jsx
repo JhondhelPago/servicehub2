@@ -560,6 +560,9 @@ const Homeprompt = () => {
     const handleFilterFetch = async() => {
         try{
 
+            const response = await axios.get(`/Fetch/Dashboard/${City}`);
+            SetUserInformation(response.data);
+
         }catch(error){
             console.log(`error on the dashboard.jsx on the Homeprompt @ handleFilterFetch function.`, error);
             throw error;
@@ -687,6 +690,8 @@ const Homeprompt = () => {
                                 <option value="">aosdioasjd</option>
                                 <option value="">aosdioasjd</option>
                             </select> */}
+
+                            <button className='px-5 py-2 text-white rounded scaleHover bg-slate-500' onClick={handleFilterFetch}>Filter</button>
 
                             {/* export btn */}
                             <button className='px-5 py-2 text-white rounded scaleHover bg-primary-light'>Export to CSV</button>

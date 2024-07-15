@@ -750,6 +750,26 @@ async function dashboardQuery() {
   }
 }
 
+async function filteredDashboardQuery(city){
+
+  try{
+
+    const [rowdata] = await pool.execute(`
+      SELECT * 
+      FROM user
+      WHERE city = ?
+      `, [city]);
+
+      return rowdata;
+
+  }catch(error){
+
+    console.log(`error on the mysqlmodule.js @ filterDashboardQuery function `, error);
+    throw error;
+
+  }
+}
+
 async function getEventRegistry(userId){
 
   try{
@@ -882,6 +902,7 @@ module.exports = {
   NewFetchInboxClient,
   ALL_SendMaiL,
   dashboardQuery,
+  filteredDashboardQuery,
   getEventRegistry,
   getJobRegistry,
   InsertTikcetCodeEvent,
