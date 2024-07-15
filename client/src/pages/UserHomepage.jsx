@@ -62,7 +62,7 @@ const UserHomepage = () => {
         setActiveComponent(ComponentName);
         setIsNavOpen(false);
 
-        switch(ComponentName){
+        switch (ComponentName) {
             case 'EventPosting':
                 FetchEventData();
                 break;
@@ -140,6 +140,10 @@ const UserHomepage = () => {
                                     className={`font-medium ${ActiveComponent === 'Profile' ? 'activeUserLink' : 'userNavHover'}`}
                                     onClick={() => { SetSelectedComponent('Profile') }}
                                 >Profile</button>
+                                <button className='flex flex-row items-center gap-2 font-medium group'>
+                                    {/* <span className='hidden text-red-600 group-hover:inline'>Logout</span> */}
+                                    <svg className='h-5 mx-auto group-hover:text-red-600' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" d="M5 21q-.825 0-1.412-.587T3 19V5q0-.825.588-1.412T5 3h7v2H5v14h7v2zm11-4l-1.375-1.45l2.55-2.55H9v-2h8.175l-2.55-2.55L16 7l5 5z" /></svg>
+                                </button>
                             </ul>
                         </div>
                     </nav>
@@ -168,9 +172,11 @@ const UserHomepage = () => {
                         </div>
                         {/* InboxComponent */}
                         {ActiveComponent === 'Chat' && (<ChatSection></ChatSection>)}
+
                         <div className='flex flex-col gap-5 px-2 overflow-auto'>
                             {ActiveComponent === 'Tickets' && (<TicketPage event_registry={event_registry} job_registry={job_registry}></TicketPage>)}
                         </div>
+
                         {/* Profile */}
                         {ActiveComponent === 'Profile' && (<Profilepage UserId={clientuserId}></Profilepage>)}
                     </div>

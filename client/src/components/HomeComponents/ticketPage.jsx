@@ -34,9 +34,9 @@ const TicketPage = ({ }) => {
 
   return (
     <>
-      <div className="flex flex-row w-full overflow-hidden text-xl border rounded-lg border-darkColor">
-        <button className={`w-full px-5 py-2 ${isEventsTicketActive ? 'activeMail' : 'hoverMail'}`} onClick={() => { if (!isEventsTicketActive) setIsEventsTicketActive(true) }}>Events Ticket</button>
-        <button className={`w-full px-5 py-2 ${!isEventsTicketActive ? 'activeMail' : 'hoverMail'}`} onClick={() => { if (isEventsTicketActive) setIsEventsTicketActive(false) }}>Jobs Ticket</button>
+      <div className="flex flex-row w-full text-xl border rounded border-darkColor">
+        <button className={`w-full px-5 py-2 rounded-l ${isEventsTicketActive ? 'activeMail' : 'hoverMail'}`} onClick={() => { if (!isEventsTicketActive) setIsEventsTicketActive(true) }}>Events Ticket</button>
+        <button className={`w-full px-5 py-2 rounded-r ${!isEventsTicketActive ? 'activeMail' : 'hoverMail'}`} onClick={() => { if (isEventsTicketActive) setIsEventsTicketActive(false) }}>Jobs Ticket</button>
       </div>
 
       {isEventsTicketActive ? (
@@ -61,7 +61,7 @@ export default TicketPage
 const EventTicketCard = ({ dataObj }) => {
   return (
     <>
-      <div className="flex flex-wrap gap-4 p-4 border-2 border-dashed rounded-lg border-primary-light">
+      <div className="flex flex-wrap gap-4 p-4 mb-5 border-2 border-dashed rounded-lg border-primary-light">
         <div className="flex flex-col flex-wrap flex-grow gap-4 md:flex-row">
           <div className="flex flex-col items-center w-full gap-2 p-5 text-center bg-gray-50 eventCard">
             {/* post type */}
@@ -88,7 +88,7 @@ const EventTicketCard = ({ dataObj }) => {
 const JobTicketCard = ({ dataObj }) => {
   return (
     <>
-      <div className="flex flex-wrap gap-4 p-4 border-2 border-dashed rounded-lg border-primary-light">
+      <div className="flex flex-wrap gap-4 p-4 mb-5 border-2 border-dashed rounded-lg border-primary-light">
         <div className="flex flex-col flex-wrap flex-grow gap-4 md:flex-row">
           <div className="flex flex-col items-center w-full gap-2 p-5 text-center bg-gray-50 eventCard">
             {/* post type */}

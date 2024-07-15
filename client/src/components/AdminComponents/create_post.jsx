@@ -97,7 +97,7 @@ const PostForm = ({ onClick }) => {
         //     uploadImages: formData.getAll('uploadImages'),
         //     target_audience: SelectedDisabilities
         // }
-        
+
         // console.log(Data);
 
         // const response = await axios.post(`/Posting`, Data);
@@ -109,7 +109,7 @@ const PostForm = ({ onClick }) => {
         // }
 
         const formData = new FormData(event.target);
-       
+
         try {
             const response = await fetch('/Posting', {
                 method: 'POST',
@@ -125,7 +125,7 @@ const PostForm = ({ onClick }) => {
             console.error(error);
         }
 
-        
+
     }
 
     return (
@@ -202,19 +202,22 @@ const PostForm = ({ onClick }) => {
                                         </button>
                                     ))} */}
                                 </div>
-                                {PreListDisabilities.map((Disability) => (
-                                    <button
-                                        key={Disability}
-                                        className='flex items-center justify-center gap-2 px-4 py-2 border rounded-full bg-extra-light border-darkColor group'
-                                        onClick={() => AddDisability(Disability)}
-                                    >
-                                        <p className='text-lg'>{Disability}</p>
-                                        <svg className='hidden h-5 text-green-600 cursor-pointer group-hover:flex' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                                            <path fill="currentColor" d="M19 13H5v-2h14v2z" />
-                                        </svg>
-                                    </button>
-                                ))}
-                                <button className="px-5 py-2 my-5 text-lg font-medium text-white border rounded-md bg-darkColor border-darkColor" type="submit">Post</button>
+                                <div className='flex flex-row gap-2'>
+                                    <div className='flex gap-2 mt-2 w-fit md:justify-start'>
+                                        {PreListDisabilities.map((Disability) => (
+                                            <button
+                                                key={Disability}
+                                                className='flex items-center justify-center gap-2 px-4 py-2 border rounded-full bg-extra-light border-darkColor group'
+                                                onClick={() => AddDisability(Disability)}
+                                            >
+                                                <p className='text-lg'>{Disability}</p>
+                                                <svg className='hidden h-5 text-green-600 cursor-pointer group-hover:flex' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"><path fill="currentColor" d="M228 128a12 12 0 0 1-12 12h-76v76a12 12 0 0 1-24 0v-76H40a12 12 0 0 1 0-24h76V40a12 12 0 0 1 24 0v76h76a12 12 0 0 1 12 12" /></svg>
+                                            </button>
+                                        ))}
+                                    </div>
+
+                                </div>
+                                <button className="w-2/4 p-3 mx-auto my-3 text-white rounded-lg bg-primary-light scaleHover" type="submit">Post</button>
                             </form>
                         </div>
                     </div>
