@@ -34,6 +34,7 @@ const {
     getRegistry,
     getRegistryInnerJoinPost,
     ArchivingPost,
+    EventViewStats,
 
 
 
@@ -1143,6 +1144,29 @@ app.post('/Event/Archive/StatusChange', async(req, res) => {
   console.log('successfully updated.')
   res.send();
   
+
+});
+
+
+
+app.get('/EventPost/Stat/:event_id', async(req, res) => {
+
+  const event_id = req.params.event_id
+
+  try{
+
+    const EventRegisteredArray = await EventViewStats(event_id);
+
+    res.send(EventRegisteredArray);
+
+  }catch(error){
+    console.log(`error on the server.js on the '/EventPost/Stat/:event_id' route.`, error);
+    throw error;
+  }
+
+  // console.log(event_id)
+
+  // res.send('Event View Stats');
 
 });
 

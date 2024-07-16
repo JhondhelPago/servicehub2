@@ -459,6 +459,27 @@ async function ArchivingPost(table, post_id, statusBoolean){
   }
 }
 
+
+async function EventViewStats(event_id){
+
+  try{
+
+    const [EventRegistyEntry] = await pool.execute(`
+      SELECT user.firstName, user.middleName, user.lastName, event_registry.user_id, event_registry.event_id, event_registry.registration_code 
+      FROM event_registry 
+      INNER JOIN user ON CONVERT(event_registry.user_id USING utf8mb4) COLLATE utf8mb4_unicode_ci = CONVERT(user.id USING utf8mb4) COLLATE utf8mb4_unicode_ci 
+      WHERE event_registry.event_id = ?
+      `, [event_id]);
+
+      console.log(EventRegistyEntry);
+      return EventRegistyEntry;
+
+  }catch(error){
+    console.log('error  on the msqlmodule.js @ EventViewStats() function.', error);
+    throw error;
+  }
+}
+
 // async function AdminSentItems(id){
 
 //   try{
@@ -903,6 +924,7 @@ module.exports = {
   getRegistry,
   getRegistryInnerJoinPost,
   ArchivingPost,
+  EventViewStats,
 
   //function query for the clientuser
   clientuserLoginSession,
