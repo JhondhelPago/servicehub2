@@ -70,11 +70,12 @@
 }
 
 .activeUserLink {
-  @apply font-semibold border-b-2 border-primary-light;
+  @apply font-semibold border-b-2 cursor-default border-primary-light;
 }
 
 .userNavHover {
-  @apply transition ease-in-out hover:border-b-2 border-primary-light;
+  @apply transition-all ease-in-out before:transition-[width] before:ease-in-out before:duration-700 before:absolute before:bg-primary-light before:origin-center before:h-[2px] before:w-0 hover:before:w-full before:bottom-0 before:left-[0];
+  /* @apply transition ease-in-out hover:border-b-2 border-primary-light; */
 }
 
 .tagBG {
