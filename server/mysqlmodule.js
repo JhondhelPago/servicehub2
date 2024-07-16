@@ -480,6 +480,29 @@ async function EventViewStats(event_id){
   }
 }
 
+async function JobViewStats(job_id){
+
+  try{
+
+    const [JobRegistryEntry] = await pool.execute(`
+      SELECT user.firstName, user.middleName, user.lastName, job_registry.user_id, job_registry.job_id, job_registry.registration_code 
+      FROM job_registry 
+      INNER JOIN user ON CONVERT(job_registry.user_id USING utf8mb4) COLLATE utf8mb4_unicode_ci = CONVERT(user.id USING utf8mb4) COLLATE utf8mb4_unicode_ci 
+      WHERE job_registry.job_id = ?
+      `, [job_id]);
+
+      console.log('log from mysqlmoldule.js');
+      console.log(JobRegistryEntry);
+      
+      return JobRegistryEntry;
+
+  }catch(error){
+    console.log('error on the mysqlmodule.js @ JobViewStats() function.', error);
+    throw error;
+  }
+
+}
+
 // async function AdminSentItems(id){
 
 //   try{
@@ -925,6 +948,7 @@ module.exports = {
   getRegistryInnerJoinPost,
   ArchivingPost,
   EventViewStats,
+  JobViewStats,
 
   //function query for the clientuser
   clientuserLoginSession,
