@@ -3,6 +3,7 @@ const multer = require("multer");
 const path = require("path");
 const bodyParser = require("body-parser");
 const fs = require("fs");
+const createCsvWriter = require('csv-writer').createObjectCsvWriter;
 
 
 
@@ -24,6 +25,7 @@ const {
     job_post_edit,
     deletePost,
     dashboardQuery,
+    filteredDashboardQuery,
     FetchAdminInboxFromClient,
     getAdmin,
     AdminMailInsert,
@@ -1700,6 +1702,8 @@ app.get('/Fetch/Dashboard', async(req, res) => {
     // console.log(myDashboard.ProcessedSelfInfo());
 
     res.send(myDashboard.ProcessedSelfInfo());
+
+    // res.send(userAllData);
     
 
   }catch(error){
@@ -1707,6 +1711,87 @@ app.get('/Fetch/Dashboard', async(req, res) => {
   }
 
 
+});
+
+app.get('/Download/Fetch/Dashboard', async(req, res) => {
+
+  try{
+    const userAllData = await dashboardQuery();
+    const csvWriter = createCsvWriter({
+      path: 'data.csv',
+      header: Object.keys(userAllData[0]).map(key => ({id: key, title: key}))
+    });
+
+
+    await csvWriter.writeRecords(userAllData);
+    const filePath = path.join(__dirname, 'data.csv');
+    res.download(filePath, 'data.csv', (err) => {
+      if(err){
+        console.error('Error downloading the file: ', err);
+        res.status(500).send('Error downloading the file');
+      } else {
+        fs.unlink(filePath, (err) => {
+          if(err) console.error('Error deleting the file', err);
+        });
+      }
+    })
+
+  }catch(error){
+    console.log(`error on the server.js @ the route block '/Download/Fetch/Dashboard'`);
+    res.status(500).send('Error processing the request');
+  }
+});
+
+app.get(`/Fetch/Dashboard/:city`, async(req, res) => {
+  
+  const city = req.params.city;
+
+  console.log(city);
+
+  try{
+
+    const userAllData = await filteredDashboardQuery(city);
+
+    let myDashboard = new Dashboard(userAllData);
+
+    res.send(myDashboard.ProcessedSelfInfo());
+    
+  }catch(error){
+    console.log(`error on server.js @ '/Fetch/Dashboard/:city' route `, error);
+    throw error;
+  }
+
+});
+
+app.get('/Download/Fetch/Dashboard/:city', async(req, res) => {
+
+  const city = req.params.city;
+
+  try{
+    const userAllData = await filteredDashboardQuery(city);
+    const csvWriter = createCsvWriter({
+      path: 'data.csv',
+      header: Object.keys(userAllData[0]).map(key => ({id: key, title: key}))
+    });
+
+
+    await csvWriter.writeRecords(userAllData);
+    const filePath = path.join(__dirname, 'data.csv');
+    res.download(filePath, 'data.csv', (err) => {
+      if(err){
+        console.error('Error downloading the file: ', err);
+        res.status(500).send('Error downloading the file');
+      } else {
+        fs.unlink(filePath, (err) => {
+          if(err) console.error('Error deleting the file', err);
+        });
+      }
+    })
+
+  }catch(error){
+    console.log(`error on the server.js @ the route block '/Download/Fetch/Dashboard'`);
+    res.status(500).send('Error processing the request');
+  }
 });
 
 app.get('/EventRegistered/:clientuserId', async(req, res) => {

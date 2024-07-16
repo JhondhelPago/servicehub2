@@ -112,13 +112,13 @@ const LoginComponents = () => {
                     </div>
                     <div className="flex flex-col mx-3 gap-5 text-start">
 
-                    <div className="flex flex-col">
+                    {/* <div className="flex flex-col">
                         <label className="" htmlFor="module">Login as...</label>
                         <select className="px-2 py-2 rounded-md text-lg text-darkColor" name="module" id="module" value={role} onChange={(e) => setRole(e.target.value)}>
                         <option className="hover:bg-red-300" value="Admin">Admin</option>
                         <option className="hover:bg-red-300" value="Manager">Manager</option>
                         </select>
-                    </div>
+                    </div> */}
 
                     {/* <!-- email --> */}
                     <div className="flex flex-col">

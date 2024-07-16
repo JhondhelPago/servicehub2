@@ -421,6 +421,9 @@ import React, { useEffect, useState } from 'react';
 import Chart from "react-apexcharts";
 import axios from 'axios';
 
+//importing the ph_province_cities json
+import { PH_province_cities } from '../../utils';
+
 import Male from '../../assets/man.png';
 import Female from '../../assets/woman.png';
 import Unemployed from '../../assets/unemployment.png';
@@ -540,7 +543,42 @@ const Homeprompt = () => {
         } catch (error) {
             throw error;
         }
-    };
+    }
+
+    // const NCR_cities  = 
+
+    const [City, SetCity] = useState(null);
+
+    const SetSelectedCity = (event) => {
+
+        const city_value = event.target.value;
+        SetCity(city_value);
+        console.log(city_value);
+    }
+    
+
+    const handleFilterFetch = async() => {
+
+        if(City == 'All'){
+            try{
+                FetchUserInformation();
+            }catch(error){
+                throw error;
+            }
+        }else{
+            try{
+
+                const response = await axios.get(`/Fetch/Dashboard/${City}`);
+                SetUserInformation(response.data);
+    
+            }catch(error){
+                console.log(`error on the dashboard.jsx on the Homeprompt @ handleFilterFetch function.`, error);
+                throw error;
+            }
+
+        }
+
+    }
 
     const convertToRoundedHundred = (num) => {
         return Math.round(num * 100);
@@ -609,8 +647,57 @@ const Homeprompt = () => {
         };
     };
 
+    const ExportCsvDataFile = async() => {
+
+        if(City == 'All'){
+            try{
+                const response = await axios.get(`/Download/Fetch/Dashboard`, {
+                    responseType: 'blob',
+                });
+    
+    
+                const url =  window.URL.createObjectURL(new Blob([response.data]));
+                const a = document.createElement('a');
+                a.href = url;;
+                a.download = 'data.csv';
+                document.body.appendChild(a);
+                a.click();
+                a.remove();
+    
+            }catch(error){
+                console.log('Error fetching CSV:', error);
+                throw error;
+            }
+    
+            
+        } else {
+            //filtered query
+
+            try{
+                const response = await axios.get(`/Download/Fetch/Dashboard/${City}`, {
+                    responseType: 'blob',
+                });
+
+                const url =  window.URL.createObjectURL(new Blob([response.data]));
+                const a = document.createElement('a');
+                a.href = url;;
+                a.download = 'data.csv';
+                document.body.appendChild(a);
+                a.click();
+                a.remove();
+
+            }catch(error){
+                console.log('Error fetching CSV: ', error);
+                throw error;
+            }
+        }
+
+        
+    }
+
     useEffect(() => {
         FetchUserInformation();
+        
     }, []);
 
     return (
@@ -627,23 +714,45 @@ const Homeprompt = () => {
 
                         {/* filter */}
                         <div className='flex flex-wrap gap-5 mt-2'>
-                            {/* district */}
-                            <select className='flex rounded border-darkColor text-darkColor' name="" id="district">
+                            {/* city */} 
+                            <select className='flex rounded border-darkColor text-darkColor' name="" id="city" onChange={SetSelectedCity}>
+                                <option defaultValue value='All'>-All-</option>
+                                <option value='City of Caloocan'>City of Caloocan</option>
+                                <option value='City of Las Piñas'>City of Las Piñas</option>
+                                <option value='City of Makati'>City of Makati</option>
+                                <option value='City of Malabon'>City of Malabon</option>
+                                <option value='City of Mandaluyong'>City of Mandaluyong</option>
+                                <option value='City of Manila'>City of Manila</option>
+                                <option value='City of Marikina'>City of Marikina</option>
+                                <option value='City of Muntinlupa'>City of Muntinlupa</option>
+                                <option value='City of Navotas'>City of Navotas</option>
+                                <option value='City of Parañaque'>City of Parañaque</option>
+                                <option value='Pasay City'>Pasay City</option>
+                                <option value='City of Pasig'>City of Pasig</option>
+                                <option value='Quezon City'>Quezon City</option>
+                                <option value='City of San Juan'>City of San Juan</option>
+                                <option value='City of Taguig'>City of Taguig</option>
+                                <option value='City of Valenzuela'>City of Valenzuela</option>
+                                <option value='Pateros'>Pateros</option>
+                                
+                                
+                                
+                            </select>
+
+                             {/* district */}
+                             {/* <select className='flex rounded border-darkColor text-darkColor' name="" id="district">
                                 <option defaultValue>-Filter by District-</option>
                                 <option value="">aosdioasjd</option>
                                 <option value="">aosdioasjd</option>
                                 <option value="">aosdioasjd</option>
                                 <option value="">aosdioasjd</option>
                                 <option value="">aosdioasjd</option>
-                            </select>
+                            </select> */}
 
-                            {/* city */}
-                            <select className='flex rounded border-darkColor text-darkColor' name="" id="city">
-                                <option defaultValue>-Filter by City-</option>
-                            </select>
+                            <button className='px-5 py-2 text-white rounded scaleHover bg-slate-500' onClick={handleFilterFetch}>Filter</button>
 
                             {/* export btn */}
-                            <button className='px-5 py-2 text-white rounded scaleHover bg-primary-light'>Export to CSV</button>
+                            <button className='px-5 py-2 text-white rounded scaleHover bg-primary-light' onClick={ExportCsvDataFile}>Export to CSV</button>
                         </div>
                     </div>
                 </div>
