@@ -558,14 +558,24 @@ const Homeprompt = () => {
     
 
     const handleFilterFetch = async() => {
-        try{
 
-            const response = await axios.get(`/Fetch/Dashboard/${City}`);
-            SetUserInformation(response.data);
+        if(City == 'All'){
+            try{
+                FetchUserInformation();
+            }catch(error){
+                throw error;
+            }
+        }else{
+            try{
 
-        }catch(error){
-            console.log(`error on the dashboard.jsx on the Homeprompt @ handleFilterFetch function.`, error);
-            throw error;
+                const response = await axios.get(`/Fetch/Dashboard/${City}`);
+                SetUserInformation(response.data);
+    
+            }catch(error){
+                console.log(`error on the dashboard.jsx on the Homeprompt @ handleFilterFetch function.`, error);
+                throw error;
+            }
+
         }
 
     }
@@ -637,6 +647,54 @@ const Homeprompt = () => {
         };
     };
 
+    const ExportCsvDataFile = async() => {
+
+        if(City == 'All'){
+            try{
+                const response = await axios.get(`/Download/Fetch/Dashboard`, {
+                    responseType: 'blob',
+                });
+    
+    
+                const url =  window.URL.createObjectURL(new Blob([response.data]));
+                const a = document.createElement('a');
+                a.href = url;;
+                a.download = 'data.csv';
+                document.body.appendChild(a);
+                a.click();
+                a.remove();
+    
+            }catch(error){
+                console.log('Error fetching CSV:', error);
+                throw error;
+            }
+    
+            
+        } else {
+            //filtered query
+
+            try{
+                const response = await axios.get(`/Download/Fetch/Dashboard/${City}`, {
+                    responseType: 'blob',
+                });
+
+                const url =  window.URL.createObjectURL(new Blob([response.data]));
+                const a = document.createElement('a');
+                a.href = url;;
+                a.download = 'data.csv';
+                document.body.appendChild(a);
+                a.click();
+                a.remove();
+
+            }catch(error){
+                console.log('Error fetching CSV: ', error);
+                throw error;
+            }
+        }
+
+        
+    }
+
     useEffect(() => {
         FetchUserInformation();
         
@@ -658,7 +716,7 @@ const Homeprompt = () => {
                         <div className='flex flex-wrap gap-5 mt-2'>
                             {/* city */} 
                             <select className='flex rounded border-darkColor text-darkColor' name="" id="city" onChange={SetSelectedCity}>
-                                <option defaultValue>-Filter by City-</option>
+                                <option defaultValue value='All'>-All-</option>
                                 <option value='City of Caloocan'>City of Caloocan</option>
                                 <option value='City of Las Piñas'>City of Las Piñas</option>
                                 <option value='City of Makati'>City of Makati</option>
@@ -694,7 +752,7 @@ const Homeprompt = () => {
                             <button className='px-5 py-2 text-white rounded scaleHover bg-slate-500' onClick={handleFilterFetch}>Filter</button>
 
                             {/* export btn */}
-                            <button className='px-5 py-2 text-white rounded scaleHover bg-primary-light'>Export to CSV</button>
+                            <button className='px-5 py-2 text-white rounded scaleHover bg-primary-light' onClick={ExportCsvDataFile}>Export to CSV</button>
                         </div>
                     </div>
                 </div>
