@@ -881,13 +881,17 @@ app.post("/edit-job-post", async (req, res) => {
 app.post("/jobeditpost", async (req, res) => {
   const DataReceived = req.body;
 
+  console.log(`target_group: ${DataReceived.target_group}`);
+
   try {
     await job_post_edit(
       DataReceived.id,
       DataReceived.event_title,
       DataReceived.scheduled_date,
       DataReceived.scheduled_time,
+      DataReceived.location,
       DataReceived.description,
+      DataReceived.target_group,
       DataReceived.post_type
     );
 
