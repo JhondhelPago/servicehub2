@@ -155,10 +155,20 @@ async function job_post_edit(
   para_Event,
   para_Date,
   para_Time,
+  para_Location,
   para_Description,
+  para_Taget_group,
   para_PostType
 ) {
   //query for editing the post in the MySQL Server
+  console.log({para_postID,
+    para_Event,
+    para_Date,
+    para_Time,
+    para_Location,
+    para_Description,
+    para_Taget_group,
+    para_PostType});
 
   try {
     await pool.execute(
@@ -167,9 +177,11 @@ async function job_post_edit(
         SET scheduled_date = ?,
             scheduled_time = ?,
             event_title = ?,
-            description = ?
+            description = ?,
+            location = ?,
+            target_group = ?
         WHERE id = ?`,
-      [para_Date, para_Time, para_Event, para_Description, para_postID]
+      [para_Date, para_Time, para_Event, para_Description, para_Location, para_Taget_group, para_postID]
     );
   } catch (error) {
     console.log("Error in the post_edit function @ mysqlmodule.js");

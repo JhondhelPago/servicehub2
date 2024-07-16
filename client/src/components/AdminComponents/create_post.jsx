@@ -175,7 +175,7 @@ const PostForm = ({ onClick }) => {
                                 <div className='flex flex-wrap items-center gap-2 p-2 bg-white border rounded-lg border-darkColor'>
                                     <p className='pr-2'>Target Audience:</p>
                                     {SelectedDisabilities.map((Disability) => (
-                                        <button
+                                        <div
                                             key={Disability}
                                             className='flex items-center justify-center gap-2 px-4 py-2 border rounded-full bg-extra-light border-darkColor group'
                                             onClick={() => RemoveAddedDisability(Disability)}
@@ -187,7 +187,7 @@ const PostForm = ({ onClick }) => {
                                                     <path fill="currentColor" d="m12 14.122l5.303 5.303a1.5 1.5 0 0 0 2.122-2.122L14.12 12l5.304-5.303a1.5 1.5 0 1 0-2.122-2.122L12 9.878L6.697 4.575A1.5 1.5 0 1 0 4.575 6.697L9.878 12l-5.303 5.303a1.5 1.5 0 0 0 2.122 2.122L12 14.122z" />
                                                 </g>
                                             </svg>
-                                        </button>
+                                        </div>
                                     ))}
                                     {/* {PreListDisabilities.map((Disability) => (
                                         <button
@@ -205,14 +205,14 @@ const PostForm = ({ onClick }) => {
                                 <div className='flex flex-row gap-2'>
                                     <div className='flex gap-2 mt-2 w-fit md:justify-start'>
                                         {PreListDisabilities.map((Disability) => (
-                                            <button
+                                            <div
                                                 key={Disability}
                                                 className='flex items-center justify-center gap-2 px-4 py-2 border rounded-full bg-extra-light border-darkColor group'
                                                 onClick={() => AddDisability(Disability)}
                                             >
                                                 <p className='text-lg'>{Disability}</p>
                                                 <svg className='hidden h-5 text-green-600 cursor-pointer group-hover:flex' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"><path fill="currentColor" d="M228 128a12 12 0 0 1-12 12h-76v76a12 12 0 0 1-24 0v-76H40a12 12 0 0 1 0-24h76V40a12 12 0 0 1 24 0v76h76a12 12 0 0 1 12 12" /></svg>
-                                            </button>
+                                            </div>
                                         ))}
                                     </div>
 

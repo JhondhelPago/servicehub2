@@ -134,13 +134,7 @@ const HomeComponent = () => {
                             <label className="hidden mr-3 group-hover/label:flex text-nowrap">Inquiries</label>
                             <svg className="w-7" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path fill="currentColor" d="M9 2a4 4 0 1 0 0 8a4 4 0 0 0 0-8M6 6a3 3 0 1 1 6 0a3 3 0 0 1-6 0m-1.991 5A2.001 2.001 0 0 0 2 13c0 1.691.833 2.966 2.135 3.797C5.417 17.614 7.145 18 9 18c.41 0 .816-.019 1.21-.057a5.501 5.501 0 0 1-.618-.958C9.398 16.996 9.2 17 9 17c-1.735 0-3.257-.364-4.327-1.047C3.623 15.283 3 14.31 3 13c0-.553.448-1 1.009-1h5.59c.184-.358.405-.693.658-1zM14.5 19a4.5 4.5 0 1 1 0-9a4.5 4.5 0 0 1 0 9m.624-1.995a.625.625 0 1 0-1.249 0a.625.625 0 0 0 1.25 0m1.23-3.552c0-1.104-.823-1.95-1.854-1.95c-1.048 0-1.864.818-1.853 1.955a.5.5 0 1 0 1-.01c-.006-.579.36-.945.853-.945c.472 0 .853.392.853.95c0 .202-.07.315-.36.544l-.277.215c-.506.404-.716.717-.716 1.288a.5.5 0 0 0 .992.09l.011-.156c.017-.148.1-.254.346-.448l.277-.215c.513-.41.727-.732.727-1.318" /></svg>
                             {/* <!-- <span class="px-5 rounded font-normal absolute start-24 -z-[1] invisible group-hover/tooltip:visible bg-darkColor">Inquiries</span> --> */}
-                        </button>
-
-                        <button className={`group-hover/label:justify-between group/tooltip ${ActiveComponent === 'requests' ? 'activeLink' : 'navHover'}`} id="links" >
-                            <label className="hidden mr-3 group-hover/label:flex text-nowrap">Requests</label>
-                            <svg className="w-7" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" d="M4 4.25A2.25 2.25 0 0 1 6.25 2h11.5A2.25 2.25 0 0 1 20 4.25v7.248a6.452 6.452 0 0 0-1.5-.422V4.25a.75.75 0 0 0-.75-.75H6.25a.75.75 0 0 0-.75.75v15.5c0 .414.336.75.75.75h5.482A6.518 6.518 0 0 0 12.81 22H6.25A2.25 2.25 0 0 1 4 19.75zM16.25 11c.11 0 .216.024.311.067a6.472 6.472 0 0 0-3.215 1.433H7.75a.75.75 0 0 1 0-1.5zm-8.5-4.5a.75.75 0 0 0 0 1.5h8.5a.75.75 0 0 0 0-1.5zM23 17.5a5.5 5.5 0 1 0-11 0a5.5 5.5 0 0 0 11 0m-5 .5l.001 2.503a.5.5 0 1 1-1 0V18h-2.505a.5.5 0 0 1 0-1H17v-2.5a.5.5 0 1 1 1 0V17h2.497a.5.5 0 0 1 0 1z" /></svg>
-                            {/* <!-- <span class="px-5 rounded font-normal absolute start-24 -z-[1] invisible group-hover/tooltip:visible bg-darkColor">Requests</span> --> */}
-                        </button>
+                        </button>                
 
                         <button className="mt-auto group-hover/label:justify-between navHover group/tooltip" id="links">
                             <label className="flex-col hidden font-extralight group-hover/label:flex" >
