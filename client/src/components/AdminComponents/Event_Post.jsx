@@ -154,7 +154,46 @@ const PostInfoDiv = (props) => {
 
     }
 
-    const [isViewMoreOpen, setIsViewMoreOpen] = useState(false)
+    const [isViewMoreOpen, setIsViewMoreOpen] = useState(false);
+
+    const ViewMoreClickAction = () => {
+        // if (isViewMoreOpen) setIsViewMoreOpen(false)
+        // else if (!isViewMoreOpen) setIsViewMoreOpen(true)
+
+        if(isViewMoreOpen) {
+
+            setIsViewMoreOpen(false);
+            setClientRegisteredCount(null);
+
+        }else{
+            setIsViewMoreOpen(true);
+            GetRegistry();
+
+        }
+
+    }
+
+
+    const [ClientRegistered, setClientRegistered] = useState([]);
+    const [ClientRegisteredCount, setClientRegisteredCount] = useState(null);
+
+    //function to retrive the registry user on this post 
+    const GetRegistry = async() => {
+        
+        const event_id = props.data.id;
+
+        try{
+
+            const response = await axios.get(`/EventPost/Stat/${event_id}`);
+            console.log('event_id: ', event_id);
+            console.log(response.data);
+            setClientRegistered(response.data);
+            setClientRegisteredCount(response.data.length);
+        }catch(error){
+            throw error;
+        }
+    }
+
 
     return (
         <>
@@ -166,7 +205,7 @@ const PostInfoDiv = (props) => {
                             {/* <div className="w-1 h-full bg-gradient-to-b from-primary-light to-transparent"></div> */}
                             {/* <!-- admin name --> */}
                             <div className=''>
-                                <span className="text-xs">Post by</span>
+                                <span className="text-xs">Post by {props.data.id}</span>
                                 <h4 className="text-xl font-semibold break-words">{props.data.firstName}</h4>
                             </div>
                             {/* <!-- date posted --> */}
@@ -174,11 +213,13 @@ const PostInfoDiv = (props) => {
                                 <span className="text-xs">Posted on</span>
                                 <h4 className="text-xl font-normal">{props.data.date_created}</h4>
                             </div>
-                            {/* total participants */}
-                            <div className=''>
+                           {ClientRegisteredCount && (
+                             // total participants 
+                             <div className=''>
                                 <span className="text-xs">Total Participants</span>
-                                <h4 className="text-xl font-semibold break-all">99999</h4>
+                                <h4 className="text-xl font-semibold break-all">{ClientRegisteredCount}</h4>
                             </div>
+                           )}
                         </div>
                         {/* <!-- buttons --> */}
                         <div className="grid gap-5 text-white grid-flow-dense md:grid-flow-col">
@@ -197,8 +238,9 @@ const PostInfoDiv = (props) => {
 
                             <button className="flex items-center justify-between w-full gap-2 p-3 mx-auto rounded-lg md:mx-0 md:w-auto scaleHover bg-darkColor"
                                 onClick={() => {
-                                    if (isViewMoreOpen) setIsViewMoreOpen(false)
-                                    else if (!isViewMoreOpen) setIsViewMoreOpen(true)
+                                    // if (isViewMoreOpen) setIsViewMoreOpen(false)
+                                    // else if (!isViewMoreOpen) setIsViewMoreOpen(true)
+                                    ViewMoreClickAction()
                                 }}>
                                 View More
                                 {!isViewMoreOpen ? (
@@ -251,21 +293,14 @@ const PostInfoDiv = (props) => {
                                 <th className='p-5 border border-darkColor text-start'>Ticket Code</th>
                             </tr>
 
-                            {/* 1 tr = 1 user */}
-                            <tr className=''>
-                                {/* name */}
-                                <th className='p-5 font-normal border text-start border-darkColor'>user 1</th>
-                                {/* ticket code */}
-                                <th className='p-5 text-base font-normal border border-darkColor text-start'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Incidunt, nesciunt? Accusantium fugit dignissimos nihil suscipit sint pariatur modi deserunt vitae!</th>
-                            </tr>
-
-                            {/* sample user 2 */}
-                            <tr className=''>
-                                {/* name */}
-                                <th className='p-5 font-normal border text-start border-darkColor'>user 2</th>
-                                {/* ticket code */}
-                                <th className='p-5 text-base font-normal border border-darkColor text-start'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Incidunt, nesciunt? Accusantium fugit dignissimos nihil suscipit sint pariatur modi deserunt vitae!</th>
-                            </tr>
+                            {ClientRegistered && ClientRegistered.map((registryRecord, index) => (
+                                 <tr className=''>
+                                    {/* name */}
+                                    <th className='p-5 font-normal border text-start border-darkColor'>{`${index+1}. ${registryRecord.firstName} ${registryRecord.middleName} ${registryRecord.lastName}`}</th>
+                                    {/* ticket code */}
+                                    <th className='p-5 text-base font-normal border border-darkColor text-start'>{registryRecord.registration_code}</th>
+                                </tr>
+                            ))}
                         </table>
                     )}
                 </div>

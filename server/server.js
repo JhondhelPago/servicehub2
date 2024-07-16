@@ -35,6 +35,7 @@ const {
     getRegistryInnerJoinPost,
     ArchivingPost,
     EventViewStats,
+    JobViewStats,
 
 
 
@@ -1167,6 +1168,28 @@ app.get('/EventPost/Stat/:event_id', async(req, res) => {
   // console.log(event_id)
 
   // res.send('Event View Stats');
+
+});
+
+app.get('/JobPost/Stat/:job_id', async(req, res) => {
+  
+  const job_id = req.params.job_id;
+  console.log('params', job_id);
+
+  try{
+
+    const JobRegisteredArray = await JobViewStats(job_id);
+
+    res.send(JobRegisteredArray);
+
+    // res.send('hello world');
+
+  }catch(error){
+    console.log(`error on the server.js on the '/JobPost/Stat/:job_id' route.`, error);
+    throw error;
+  }
+
+
 
 });
 
