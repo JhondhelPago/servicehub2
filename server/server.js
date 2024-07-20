@@ -739,6 +739,7 @@ app.post(
     const location = formData.location;
     const description = formData.description;
     const targetAudience = formData.targetAudience;
+    const ticketLimit = formData.ticket_limit;
     let filenames = req.files.map((file) => file.filename);
     filenames = StringManipulate.RemoveSqrBrac(filenames.toString());
 
@@ -750,6 +751,7 @@ app.post(
     console.log(location);
     console.log(description);
     console.log(targetAudience);
+    console.log(`ticket limit ${ticketLimit}`);
     console.log(filenames);
 
 
@@ -781,6 +783,7 @@ app.post(
         location,
         description,
         targetAudience,
+        ticketLimit,
         filenames
       );
 
