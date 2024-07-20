@@ -36,6 +36,12 @@ const {
     ArchivingPost,
     EventViewStats,
     JobViewStats,
+    GetEventRow,
+    GetEventRegisteredTicket_Count,
+    UpdateEventTicketCount,
+    GetJobRow,
+    GetJobRegisteredTicket_Count,
+    UpdateJobTicketCount,
 
 
 
@@ -1526,11 +1532,28 @@ app.get('/GetClient/Convo/WithAdmin/:clientuserId/:adminId', async(req, res) => 
 });
 
 
+app.get('/Count/:event_id', async(req, res) => {
+
+  const event_id = req.params.event_id;
+
+  // const Count = await GetEventRegisteredTicket_Count(event_id);
+
+  // console.log(Count);
+  
+  const EventRow = await GetEventRow(event_id);
+
+  res.send(EventRow);
+
+});
+
 
 app.post('/UserRegister/Event', async(req, res) => {
 
   const { TicketCode }= req.body;
 
+
+  //check here if the event_post is on the ticket limit
+  const event_id = TicketCode.split('-')[0];
 
   console.log(TicketCode);
   // console.log('split ticket code');
@@ -1548,8 +1571,27 @@ app.post('/UserRegister/Event', async(req, res) => {
   //logic here to insert the ticket cdoe to the database
   let control_flow_result = null;
   try{
-    await InsertTikcetCodeEvent(TicketCode);
-    control_flow_result = true;
+
+    //condition to check if there still a room for accepting ticket
+    const TicketCapacity = await GetEventRow(event_id);
+    console.log(`TicketCapacity: ${TicketCapacity.ticket_limit}`);
+    const CurrentTicket = await GetEventRegisteredTicket_Count(event_id);
+    console.log(`CurrentTicket: ${CurrentTicket}`);
+
+    if(CurrentTicket < TicketCapacity.ticket_limit){
+
+      await InsertTikcetCodeEvent(TicketCode);
+
+      //update the number of ticket of this post
+      const RegistryCount = await GetEventRegisteredTicket_Count(event_id);
+      console.log(`RegistryCount: ${RegistryCount}`);
+
+      await UpdateEventTicketCount(event_id, RegistryCount);  
+
+      control_flow_result = true
+    }
+  
+    control_flow_result = false;
   }catch(error){
     control_flow_result = false;
     throw error;
@@ -1562,12 +1604,32 @@ app.post('/UserRegister/Event', async(req, res) => {
 
 app.post('/UserRegister/Job', async(req, res) => {
 
-  const { TicketCode }= req.body;
+  const { TicketCode } = req.body;
+  const job_id = TicketCode.split('-')[0];
+
   let control_flow_result = null;
+  console.log(TicketCode);
+
+  const TicketCapacity = await GetJobRow(job_id);
+  const CurrentTicket = await GetJobRegisteredTicket_Count(job_id);
+
   try{
-    console.log(TicketCode);
-    await InsertTicketCodeJob(TicketCode);
-    control_flow_result = true;
+
+    if(CurrentTicket < TicketCapacity.ticket_limit){
+
+      await InsertTicketCodeJob(TicketCode);
+
+      //update the number of ticket of this post
+  
+      const RegistryCount = await GetJobRegisteredTicket_Count(job_id);
+      
+      await UpdateJobTicketCount(job_id, RegistryCount);
+  
+      control_flow_result = true;
+
+    }
+
+    control_flow_result = false;
 
   }catch(error){
     control_flow_result = false;
