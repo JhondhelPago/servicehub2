@@ -172,6 +172,11 @@ const PostForm = ({ onClick }) => {
                                     </div>
                                 </div>
                                 <textarea className="px-3 py-2 border rounded-md border-darkColor" type="textarea" name="description" placeholder="Event Description" rows="10"></textarea>
+
+                                <div>
+                                    <input class='rounded-lg border border-black' type='number' placeholder='Ticket Limit' name='ticket_limit'></input>
+                                </div>
+
                                 <div className='flex flex-wrap items-center gap-2 p-2 bg-white border rounded-lg border-darkColor'>
                                     <p className='pr-2'>Target Audience:</p>
                                     {SelectedDisabilities.map((Disability) => (

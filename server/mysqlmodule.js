@@ -83,6 +83,7 @@ async function post_EventJob(
   Location,
   Description,
   Disability,
+  TicketLimit,
   filesArray
 ) {
   Disability = JSON.stringify(Disability);
@@ -107,9 +108,10 @@ async function post_EventJob(
         target_group,
         post_type,
         imagefiles,
-        archive_status
+        archive_status,
+        ticket_limit
         )
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
       [
         Creator_id,
         MyDateTime.Datenow(),
@@ -122,7 +124,8 @@ async function post_EventJob(
         Disability,
         Table,
         filesArray,
-        "false"
+        "false",
+        TicketLimit
       ]
     );
   } catch (error) {
