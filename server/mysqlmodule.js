@@ -194,7 +194,11 @@ async function job_post_edit(
 
 async function fetchEvent() {
   try {
-    const [row] = await pool.execute(`SELECT * FROM event_post`);
+    const [row] = await pool.execute(`
+      SELECT * 
+      FROM event_post 
+      ORDER BY id DESC
+      `);
 
     let newRow = row.map((record) => {
       record.imagefiles = StringManipulate.RemoveQuotation(record.imagefiles);
@@ -215,7 +219,11 @@ async function fetchEvent() {
 async function fetchJob() {
   try {
     const [row] = await pool.execute(
-      "SELECT job_post.* , admin.firstName, admin.lastName  FROM job_post INNER JOIN admin ON job_post.creator = admin.id COLLATE utf8mb4_general_ci"
+      `SELECT job_post.* , admin.firstName, admin.lastName 
+      FROM job_post 
+      INNER JOIN admin ON job_post.creator = admin.id COLLATE utf8mb4_general_ci 
+      ORDER BY job_post.id DESC
+      `
     );
 
     //cleaning the uncertain format of column value
@@ -501,6 +509,109 @@ async function JobViewStats(job_id){
 
   }catch(error){
     console.log('error on the mysqlmodule.js @ JobViewStats() function.', error);
+    throw error;
+  }
+
+}
+
+
+async function GetEventRow(event_id){
+
+  try{
+    const [EventRow] = await pool.execute(`
+      SELECT * 
+      FROM event_post
+      WHERE id = ?
+      `, [event_id]);
+
+
+    // to return the row itself from the array format
+    return EventRow[0];
+
+  }catch(error){
+    throw error;
+  }
+
+}
+
+async function GetEventRegisteredTicket_Count(event_id){
+
+  try{
+    const [Count] = await pool.execute(`
+      SELECT COUNT(*) AS total_registry
+      FROM event_post
+      WHERE id = ?
+      `, [event_id]);
+
+    return Count[0].total_registry;
+
+  }catch(error){
+    throw error; 
+  }
+}
+
+async function UpdateEventTicketCount(event_id, ticketCount){
+
+  try{
+
+    await pool.execute(`
+      UPDATE event_post
+      SET registered_tickets = ?
+      WHERE id = ?
+      `, [ticketCount, event_id]);
+
+  }catch(error){
+    throw error;
+  }
+
+}
+
+async function GetJobRow(job_id){
+
+  try{
+    const [JobRow] = await pool.execute(`
+      SELECT * 
+      FROM job_post
+      WHERE id = ?
+      `, [job_id]);
+
+
+    // to return the row itself from the array format
+    return JobRow[0];
+
+  }catch(error){
+    throw error;
+  }
+
+}
+
+async function GetJobRegisteredTicket_Count(job_id){
+
+  try{
+    const [Count] = await pool.execute(`
+      SELECT COUNT(*) AS total_registry
+      FROM job_post
+      WHERE id = ?
+      `, [job_id]);
+
+    return Count[0].total_registry;
+
+  }catch(error){
+    throw error;
+  }
+}
+
+async function UpdateJobTicketCount(job_id, ticketCount){
+
+  try{
+
+    await pool.execute(`
+      UPDATE job_post
+      SET registered_tickets = ?
+      WHERE id = ?
+      `, [ticketCount, job_id]);
+
+  }catch(error){
     throw error;
   }
 
@@ -927,6 +1038,7 @@ async function InsertTicketCodeJob(ticket_code){
 
 }
 
+
 module.exports = {
   //user function exports
   get_userId,
@@ -952,6 +1064,12 @@ module.exports = {
   ArchivingPost,
   EventViewStats,
   JobViewStats,
+  GetEventRow,
+  GetEventRegisteredTicket_Count,
+  UpdateEventTicketCount,
+  GetJobRow,
+  GetJobRegisteredTicket_Count,
+  UpdateJobTicketCount,
 
   //function query for the clientuser
   clientuserLoginSession,
