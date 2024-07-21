@@ -22,6 +22,7 @@ const EventPostComponent = ({ eventdata, RegistredBoolean, ReInvokeFetchRegistry
       const response = await axios.post(`/UserRegister/Event`, { TicketCode: generatedCode });
       if (response.status >= 200 && response.status <= 299) {
         SetJoinedStatus(true);
+        setIsModalOpen(false); //closing the modal
         ReInvokeFetchRegistry();
       }
     } catch (error) {
