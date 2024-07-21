@@ -34,7 +34,7 @@ const UserHomepage = () => {
     const FetchEventData = async () => {
         try {
             // getting the data from the middle server
-            const response = await axios.get('/fetchingEventPost');
+            const response = await axios.get(`/fetchingEventPost/${clientuserId}`);
             const data = response.data;
             console.log(data);
             SetEventData(data);
@@ -47,7 +47,7 @@ const UserHomepage = () => {
     const FetchJobData = async () => {
         try {
             //using the axios get the data from the server
-            const response = await axios.get('/fetchingJobPost');
+            const response = await axios.get(`/fetchingJobPost/${clientuserId}`);
             const data = response.data;
             console.log(data);
             SetJobData(data);
@@ -119,25 +119,25 @@ const UserHomepage = () => {
                         </button>
                         {/* <!-- links container --> */}
                         <div className={`col-span-2 font-medium lg:ml-auto lg:col-span-1 lg:flex ${isNavOpen ? '' : 'hidden'}`}>
-                            <ul className="grid gap-10 pt-5 mx-auto font-bold text-center w-fit lg:pt-0 lg:flex lg:gap-20 lg:w-auto">
+                            <ul className="flex flex-col gap-10 pt-5 mx-auto font-bold text-center w-fit lg:pt-0 lg:flex-row lg:gap-20">
                                 <button
-                                    className={`font-medium ${ActiveComponent === 'EventPosting' ? 'activeUserLink' : 'userNavHover'}`}
+                                    className={`font-medium relative w-fit mx-auto ${ActiveComponent === 'EventPosting' ? 'activeUserLink' : 'userNavHover'}`}
                                     onClick={() => { SetSelectedComponent('EventPosting') }}
                                 >Events</button>
                                 <button
-                                    className={`font-medium ${ActiveComponent === 'JobPosting' ? 'activeUserLink' : 'userNavHover'}`}
+                                    className={`font-medium relative w-fit mx-auto ${ActiveComponent === 'JobPosting' ? 'activeUserLink' : 'userNavHover'}`}
                                     onClick={() => { SetSelectedComponent('JobPosting') }}
                                 >Find a Job</button>
                                 <button
-                                    className={`font-medium ${ActiveComponent === 'Chat' ? 'activeUserLink' : 'userNavHover'}`}
+                                    className={`font-medium relative w-fit mx-auto ${ActiveComponent === 'Chat' ? 'activeUserLink' : 'userNavHover'}`}
                                     onClick={() => { SetSelectedComponent('Chat') }}
                                 >Chat</button>
                                 <button
-                                    className={`font-medium ${ActiveComponent === 'Tickets' ? 'activeUserLink' : 'userNavHover'}`}
+                                    className={`font-medium relative w-fit mx-auto ${ActiveComponent === 'Tickets' ? 'activeUserLink' : 'userNavHover'}`}
                                     onClick={() => { SetSelectedComponent('Tickets') }}
                                 >Tickets</button>
                                 <button
-                                    className={`font-medium ${ActiveComponent === 'Profile' ? 'activeUserLink' : 'userNavHover'}`}
+                                    className={`font-medium relative w-fit mx-auto ${ActiveComponent === 'Profile' ? 'activeUserLink' : 'userNavHover'}`}
                                     onClick={() => { SetSelectedComponent('Profile') }}
                                 >Profile</button>
                                 <button className='flex flex-row items-center gap-2 font-medium group'>
@@ -149,7 +149,7 @@ const UserHomepage = () => {
                     </nav>
 
                     {/* <!-- main content container --> */}
-                    <div className="container flex flex-col h-full pt-5 mx-auto overflow-hidden">
+                    <div className="container flex flex-col h-full mx-auto overflow-hidden">
                         {/* <!-- event post container --> */}
                         <div className='flex flex-col gap-5 px-2 overflow-auto'>
                             {ActiveComponent === 'EventPosting' && EventData.map((eventItem) => {

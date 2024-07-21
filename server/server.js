@@ -4,6 +4,7 @@ const path = require("path");
 const bodyParser = require("body-parser");
 const fs = require("fs");
 const createCsvWriter = require('csv-writer').createObjectCsvWriter;
+const { DisabilityJSON } = require('../client/src/utils.js')
 
 
 
@@ -34,6 +35,14 @@ const {
     getRegistry,
     getRegistryInnerJoinPost,
     ArchivingPost,
+    EventViewStats,
+    JobViewStats,
+    GetEventRow,
+    GetEventRegisteredTicket_Count,
+    UpdateEventTicketCount,
+    GetJobRow,
+    GetJobRegisteredTicket_Count,
+    UpdateJobTicketCount,
 
 
 
@@ -672,6 +681,7 @@ function RandomSelectedIndex(ArrayLength){
 const { StringManipulate } = require("./utilities.js");
 const e = require("express");
 const { setDefaultAutoSelectFamily } = require("net");
+const { allowedNodeEnvironmentFlags } = require("process");
 
 // express app instanciation
 const app = express();
@@ -737,6 +747,7 @@ app.post(
     const location = formData.location;
     const description = formData.description;
     const targetAudience = formData.targetAudience;
+    const ticketLimit = formData.ticket_limit;
     let filenames = req.files.map((file) => file.filename);
     filenames = StringManipulate.RemoveSqrBrac(filenames.toString());
 
@@ -748,6 +759,7 @@ app.post(
     console.log(location);
     console.log(description);
     console.log(targetAudience);
+    console.log(`ticket limit ${ticketLimit}`);
     console.log(filenames);
 
 
@@ -779,6 +791,7 @@ app.post(
         location,
         description,
         targetAudience,
+        ticketLimit,
         filenames
       );
 
@@ -791,27 +804,117 @@ app.post(
 );
 
 //fetcing jobposting from the server
-app.get("/fetchingJobPost", async (req, res) => {
+app.get("/fetchingJobPost/:clientuserId", async (req, res) => {
+
+  const { clientuserId } = req.params;
+  console.log(`clientuserId ${clientuserId}`);
+
+  const ClientDataInfo = await ClientData(clientuserId);
+
+  const disability = ClientDataInfo[0].disability;
+
   try {
+
+    let filtered_content = [];
+
     const data = await fetchJob();
+
+    for (const job_post  of data){
+
+      let disability_category = job_post.target_group.split(',');
+
+      for (const category of disability_category){
+        const formatted_category = category.replace(/\s+/g, '');
+
+        if(DisabilityJSON[formatted_category].includes(disability)){
+
+          filtered_content.push(job_post)
+
+          break;
+
+        }
+      }
+    }
 
     //console.log(data);
 
-    res.send(data);
+    res.send(filtered_content);
   } catch (error) {
     throw error;
   }
 });
 
 //fetching eventposting from the server
-app.get("/fetchingEventPost", async (req, res) => {
+app.get("/fetchingEventPost/:clientuserId", async (req, res) => {
+  
+  const {clientuserId} = req.params;
+
+  console.log(`clienduserId: ${clientuserId}`);
+
+  //get the data of this user
+  const ClientDataInfo = await ClientData(clientuserId);
+  console.log(ClientDataInfo);
+
+  const disability = ClientDataInfo[0].disability;
+  console.log(`disabilit: ${disability}`);
   try {
+
+    let filtered_content = [];
+
     const data = await fetchEvent();
     // console.log(data);
-    res.send(data);
+
+    //logic here to filter the content of the post before sending to the frontend
+    
+    for (const event_post of data){
+      
+      console.log(event_post);
+
+      let disability_category = event_post.target_group.split(',');
+
+      for (const category of disability_category){
+        console.log('category: ', category);
+        const formatted_category = category.replace(/\s+/g, '');
+        console.log('modif category', formatted_category);
+
+        if(DisabilityJSON[formatted_category].includes(disability)){
+          filtered_content.push(event_post);
+
+          break;
+        }
+      }
+    }
+
+    res.send(filtered_content);
+    // res.send(data);
   } catch (error) {
     throw error;
   }
+});
+
+app.get('/fetchingJobPost', async(req, res) => {
+
+  try{
+    const data = await fetchJob();
+
+    res.send(data);
+
+  }catch(error){
+    throw error;
+  }
+})
+
+app.get('/fetchingEventPost', async(req, res) => {
+
+  try{
+    const data = await fetchEvent();
+
+    res.send(data);
+
+  }catch(error){
+    throw error;
+  }
+
 });
 
 app.post("/EventsPost", EventUpload.array("images", 10), async (req, res) => {
@@ -1148,6 +1251,51 @@ app.post('/Event/Archive/StatusChange', async(req, res) => {
 
 
 
+app.get('/EventPost/Stat/:event_id', async(req, res) => {
+
+  const event_id = req.params.event_id
+
+  try{
+
+    const EventRegisteredArray = await EventViewStats(event_id);
+
+    res.send(EventRegisteredArray);
+
+  }catch(error){
+    console.log(`error on the server.js on the '/EventPost/Stat/:event_id' route.`, error);
+    throw error;
+  }
+
+  // console.log(event_id)
+
+  // res.send('Event View Stats');
+
+});
+
+app.get('/JobPost/Stat/:job_id', async(req, res) => {
+  
+  const job_id = req.params.job_id;
+  console.log('params', job_id);
+
+  try{
+
+    const JobRegisteredArray = await JobViewStats(job_id);
+
+    res.send(JobRegisteredArray);
+
+    // res.send('hello world');
+
+  }catch(error){
+    console.log(`error on the server.js on the '/JobPost/Stat/:job_id' route.`, error);
+    throw error;
+  }
+
+
+
+});
+
+
+
 
 
 
@@ -1476,11 +1624,28 @@ app.get('/GetClient/Convo/WithAdmin/:clientuserId/:adminId', async(req, res) => 
 });
 
 
+app.get('/Count/:event_id', async(req, res) => {
+
+  const event_id = req.params.event_id;
+
+  // const Count = await GetEventRegisteredTicket_Count(event_id);
+
+  // console.log(Count);
+  
+  const EventRow = await GetEventRow(event_id);
+
+  res.send(EventRow);
+
+});
+
 
 app.post('/UserRegister/Event', async(req, res) => {
 
   const { TicketCode }= req.body;
 
+
+  //check here if the event_post is on the ticket limit
+  const event_id = TicketCode.split('-')[0];
 
   console.log(TicketCode);
   // console.log('split ticket code');
@@ -1498,8 +1663,27 @@ app.post('/UserRegister/Event', async(req, res) => {
   //logic here to insert the ticket cdoe to the database
   let control_flow_result = null;
   try{
-    await InsertTikcetCodeEvent(TicketCode);
-    control_flow_result = true;
+
+    //condition to check if there still a room for accepting ticket
+    const TicketCapacity = await GetEventRow(event_id);
+    console.log(`TicketCapacity: ${TicketCapacity.ticket_limit}`);
+    const CurrentTicket = await GetEventRegisteredTicket_Count(event_id);
+    console.log(`CurrentTicket: ${CurrentTicket}`);
+
+    if(CurrentTicket < TicketCapacity.ticket_limit){
+
+      await InsertTikcetCodeEvent(TicketCode);
+
+      //update the number of ticket of this post
+      const RegistryCount = await GetEventRegisteredTicket_Count(event_id);
+      console.log(`RegistryCount: ${RegistryCount}`);
+
+      await UpdateEventTicketCount(event_id, RegistryCount);  
+
+      control_flow_result = true
+    }
+  
+    control_flow_result = false;
   }catch(error){
     control_flow_result = false;
     throw error;
@@ -1512,12 +1696,32 @@ app.post('/UserRegister/Event', async(req, res) => {
 
 app.post('/UserRegister/Job', async(req, res) => {
 
-  const { TicketCode }= req.body;
+  const { TicketCode } = req.body;
+  const job_id = TicketCode.split('-')[0];
+
   let control_flow_result = null;
+  console.log(TicketCode);
+
+  const TicketCapacity = await GetJobRow(job_id);
+  const CurrentTicket = await GetJobRegisteredTicket_Count(job_id);
+
   try{
-    console.log(TicketCode);
-    await InsertTicketCodeJob(TicketCode);
-    control_flow_result = true;
+
+    if(CurrentTicket < TicketCapacity.ticket_limit){
+
+      await InsertTicketCodeJob(TicketCode);
+
+      //update the number of ticket of this post
+  
+      const RegistryCount = await GetJobRegisteredTicket_Count(job_id);
+      
+      await UpdateJobTicketCount(job_id, RegistryCount);
+  
+      control_flow_result = true;
+
+    }
+
+    control_flow_result = false;
 
   }catch(error){
     control_flow_result = false;
