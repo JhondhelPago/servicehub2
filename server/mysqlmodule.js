@@ -427,6 +427,7 @@ async function getRegistryInnerJoinPost(userId){
       FROM event_registry
       INNER JOIN event_post ON event_registry.event_id = event_post.id
       WHERE user_id = ?
+      ORDER BY event_registry.event_id DESC
       `, [userId]
     )
 
@@ -435,6 +436,7 @@ async function getRegistryInnerJoinPost(userId){
       FROM job_registry
       INNER JOIN job_post ON job_registry.job_id = job_post.id
       WHERE user_id = ?
+      ORDER BY job_registry.job_id DESC
       `, [userId]
     );
 
