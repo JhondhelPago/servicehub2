@@ -42,13 +42,13 @@ const TicketPage = ({ }) => {
       {isEventsTicketActive ? (
         <div>
           {EventRegistryObjArray && EventRegistryObjArray.map((eventRegistryObj) => (
-            <EventTicketCard key={eventRegistryObj.registration_code} dataObj={eventRegistryObj}></EventTicketCard>
+            <EventTicketCard key={eventRegistryObj.registration_code} dataObj={eventRegistryObj} FetchRegistry={FetchRegistry}></EventTicketCard>
           ))}
         </div>
       ) : (
         <div>
           {JobRegistryObjArray && JobRegistryObjArray.map((jobRegistryObj) => (
-            <JobTicketCard key={jobRegistryObj.registration_code} dataObj={jobRegistryObj}></JobTicketCard>
+            <JobTicketCard key={jobRegistryObj.registration_code} dataObj={jobRegistryObj} FetchRegistry={FetchRegistry}></JobTicketCard>
           ))}
         </div>
       )}
@@ -58,14 +58,28 @@ const TicketPage = ({ }) => {
 
 export default TicketPage
 
-const EventTicketCard = ({ dataObj }) => {
-  const [isModalOpen, setIsModalOpen] = useState(false)
+const EventTicketCard = ({ dataObj, FetchRegistry }) => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const TicketCancelation = async() => {
+
+    try{
+
+      const response = await axios.post(`/ticket/cancelation/event/${dataObj.registration_id}`);
+      setIsModalOpen(false);
+      FetchRegistry();
+
+    }catch(error){
+      throw error;
+    }
+  }
+
 
   return (
     <>
       <div className="flex flex-wrap gap-4 p-4 mb-5 border-2 border-dashed rounded-lg border-primary-light">
         <div className="flex flex-col flex-wrap flex-grow gap-4 md:flex-row">
-          <h1 className='mx-auto'>Event Ticket</h1>
+          <h1 className='mx-auto'>Event Ticket {dataObj.registration_id}</h1>
           <div className="flex flex-col items-center w-full gap-2 p-5 text-center bg-gray-50 eventCard">
             {/* post type */}
             <h1 className="px-2 mb-2 text-lg font-medium border-b lg:text-2xl border-darkColor">{dataObj.registration_code}</h1>
@@ -101,7 +115,7 @@ const EventTicketCard = ({ dataObj }) => {
               <div className="flex flex-wrap justify-center gap-5 mx-auto">
                 <button
                   className="px-5 py-2 text-lg text-white bg-red-600 rounded scaleHover"
-                // onClick={}
+                  onClick={() => {TicketCancelation()}}
                 >Yes</button>
                 <button
                   className="px-5 py-2 text-lg text-gray-600 border border-gray-600 rounded hover:text-white hover:bg-gray-600"
@@ -119,8 +133,21 @@ const EventTicketCard = ({ dataObj }) => {
   )
 }
 
-const JobTicketCard = ({ dataObj }) => {
-  const [isModalOpen, setIsModalOpen] = useState(false)
+const JobTicketCard = ({ dataObj, FetchRegistry }) => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const TicketCancelation = async() => {
+
+    try{
+
+      const response = await axios.post(`/ticket/cancelation/job/${dataObj.registration_id}`);
+      setIsModalOpen(false);
+      FetchRegistry();
+
+    }catch(error){
+      throw error;
+    }
+  }
 
   return (
     <>
@@ -164,7 +191,7 @@ const JobTicketCard = ({ dataObj }) => {
                 {/* yes btn */}
                 <button
                   className="px-5 py-2 text-lg text-white bg-red-600 rounded scaleHover"
-                // onClick={}
+                onClick={() => {TicketCancelation()}}
                 >Yes</button>
 
                 <button

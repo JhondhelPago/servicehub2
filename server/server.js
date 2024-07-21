@@ -58,7 +58,9 @@ const {
     getEventRegistry,
     getJobRegistry,
     InsertTikcetCodeEvent,
-    InsertTicketCodeJob
+    InsertTicketCodeJob,
+    TicketCancelationEvent,
+    TicketCancelationJob
 
 } = require('./mysqlmodule.js');
 
@@ -2160,6 +2162,39 @@ app.post('/sendmail/dummy', async(req, res) => {
   console.log(MailObj);
 
 
+});
+
+app.post('/ticket/cancelation/event/:registration_id', async(req, res) => {
+
+  const { registration_id } = req.params;
+   
+  try{
+
+    console.log(registration_id);
+
+    await TicketCancelationEvent(registration_id);
+
+    res.send(true);
+
+  }catch(error){
+    throw error;
+  }
+
+});
+
+app.post(`/ticket/cancelation/job/:registration_id`, async(req, res) => {
+
+  const { registration_id } = req.params;
+
+  try{
+
+    await TicketCancelationJob(registration_id);
+
+    res.send(true);
+
+  }catch(error){
+    throw error;
+  }
 });
 
 app.get("/sample_res", (req, res) => {
