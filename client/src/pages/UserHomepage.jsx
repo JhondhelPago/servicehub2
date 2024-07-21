@@ -126,7 +126,7 @@ const UserHomepage = () => {
                                 >
                                     Events
                                     {/* notif badge */}
-                                    {/* <span className='px-2 py-1 ml-2 text-xs text-white bg-red-600 rounded-full'>99999</span> */}
+                                    <span className='px-2 py-1 ml-2 text-xs text-white bg-red-600 rounded-full'>99999</span>
                                 </button>
                                 <button
                                     className={`font-medium relative w-fit mx-auto ${ActiveComponent === 'JobPosting' ? 'activeUserLink' : 'userNavHover'}`}
@@ -134,7 +134,7 @@ const UserHomepage = () => {
                                 >
                                     Find a Job
                                     {/* notif badge */}
-                                    {/* <span className='px-2 py-1 ml-2 text-xs text-white bg-red-600 rounded-full'>99999</span> */}
+                                    <span className='px-2 py-1 ml-2 text-xs text-white bg-red-600 rounded-full'>99999</span>
                                 </button>
                                 <button
                                     className={`font-medium relative w-fit mx-auto ${ActiveComponent === 'Chat' ? 'activeUserLink' : 'userNavHover'}`}
