@@ -4,6 +4,7 @@ const path = require("path");
 const bodyParser = require("body-parser");
 const fs = require("fs");
 const createCsvWriter = require('csv-writer').createObjectCsvWriter;
+const { DisabilityJSON } = require('../client/src/utils.js')
 
 
 
@@ -802,24 +803,89 @@ app.post(
 );
 
 //fetcing jobposting from the server
-app.get("/fetchingJobPost", async (req, res) => {
+app.get("/fetchingJobPost/:clientuserId", async (req, res) => {
+
+  const { clientuserId } = req.params;
+  console.log(`clientuserId ${clientuserId}`);
+
+  const ClientDataInfo = await ClientData(clientuserId);
+
+  const disability = ClientDataInfo[0].disability;
+
   try {
+
+    let filtered_content = [];
+
     const data = await fetchJob();
+
+    for (const job_post  of data){
+
+      let disability_category = job_post.target_group.split(',');
+
+      for (const category of disability_category){
+        const formatted_category = category.replace(/\s+/g, '');
+
+        if(DisabilityJSON[formatted_category].includes(disability)){
+
+          filtered_content.push(job_post)
+
+          break;
+
+        }
+      }
+    }
 
     //console.log(data);
 
-    res.send(data);
+    res.send(filtered_content);
   } catch (error) {
     throw error;
   }
 });
 
 //fetching eventposting from the server
-app.get("/fetchingEventPost", async (req, res) => {
+app.get("/fetchingEventPost/:clientuserId", async (req, res) => {
+  
+  const {clientuserId} = req.params;
+
+  console.log(`clienduserId: ${clientuserId}`);
+
+  //get the data of this user
+  const ClientDataInfo = await ClientData(clientuserId);
+  console.log(ClientDataInfo);
+
+  const disability = ClientDataInfo[0].disability;
+  console.log(`disabilit: ${disability}`);
   try {
+
+    let filtered_content = [];
+
     const data = await fetchEvent();
     // console.log(data);
-    res.send(data);
+
+    //logic here to filter the content of the post before sending to the frontend
+    
+    for (const event_post of data){
+      
+      console.log(event_post);
+
+      let disability_category = event_post.target_group.split(',');
+
+      for (const category of disability_category){
+        console.log('category: ', category);
+        const formatted_category = category.replace(/\s+/g, '');
+        console.log('modif category', formatted_category);
+
+        if(DisabilityJSON[formatted_category].includes(disability)){
+          filtered_content.push(event_post);
+
+          break;
+        }
+      }
+    }
+
+    res.send(filtered_content);
+    // res.send(data);
   } catch (error) {
     throw error;
   }
