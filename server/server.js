@@ -4,7 +4,8 @@ const path = require("path");
 const bodyParser = require("body-parser");
 const fs = require("fs");
 const createCsvWriter = require('csv-writer').createObjectCsvWriter;
-const { DisabilityJSON } = require('../client/src/utils.js')
+const { DisabilityJSON } = require('./utilities.js')
+
 
 
 
@@ -680,7 +681,7 @@ function RandomSelectedIndex(ArrayLength){
 
 //utilities.js -> provide utility classes and functions
 
-const { StringManipulate } = require("./utilities.js");
+const { StringManipulate, cloudinary } = require("./utilities.js");
 const e = require("express");
 const { setDefaultAutoSelectFamily } = require("net");
 const { allowedNodeEnvironmentFlags } = require("process");
@@ -751,6 +752,9 @@ app.post(
     const targetAudience = formData.targetAudience;
     const ticketLimit = formData.ticket_limit;
     let filenames = req.files.map((file) => file.filename);
+    const path_filenames = filenames.map((filename) => `./FileUpload/${filename}`);
+    
+
     filenames = StringManipulate.RemoveSqrBrac(filenames.toString());
 
     console.log(creator_id);
@@ -762,28 +766,43 @@ app.post(
     console.log(description);
     console.log(targetAudience);
     console.log(`ticket limit ${ticketLimit}`);
+    console.log(path_filenames);
     console.log(filenames);
 
+    //cloudinary logic here
 
+    //array of path to the FileUplod
+    let URL_path = [];
 
-    //reformating the array values to strings
-    // targetAudience = StringManipulate.RemoveSqrBrac(targetAudience.toString());
-    // filenames = StringManipulate.RemoveSqrBrac(filenames.toString());
+    // try{
+    //   for (const filepath of path_filenames){
 
-    // this is the variable that hold the files
-    // let filenames;
+    //     cloudinary.uploader.upload(filepath).then(result => {
+    //       URL_path.push(result.url);
+    //     });
+  
+    //   }
+  
+  
+    //   console.log(URL_path);
 
-    // console.log(creator_id);
-    // console.log(postType);
-    // console.log(title);
-    // console.log(date);
-    // console.log(time);
-    // console.log(location);
-    // console.log(description);
-    // console.log(StringManipulate.RemoveSqrBrac(targetAudience.toString()));
-    // console.log(StringManipulate.RemoveSqrBrac(filenames.toString()));
+    // }catch(error){
+    //   console.log(error);
+    // }
+
 
     try {
+
+      const uploadPromises = path_filenames.map(filepath => cloudinary.uploader.upload(filepath));
+  
+      // Wait for all upload promises to resolve
+      const results = await Promise.all(uploadPromises);
+      
+      // Extract URLs from results
+      const URL_path = results.map(result => result.url);
+
+      console.log(URL_path);
+
       await post_EventJob(
         postType,
         creator_id,
@@ -794,7 +813,7 @@ app.post(
         description,
         targetAudience,
         ticketLimit,
-        filenames
+        filenames // it shoud be the URL_path
       );
 
       res.send({ status: true });

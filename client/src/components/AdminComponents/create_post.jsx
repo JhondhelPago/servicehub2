@@ -109,7 +109,7 @@ const PostForm = ({ onClick }) => {
         // }
 
         const formData = new FormData(event.target);
-
+        //loading state
         try {
             const response = await fetch('/Posting', {
                 method: 'POST',
@@ -120,6 +120,7 @@ const PostForm = ({ onClick }) => {
             if (feedback.status) {
                 alert('Post is uploaded');
                 handleParentSelectedComponent();
+                //SetuseState(true);
             }
         } catch (error) {
             console.error(error);
