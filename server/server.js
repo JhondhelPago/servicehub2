@@ -681,6 +681,7 @@ function RandomSelectedIndex(ArrayLength){
 const { StringManipulate } = require("./utilities.js");
 const e = require("express");
 const { setDefaultAutoSelectFamily } = require("net");
+const { allowedNodeEnvironmentFlags } = require("process");
 
 // express app instanciation
 const app = express();
@@ -889,6 +890,31 @@ app.get("/fetchingEventPost/:clientuserId", async (req, res) => {
   } catch (error) {
     throw error;
   }
+});
+
+app.get('/fetchingJobPost', async(req, res) => {
+
+  try{
+    const data = await fetchJob();
+
+    res.send(data);
+
+  }catch(error){
+    throw error;
+  }
+})
+
+app.get('/fetchingEventPost', async(req, res) => {
+
+  try{
+    const data = await fetchEvent();
+
+    res.send(data);
+
+  }catch(error){
+    throw error;
+  }
+
 });
 
 app.post("/EventsPost", EventUpload.array("images", 10), async (req, res) => {
