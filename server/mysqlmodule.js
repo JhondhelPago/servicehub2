@@ -7,6 +7,10 @@ const pool = mysql
     user: "root",
     password: "",
     database: "servicehub",
+    waitForConnections: true,
+    connectionLimit: 10,
+    queueLimit: 0,
+    connectTimeout: 10000 // 10 seconds
   })
   .promise();
 
