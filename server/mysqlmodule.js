@@ -714,7 +714,7 @@ async function ClientData(id) {
 
   try {
     const [rowdata] = await pool.execute(
-      `SELECT firstName, middleName, Lastname, age, gender, houseno, street, barangay, district, city, province, zipcode, phone, status FROM user WHERE id = ${id}`
+      `SELECT firstName, middleName, Lastname, age, gender, disability, houseno, street, barangay, district, city, province, zipcode, phone, status FROM user WHERE id = ${id}`
     );
 
     if (rowdata.length != 0) {

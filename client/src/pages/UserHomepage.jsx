@@ -34,7 +34,7 @@ const UserHomepage = () => {
     const FetchEventData = async () => {
         try {
             // getting the data from the middle server
-            const response = await axios.get('/fetchingEventPost');
+            const response = await axios.get(`/fetchingEventPost/${clientuserId}`);
             const data = response.data;
             console.log(data);
             SetEventData(data);
@@ -47,7 +47,7 @@ const UserHomepage = () => {
     const FetchJobData = async () => {
         try {
             //using the axios get the data from the server
-            const response = await axios.get('/fetchingJobPost');
+            const response = await axios.get(`/fetchingJobPost/${clientuserId}`);
             const data = response.data;
             console.log(data);
             SetJobData(data);
