@@ -2,6 +2,7 @@ import React from "react";
 import { useState, useEffect, useContext, useRef } from "react";
 import { UserContext } from "../LoginComponents/UserContext";
 import axios from "axios";
+import LoadingIcons from "react-loading-icons";
 
 const InboxComponent = () => {
 
@@ -94,11 +95,30 @@ const InboxComponent = () => {
         else setViewProfile(true)
     }
 
+    const [isLoading, setIsLoading] = useState(false)
+
     // redering return ng InboxComponent
     return (
         <>
             {/* <!-- inbox list/content container --> */}
             <div className="flex h-full px-5 pb-5 overflow-auto ">
+
+                {/* https://www.npmjs.com/package/react-loading-icons */}
+                {/* npm i react-loading-icons */}
+                {isLoading && (
+                    <div className="absolute top-0 left-0 z-[50] flex items-center justify-center w-full h-full bg-black bg-opacity-60 backdrop-blur-sm">
+                        <div className="sm:w-[30%] mx-5 w-full sm:min-w-[400px] max-w-[500px] flex flex-col bg-white z-[11] rounded-lg p-10 justify-center relative">
+                            <div className="flex flex-col gap-7">
+                                <LoadingIcons.TailSpin stroke="#CD890A" className="w-12 h-12 mx-auto" strokeWidth={2}></LoadingIcons.TailSpin >
+                                <h1 className="text-3xl font-semibold text-center font-noto">Loading</h1>
+                                <h3 className="mb-3 overflow-auto text-lg text-center font-noto">
+                                    Please wait.
+                                </h3>
+                            </div>
+                        </div>
+                    </div>
+                )}
+
                 {viewProfile ? (
                     <div className="relative w-full overflow-hidden border border-darkColor">
                         <button className="absolute right-0 p-3 hover:text-red-600" onClick={handleViewProfile}>
@@ -244,7 +264,7 @@ const InboxComponent = () => {
                             {/* <!-- unread mail sample --> */}
                             {/* if unread: unreadMailItem hoverMail */}
                             <div className="grid grid-cols-7 gap-4 p-2 border-b border-darkColor unreadMailItem hoverMail group/del">
-                                <label className="flex col-span-2 gap-2" for="">
+                                <label className="flex col-span-2 gap-2 cursor-pointer" for="">
                                     <input type="checkbox" />
                                     {/* <!-- from --> */}
                                     <h6 className="truncate">User1 User1User1</h6>
@@ -263,7 +283,10 @@ const InboxComponent = () => {
 
                 )}
                 {MailOverViewBoolean && !viewProfile && (
-                    <MailOverView MailObjsArray={MailObjsArray} ContactClientId={MailOverViewClientId} handleViewProfile={handleViewProfile} CloseMailOverViewAction={CloseMailOverViewAction} FetchConvo_Admin_Client={FetchConvo_Admin_Client}></MailOverView>
+                    <MailOverView MailObjsArray={MailObjsArray} ContactClientId={MailOverViewClientId} handleViewProfile={handleViewProfile} CloseMailOverViewAction={CloseMailOverViewAction} FetchConvo_Admin_Client={FetchConvo_Admin_Client}
+                        isLoading={isLoading}
+                        setIsLoading={setIsLoading}
+                    ></MailOverView>
                 )}
 
             </div>
@@ -287,7 +310,7 @@ const MailListView = ({ clientId, ClickInboxAction }) => {
     return (
         <>
             <div className="grid grid-cols-7 gap-4 p-2 border-b border-darkColor hoverMailItem group/del" onClick={() => { ClickInboxAction(ClientIdReference) }}>
-                <label className="flex col-span-2 gap-2" htmlFor="">
+                <label className="flex col-span-2 gap-2 cursor-pointer" htmlFor="">
                     <input type="checkbox" />
                     {/* <!-- from --> */}
                     <h6 className="truncate">firstName</h6>
@@ -306,7 +329,7 @@ const MailListView = ({ clientId, ClickInboxAction }) => {
 
 
 // component definition of the MailOverView
-const MailOverView = ({ MailObjsArray, ContactClientId, handleViewProfile, CloseMailOverViewAction, FetchConvo_Admin_Client }) => {
+const MailOverView = ({ MailObjsArray, ContactClientId, handleViewProfile, CloseMailOverViewAction, FetchConvo_Admin_Client, setIsLoading }) => {
 
 
 
@@ -397,7 +420,12 @@ const MailOverView = ({ MailObjsArray, ContactClientId, handleViewProfile, Close
 
                 {/* {ReplyButtonState == true && <Replyform></Replyform>} */}
                 <div className="h-auto">
-                    {ReplyButtonState == true && <Replyform ContactClientId={ContactClientId} ReplyDeactivate={ReplyDeactivate} FetchConvo_Admin_Client={FetchConvo_Admin_Client}></Replyform>}
+                    {ReplyButtonState == true && <Replyform
+                        ContactClientId={ContactClientId}
+                        ReplyDeactivate={ReplyDeactivate}
+                        FetchConvo_Admin_Client={FetchConvo_Admin_Client}
+                        setIsLoading={setIsLoading}
+                    ></Replyform>}
 
                 </div>
             </div>
@@ -472,7 +500,7 @@ const MailInnerView = ({ MailObj }) => {
                     {ImageArray && ImageArray.map((filename) => (
                         <div className="mx-5">
                             {/* image */}
-                            <img className="max-h-[30vh] mb-3 w-fit h-fit object-contain rounded-md" src={filename} onClick={() => {openCloudinaryImg(filename)}}></img>
+                            <img className="max-h-[30vh] mb-3 w-fit h-fit object-contain rounded-md" src={filename} onClick={() => { openCloudinaryImg(filename) }}></img>
                         </div>
                     ))}
 
@@ -595,7 +623,7 @@ const MailInnerViewUserSender = ({ MailObj }) => {
                     {ImageArray && ImageArray.map((filename) => (
                         <div className="mx-5">
                             {/* image */}
-                            <img className="max-h-[30vh] mb-3 w-fit h-fit object-contain rounded-md" src={filename}  onClick={() => {openCloudinaryImg(filename)}}></img>
+                            <img className="max-h-[30vh] mb-3 w-fit h-fit object-contain rounded-md" src={filename} onClick={() => { openCloudinaryImg(filename) }}></img>
                         </div>
                     ))}
 
@@ -651,7 +679,7 @@ const MailInnerViewUserSender = ({ MailObj }) => {
 
 
 
-const Replyform = ({ ContactClientId, ReplyDeactivate, FetchConvo_Admin_Client }) => {
+const Replyform = ({ ContactClientId, ReplyDeactivate, FetchConvo_Admin_Client, setIsLoading }) => {
 
     const { AdminId } = useContext(UserContext);
 
@@ -660,6 +688,7 @@ const Replyform = ({ ContactClientId, ReplyDeactivate, FetchConvo_Admin_Client }
     const [files, setFiles] = useState([]);
 
     const handleReplyForm = async (event) => {
+        setIsLoading(true)
         event.preventDefault();
 
         const formData = new FormData();
@@ -685,12 +714,14 @@ const Replyform = ({ ContactClientId, ReplyDeactivate, FetchConvo_Admin_Client }
 
             console.log(`status: ${response.data}`);
             //outside function here to complete this block
+            setIsLoading(false)
             ReplyDeactivate();
             FetchConvo_Admin_Client(ContactClientId);
 
 
         } catch (error) {
             console.log('error from the handeReplyForm at the ReplyForm on tge Adminside', error);
+            setIsLoading(false)
             throw error;
         }
 
