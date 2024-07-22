@@ -2088,31 +2088,50 @@ app.get('/EventRegistered/:clientuserId', async(req, res) => {
 
 app.post('/sendMail', EventUpload.array('files', 10), async(req, res) => {
   
-  const { senderClientId, receiverAdminId, subject, message } = req.body;
-  const files = req.files;
-
-  // temporary list of modif file names on the req.
-  let Filenames = [];
-  let Imagenames = [];
-  //populating the filenames
-  files.forEach((file) => {
-
-    if(file.filename.includes('.jpg') || file.filename.includes('.jpeg') || file.filename.includes('.png')){
-      
-      Imagenames.push(file.filename);
-
-    }else if(file.filename.includes('.pdf') || file.filename.includes('.doc') || file.filename.includes('.docx') || file.filename.includes('.txt')){
-
-      Filenames.push(file.filename);
-    }
-    
-  });
-
-  const Filenames_String = Filenames.join(',');
-  const Imagenames_String = Imagenames.join(',');
-
   // query function
   try{
+
+    const { senderClientId, receiverAdminId, subject, message } = req.body;
+    const files = req.files;
+
+    // temporary list of modif file names on the req.
+    let Filenames = [];
+    let Imagenames = [];
+    //populating the filenames
+    files.forEach((file) => {
+
+      if(file.filename.includes('.jpg') || file.filename.includes('.jpeg') || file.filename.includes('.png')){
+        
+        Imagenames.push(file.filename);
+
+      }else if(file.filename.includes('.pdf') || file.filename.includes('.doc') || file.filename.includes('.docx') || file.filename.includes('.txt')){
+
+        Filenames.push(file.filename);
+      }
+      
+    });
+
+    const Filenames_String = Filenames.join(',');
+    const Imagenames_String = Imagenames.join(',');
+
+    let URL_path_Imagenames = [];
+    let URL_path_Imagenames_str = '';
+
+
+    if(Imagenames.length != 0){
+      
+      const ImageUploadPromises = Imagenames.map(Imagename => cloudinary.uploader.upload(`./FileUpload/${Imagename}`));
+      const ImageUploadPromises_results = await Promise.all(ImageUploadPromises);
+      
+      URL_path_Imagenames = ImageUploadPromises_results.map(result => result.url);
+      URL_path_Imagenames_str = URL_path_Imagenames.join(',');
+
+      const deletePromises = Imagenames.map(Imagename => DelImage(Imagename));
+
+      const del_result =  await Promise.all(deletePromises);
+
+    }
+
 
     //constructing the MailObj what will be pass as the parameter on the query function
 
@@ -2122,7 +2141,7 @@ app.post('/sendMail', EventUpload.array('files', 10), async(req, res) => {
       MailSubject: subject,
       MailBody: message,
       MailDocFile: Filenames_String,
-      MailImageFile: Imagenames_String
+      MailImageFile: URL_path_Imagenames_str // replace by URL_path_Imagenames_str
 
     }
 
@@ -2145,42 +2164,59 @@ app.post('/sendMail', EventUpload.array('files', 10), async(req, res) => {
   // console.log(`subject: ${subject}`);
   // console.log(`message: ${message}`);
 
-  files.forEach((file) => {
-    console.log(file);
-  });
+  // files.forEach((file) => {
+  //   console.log(file);
+  // });
 
 });
 
 
 app.post('/sendMail/Admin', EventUpload.array('files', 10), async(req, res) => {
 
-  const { senderAdminId, receiverClientId, subject, message } = req.body;
-  const files = req.files;
-
-  let Filenames = [];
-  let Imagenames = [];
-
-  files.forEach((file) => {
-
-    if(file.filename.includes('.jpg') || file.filename.includes('.jpeg') || file.filename.includes('.png')){
-      
-      Imagenames.push(file.filename);
-
-    }else if(file.filename.includes('.pdf') || file.filename.includes('.doc') || file.filename.includes('.docx') || file.filename.includes('.txt')){
-
-      Filenames.push(file.filename);
-
-    }
-
-  });
-
-  const Filenames_String = Filenames.join(',');
-  const Imagenames_String = Imagenames.join(',');
-
-  
-
   //passing the parameter to the query
   try{
+
+    const { senderAdminId, receiverClientId, subject, message } = req.body;
+    const files = req.files;
+
+    let Filenames = [];
+    let Imagenames = [];
+
+    files.forEach((file) => {
+
+      if(file.filename.includes('.jpg') || file.filename.includes('.jpeg') || file.filename.includes('.png')){
+        
+        Imagenames.push(file.filename);
+
+      }else if(file.filename.includes('.pdf') || file.filename.includes('.doc') || file.filename.includes('.docx') || file.filename.includes('.txt')){
+
+        Filenames.push(file.filename);
+
+      }
+
+    });
+
+    const Filenames_String = Filenames.join(',');
+    const Imagenames_String = Imagenames.join(',');
+
+
+    let URL_path_Imagenames = [];
+    let URL_path_Imagenames_str = '';
+
+
+    if(Imagenames.length != 0){
+      
+      const ImageUploadPromises = Imagenames.map(Imagename => cloudinary.uploader.upload(`./FileUpload/${Imagename}`));
+      const ImageUploadPromises_results = await Promise.all(ImageUploadPromises);
+      
+      URL_path_Imagenames = ImageUploadPromises_results.map(result => result.url);
+      URL_path_Imagenames_str = URL_path_Imagenames.join(',');
+
+      const deletePromises = Imagenames.map(Imagename => DelImage(Imagename));
+
+      const del_result =  await Promise.all(deletePromises);
+
+    }
 
     const MailObj = {
       SenderId: senderAdminId,
@@ -2188,7 +2224,7 @@ app.post('/sendMail/Admin', EventUpload.array('files', 10), async(req, res) => {
       MailSubject: subject,
       MailBody: message,
       MailDocFile: Filenames_String,
-      MailImageFile: Imagenames_String
+      MailImageFile: URL_path_Imagenames_str //replace by URL_path_Imagenames_str
 
     }
 
