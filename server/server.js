@@ -1334,6 +1334,55 @@ app.get('/EventPost/Stat/:event_id', async(req, res) => {
 
 });
 
+
+app.get('/EventPost/Stat/Export/:event_id', async(req, res) => {
+
+  const event_id = req.params.event_id;
+  console.log('export route event master list');
+  try{
+
+    const EventRegisteredArray = await EventViewStats(event_id);
+
+    //sorting logic here before sending
+    EventRegisteredArray.sort((a, b) => {
+      const Name_a = a.fistname.toLowerCase();
+      const Name_b = b.firstName.toLowerCase();
+
+      if (Name_a < Name_b ) return -1;
+      if (Name_a > Name_b ) return 1;
+      return 0;
+    });
+
+
+
+    const csvWriter = createCsvWriter({
+      path: 'data.csv',
+      header: Object.keys(EventRegisteredArray[0]).map(key => ({id: key, title: key}))
+    });
+
+    await csvWriter.writeRecords(EventRegisteredArray);
+
+    const filePath = path.join(__dirname, 'data.csv');
+    res.download(filePath, 'data.csv', (err) => {
+      if(err){
+        console.error('Error downaloding the event master list file: ', err);
+        res.status(500).send('Error downaloding the event master list file: ');
+      }else{
+        fs.unlink(filePath, (error) => {
+          if(err) console.error('Error deleting the file', err);
+        })
+      }
+    })
+
+
+
+  }catch(error){
+    res.status(500).send('Error processing the request');
+  }
+
+
+});
+
 app.get('/JobPost/Stat/:job_id', async(req, res) => {
   
   const job_id = req.params.job_id;
@@ -1362,6 +1411,54 @@ app.get('/JobPost/Stat/:job_id', async(req, res) => {
     throw error;
   }
 
+
+
+});
+
+app.get('/JobPost/Stat/Export/:job_id', async(req, res) => {
+
+  const job_id = req.params.job_id;
+  console.log('export route job master list');
+  try{
+
+    const JobRegisteredArray = await JobViewStats(job_id);
+
+    //sorting logic here before sending
+    JobRegisteredArray.sort((a, b) => {
+      const Name_a = a.firstName.toLowerCase();
+      const Name_b = b.firstName.toLowerCase();
+
+      if (Name_a < Name_b) return -1;
+      if (Name_a > Name_b) return 1;
+      return 0;
+    });
+
+
+
+    const csvWriter = createCsvWriter({
+      path: 'data.csv',
+      header: Object.keys(JobRegisteredArray[0]).map(key => ({id: key, title: key}))
+    });
+
+    await csvWriter.writeRecords(JobRegisteredArray);
+
+    const filePath = path.join(__dirname, 'data.csv');
+    res.download(filePath, 'data.csv', (err) => {
+      if(err){
+        console.error('Error downaloding the event master list file: ', err);
+        res.status(500).send('Error downaloding the event master list file: ');
+      }else{
+        fs.unlink(filePath, (error) => {
+          if(err) console.error('Error deleting the file', err);
+        })
+      }
+    })
+
+
+
+  }catch(error){
+    res.status(500).send('Error processing the request');
+  }
 
 
 });
