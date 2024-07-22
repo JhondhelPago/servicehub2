@@ -194,6 +194,28 @@ const PostInfoDiv = (props) => {
         }
     }
 
+    const ExportMasterList = async() => {
+        
+        try{
+
+            const response = await axios.get(`/EventPost/Stat/Export/${props.data.id}`, {
+                responseType: 'blob',
+            });
+
+            const url = window.URL.createObjectURL(new Blob([response.data]));
+            const a =  document.createElement('a');
+            a.href = url;
+            a.download = 'data.csv';
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+
+        }catch(error){
+            console.log('Error fetching CSV: ',  error);
+            throw error;
+        }
+    }
+
 
     return (
         <>
@@ -255,7 +277,7 @@ const PostInfoDiv = (props) => {
                                 <svg className="h-7" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" d="M5 19h1.425L16.2 9.225L14.775 7.8L5 17.575zm-2 2v-4.25L16.2 3.575q.3-.275.663-.425t.762-.15q.4 0 .775.15t.65.45L20.425 5q.3.275.438.65T21 6.4q0 .4-.137.763t-.438.662L7.25 21zM19 6.4L17.6 5zm-3.525 2.125l-.7-.725L16.2 9.225z" /></svg>
                             </button>
 
-                            <button className='px-5 py-2 text-white rounded scaleHover bg-blue-400'>Export to CSV</button>
+                            <button className='px-5 py-2 text-white rounded scaleHover bg-blue-400' onClick={() => {ExportMasterList()}}>Export to CSV</button>
 
                         </div>
                     </div>
