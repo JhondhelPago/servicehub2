@@ -85,14 +85,6 @@ const Profilepage = () => {
             </tr>
             <tr>
               <th className="p-5 border-b border-r border-darkColor">
-                District
-              </th>
-              <td className="w-full p-5 border-b border-darkColor">
-                {ClientData && `${ClientData[0].district}`}
-              </td>
-            </tr>
-            <tr>
-              <th className="p-5 border-b border-r border-darkColor">
                 Contact No.
               </th>
               <td className="w-full p-5 border-b border-darkColor">

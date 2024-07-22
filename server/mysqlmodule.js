@@ -1,12 +1,13 @@
+require('dotenv').config();
 const mysql = require("mysql2");
 const { StringManipulate } = require("./utilities");
 
 const pool = mysql
-  .createPool({
-    host: "localhost",
-    user: "root",
-    password: "",
-    database: "servicehub",
+  .createConnection({
+    host: process.env.DATABASE_HOST,
+    user: process.env.DATABASE_USER,
+    password: process.env.DATABASE_PASS,
+    database: 'kainakap',
     waitForConnections: true,
     connectionLimit: 10,
     queueLimit: 0,
@@ -718,7 +719,7 @@ async function ClientData(id) {
 
   try {
     const [rowdata] = await pool.execute(
-      `SELECT firstName, middleName, Lastname, age, gender, disability, houseno, street, barangay, district, city, province, zipcode, phone, status FROM user WHERE id = ${id}`
+      `SELECT firstName, middleName, Lastname, age, gender, disability, houseno, street, barangay, city, province, zipcode, phone, status FROM user WHERE id = ${id}`
     );
 
     if (rowdata.length != 0) {
@@ -1079,6 +1080,7 @@ async function TicketCancelationJob(job_registration_id){
 
 module.exports = {
   //user function exports
+  pool,
   get_userId,
 
   //admin function exports

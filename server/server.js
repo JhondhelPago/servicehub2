@@ -5,6 +5,7 @@ const bodyParser = require("body-parser");
 const fs = require("fs");
 const createCsvWriter = require('csv-writer').createObjectCsvWriter;
 const { DisabilityJSON } = require('./utilities.js')
+const { pool } = require('./mysqlmodule.js');
 
 
 
@@ -2421,6 +2422,15 @@ app.get("/sample_res", (req, res) => {
 app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(500).send("Something broke!");
+});
+
+pool.connect((err) => {
+  if(err){
+    console.error('Error connecting to the database', err.stack);
+    return;
+  }
+
+  console.log('Connected to the database');
 });
 
 app.listen(8080, () => {
