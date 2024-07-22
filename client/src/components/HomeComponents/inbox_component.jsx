@@ -1,6 +1,7 @@
 import React, { useState, useContext, useEffect, useRef } from "react";
 import axios from "axios";
 import { ClientUserContext } from "../../pages/ClientUserContext";
+import LoadingIcons from "react-loading-icons";
 
 
 const InboxComponent = () => {
@@ -100,17 +101,30 @@ const InboxComponent = () => {
         }
     }
 
-
-
-
-
-
+    const [isLoading, setIsLoading] = useState(false)
 
     // redering return ng InboxComponent
     return (
         <>
             {/* <!-- inbox list/content container --> */}
             <div className="flex h-full pb-5 overflow-auto rounded">
+
+                {/* https://www.npmjs.com/package/react-loading-icons */}
+                {/* npm i react-loading-icons */}
+                {isLoading && (
+                    <div className="absolute top-0 left-0 z-10 flex items-center justify-center w-full h-full bg-black bg-opacity-60 backdrop-blur-sm">
+                        <div className="sm:w-[30%] mx-5 w-full sm:min-w-[400px] max-w-[500px] flex flex-col bg-white z-[11] rounded-lg p-10 justify-center relative">
+                            <div className="flex flex-col gap-7">
+                                <LoadingIcons.TailSpin stroke="#CD890A" className="w-12 h-12 mx-auto" strokeWidth={2}></LoadingIcons.TailSpin >
+                                <h1 className="text-3xl font-semibold text-center font-noto">Loading</h1>
+                                <h3 className="mb-3 overflow-auto text-lg text-center font-noto">
+                                    Please wait.
+                                </h3>
+                            </div>
+                        </div>
+                    </div>
+                )}
+
                 {/* <!-- mail list container --> */}
                 <div className="flex flex-col w-full overflow-hidden border border-l min-w-80 border-darkColor rounded-s">
                     <div className="flex justify-between w-full p-2 border-b border-darkColor bg-extra-extra-light">
@@ -160,7 +174,7 @@ const InboxComponent = () => {
                         {/* <!-- unread mail sample --> */}
                         {/* if unread: unreadMailItem hoverMail */}
                         <div className="grid grid-cols-7 gap-4 p-2 border-b border-darkColor unreadMailItem hoverMail group/del">
-                            <label className="flex col-span-2 gap-2" for="">
+                            <label className="flex col-span-2 gap-2 cursor-pointer" for="">
                                 <input type="checkbox" />
                                 {/* <!-- from --> */}
                                 <h6 className="truncate">User1 User1User1</h6>
@@ -179,7 +193,14 @@ const InboxComponent = () => {
                 {/* 5. another child component */}
                 {/* yung boung view ng Email  */}
                 {MailOverViewBoolean && (
-                    <MailOverView MailObjsArray={MailObjsArray} ContactAdminId={MailOverViewAdminId} CloseMailOverViewAction={CloseMailOverViewAction} FetchConvo_Client_Admin={FetchConvo_Client_Admin}></MailOverView>
+                    <MailOverView
+                        MailObjsArray={MailObjsArray}
+                        ContactAdminId={MailOverViewAdminId}
+                        CloseMailOverViewAction={CloseMailOverViewAction}
+                        FetchConvo_Client_Admin={FetchConvo_Client_Admin}
+                        isLoading={isLoading}
+                        setIsLoading={setIsLoading}
+                    ></MailOverView>
                 )}
             </div>
         </>
@@ -201,7 +222,7 @@ const MailListView = ({ MailObj, ListMailClick, AdminContactId, ClickInboxAction
     return (
         <>
             <div className="grid grid-cols-7 gap-4 p-2 border-b border-darkColor hoverMailItem group/del" onClick={() => { ClickInboxAction(SenderAdminId) }}>
-                <label className="flex col-span-2 gap-2" htmlFor="">
+                <label className="flex col-span-2 gap-2 cursor-pointer" htmlFor="">
                     <input type="checkbox" />
                     {/* <!-- from --> */}
                     <h6 className="truncate">{AdminContactId}</h6>
@@ -220,7 +241,7 @@ const MailListView = ({ MailObj, ListMailClick, AdminContactId, ClickInboxAction
 
 
 // component definition of the MailOverView
-const MailOverView = ({ MailObjsArray, ContactAdminId, CloseMailOverViewAction, FetchConvo_Client_Admin = { FetchConvo_Client_Admin } }) => {
+const MailOverView = ({ MailObjsArray, ContactAdminId, CloseMailOverViewAction, FetchConvo_Client_Admin = { FetchConvo_Client_Admin }, setIsLoading }) => {
 
     const Overflow_InnerInbox = useRef(null);
     const { clientuserId } = useContext(ClientUserContext);
@@ -270,7 +291,7 @@ const MailOverView = ({ MailObjsArray, ContactAdminId, CloseMailOverViewAction, 
 
             <div ref={Overflow_InnerInbox} className="relative flex flex-col w-3/4 overflow-auto border-t border-b border-r border-darkColor">
 
-                <div className="sticky top-0 w-full bg-black">
+                <div className="sticky top-0 w-full">
                     <div className="flex justify-between w-full p-2 border-b border-darkColor bg-extra-extra-light">
                         <p className="">Admin Name</p>
                         {/* <p className="">Subj</p> */}
@@ -306,12 +327,18 @@ const MailOverView = ({ MailObjsArray, ContactAdminId, CloseMailOverViewAction, 
                 <div className="flex justify-around gap-5 px-5 my-2 font-medium lg:px-0">
                     {/* <button className="w-full py-2 border rounded border-darkColor scaleHover hover:bg-extra-light">Forward</button> */}
                     <button className="w-full lg:w-[80%] py-2 text-white rounded bg-primary-light scaleHover" onClick={() => { ReplyActivate() }}>Reply</button>
-
                 </div>
+
+
 
                 {/* {ReplyButtonState == true && <Replyform></Replyform>} */}
                 <div className="h-auto">
-                    {ReplyButtonState === true && <Replyform ContactAdminId={ContactAdminId} ReplyDeactivate={ReplyDeactivate} FetchConvo_Client_Admin={FetchConvo_Client_Admin}></Replyform>}
+                    {ReplyButtonState === true && <Replyform
+                        ContactAdminId={ContactAdminId}
+                        ReplyDeactivate={ReplyDeactivate}
+                        FetchConvo_Client_Admin={FetchConvo_Client_Admin}
+                        setIsLoading={setIsLoading}
+                    ></Replyform>}
 
                 </div>
             </div>
@@ -390,7 +417,7 @@ const MailInnerView = ({ MailObj }) => {
                     {ImageArray && ImageArray.map((filename) => (
                         <div className="mx-5">
                             {/* image */}
-                            <img className="max-h-[30vh] mb-3 w-fit h-fit object-contain rounded-md" src={filename} onClick={() => {openCloudinaryImg(filename)}}></img>
+                            <img className="max-h-[30vh] mb-3 w-fit h-fit object-contain rounded-md" src={filename} onClick={() => { openCloudinaryImg(filename) }}></img>
                         </div>
                     ))}
 
@@ -519,7 +546,7 @@ const MailInnerViewUserSender = ({ MailObj }) => {
                     {ImageArray && ImageArray.map((filename) => (
                         <div className="mx-5">
                             {/* image */}
-                            <img className="max-h-[30vh] mb-3 w-fit h-fit object-contain rounded-md" src={filename}  onClick={() => {openCloudinaryImg(filename)}}></img>
+                            <img className="max-h-[30vh] mb-3 w-fit h-fit object-contain rounded-md" src={filename} onClick={() => { openCloudinaryImg(filename) }}></img>
                         </div>
                     ))}
 
@@ -574,7 +601,7 @@ const MailInnerViewUserSender = ({ MailObj }) => {
 
 
 
-const Replyform = ({ ContactAdminId, ReplyDeactivate, FetchConvo_Client_Admin }) => {
+const Replyform = ({ ContactAdminId, ReplyDeactivate, FetchConvo_Client_Admin, setIsLoading }) => {
 
     const { clientuserId } = useContext(ClientUserContext);
 
@@ -582,10 +609,8 @@ const Replyform = ({ ContactAdminId, ReplyDeactivate, FetchConvo_Client_Admin })
     const [message, setMessage] = useState('');
     const [files, setFiles] = useState([]);
 
-
-
     const handleReplyForm = async (event) => {
-
+        setIsLoading(true)
         event.preventDefault();
 
         const formData = new FormData();
@@ -618,11 +643,13 @@ const Replyform = ({ ContactAdminId, ReplyDeactivate, FetchConvo_Client_Admin })
 
 
             console.log(`status: ${response.data}`);
+            setIsLoading(false)
             ReplyDeactivate();
             FetchConvo_Client_Admin(ContactAdminId);
 
         } catch (error) {
             console.log("Error at the reply button clientside: ", error);
+            setIsLoading(false)
             throw error;
         }
 
