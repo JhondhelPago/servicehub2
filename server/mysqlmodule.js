@@ -722,10 +722,12 @@ async function ClientData(id) {
   // id = 1000
   //select (user, fist , last , addres) from user where id = id
 
+  let wrap_id = `"${id}"`;
+
   try {
     const [rowdata] = await pool.execute(
       `SELECT firstName, middleName, Lastname, age, gender, disability, houseno, street, barangay, city, province, zipcode, phone, status FROM user WHERE id = ?`
-    , [id]);
+    , [wrap_id]);
 
     if (rowdata.length != 0) {
       return rowdata;
