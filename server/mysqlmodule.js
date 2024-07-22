@@ -7,7 +7,12 @@ const pool = mysql
     host: process.env.DATABASE_HOST,
     user: process.env.DATABASE_USER,
     password: process.env.DATABASE_PASS,
+    port: process.env.DATABASE_PORT,
     database: 'kainakap',
+    // host: 'localhost',
+    // user: 'root',
+    // password: '',
+    // database: 'servicehub',
     waitForConnections: true,
     connectionLimit: 10,
     queueLimit: 0,
@@ -719,8 +724,8 @@ async function ClientData(id) {
 
   try {
     const [rowdata] = await pool.execute(
-      `SELECT firstName, middleName, Lastname, age, gender, disability, houseno, street, barangay, city, province, zipcode, phone, status FROM user WHERE id = ${id}`
-    );
+      `SELECT firstName, middleName, Lastname, age, gender, disability, houseno, street, barangay, city, province, zipcode, phone, status FROM user WHERE id = ?`
+    , [id]);
 
     if (rowdata.length != 0) {
       return rowdata;
