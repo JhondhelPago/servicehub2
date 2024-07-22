@@ -61,15 +61,15 @@ export default TicketPage
 const EventTicketCard = ({ dataObj, FetchRegistry }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const TicketCancelation = async() => {
+  const TicketCancelation = async () => {
 
-    try{
+    try {
 
       const response = await axios.post(`/ticket/cancelation/event/${dataObj.registration_id}`);
       setIsModalOpen(false);
       FetchRegistry();
 
-    }catch(error){
+    } catch (error) {
       throw error;
     }
   }
@@ -115,7 +115,7 @@ const EventTicketCard = ({ dataObj, FetchRegistry }) => {
               <div className="flex flex-wrap justify-center gap-5 mx-auto">
                 <button
                   className="px-5 py-2 text-lg text-white bg-red-600 rounded scaleHover"
-                  onClick={() => {TicketCancelation()}}
+                  onClick={() => { TicketCancelation() }}
                 >Yes</button>
                 <button
                   className="px-5 py-2 text-lg text-gray-600 border border-gray-600 rounded hover:text-white hover:bg-gray-600"
@@ -128,6 +128,7 @@ const EventTicketCard = ({ dataObj, FetchRegistry }) => {
             <button className="absolute z-10 w-full h-full cursor-default" onClick={() => { setIsModalOpen(false) }}></button>
           </div>
         )}
+
       </div>
     </>
   )
@@ -136,15 +137,15 @@ const EventTicketCard = ({ dataObj, FetchRegistry }) => {
 const JobTicketCard = ({ dataObj, FetchRegistry }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const TicketCancelation = async() => {
+  const TicketCancelation = async () => {
 
-    try{
+    try {
 
       const response = await axios.post(`/ticket/cancelation/job/${dataObj.registration_id}`);
       setIsModalOpen(false);
       FetchRegistry();
 
-    }catch(error){
+    } catch (error) {
       throw error;
     }
   }
@@ -191,7 +192,7 @@ const JobTicketCard = ({ dataObj, FetchRegistry }) => {
                 {/* yes btn */}
                 <button
                   className="px-5 py-2 text-lg text-white bg-red-600 rounded scaleHover"
-                onClick={() => {TicketCancelation()}}
+                  onClick={() => { TicketCancelation() }}
                 >Yes</button>
 
                 <button
