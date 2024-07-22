@@ -1,0 +1,18 @@
+
+                                <option value='City of Caloocan'>City of Caloocan</option>
+                                <option value='City of Las Piñas'>City of Las Piñas</option>
+                                <option value='City of Makati'>City of Makati</option>
+                                <option value='City of Malabon'>City of Malabon</option>
+                                <option value='City of Mandaluyong'>City of Mandaluyong</option>
+                                <option value='City of Manila'>City of Manila</option>
+                                <option value='City of Marikina'>City of Marikina</option>
+                                <option value='City of Muntinlupa'>City of Muntinlupa</option>
+                                <option value='City of Navotas'>City of Navotas</option>
+                                <option value='City of Parañaque'>City of Parañaque</option>
+                                <option value='Pasay City'>Pasay City</option>
+                                <option value='City of Pasig'>City of Pasig</option>
+                                <option value='Quezon City'>Quezon City</option>
+                                <option value='City of San Juan'>City of San Juan</option>
+                                <option value='City of Taguig'>City of Taguig</option>
+                                <option value='City of Valenzuela'>City of Valenzuela</option>
+                                <option value='Pateros'>Pateros</option>

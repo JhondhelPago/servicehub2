@@ -66,15 +66,19 @@
 }
 
 .activeMailItem {
-  @apply bg-extra-extra-light;
+  @apply bg-extra-light;
+}
+
+.unreadMailItem {
+  @apply font-semibold cursor-pointer bg-extra-extra-light;
 }
 
 .activeUserLink {
-  @apply font-semibold border-b-2 cursor-default border-primary-light;
+  @apply pb-1 font-semibold border-b-2 cursor-default border-primary-light;
 }
 
 .userNavHover {
-  @apply transition-all ease-in-out before:transition-[width] before:ease-in-out before:duration-700 before:absolute before:bg-primary-light before:origin-center before:h-[2px] before:w-0 hover:before:w-full before:bottom-0 before:left-[0];
+  @apply transition-all pb-1 ease-in-out before:transition-[width] before:ease-in-out before:duration-700 before:absolute before:bg-primary-light before:origin-center before:h-[2px] before:w-0 hover:before:w-full before:bottom-0 before:left-[0];
   /* @apply transition ease-in-out hover:border-b-2 border-primary-light; */
 }
 

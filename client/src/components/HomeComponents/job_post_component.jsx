@@ -1,36 +1,38 @@
 import React, { useContext, useEffect, useState } from "react";
 import { TimeUtils, ImageStringUtils } from "../../module-script/util";
-import { ClientUserContext } from "../../pages/ClientUserContext"; 
+import { ClientUserContext } from "../../pages/ClientUserContext";
 import { CodeGenerator } from "../../utils";
 import axios from "axios";
 import sample_img from '../../assets/sample_img.jpg';
 import { Carousel } from "react-responsive-carousel";
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 
-const JobPostComponent = ({ jobdata, RegisteredBoolean, ReInvokeFetchRegistry}) => {
+const JobPostComponent = ({ jobdata, RegisteredBoolean, ReInvokeFetchRegistry }) => {
 
   const { clientuserId } = useContext(ClientUserContext);
 
   const [JoinedStatus, SetJoinedStatus] = useState(RegisteredBoolean);
+  const [isModalOpen, setIsModalOpen] = useState(false)
 
 
-  const JoinButtonAction = async() => {
+  const JoinButtonAction = async () => {
 
     const thisJobId = jobdata.id;
     const thisUserId = clientuserId;
     const generatedCode = CodeGenerator.EventCodeGenerator(thisJobId, thisUserId);
     ;
 
-    try{
+    try {
 
-      const response = await axios.post(`/UserRegister/Job`, { TicketCode: generatedCode});
-      if(response.status >= 200 && response.status <=299){
+      const response = await axios.post(`/UserRegister/Job`, { TicketCode: generatedCode });
+      if (response.status >= 200 && response.status <= 299) {
         SetJoinedStatus(true);
+        setIsModalOpen(false); // closing the modal
         ReInvokeFetchRegistry();
       }
-       
 
-    }catch(error){
+
+    } catch (error) {
       throw error;
     }
 
@@ -64,15 +66,48 @@ const JobPostComponent = ({ jobdata, RegisteredBoolean, ReInvokeFetchRegistry}) 
           <p className="px-2 mt-4 overflow-auto text-justify max-h-52">{jobdata.description}</p>
           {
             JoinedStatus ? (
-              <button className="w-10/12 p-4 mx-auto mt-auto text-xl font-medium text-white rounded-md bg-gray-400 scaleHover">
-              Joined
-            </button>
+              <button className="w-10/12 p-4 mx-auto mt-auto text-xl font-medium text-white bg-gray-400 rounded-md" disabled>
+                Joined
+              </button>
             ) : (
-              <button className="w-10/12 p-4 mx-auto mt-auto text-xl font-medium text-white rounded-md bg-primary-light scaleHover" onClick={JoinButtonAction}>
-              Join
-            </button>
+              <button
+                className="w-10/12 p-4 mx-auto mt-auto text-xl font-medium text-white rounded-md bg-primary-light scaleHover"
+                onClick={() => { setIsModalOpen(true) }}
+              >
+                Join
+              </button>
             )
           }
+
+          {isModalOpen && (
+            <div className="absolute top-0 left-0 z-10 flex items-center justify-center w-full h-full bg-black bg-opacity-60 backdrop-blur-sm">
+              <div className="sm:w-[30%] mx-5 w-full sm:min-w-[400px] max-w-[500px] flex flex-col bg-white gap-7 z-[11] rounded-lg p-10 justify-center relative">
+                <h1 className="text-3xl font-semibold text-center font-noto">Join Job</h1>
+                <div className="w-[50%] mx-auto h-[0.5px] bg-darkColor"></div>
+                <h3 className="mb-3 overflow-auto text-lg text-center font-noto">
+                  Are you sure you want to join the job
+                  <span className="block font-semibold">"{jobdata.event_title}"?</span>
+                  Clicking "<span className="font-semibold">Yes</span>" will register you for this job.
+                </h3>
+                <div className="flex flex-wrap justify-center gap-5 mx-auto">
+
+                  {/* yes btn */}
+                  <button
+                    className="px-5 py-2 text-lg text-white rounded scaleHover bg-primary-light"
+                    onClick={JoinButtonAction}>Yes</button>
+
+                  <button
+                    className="px-5 py-2 text-lg text-red-600 border border-red-600 rounded hover:text-white hover:bg-red-600"
+                    onClick={() => { setIsModalOpen(false) }}>Cancel</button>
+                </div>
+                <button className="absolute top-5 right-5 hover:text-red-600" onClick={() => { setIsModalOpen(false) }}>
+                  <svg className="h-7" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" d="M18.3 5.71a.996.996 0 0 0-1.41 0L12 10.59L7.11 5.7A.996.996 0 1 0 5.7 7.11L10.59 12L5.7 16.89a.996.996 0 1 0 1.41 1.41L12 13.41l4.89 4.89a.996.996 0 1 0 1.41-1.41L13.41 12l4.89-4.89c.38-.38.38-1.02 0-1.4" /></svg>
+                </button>
+              </div>
+              <button className="absolute z-10 w-full h-full cursor-default" onClick={() => { setIsModalOpen(false) }}></button>
+            </div>
+          )}
+
         </div>
         {/* <!-- img container --> */}
         <div className="order-first w-full xl:w-1/2 xl:order-last">
@@ -90,7 +125,7 @@ const JobPostComponent = ({ jobdata, RegisteredBoolean, ReInvokeFetchRegistry}) 
               let ImageArray = ImageStringUtils.ToArray(jobdata.imagefiles);
 
               return ImageArray.map((filename, index) => (
-                <img key={index} className="object-cover w-full h-full rounded-md" alt="sample_file" src={require(`../../../../server/FileUpload/${filename}`)} />
+                <img key={index} className="object-cover w-full h-full rounded-md" alt="sample_file" src={filename} />
               ));
 
             })()}

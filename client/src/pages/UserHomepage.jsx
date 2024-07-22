@@ -108,39 +108,57 @@ const UserHomepage = () => {
             <div className='min-h-screen bg-gray-100 min-w-screen'>
                 <div className="flex flex-col h-screen px-5 font-poppins text-darkColor">
                     {/* <!-- nav --> */}
-                    <nav className="container sticky top-0 grid items-center grid-cols-2 py-5 mx-auto bg-gray-100 lg:flex">
+                    <nav className="container sticky top-0 grid items-center grid-cols-2 py-5 mx-auto bg-gray-100 xl:flex">
                         {/* <!-- logo container --> */}
                         <button className="" onClick={() => { SetSelectedComponent('EventPosting') }}>
                             <img className="h-10 select-none" src={nav_logo} alt="logo" />
                         </button>
                         {/* <!-- menu btn --> */}
-                        <button className="flex h-full ml-auto rounded lg:hidden text-primary-light focus:outline-none focus:ring-primary-light focus:ring-1" onClick={() => setIsNavOpen(!isNavOpen)}>
+                        <button className="flex h-full ml-auto rounded xl:hidden text-primary-light focus:outline-none focus:ring-primary-light focus:ring-1" onClick={() => setIsNavOpen(!isNavOpen)}>
                             <svg className="h-full" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" d="M4 6a1 1 0 0 1 1-1h14a1 1 0 1 1 0 2H5a1 1 0 0 1-1-1m0 12a1 1 0 0 1 1-1h14a1 1 0 1 1 0 2H5a1 1 0 0 1-1-1m7-7a1 1 0 1 0 0 2h8a1 1 0 1 0 0-2z" /></svg>
                         </button>
                         {/* <!-- links container --> */}
-                        <div className={`col-span-2 font-medium lg:ml-auto lg:col-span-1 lg:flex ${isNavOpen ? '' : 'hidden'}`}>
-                            <ul className="flex flex-col gap-10 pt-5 mx-auto font-bold text-center w-fit lg:pt-0 lg:flex-row lg:gap-20">
+                        <div className={`col-span-2 font-medium xl:ml-auto xl:col-span-1 relative xl:flex ${isNavOpen ? '' : 'hidden'}`}>
+                            <ul className="flex flex-col pt-5 mx-auto font-bold text-center gap-7 w-fit xl:pt-0 xl:flex-row xl:gap-20">
                                 <button
                                     className={`font-medium relative w-fit mx-auto ${ActiveComponent === 'EventPosting' ? 'activeUserLink' : 'userNavHover'}`}
                                     onClick={() => { SetSelectedComponent('EventPosting') }}
-                                >Events</button>
+                                >
+                                    Events
+                                    {/* notif badge */}
+                                    <span className='px-2 py-1 ml-2 text-xs text-white bg-red-600 rounded-full'>99999</span>
+                                </button>
                                 <button
                                     className={`font-medium relative w-fit mx-auto ${ActiveComponent === 'JobPosting' ? 'activeUserLink' : 'userNavHover'}`}
                                     onClick={() => { SetSelectedComponent('JobPosting') }}
-                                >Find a Job</button>
+                                >
+                                    Find a Job
+                                    {/* notif badge */}
+                                    <span className='px-2 py-1 ml-2 text-xs text-white bg-red-600 rounded-full'>99999</span>
+                                </button>
                                 <button
                                     className={`font-medium relative w-fit mx-auto ${ActiveComponent === 'Chat' ? 'activeUserLink' : 'userNavHover'}`}
                                     onClick={() => { SetSelectedComponent('Chat') }}
-                                >Chat</button>
+                                >
+                                    Chat
+                                    {/* notif badge */}
+                                    {/* <span className='px-2 py-1 ml-2 text-xs text-white bg-red-600 rounded-full'>99999</span> */}
+                                </button>
                                 <button
                                     className={`font-medium relative w-fit mx-auto ${ActiveComponent === 'Tickets' ? 'activeUserLink' : 'userNavHover'}`}
                                     onClick={() => { SetSelectedComponent('Tickets') }}
-                                >Tickets</button>
+                                >
+                                    Tickets
+                                    {/* notif badge */}
+                                    {/* <span className='px-2 py-1 ml-2 text-xs text-white bg-red-600 rounded-full'>99999</span> */}
+                                </button>
                                 <button
                                     className={`font-medium relative w-fit mx-auto ${ActiveComponent === 'Profile' ? 'activeUserLink' : 'userNavHover'}`}
                                     onClick={() => { SetSelectedComponent('Profile') }}
-                                >Profile</button>
-                                <button className='flex flex-row items-center gap-2 font-medium group'>
+                                >
+                                    Profile
+                                </button>
+                                <button className='flex flex-row items-center gap-2 mx-auto font-medium rounded-full group'>
                                     {/* <span className='hidden text-red-600 group-hover:inline'>Logout</span> */}
                                     <svg className='h-5 mx-auto group-hover:text-red-600' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" d="M5 21q-.825 0-1.412-.587T3 19V5q0-.825.588-1.412T5 3h7v2H5v14h7v2zm11-4l-1.375-1.45l2.55-2.55H9v-2h8.175l-2.55-2.55L16 7l5 5z" /></svg>
                                 </button>
@@ -152,6 +170,9 @@ const UserHomepage = () => {
                     <div className="container flex flex-col h-full mx-auto overflow-hidden">
                         {/* <!-- event post container --> */}
                         <div className='flex flex-col gap-5 px-2 overflow-auto'>
+                            {ActiveComponent == 'EventPosting' && (
+                                <div className='mx-auto text-3xl font-semibold xl:hidden font-noto'>Events</div>
+                            )}
                             {ActiveComponent === 'EventPosting' && EventData.map((eventItem) => {
                                 console.log(`boolean if this post id is in the array of registered ${eventItem.id} : ` + event_registry.includes(eventItem.id));
                                 if (eventItem.archive_status == 'false') {
@@ -162,6 +183,9 @@ const UserHomepage = () => {
                             })}
                         </div>
                         <div className='flex flex-col gap-5 px-2 overflow-auto'>
+                            {ActiveComponent == 'JobPosting' && (
+                                <div className='mx-auto text-3xl font-semibold xl:hidden font-noto'>Find a Job</div>
+                            )}
                             {ActiveComponent === 'JobPosting' && JobData.map((jobItem) => {
                                 if (jobItem.archive_status == 'false') {
                                     return (

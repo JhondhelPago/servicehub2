@@ -680,7 +680,7 @@ const Homeprompt = () => {
 
                 const url =  window.URL.createObjectURL(new Blob([response.data]));
                 const a = document.createElement('a');
-                a.href = url;;
+                a.href = url;
                 a.download = 'data.csv';
                 document.body.appendChild(a);
                 a.click();

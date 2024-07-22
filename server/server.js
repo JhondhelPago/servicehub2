@@ -4,7 +4,8 @@ const path = require("path");
 const bodyParser = require("body-parser");
 const fs = require("fs");
 const createCsvWriter = require('csv-writer').createObjectCsvWriter;
-const { DisabilityJSON } = require('../client/src/utils.js')
+const { DisabilityJSON } = require('./utilities.js')
+
 
 
 
@@ -58,7 +59,9 @@ const {
     getEventRegistry,
     getJobRegistry,
     InsertTikcetCodeEvent,
-    InsertTicketCodeJob
+    InsertTicketCodeJob,
+    TicketCancelationEvent,
+    TicketCancelationJob
 
 } = require('./mysqlmodule.js');
 
@@ -658,7 +661,7 @@ class Dashboard {
 
 //function to delete the images to the directory
 
-function DelImage(filename) {
+async function DelImage(filename) {
   const imagepath = path.join(__dirname, "FileUpload", filename);
 
   fs.unlink(imagepath, (err) => {
@@ -678,7 +681,7 @@ function RandomSelectedIndex(ArrayLength){
 
 //utilities.js -> provide utility classes and functions
 
-const { StringManipulate } = require("./utilities.js");
+const { StringManipulate, cloudinary } = require("./utilities.js");
 const e = require("express");
 const { setDefaultAutoSelectFamily } = require("net");
 const { allowedNodeEnvironmentFlags } = require("process");
@@ -749,6 +752,10 @@ app.post(
     const targetAudience = formData.targetAudience;
     const ticketLimit = formData.ticket_limit;
     let filenames = req.files.map((file) => file.filename);
+    const original_filenames = filenames;
+    const path_filenames = filenames.map((filename) => `./FileUpload/${filename}`);
+    
+
     filenames = StringManipulate.RemoveSqrBrac(filenames.toString());
 
     console.log(creator_id);
@@ -760,28 +767,53 @@ app.post(
     console.log(description);
     console.log(targetAudience);
     console.log(`ticket limit ${ticketLimit}`);
+    console.log(path_filenames);
     console.log(filenames);
 
+    //cloudinary logic here
 
+    //array of path to the FileUplod
+    let URL_path = [];
 
-    //reformating the array values to strings
-    // targetAudience = StringManipulate.RemoveSqrBrac(targetAudience.toString());
-    // filenames = StringManipulate.RemoveSqrBrac(filenames.toString());
+    // try{
+    //   for (const filepath of path_filenames){
 
-    // this is the variable that hold the files
-    // let filenames;
+    //     cloudinary.uploader.upload(filepath).then(result => {
+    //       URL_path.push(result.url);
+    //     });
+  
+    //   }
+  
+  
+    //   console.log(URL_path);
 
-    // console.log(creator_id);
-    // console.log(postType);
-    // console.log(title);
-    // console.log(date);
-    // console.log(time);
-    // console.log(location);
-    // console.log(description);
-    // console.log(StringManipulate.RemoveSqrBrac(targetAudience.toString()));
-    // console.log(StringManipulate.RemoveSqrBrac(filenames.toString()));
+    // }catch(error){
+    //   console.log(error);
+    // }
+
 
     try {
+
+      const uploadPromises = path_filenames.map(filepath => cloudinary.uploader.upload(filepath));
+  
+      // Wait for all upload promises to resolve
+      const results = await Promise.all(uploadPromises);
+      
+      // Extract URLs from results
+      const URL_path = results.map(result => result.url);
+
+      console.log(URL_path);
+
+      const URL_path_string = URL_path.join(',');
+
+
+      //deleting the file from FileUpload
+
+      const deletePromises = original_filenames.map(filename => DelImage(filename));
+
+      const del_result = await Promise.all(deletePromises);
+
+
       await post_EventJob(
         postType,
         creator_id,
@@ -792,8 +824,8 @@ app.post(
         description,
         targetAudience,
         ticketLimit,
-        filenames
-      );
+        URL_path_string // it shoud be the URL_path
+      );  
 
       res.send({ status: true });
     } catch (error) {
@@ -802,6 +834,25 @@ app.post(
     }
   }
 );
+
+app.get('/Delete/Image/:filename', async(req, res) => {
+
+  const { filename } = req.params;
+
+  try{
+
+    await DelImage(filename);
+    
+
+
+    res.send('deleted');
+    
+
+  }catch(error){
+    throw error;
+  }
+
+});
 
 //fetcing jobposting from the server
 app.get("/fetchingJobPost/:clientuserId", async (req, res) => {
@@ -1259,6 +1310,17 @@ app.get('/EventPost/Stat/:event_id', async(req, res) => {
 
     const EventRegisteredArray = await EventViewStats(event_id);
 
+    //sorting logic here before sending
+    EventRegisteredArray.sort((a, b) => {
+      const Name_a = a.fistname.toLowerCase();
+      const Name_b = b.firstName.toLowerCase();
+
+      if (Name_a < Name_b ) return -1;
+      if (Name_a > Name_b ) return 1;
+      return 0;
+    });
+
+
     res.send(EventRegisteredArray);
 
   }catch(error){
@@ -1272,6 +1334,55 @@ app.get('/EventPost/Stat/:event_id', async(req, res) => {
 
 });
 
+
+app.get('/EventPost/Stat/Export/:event_id', async(req, res) => {
+
+  const event_id = req.params.event_id;
+  console.log('export route event master list');
+  try{
+
+    const EventRegisteredArray = await EventViewStats(event_id);
+
+    //sorting logic here before sending
+    EventRegisteredArray.sort((a, b) => {
+      const Name_a = a.fistname.toLowerCase();
+      const Name_b = b.firstName.toLowerCase();
+
+      if (Name_a < Name_b ) return -1;
+      if (Name_a > Name_b ) return 1;
+      return 0;
+    });
+
+
+
+    const csvWriter = createCsvWriter({
+      path: 'data.csv',
+      header: Object.keys(EventRegisteredArray[0]).map(key => ({id: key, title: key}))
+    });
+
+    await csvWriter.writeRecords(EventRegisteredArray);
+
+    const filePath = path.join(__dirname, 'data.csv');
+    res.download(filePath, 'data.csv', (err) => {
+      if(err){
+        console.error('Error downaloding the event master list file: ', err);
+        res.status(500).send('Error downaloding the event master list file: ');
+      }else{
+        fs.unlink(filePath, (error) => {
+          if(err) console.error('Error deleting the file', err);
+        })
+      }
+    })
+
+
+
+  }catch(error){
+    res.status(500).send('Error processing the request');
+  }
+
+
+});
+
 app.get('/JobPost/Stat/:job_id', async(req, res) => {
   
   const job_id = req.params.job_id;
@@ -1280,6 +1391,16 @@ app.get('/JobPost/Stat/:job_id', async(req, res) => {
   try{
 
     const JobRegisteredArray = await JobViewStats(job_id);
+
+    //sorting logic here before sending
+    JobRegisteredArray.sort((a, b) => {
+      const Name_a = a.firstName.toLowerCase();
+      const Name_b = b.firstName.toLowerCase();
+
+      if (Name_a < Name_b) return -1;
+      if (Name_a > Name_b) return 1;
+      return 0;
+    });
 
     res.send(JobRegisteredArray);
 
@@ -1290,6 +1411,54 @@ app.get('/JobPost/Stat/:job_id', async(req, res) => {
     throw error;
   }
 
+
+
+});
+
+app.get('/JobPost/Stat/Export/:job_id', async(req, res) => {
+
+  const job_id = req.params.job_id;
+  console.log('export route job master list');
+  try{
+
+    const JobRegisteredArray = await JobViewStats(job_id);
+
+    //sorting logic here before sending
+    JobRegisteredArray.sort((a, b) => {
+      const Name_a = a.firstName.toLowerCase();
+      const Name_b = b.firstName.toLowerCase();
+
+      if (Name_a < Name_b) return -1;
+      if (Name_a > Name_b) return 1;
+      return 0;
+    });
+
+
+
+    const csvWriter = createCsvWriter({
+      path: 'data.csv',
+      header: Object.keys(JobRegisteredArray[0]).map(key => ({id: key, title: key}))
+    });
+
+    await csvWriter.writeRecords(JobRegisteredArray);
+
+    const filePath = path.join(__dirname, 'data.csv');
+    res.download(filePath, 'data.csv', (err) => {
+      if(err){
+        console.error('Error downaloding the event master list file: ', err);
+        res.status(500).send('Error downaloding the event master list file: ');
+      }else{
+        fs.unlink(filePath, (error) => {
+          if(err) console.error('Error deleting the file', err);
+        })
+      }
+    })
+
+
+
+  }catch(error){
+    res.status(500).send('Error processing the request');
+  }
 
 
 });
@@ -1363,67 +1532,80 @@ app.get('/ClientData/:id', async(req, res) =>{
 
 
 
-app.post('/ClientSendMail', EventUpload.array('files', 10), async(req, res) => {
+app.post('/ClientSendMail', EventUpload.array('files', 10), async (req, res) => {
+  try {
+      const { senderClientId, subject, message } = req.body;
+      const files = req.files;
 
-    const {senderClientId, subject, message} = req.body;
-    const files = req.files;
+      let Filenames = [];
+      let Imagenames = [];
+
+      files.forEach((file) => {
+          if (file.filename.includes('.jpg') || file.filename.includes('.jpeg') || file.filename.includes('.png')) {
+              Imagenames.push(file.filename);
+          } else if (file.filename.includes('.pdf') || file.filename.includes('.doc') || file.filename.includes('.docx') || file.filename.includes('.txt')) {
+              Filenames.push(file.filename);
+          }
+      });
+
+      const Filenames_String = Filenames.join(',');
+      const Imagenames_String = Imagenames.join(',');
+
+      // logic here to upload on Cloudinary
+      // let URL_path_Filenames = [];
+      // let URL_path_Filenames_str = '';
+
+      let URL_path_Imagenames = [];
+      let URL_path_Imagenames_str = '';
+
+      // if (Filenames.length != 0) {
+      //     const FileUploadPromises = Filenames.map(Filename => cloudinary.uploader.upload(`./FileUpload/${Filename}`));
+      //     const FileUploadPromises_results = await Promise.all(FileUploadPromises);
+
+      //     URL_path_Filenames = FileUploadPromises_results.map(result => result.url);
+      //     URL_path_Filenames_str = URL_path_Filenames.join(',');
+      // }
+
+      if (Imagenames.length != 0) {
+          const ImageUploadPromises = Imagenames.map(Imagename => cloudinary.uploader.upload(`./FileUpload/${Imagename}`));
+          const ImageUploadPromises_results = await Promise.all(ImageUploadPromises);
+
+          URL_path_Imagenames = ImageUploadPromises_results.map(result => result.url);
+          URL_path_Imagenames_str = URL_path_Imagenames.join(',');
 
 
-    let Filenames = [];
-    let Imagenames = [];
+          const deletePromises = Imagenames.map(Imagename => DelImage(Imagename));
 
-    files.forEach((file) => {
-    
-      if(file.filename.includes('.jpg') || file.filename.includes('.jpeg') || file.filename.includes('.png')){
-        
-        Imagenames.push(file.filename);
-
-      }else if(file.filename.includes('.pdf') || file.filename.includes('.doc') || file.filename.includes('.docx') || file.filename.includes('.txt')){
-
-        Filenames.push(file.filename);
-
+          const del_result = await Promise.all(deletePromises);
       }
-
-    });
-
-
-    const Filenames_String = Filenames.join(',');
-    const Imagenames_String = Imagenames.join(',');
-
-
-    try{
 
       const AdminArray = await getAdmin();
       let AssignedAdmin;
 
       const RandomizedIndex = RandomSelectedIndex(AdminArray.length);
-
       AssignedAdmin = AdminArray[RandomizedIndex].id;
 
-      //constructing ther Object Parameter
+      // constructing the Object Parameter
       const MailObj = {
           'SenderId': senderClientId,
           'AssignedAdmin': AssignedAdmin,
           'MailSubject': subject,
           'MailBody': message,
-          'MailDocFile': Filenames_String,
-          'MailImageFile': Imagenames_String
+          'MailDocFile': Filenames_String, 
+          'MailImageFile': URL_path_Imagenames_str // replace by URL_path_Imagenames_str
       }
-
 
       await ClientMailInsert(MailObj);
 
       console.log(MailObj);
 
       res.status(200).send('Client Mail Compose Sent Successfully');
-
-    }catch(error){
-        throw error;
-    }
-
-
-
+  } catch (error) {
+      console.error(error);
+      res.status(500).send('An error occurred while sending the mail');
+  }
 });
+
 
 app.get('/AdminSentItem/:senderID', async(req, res) => {
 
@@ -2024,31 +2206,50 @@ app.get('/EventRegistered/:clientuserId', async(req, res) => {
 
 app.post('/sendMail', EventUpload.array('files', 10), async(req, res) => {
   
-  const { senderClientId, receiverAdminId, subject, message } = req.body;
-  const files = req.files;
-
-  // temporary list of modif file names on the req.
-  let Filenames = [];
-  let Imagenames = [];
-  //populating the filenames
-  files.forEach((file) => {
-
-    if(file.filename.includes('.jpg') || file.filename.includes('.jpeg') || file.filename.includes('.png')){
-      
-      Imagenames.push(file.filename);
-
-    }else if(file.filename.includes('.pdf') || file.filename.includes('.doc') || file.filename.includes('.docx') || file.filename.includes('.txt')){
-
-      Filenames.push(file.filename);
-    }
-    
-  });
-
-  const Filenames_String = Filenames.join(',');
-  const Imagenames_String = Imagenames.join(',');
-
   // query function
   try{
+
+    const { senderClientId, receiverAdminId, subject, message } = req.body;
+    const files = req.files;
+
+    // temporary list of modif file names on the req.
+    let Filenames = [];
+    let Imagenames = [];
+    //populating the filenames
+    files.forEach((file) => {
+
+      if(file.filename.includes('.jpg') || file.filename.includes('.jpeg') || file.filename.includes('.png')){
+        
+        Imagenames.push(file.filename);
+
+      }else if(file.filename.includes('.pdf') || file.filename.includes('.doc') || file.filename.includes('.docx') || file.filename.includes('.txt')){
+
+        Filenames.push(file.filename);
+      }
+      
+    });
+
+    const Filenames_String = Filenames.join(',');
+    const Imagenames_String = Imagenames.join(',');
+
+    let URL_path_Imagenames = [];
+    let URL_path_Imagenames_str = '';
+
+
+    if(Imagenames.length != 0){
+      
+      const ImageUploadPromises = Imagenames.map(Imagename => cloudinary.uploader.upload(`./FileUpload/${Imagename}`));
+      const ImageUploadPromises_results = await Promise.all(ImageUploadPromises);
+      
+      URL_path_Imagenames = ImageUploadPromises_results.map(result => result.url);
+      URL_path_Imagenames_str = URL_path_Imagenames.join(',');
+
+      const deletePromises = Imagenames.map(Imagename => DelImage(Imagename));
+
+      const del_result =  await Promise.all(deletePromises);
+
+    }
+
 
     //constructing the MailObj what will be pass as the parameter on the query function
 
@@ -2058,7 +2259,7 @@ app.post('/sendMail', EventUpload.array('files', 10), async(req, res) => {
       MailSubject: subject,
       MailBody: message,
       MailDocFile: Filenames_String,
-      MailImageFile: Imagenames_String
+      MailImageFile: URL_path_Imagenames_str // replace by URL_path_Imagenames_str
 
     }
 
@@ -2081,42 +2282,59 @@ app.post('/sendMail', EventUpload.array('files', 10), async(req, res) => {
   // console.log(`subject: ${subject}`);
   // console.log(`message: ${message}`);
 
-  files.forEach((file) => {
-    console.log(file);
-  });
+  // files.forEach((file) => {
+  //   console.log(file);
+  // });
 
 });
 
 
 app.post('/sendMail/Admin', EventUpload.array('files', 10), async(req, res) => {
 
-  const { senderAdminId, receiverClientId, subject, message } = req.body;
-  const files = req.files;
-
-  let Filenames = [];
-  let Imagenames = [];
-
-  files.forEach((file) => {
-
-    if(file.filename.includes('.jpg') || file.filename.includes('.jpeg') || file.filename.includes('.png')){
-      
-      Imagenames.push(file.filename);
-
-    }else if(file.filename.includes('.pdf') || file.filename.includes('.doc') || file.filename.includes('.docx') || file.filename.includes('.txt')){
-
-      Filenames.push(file.filename);
-
-    }
-
-  });
-
-  const Filenames_String = Filenames.join(',');
-  const Imagenames_String = Imagenames.join(',');
-
-  
-
   //passing the parameter to the query
   try{
+
+    const { senderAdminId, receiverClientId, subject, message } = req.body;
+    const files = req.files;
+
+    let Filenames = [];
+    let Imagenames = [];
+
+    files.forEach((file) => {
+
+      if(file.filename.includes('.jpg') || file.filename.includes('.jpeg') || file.filename.includes('.png')){
+        
+        Imagenames.push(file.filename);
+
+      }else if(file.filename.includes('.pdf') || file.filename.includes('.doc') || file.filename.includes('.docx') || file.filename.includes('.txt')){
+
+        Filenames.push(file.filename);
+
+      }
+
+    });
+
+    const Filenames_String = Filenames.join(',');
+    const Imagenames_String = Imagenames.join(',');
+
+
+    let URL_path_Imagenames = [];
+    let URL_path_Imagenames_str = '';
+
+
+    if(Imagenames.length != 0){
+      
+      const ImageUploadPromises = Imagenames.map(Imagename => cloudinary.uploader.upload(`./FileUpload/${Imagename}`));
+      const ImageUploadPromises_results = await Promise.all(ImageUploadPromises);
+      
+      URL_path_Imagenames = ImageUploadPromises_results.map(result => result.url);
+      URL_path_Imagenames_str = URL_path_Imagenames.join(',');
+
+      const deletePromises = Imagenames.map(Imagename => DelImage(Imagename));
+
+      const del_result =  await Promise.all(deletePromises);
+
+    }
 
     const MailObj = {
       SenderId: senderAdminId,
@@ -2124,7 +2342,7 @@ app.post('/sendMail/Admin', EventUpload.array('files', 10), async(req, res) => {
       MailSubject: subject,
       MailBody: message,
       MailDocFile: Filenames_String,
-      MailImageFile: Imagenames_String
+      MailImageFile: URL_path_Imagenames_str //replace by URL_path_Imagenames_str
 
     }
 
@@ -2160,6 +2378,39 @@ app.post('/sendmail/dummy', async(req, res) => {
   console.log(MailObj);
 
 
+});
+
+app.post('/ticket/cancelation/event/:registration_id', async(req, res) => {
+
+  const { registration_id } = req.params;
+   
+  try{
+
+    console.log(registration_id);
+
+    await TicketCancelationEvent(registration_id);
+
+    res.send(true);
+
+  }catch(error){
+    throw error;
+  }
+
+});
+
+app.post(`/ticket/cancelation/job/:registration_id`, async(req, res) => {
+
+  const { registration_id } = req.params;
+
+  try{
+
+    await TicketCancelationJob(registration_id);
+
+    res.send(true);
+
+  }catch(error){
+    throw error;
+  }
 });
 
 app.get("/sample_res", (req, res) => {

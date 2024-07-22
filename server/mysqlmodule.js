@@ -7,6 +7,10 @@ const pool = mysql
     user: "root",
     password: "",
     database: "servicehub",
+    waitForConnections: true,
+    connectionLimit: 10,
+    queueLimit: 0,
+    connectTimeout: 10000 // 10 seconds
   })
   .promise();
 
@@ -423,20 +427,20 @@ async function getRegistryInnerJoinPost(userId){
   try{
 
     const [EventRegistryInnerJoinEvent] = await pool.execute(`
-      SELECT event_registry.event_id, event_registry.user_id, event_registry.registration_code, event_post.*
+      SELECT event_registry.registration_id, event_registry.event_id, event_registry.user_id, event_registry.registration_code, event_post.*
       FROM event_registry
       INNER JOIN event_post ON event_registry.event_id = event_post.id
       WHERE user_id = ?
-      ORDER BY event_registry.event_id DESC
+      ORDER BY event_registry.registration_id DESC
       `, [userId]
     )
 
     const [JobRegistryInnerJoinPost] = await pool.execute(`
-      SELECT job_registry.job_id, job_registry.user_id, job_registry.registration_code, job_post.* 
+      SELECT job_registry.registration_id, job_registry.job_id, job_registry.user_id, job_registry.registration_code, job_post.* 
       FROM job_registry
       INNER JOIN job_post ON job_registry.job_id = job_post.id
       WHERE user_id = ?
-      ORDER BY job_registry.job_id DESC
+      ORDER BY job_registry.registration_id DESC
       `, [userId]
     );
 
@@ -1040,6 +1044,38 @@ async function InsertTicketCodeJob(ticket_code){
 
 }
 
+async function TicketCancelationEvent(event_registration_id){
+
+  try{
+
+    await pool.execute(`
+      DELETE
+      FROM event_registry
+      WHERE registration_id = ?;
+      `, [event_registration_id]);
+
+  }catch(error){
+    throw error;
+  }
+
+}
+
+async function TicketCancelationJob(job_registration_id){
+
+  try{
+
+    await pool.execute(`
+      DELETE
+      FROM job_registry
+      WHERE registration_id = ?;
+      `, [job_registration_id]);
+
+  }catch(error){
+    throw error;
+  }
+
+}
+
 
 module.exports = {
   //user function exports
@@ -1087,5 +1123,7 @@ module.exports = {
   getEventRegistry,
   getJobRegistry,
   InsertTikcetCodeEvent,
-  InsertTicketCodeJob
+  InsertTicketCodeJob,
+  TicketCancelationEvent,
+  TicketCancelationJob
 };

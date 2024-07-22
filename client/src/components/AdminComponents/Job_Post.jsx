@@ -193,6 +193,29 @@ const PostInfoDiv = (props) => {
         }
     }
 
+    const ExportMasterList = async() => {
+        
+        try{
+
+            const response = await axios.get(`/JobPost/Stat/Export/${props.data.id}`, {
+                responseType: 'blob',
+            });
+
+            const url = window.URL.createObjectURL(new Blob([response.data]));
+            const a =  document.createElement('a');
+            a.href = url;
+            a.download = 'data.csv';
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+
+        }catch(error){
+            console.log('Error fetching CSV: ',  error);
+            throw error;
+        }
+    }
+
+
     return (
         <>
             <div className="flex flex-col items-center gap-5 px-5">
@@ -253,7 +276,7 @@ const PostInfoDiv = (props) => {
                                 <svg className="h-7" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" d="M5 19h1.425L16.2 9.225L14.775 7.8L5 17.575zm-2 2v-4.25L16.2 3.575q.3-.275.663-.425t.762-.15q.4 0 .775.15t.65.45L20.425 5q.3.275.438.65T21 6.4q0 .4-.137.763t-.438.662L7.25 21zM19 6.4L17.6 5zm-3.525 2.125l-.7-.725L16.2 9.225z" /></svg>
                             </button>
 
-                            <button className='px-5 py-2 text-white rounded scaleHover bg-blue-400'>Export to CSV</button>
+                            <button className='px-5 py-2 text-white rounded scaleHover bg-blue-400' onClick={() => {ExportMasterList()}}>Export to CSV</button>
 
                         </div>
                     </div>
@@ -278,7 +301,7 @@ const PostInfoDiv = (props) => {
                             <p className="pr-2 overflow-auto text-justify max-h-32 lg:max-h-40">{props.data.description}</p>
                         </div>
                         {/* <!-- img --> */}
-                        <img className="object-cover rounded-lg w-full flex lg:w-[20vw] h-[20vw] lg:max-w-[20vh] max-h-[20vh] lg:min-w-52 min-h-52 hover:cursor-pointer" onclick="enlargeImg()" id="smallImg" src={require(`../../../../server/FileUpload/${ImageStringUtils.FirstImageElement(props.data.imagefiles)}`)} alt={ImageStringUtils.FirstImageElement(props.data.imagefiles)} />
+                        <img className="object-cover rounded-lg w-full flex lg:w-[20vw] h-[20vw] lg:max-w-[20vh] max-h-[20vh] lg:min-w-52 min-h-52 hover:cursor-pointer" onclick="enlargeImg()" id="smallImg" src={ImageStringUtils.FirstImageElement(props.data.imagefiles)} alt={ImageStringUtils.FirstImageElement(props.data.imagefiles)} />
 
                         <button className="absolute top-0 right-0 hidden p-3 m-2 bg-red-600 rounded-full" id="closeBtn" onclick="closeEnlargedImg()">
                             <svg className="text-white h-7" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" d="M18.3 5.71a.996.996 0 0 0-1.41 0L12 10.59L7.11 5.7A.996.996 0 1 0 5.7 7.11L10.59 12L5.7 16.89a.996.996 0 1 0 1.41 1.41L12 13.41l4.89 4.89a.996.996 0 1 0 1.41-1.41L13.41 12l4.89-4.89c.38-.38.38-1.02 0-1.4" /></svg>

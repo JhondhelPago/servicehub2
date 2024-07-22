@@ -141,20 +141,38 @@ const InboxComponent = () => {
 
 
 
-                        {/* <!-- mail active sample --> */}
-                        {/* <div className="grid grid-cols-7 gap-4 p-2 border-b border-darkColor activeMailItem group/del">
+                        {/* <!-- active mail sample --> */}
+                        {/* if active: activeMailItem */}
+                        <div className="grid grid-cols-7 gap-4 p-2 border-b border-darkColor activeMailItem group/del">
                             <label className="flex col-span-2 gap-2" for="">
                                 <input type="checkbox" />
-                                <!-- from -->
+                                {/* <!-- from --> */}
                                 <h6 className="truncate">User1 User1User1</h6>
                             </label>
-                            <!-- subject -->
-                            <h6 className="col-span-3 truncate">SubjectasdadSubjectasdad</h6>
+                            {/* <!-- subject --> */}
+                            <h6 className="col-span-3 truncate">Active Mail Sample</h6>
                             <h6 className="col-span-2 my-auto text-xs justify-self-end group-hover/del:hidden">00/00/00</h6>
                             <button className="hidden col-span-2 justify-self-end group-hover/del:inline hover:text-red-600">
                                 <svg className="h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" d="M6 19a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V7H6zM8 9h8v10H8zm7.5-5l-1-1h-5l-1 1H5v2h14V4z" /></svg>
                             </button>
-                        </div> */}
+                        </div>
+
+                        {/* <!-- unread mail sample --> */}
+                        {/* if unread: unreadMailItem hoverMail */}
+                        <div className="grid grid-cols-7 gap-4 p-2 border-b border-darkColor unreadMailItem hoverMail group/del">
+                            <label className="flex col-span-2 gap-2" for="">
+                                <input type="checkbox" />
+                                {/* <!-- from --> */}
+                                <h6 className="truncate">User1 User1User1</h6>
+                            </label>
+                            {/* <!-- subject --> */}
+                            <h6 className="col-span-3 truncate">Unread Mail Sample</h6>
+                            <h6 className="col-span-2 my-auto text-xs justify-self-end group-hover/del:hidden">00/00/00</h6>
+                            <button className="hidden col-span-2 justify-self-end group-hover/del:inline hover:text-red-600">
+                                <svg className="h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" d="M6 19a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V7H6zM8 9h8v10H8zm7.5-5l-1-1h-5l-1 1H5v2h14V4z" /></svg>
+                            </button>
+                        </div>
+
                     </div>
                 </div>
                 {/* <!-- mail content view --> */}
@@ -313,20 +331,20 @@ const MailInnerView = ({ MailObj }) => {
 
     const ImageStringToArray = () => {
 
-        if(MailObj.imagefile != ''){
+        if (MailObj.imagefile != '') {
             setImagArray(MailObj.imagefile.split(','));
             setImageArrayType('array');
-        }else{
+        } else {
             setImageArrayType('empty')
         }
     }
 
     const DocuStringToArray = () => {
 
-        if(MailObj.documentfile != ''){
+        if (MailObj.documentfile != '') {
             setDocuArray(MailObj.documentfile.split(','));
             setDocuArrayType('array');
-        }else{
+        } else {
             setDocuArrayType('empty');
         }
 
@@ -337,11 +355,16 @@ const MailInnerView = ({ MailObj }) => {
         window.open(url, '_blank');
     }
 
+    const openCloudinaryImg = (url) => {
+        window.open(url, '_blank');
+    }
+
+
 
     useEffect(() => {
         ImageStringToArray();
         DocuStringToArray();
-        
+
     }, []);
     return (
         <>
@@ -359,15 +382,11 @@ const MailInnerView = ({ MailObj }) => {
                 <div className="flex flex-col overflow-auto" id="remainingHeight">
                     <p className="mx-5 mb-3">{MailObj.body}</p>
 
-                    <p>{MailObj.imagefile}</p>
-                    <p>{MailObj.documentfile}</p>
-                    {ImageArrayType && (<p>Image Type: {ImageArrayType}</p>)}
-                    {DocuArrayType && (<p>Docu Type: {DocuArrayType}</p>)}
 
                     {ImageArray && ImageArray.map((filename) => (
                         <div className="mx-5">
                             {/* image */}
-                            <img className="max-h-[30vh] mb-3 w-fit h-fit object-contain rounded-md" src={require(`../../../../server/FileUpload/${filename}`)}></img>
+                            <img className="max-h-[30vh] mb-3 w-fit h-fit object-contain rounded-md" src={filename} onClick={() => {openCloudinaryImg(filename)}}></img>
                         </div>
                     ))}
 
@@ -375,9 +394,9 @@ const MailInnerView = ({ MailObj }) => {
                     <div className="flex flex-row gap-3 px-5 pb-3 overflow-auto">
                         {DocuArray && DocuArray.map((filename) => {
 
-                            if(filename.includes('.docx')){
+                            if (filename.includes('.docx')) {
                                 return (
-                                    <button className="flex items-center gap-3 p-2 border rounded border-darkColor group" onClick={() => {openFileNewTab(filename)}}>
+                                    <button className="flex items-center gap-3 p-2 border rounded border-darkColor group" onClick={() => { openFileNewTab(filename) }}>
                                         {/* docs icon */}
                                         <svg className="text-blue-600 h-7" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" d="M12.186 14.552c-.617 0-.977.587-.977 1.373c0 .791.371 1.35.983 1.35c.617 0 .971-.588.971-1.374c0-.726-.348-1.349-.977-1.349" /><path fill="currentColor" d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8zM9.155 17.454c-.426.354-1.073.521-1.864.521c-.475 0-.81-.03-1.038-.06v-3.971a8.16 8.16 0 0 1 1.235-.083c.768 0 1.266.138 1.655.432c.42.312.684.81.684 1.522c0 .775-.282 1.309-.672 1.639m2.99.546c-1.2 0-1.901-.906-1.901-2.058c0-1.211.773-2.116 1.967-2.116c1.241 0 1.919.929 1.919 2.045c-.001 1.325-.805 2.129-1.985 2.129m4.655-.762c.275 0 .581-.061.762-.132l.138.713c-.168.084-.546.174-1.037.174c-1.397 0-2.117-.869-2.117-2.021c0-1.379.983-2.146 2.207-2.146c.474 0 .833.096.995.18l-.186.726a1.979 1.979 0 0 0-.768-.15c-.726 0-1.29.438-1.29 1.338c0 .809.48 1.318 1.296 1.318M14 9h-1V4l5 5z" /><path fill="currentColor" d="M7.584 14.563c-.203 0-.335.018-.413.036v2.645c.078.018.204.018.317.018c.828.006 1.367-.449 1.367-1.415c.006-.84-.485-1.284-1.271-1.284" /></svg>
 
@@ -385,15 +404,15 @@ const MailInnerView = ({ MailObj }) => {
                                         <p className="truncate max-w-52 group-hover:underline">{filename}</p>
                                     </button>
                                 )
-                            }else if (filename.includes('.pdf')){
+                            } else if (filename.includes('.pdf')) {
                                 return (
-                                    <button className="flex items-center gap-3 p-2 border rounded border-darkColor group" onClick={() => {openFileNewTab(filename)}}>
+                                    <button className="flex items-center gap-3 p-2 border rounded border-darkColor group" onClick={() => { openFileNewTab(filename) }}>
                                         {/* docs icon */}
                                         <svg className="text-red-600 h-7" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" d="M8.267 14.68c-.184 0-.308.018-.372.036v1.178c.076.018.171.023.302.023c.479 0 .774-.242.774-.651c0-.366-.254-.586-.704-.586m3.487.012c-.2 0-.33.018-.407.036v2.61c.077.018.201.018.313.018c.817.006 1.349-.444 1.349-1.396c.006-.83-.479-1.268-1.255-1.268" /><path fill="currentColor" d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8zM9.498 16.19c-.309.29-.765.42-1.296.42a2.23 2.23 0 0 1-.308-.018v1.426H7v-3.936A7.558 7.558 0 0 1 8.219 14c.557 0 .953.106 1.22.319c.254.202.426.533.426.923c-.001.392-.131.723-.367.948m3.807 1.355c-.42.349-1.059.515-1.84.515c-.468 0-.799-.03-1.024-.06v-3.917A7.947 7.947 0 0 1 11.66 14c.757 0 1.249.136 1.633.426c.415.308.675.799.675 1.504c0 .763-.279 1.29-.663 1.615M17 14.77h-1.532v.911H16.9v.734h-1.432v1.604h-.906V14.03H17zM14 9h-1V4l5 5z" /></svg>
-            
+
                                         {/* label */}
                                         <p className="truncate max-w-52 group-hover:underline">{filename}</p>
-                                         {/* <span className="relative truncate max-w-52 group-hover:underline">
+                                        {/* <span className="relative truncate max-w-52 group-hover:underline">
                                             <div class="absolute bottom-[calc(100%+0.5rem)] left-[50%] -translate-x-[50%] hidden group-hover:block w-auto">
                                                 <div class="bottom-full right-0 rounded bg-black px-4 py-1 text-xs text-white whitespace-nowrap">
                                                     Tooltip center
@@ -405,9 +424,9 @@ const MailInnerView = ({ MailObj }) => {
                                         </span> */}
                                     </button>
                                 )
-                            }else if(filename.includes('.txt')){
+                            } else if (filename.includes('.txt')) {
                                 return (
-                                    <button className="flex items-center gap-3 p-2 border rounded border-darkColor group" onClick={() => {openFileNewTab(filename)}}>
+                                    <button className="flex items-center gap-3 p-2 border rounded border-darkColor group" onClick={() => { openFileNewTab(filename) }}>
                                         {/* docs icon */}
                                         <svg className="h-7" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8zM9.998 14.768H8.895v3.274h-.917v-3.274H6.893V14h3.105zm2.725 3.274l-.365-.731c-.15-.282-.246-.492-.359-.726h-.013c-.083.233-.185.443-.312.726l-.335.731h-1.045l1.171-2.045L10.336 14h1.05l.354.738c.121.245.21.443.306.671h.013c.096-.258.174-.438.276-.671l.341-.738h1.043l-1.139 1.973l1.198 2.069zm4.384-3.274h-1.104v3.274h-.917v-3.274h-1.085V14h3.105zM14 9h-1V4l5 5z" /></svg>
 
@@ -436,20 +455,20 @@ const MailInnerViewUserSender = ({ MailObj }) => {
 
     const ImageStringToArray = () => {
 
-        if(MailObj.imagefile != ''){
+        if (MailObj.imagefile != '') {
             setImagArray(MailObj.imagefile.split(','));
             setImageArrayType('array');
-        }else{
+        } else {
             setImageArrayType('empty')
         }
     }
 
     const DocuStringToArray = () => {
 
-        if(MailObj.documentfile != ''){
+        if (MailObj.documentfile != '') {
             setDocuArray(MailObj.documentfile.split(','));
             setDocuArrayType('array');
-        }else{
+        } else {
             setDocuArrayType('empty');
         }
 
@@ -460,11 +479,15 @@ const MailInnerViewUserSender = ({ MailObj }) => {
         window.open(url, '_blank');
     }
 
+    const openCloudinaryImg = (url) => {
+        window.open(url, '_blank');
+    }
+
 
     useEffect(() => {
         ImageStringToArray();
         DocuStringToArray();
-        
+
     }, []);
 
     return (
@@ -483,16 +506,10 @@ const MailInnerViewUserSender = ({ MailObj }) => {
                 <div className="flex flex-col overflow-auto" id="remainingHeight">
                     <p className="mx-5 mb-3">{MailObj.body}</p>
 
-                    <p>{MailObj.imagefile}</p>
-                    <p>{MailObj.documentfile}</p>
-                    {ImageArrayType && (<p>Image Type: {ImageArrayType}</p>)}
-                    {DocuArrayType && (<p>Docu Type: {DocuArrayType}</p>)}
-
-
                     {ImageArray && ImageArray.map((filename) => (
                         <div className="mx-5">
                             {/* image */}
-                            <img className="max-h-[30vh] mb-3 w-fit h-fit object-contain rounded-md" src={require(`../../../../server/FileUpload/${filename}`)}></img>
+                            <img className="max-h-[30vh] mb-3 w-fit h-fit object-contain rounded-md" src={filename}  onClick={() => {openCloudinaryImg(filename)}}></img>
                         </div>
                     ))}
 
@@ -500,33 +517,33 @@ const MailInnerViewUserSender = ({ MailObj }) => {
                     <div className="flex flex-row gap-3 px-5 pb-3 overflow-auto">
                         {DocuArray && DocuArray.map((filename) => {
 
-                            if(filename.includes('.docx')){
+                            if (filename.includes('.docx')) {
                                 return (
                                     //sample button for docx icon
-                                    <button className="flex items-center gap-3 p-2 border rounded border-darkColor group" onClick={() => {openFileNewTab(filename)}}>
+                                    <button className="flex items-center gap-3 p-2 border rounded border-darkColor group" onClick={() => { openFileNewTab(filename) }}>
                                         {/* docs icon */}
                                         <svg className="text-blue-600 h-7" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" d="M12.186 14.552c-.617 0-.977.587-.977 1.373c0 .791.371 1.35.983 1.35c.617 0 .971-.588.971-1.374c0-.726-.348-1.349-.977-1.349" /><path fill="currentColor" d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8zM9.155 17.454c-.426.354-1.073.521-1.864.521c-.475 0-.81-.03-1.038-.06v-3.971a8.16 8.16 0 0 1 1.235-.083c.768 0 1.266.138 1.655.432c.42.312.684.81.684 1.522c0 .775-.282 1.309-.672 1.639m2.99.546c-1.2 0-1.901-.906-1.901-2.058c0-1.211.773-2.116 1.967-2.116c1.241 0 1.919.929 1.919 2.045c-.001 1.325-.805 2.129-1.985 2.129m4.655-.762c.275 0 .581-.061.762-.132l.138.713c-.168.084-.546.174-1.037.174c-1.397 0-2.117-.869-2.117-2.021c0-1.379.983-2.146 2.207-2.146c.474 0 .833.096.995.18l-.186.726a1.979 1.979 0 0 0-.768-.15c-.726 0-1.29.438-1.29 1.338c0 .809.48 1.318 1.296 1.318M14 9h-1V4l5 5z" /><path fill="currentColor" d="M7.584 14.563c-.203 0-.335.018-.413.036v2.645c.078.018.204.018.317.018c.828.006 1.367-.449 1.367-1.415c.006-.84-.485-1.284-1.271-1.284" /></svg>
-            
+
                                         {/* label */}
                                         <p className="truncate max-w-52 group-hover:underline">{filename}</p>
                                     </button>
 
                                 )
-                            }else if(filename.includes('.pdf')){
+                            } else if (filename.includes('.pdf')) {
                                 return (
                                     //sample button for pdf icon 
-                                    <button className="flex items-center gap-3 p-2 border rounded border-darkColor group" onClick={() => {openFileNewTab(filename)}}>
+                                    <button className="flex items-center gap-3 p-2 border rounded border-darkColor group" onClick={() => { openFileNewTab(filename) }}>
                                         {/* docs icon */}
                                         <svg className="text-red-600 h-7" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" d="M8.267 14.68c-.184 0-.308.018-.372.036v1.178c.076.018.171.023.302.023c.479 0 .774-.242.774-.651c0-.366-.254-.586-.704-.586m3.487.012c-.2 0-.33.018-.407.036v2.61c.077.018.201.018.313.018c.817.006 1.349-.444 1.349-1.396c.006-.83-.479-1.268-1.255-1.268" /><path fill="currentColor" d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8zM9.498 16.19c-.309.29-.765.42-1.296.42a2.23 2.23 0 0 1-.308-.018v1.426H7v-3.936A7.558 7.558 0 0 1 8.219 14c.557 0 .953.106 1.22.319c.254.202.426.533.426.923c-.001.392-.131.723-.367.948m3.807 1.355c-.42.349-1.059.515-1.84.515c-.468 0-.799-.03-1.024-.06v-3.917A7.947 7.947 0 0 1 11.66 14c.757 0 1.249.136 1.633.426c.415.308.675.799.675 1.504c0 .763-.279 1.29-.663 1.615M17 14.77h-1.532v.911H16.9v.734h-1.432v1.604h-.906V14.03H17zM14 9h-1V4l5 5z" /></svg>
-            
+
                                         {/* label */}
                                         <p className="truncate max-w-52 group-hover:underline">{filename}</p>
                                     </button>
                                 )
-                            }else if(filename.includes('.txt')){
+                            } else if (filename.includes('.txt')) {
                                 return (
                                     //sample button for txt icon
-                                    <button className="flex items-center gap-3 p-2 border rounded border-darkColor group" onClick={() => {openFileNewTab(filename)}}>
+                                    <button className="flex items-center gap-3 p-2 border rounded border-darkColor group" onClick={() => { openFileNewTab(filename) }}>
                                         {/* docs icon */}
                                         <svg className="h-7" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8zM9.998 14.768H8.895v3.274h-.917v-3.274H6.893V14h3.105zm2.725 3.274l-.365-.731c-.15-.282-.246-.492-.359-.726h-.013c-.083.233-.185.443-.312.726l-.335.731h-1.045l1.171-2.045L10.336 14h1.05l.354.738c.121.245.21.443.306.671h.013c.096-.258.174-.438.276-.671l.341-.738h1.043l-1.139 1.973l1.198 2.069zm4.384-3.274h-1.104v3.274h-.917v-3.274h-1.085V14h3.105zM14 9h-1V4l5 5z" /></svg>
 
