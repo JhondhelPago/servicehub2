@@ -441,6 +441,11 @@ const MailInnerView = ({ MailObj }) => {
         window.open(url, '_blank');
     }
 
+    const openCloudinaryImg = (url) => {
+        window.open(url, '_blank');
+    }
+
+
     useEffect(() => {
         ImageStringToArray();
         DocuStringToArray();
@@ -467,7 +472,7 @@ const MailInnerView = ({ MailObj }) => {
                     {ImageArray && ImageArray.map((filename) => (
                         <div className="mx-5">
                             {/* image */}
-                            <img className="max-h-[30vh] mb-3 w-fit h-fit object-contain rounded-md" src={require(`../../../../server/FileUpload/${filename}`)}></img>
+                            <img className="max-h-[30vh] mb-3 w-fit h-fit object-contain rounded-md" src={filename} onClick={() => {openCloudinaryImg(filename)}}></img>
                         </div>
                     ))}
 
@@ -560,6 +565,10 @@ const MailInnerViewUserSender = ({ MailObj }) => {
         window.open(url, '_blank');
     }
 
+    const openCloudinaryImg = (url) => {
+        window.open(url, '_blank');
+    }
+
 
     useEffect(() => {
         ImageStringToArray();
@@ -586,7 +595,7 @@ const MailInnerViewUserSender = ({ MailObj }) => {
                     {ImageArray && ImageArray.map((filename) => (
                         <div className="mx-5">
                             {/* image */}
-                            <img className="max-h-[30vh] mb-3 w-fit h-fit object-contain rounded-md" src={require(`../../../../server/FileUpload/${filename}`)}></img>
+                            <img className="max-h-[30vh] mb-3 w-fit h-fit object-contain rounded-md" src={filename}  onClick={() => {openCloudinaryImg(filename)}}></img>
                         </div>
                     ))}
 
