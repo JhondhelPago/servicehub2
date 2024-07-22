@@ -5,6 +5,7 @@
     "csv-writer": "^1.6.0",
     "flowbite": "^2.4.1",
     "flowbite-react": "^0.10.1",
+    "react-loading-icons": "^1.1.0",
     "react-responsive-carousel": "^3.2.23"
   }
 }
