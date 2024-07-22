@@ -2,6 +2,7 @@ import React, { useContext } from "react";
 import { useState } from 'react';
 import axios from "axios";
 import { ClientUserContext } from "../../pages/ClientUserContext";
+import LoadingIcons from "react-loading-icons";
 
 
 const ComposeComponent = ({ RenderSentItem, RenderInboxComponent }) => {
@@ -15,12 +16,16 @@ const ComposeComponent = ({ RenderSentItem, RenderInboxComponent }) => {
 
 
   const handleFileChange = (event) => {
-    
+
     setFiles(event.target.files);
 
   }
 
-  const handleSendMail = async(event) => {
+  const [isLoading, setIsLoading] = useState(false)
+  const [isSuccessful, setIsSuccessful] = useState(false)
+
+  const handleSendMail = async (event) => {
+    setIsLoading(true)
     event.preventDefault();
 
     const formData = new FormData();
@@ -35,7 +40,7 @@ const ComposeComponent = ({ RenderSentItem, RenderInboxComponent }) => {
     }
 
 
-    try{
+    try {
 
       const response = await axios.post('/ClientSendMail', formData, {
         headers: {
@@ -44,12 +49,13 @@ const ComposeComponent = ({ RenderSentItem, RenderInboxComponent }) => {
       });
 
       console.log(`status: ${response.data}`);
+      setIsSuccessful(true)
       //some function here to redirect
-      RenderInboxComponent();
 
 
-    }catch(error){
+    } catch (error) {
       console.log(`error on the compose_component at the function 'handleSendMail'.`, error);
+      setIsLoading(false)
       throw error;
     }
 
@@ -141,6 +147,38 @@ const ComposeComponent = ({ RenderSentItem, RenderInboxComponent }) => {
             <button type="submit" className="w-full py-2 text-white rounded bg-primary-light scaleHover">Send</button>
           </div>
         </form>
+        {/* https://www.npmjs.com/package/react-loading-icons */}
+        {/* npm i react-loading-icons */}
+        {isLoading && (
+          <div className="absolute top-0 left-0 z-10 flex items-center justify-center w-full h-full bg-black bg-opacity-60 backdrop-blur-sm">
+            <div className="sm:w-[30%] mx-5 w-full sm:min-w-[400px] max-w-[500px] flex flex-col bg-white z-[11] rounded-lg p-10 justify-center relative">
+              {isSuccessful ? (
+                <div className="flex flex-col gap-7">
+                  <svg className="h-12 text-primary-light" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" d="m9.55 18l-5.7-5.7l1.425-1.425L9.55 15.15l9.175-9.175L20.15 7.4z" /></svg>
+                  <h1 className="text-3xl font-semibold text-center font-noto">Sending Complete</h1>
+                  <h3 className="mb-3 overflow-auto text-lg text-center font-noto">
+                    Message is sent successfully.
+                  </h3>
+                  <button
+                    className="px-5 py-2 mx-auto text-lg text-white rounded bg-primary-light scaleHover"
+                    onClick={() => {
+                      setIsLoading(false)
+                      RenderInboxComponent()
+                    }}
+                  >Done</button>
+                </div>
+              ) : (
+                <div className="flex flex-col gap-7">
+                  <LoadingIcons.TailSpin stroke="#CD890A" className="w-12 h-12 mx-auto" strokeWidth={2}></LoadingIcons.TailSpin >
+                  <h1 className="text-3xl font-semibold text-center font-noto">Loading</h1>
+                  <h3 className="mb-3 overflow-auto text-lg text-center font-noto">
+                    Please wait.
+                  </h3>
+                </div>
+              )}
+            </div>
+          </div>
+        )}
       </div>
     </>
   )
