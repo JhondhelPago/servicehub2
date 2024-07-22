@@ -661,7 +661,7 @@ class Dashboard {
 
 //function to delete the images to the directory
 
-function DelImage(filename) {
+async function DelImage(filename) {
   const imagepath = path.join(__dirname, "FileUpload", filename);
 
   fs.unlink(imagepath, (err) => {
@@ -752,6 +752,7 @@ app.post(
     const targetAudience = formData.targetAudience;
     const ticketLimit = formData.ticket_limit;
     let filenames = req.files.map((file) => file.filename);
+    const original_filenames = filenames;
     const path_filenames = filenames.map((filename) => `./FileUpload/${filename}`);
     
 
@@ -803,6 +804,16 @@ app.post(
 
       console.log(URL_path);
 
+      const URL_path_string = URL_path.join(',');
+
+
+      //deleting the file from FileUpload
+
+      const deletePromises = original_filenames.map(filename => DelImage(filename));
+
+      const del_result = await Promise.all(deletePromises);
+
+
       await post_EventJob(
         postType,
         creator_id,
@@ -813,8 +824,8 @@ app.post(
         description,
         targetAudience,
         ticketLimit,
-        filenames // it shoud be the URL_path
-      );
+        URL_path_string // it shoud be the URL_path
+      );  
 
       res.send({ status: true });
     } catch (error) {
@@ -823,6 +834,25 @@ app.post(
     }
   }
 );
+
+app.get('/Delete/Image/:filename', async(req, res) => {
+
+  const { filename } = req.params;
+
+  try{
+
+    await DelImage(filename);
+    
+
+
+    res.send('deleted');
+    
+
+  }catch(error){
+    throw error;
+  }
+
+});
 
 //fetcing jobposting from the server
 app.get("/fetchingJobPost/:clientuserId", async (req, res) => {

@@ -278,7 +278,7 @@ const PostInfoDiv = (props) => {
                             <p className="pr-2 overflow-auto text-justify max-h-32 lg:max-h-40">{props.data.description}</p>
                         </div>
                         {/* <!-- img --> */}
-                        <img className="object-cover rounded-lg w-full flex lg:w-[20vw] h-[20vw] lg:max-w-[20vh] max-h-[20vh] lg:min-w-52 min-h-52 hover:cursor-pointer" onclick="enlargeImg()" id="smallImg" src={require(`../../../../server/FileUpload/${ImageStringUtils.FirstImageElement(props.data.imagefiles)}`)} alt={ImageStringUtils.FirstImageElement(props.data.imagefiles)} />
+                        <img className="object-cover rounded-lg w-full flex lg:w-[20vw] h-[20vw] lg:max-w-[20vh] max-h-[20vh] lg:min-w-52 min-h-52 hover:cursor-pointer" onclick="enlargeImg()" id="smallImg" src={ImageStringUtils.FirstImageElement(props.data.imagefiles)} alt={ImageStringUtils.FirstImageElement(props.data.imagefiles)} />
 
                         <button className="absolute top-0 right-0 hidden p-3 m-2 bg-red-600 rounded-full" id="closeBtn" onclick="closeEnlargedImg()">
                             <svg className="text-white h-7" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" d="M18.3 5.71a.996.996 0 0 0-1.41 0L12 10.59L7.11 5.7A.996.996 0 1 0 5.7 7.11L10.59 12L5.7 16.89a.996.996 0 1 0 1.41 1.41L12 13.41l4.89 4.89a.996.996 0 1 0 1.41-1.41L13.41 12l4.89-4.89c.38-.38.38-1.02 0-1.4" /></svg>

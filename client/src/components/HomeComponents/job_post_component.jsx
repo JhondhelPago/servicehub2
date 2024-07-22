@@ -125,7 +125,7 @@ const JobPostComponent = ({ jobdata, RegisteredBoolean, ReInvokeFetchRegistry })
               let ImageArray = ImageStringUtils.ToArray(jobdata.imagefiles);
 
               return ImageArray.map((filename, index) => (
-                <img key={index} className="object-cover w-full h-full rounded-md" alt="sample_file" src={require(`../../../../server/FileUpload/${filename}`)} />
+                <img key={index} className="object-cover w-full h-full rounded-md" alt="sample_file" src={filename} />
               ));
 
             })()}
