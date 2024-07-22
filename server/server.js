@@ -1827,8 +1827,14 @@ app.post('/UserRegister/Event', async(req, res) => {
   const { TicketCode }= req.body;
 
 
+  let ticketArray = TicketCode.split('-');
+
+  ticketArray.splice(0, 2);
+
+  let newTicketArray = ticketArray.join('-');
+
   //check here if the event_post is on the ticket limit
-  const event_id = TicketCode.split('-')[0];
+  const event_id = newTicketArray;
 
   console.log(TicketCode);
   // console.log('split ticket code');
@@ -1849,7 +1855,7 @@ app.post('/UserRegister/Event', async(req, res) => {
 
     //condition to check if there still a room for accepting ticket
     const TicketCapacity = await GetEventRow(event_id);
-    console.log(`TicketCapacity: ${TicketCapacity.ticket_limit}`);
+    // console.log(`TicketCapacity: ${TicketCapacity.ticket_limit}`);
     const CurrentTicket = await GetEventRegisteredTicket_Count(event_id);
     console.log(`CurrentTicket: ${CurrentTicket}`);
 
@@ -2424,14 +2430,14 @@ app.use((err, req, res, next) => {
   res.status(500).send("Something broke!");
 });
 
-pool.connect((err) => {
-  if(err){
-    console.error('Error connecting to the database', err.stack);
-    return;
-  }
+// pool.connect((err) => {
+//   if(err){
+//     console.error('Error connecting to the database', err.stack);
+//     return;
+//   }
 
-  console.log('Connected to the database');
-});
+//   console.log('Connected to the database');
+// });
 
 app.listen(8080, () => {
   console.log("Server is running on port 8080");

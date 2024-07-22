@@ -56,7 +56,7 @@ class CodeGenerator {
           
       }
 
-      return `${eventId}-${code}-${userId.split('-')[0]}`;
+      return `${eventId}-${code}-${userId}`;
   }
 }
 

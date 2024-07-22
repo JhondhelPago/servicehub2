@@ -16,7 +16,7 @@ const pool = mysql
     waitForConnections: true,
     connectionLimit: 10,
     queueLimit: 0,
-    connectTimeout: 10000 // 10 seconds
+    connectTimeout: 20000 // 10 seconds
   })
   .promise();
 
@@ -56,8 +56,8 @@ async function get_adminId(email, password, role) {
 
   try {
     const [row] = await pool.query(
-      `SELECT id FROM admin WHERE email = ? AND password = ? AND role = ?`,
-      [email, password, adminRole]
+      `SELECT id FROM admin WHERE email = ? AND password = ?`,
+      [email, password]
     );
     return row;
   } catch (error) {
@@ -315,8 +315,8 @@ async function FetchAdminIboxes(adminId) {
 async function getAdmin() {
   try {
     const [AdminIdRow] = await pool.execute(
-      `SELECT id FROM admin WHERE role="regular"`
-    );
+      `SELECT id FROM admin WHERE role= ?`
+    , ['Administrative']);
 
     if (AdminIdRow.length == 0) {
       return null;
@@ -428,8 +428,8 @@ async function getRegistry(userId){
 
 async function getRegistryInnerJoinPost(userId){
 
- 
-
+  
+  console.log('userId:', userId);
   try{
 
     const [EventRegistryInnerJoinEvent] = await pool.execute(`
@@ -438,7 +438,7 @@ async function getRegistryInnerJoinPost(userId){
       INNER JOIN event_post ON event_registry.event_id = event_post.id
       WHERE user_id = ?
       ORDER BY event_registry.registration_id DESC
-      `, [userId]
+      `, [`"${userId}"`]
     )
 
     const [JobRegistryInnerJoinPost] = await pool.execute(`
@@ -722,12 +722,15 @@ async function ClientData(id) {
   // id = 1000
   //select (user, fist , last , addres) from user where id = id
 
-  let wrap_id = `"${id}"`;
+  let wrap_id = `'${id}'`;
+  console.log('wrap_id: ', wrap_id);
 
   try {
     const [rowdata] = await pool.execute(
-      `SELECT firstName, middleName, Lastname, age, gender, disability, houseno, street, baranggay, city, province, zipcode, phone, status FROM user WHERE id = ?`
-    , [wrap_id]);
+      `SELECT firstName, middleName, Lastname, age, gender, disability, houseno, street, baranggay, city, province, zipcode, phone, status 
+      FROM user 
+      WHERE id = ?`
+    , [id]);
 
     if (rowdata.length != 0) {
       return rowdata;
@@ -770,9 +773,9 @@ async function clientInformation(id) {
                 city,
                 phone,
                 status
-            ) FROM user WHERE id = ${id}
+            ) FROM user WHERE id = ?
             `
-    );
+    , [`"${id}"`]);
 
     if (clientInformationRow.length != 0) {
       return clientInformationRow[0];
@@ -884,10 +887,15 @@ async function NewFetchInboxClient(SenderClientId){
   try{
 
     const [ReceiverAdminIdArray] = await pool.execute(`
+      
+
       SELECT receiverID
       FROM mail_sent
       WHERE senderID = ?
-      ORDER BY STR_TO_DATE(CONCAT(date_sent, " ", time_sent), "%Y-%m-%d %H:%i:%s") DESC
+      ORDER BY STR_TO_DATE(CONCAT(
+        COALESCE(date_sent, '1970-01-01'), ' ', 
+        COALESCE(time_sent, '00:00:00')
+      ), '%Y-%m-%d %H:%i:%s') DESC
       LIMIT 1000;
       `, [SenderClientId]);
 
