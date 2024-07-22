@@ -382,10 +382,6 @@ const MailInnerView = ({ MailObj }) => {
                 <div className="flex flex-col overflow-auto" id="remainingHeight">
                     <p className="mx-5 mb-3">{MailObj.body}</p>
 
-                    <p>{MailObj.imagefile}</p>
-                    <p>{MailObj.documentfile}</p>
-                    {ImageArrayType && (<p>Image Type: {ImageArrayType}</p>)}
-                    {DocuArrayType && (<p>Docu Type: {DocuArrayType}</p>)}
 
                     {ImageArray && ImageArray.map((filename) => (
                         <div className="mx-5">
@@ -509,12 +505,6 @@ const MailInnerViewUserSender = ({ MailObj }) => {
                 {/* <!-- body --> */}
                 <div className="flex flex-col overflow-auto" id="remainingHeight">
                     <p className="mx-5 mb-3">{MailObj.body}</p>
-
-                    <p>{MailObj.imagefile}</p>
-                    <p>{MailObj.documentfile}</p>
-                    {ImageArrayType && (<p>Image Type: {ImageArrayType}</p>)}
-                    {DocuArrayType && (<p>Docu Type: {DocuArrayType}</p>)}
-
 
                     {ImageArray && ImageArray.map((filename) => (
                         <div className="mx-5">
