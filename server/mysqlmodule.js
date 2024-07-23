@@ -10,7 +10,7 @@ const pool = mysql
     waitForConnections: true,
     connectionLimit: 10,
     queueLimit: 0,
-    connectTimeout: 10000 // 10 seconds
+    connectTimeout: 10000 // 10 seconds 
   })
   .promise();
 
@@ -545,8 +545,8 @@ async function GetEventRegisteredTicket_Count(event_id){
   try{
     const [Count] = await pool.execute(`
       SELECT COUNT(*) AS total_registry
-      FROM event_post
-      WHERE id = ?
+      FROM event_registry
+      WHERE event_id = ?
       `, [event_id]);
 
     return Count[0].total_registry;
@@ -596,8 +596,8 @@ async function GetJobRegisteredTicket_Count(job_id){
   try{
     const [Count] = await pool.execute(`
       SELECT COUNT(*) AS total_registry
-      FROM job_post
-      WHERE id = ?
+      FROM job_registry
+      WHERE job_id = ?
       `, [job_id]);
 
     return Count[0].total_registry;
@@ -718,7 +718,7 @@ async function ClientData(id) {
 
   try {
     const [rowdata] = await pool.execute(
-      `SELECT firstName, middleName, Lastname, age, gender, disability, houseno, street, barangay, district, city, province, zipcode, phone, status FROM user WHERE id = ${id}`
+      `SELECT firstName, middleName, Lastname, age, gender, disability, houseno, street, barangay, city, province, zipcode, phone, status FROM user WHERE id = ${id}`
     );
 
     if (rowdata.length != 0) {

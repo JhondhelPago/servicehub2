@@ -26,12 +26,19 @@ const JobPostComponent = ({ jobdata, RegisteredBoolean, ReInvokeFetchRegistry })
 
       const response = await axios.post(`/UserRegister/Job`, { TicketCode: generatedCode });
       if (response.status >= 200 && response.status <= 299) {
+
+        if(response.data.message == true){
+
         SetJoinedStatus(true);
         setIsModalOpen(false); // closing the modal
+        alert('ticket created.')
         ReInvokeFetchRegistry();
+        }else{
+          alert('no ticket available right now');
+          setIsModalOpen(false);
+          ReInvokeFetchRegistry();
+        }
       }
-
-
     } catch (error) {
       throw error;
     }
@@ -39,8 +46,17 @@ const JobPostComponent = ({ jobdata, RegisteredBoolean, ReInvokeFetchRegistry })
 
   }
 
+  const [ForDisabilities, SetForDisabilities] = useState([]);
+
+  const Convert_strTargetGroupToArray = () => {
+
+    const strTargetGroup = jobdata.target_group;
+    SetForDisabilities(strTargetGroup.split(','));
+  }
+
   useEffect(() => {
     SetJoinedStatus(RegisteredBoolean);
+    Convert_strTargetGroupToArray();
   }, [RegisteredBoolean]);
 
   return (
@@ -61,6 +77,15 @@ const JobPostComponent = ({ jobdata, RegisteredBoolean, ReInvokeFetchRegistry })
             <h3 className="tagBG">{TimeUtils._24HrTo12hr(jobdata.scheduled_time)}</h3>
             {/* <!-- location --> */}
             <h3 className="tagBG">{jobdata.location}</h3>
+            {/* <!-- Ticket slots --> */}
+            <h3 className="tagBG">Ticket slots: {jobdata.registered_tickets}/{jobdata.ticket_limit}</h3>
+          </div>
+          <p className="text-primary-light text-2xl">For members with the following disability:</p>
+          <div className="flex flex-wrap justify-center gap-4 text-sm font-medium lg:text-lg lg:justify-start">
+            {/* <!-- target group --> */}
+            {ForDisabilities && ForDisabilities.map(disability => (
+              <h3 className="tagBG">{disability}</h3>
+            ))}
           </div>
           {/* <!-- desc --> */}
           <p className="px-2 mt-4 overflow-auto text-justify max-h-52">{jobdata.description}</p>

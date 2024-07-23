@@ -1847,12 +1847,12 @@ app.post('/UserRegister/Event', async(req, res) => {
   try{
 
     //condition to check if there still a room for accepting ticket
-    const TicketCapacity = await GetEventRow(event_id);
-    console.log(`TicketCapacity: ${TicketCapacity.ticket_limit}`);
-    const CurrentTicket = await GetEventRegisteredTicket_Count(event_id);
-    console.log(`CurrentTicket: ${CurrentTicket}`);
+    const Tickets = await GetEventRow(event_id);
+    const TicketCurrent = Tickets.registered_tickets;
+    const TicketLimit = Tickets.ticket_limit;
+  
 
-    if(CurrentTicket < TicketCapacity.ticket_limit){
+    if(TicketCurrent < TicketLimit){
 
       await InsertTikcetCodeEvent(TicketCode);
 
@@ -1863,33 +1863,34 @@ app.post('/UserRegister/Event', async(req, res) => {
       await UpdateEventTicketCount(event_id, RegistryCount);  
 
       control_flow_result = true
+
+
+      res.status(200).json({message: true});
+    }else{
+      res.status(200).json({message: false});
     }
   
     control_flow_result = false;
   }catch(error){
     control_flow_result = false;
     throw error;
-  }finally{
-    res.send({insertion_query: control_flow_result});
   }
-
-
 });
 
 app.post('/UserRegister/Job', async(req, res) => {
-
-  const { TicketCode } = req.body;
-  const job_id = TicketCode.split('-')[0];
-
-  let control_flow_result = null;
-  console.log(TicketCode);
-
-  const TicketCapacity = await GetJobRow(job_id);
-  const CurrentTicket = await GetJobRegisteredTicket_Count(job_id);
-
   try{
+    const { TicketCode } = req.body;
+    const job_id = TicketCode.split('-')[0];
 
-    if(CurrentTicket < TicketCapacity.ticket_limit){
+    let control_flow_result = null;
+    console.log(TicketCode);
+
+    const Tickets = await GetJobRow(job_id);
+    const TicketCurrent = Tickets.registered_tickets;
+    const TicketLimit = Tickets.ticket_limit;
+  
+
+    if(TicketCurrent < TicketLimit){
 
       await InsertTicketCodeJob(TicketCode);
 
@@ -1901,6 +1902,9 @@ app.post('/UserRegister/Job', async(req, res) => {
   
       control_flow_result = true;
 
+      res.status(200).json({message: true});
+    }else{
+      res.status(200).json({message: false});
     }
 
     control_flow_result = false;
@@ -1909,9 +1913,6 @@ app.post('/UserRegister/Job', async(req, res) => {
     control_flow_result = false;
     throw error;
   }
-  
-  res.send({insertion_query: control_flow_result});
-
 });
 
 
@@ -2380,16 +2381,21 @@ app.post('/sendmail/dummy', async(req, res) => {
 
 });
 
-app.post('/ticket/cancelation/event/:registration_id', async(req, res) => {
+app.post('/ticket/cancelation/event/:registration_id/:event_id', async(req, res) => {
 
   const { registration_id } = req.params;
-   
+  const { event_id } = req.params;
+
   try{
 
     console.log(registration_id);
 
     await TicketCancelationEvent(registration_id);
 
+    const RegistryCount = await GetEventRegisteredTicket_Count(event_id);
+
+    await UpdateEventTicketCount(event_id, RegistryCount)
+    
     res.send(true);
 
   }catch(error){
@@ -2398,13 +2404,22 @@ app.post('/ticket/cancelation/event/:registration_id', async(req, res) => {
 
 });
 
-app.post(`/ticket/cancelation/job/:registration_id`, async(req, res) => {
+app.post(`/ticket/cancelation/job/:registration_id/:job_id`, async(req, res) => {
 
   const { registration_id } = req.params;
+  const { job_id } = req.params;
 
   try{
 
     await TicketCancelationJob(registration_id);
+
+    // get the ticket count of the job_id on the job_registry
+
+
+    //update the registered_ticket of the job_post
+    const RegistryCount = await GetJobRegisteredTicket_Count(job_id);
+
+    await UpdateJobTicketCount(job_id, RegistryCount);
 
     res.send(true);
 
