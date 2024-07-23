@@ -65,7 +65,7 @@ const EventTicketCard = ({ dataObj, FetchRegistry }) => {
 
     try {
 
-      const response = await axios.post(`/ticket/cancelation/event/${dataObj.registration_id}`);
+      const response = await axios.post(`/ticket/cancelation/event/${dataObj.registration_id}/${dataObj.event_id}`);
       setIsModalOpen(false);
       FetchRegistry();
 
@@ -141,7 +141,7 @@ const JobTicketCard = ({ dataObj, FetchRegistry }) => {
 
     try {
 
-      const response = await axios.post(`/ticket/cancelation/job/${dataObj.registration_id}`);
+      const response = await axios.post(`/ticket/cancelation/job/${dataObj.registration_id}/${dataObj.job_id}`);
       setIsModalOpen(false);
       FetchRegistry();
 

@@ -26,12 +26,19 @@ const JobPostComponent = ({ jobdata, RegisteredBoolean, ReInvokeFetchRegistry })
 
       const response = await axios.post(`/UserRegister/Job`, { TicketCode: generatedCode });
       if (response.status >= 200 && response.status <= 299) {
+
+        if(response.data.message == true){
+
         SetJoinedStatus(true);
         setIsModalOpen(false); // closing the modal
+        alert('ticket created.')
         ReInvokeFetchRegistry();
+        }else{
+          alert('no ticket available right now');
+          setIsModalOpen(false);
+          ReInvokeFetchRegistry();
+        }
       }
-
-
     } catch (error) {
       throw error;
     }

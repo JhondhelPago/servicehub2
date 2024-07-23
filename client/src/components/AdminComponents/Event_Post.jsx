@@ -163,7 +163,7 @@ const PostInfoDiv = (props) => {
         if(isViewMoreOpen) {
 
             setIsViewMoreOpen(false);
-            setClientRegisteredCount(null);
+            setClientRegisteredCount(0);
 
         }else{
             setIsViewMoreOpen(true);
@@ -175,7 +175,7 @@ const PostInfoDiv = (props) => {
 
 
     const [ClientRegistered, setClientRegistered] = useState([]);
-    const [ClientRegisteredCount, setClientRegisteredCount] = useState(null);
+    const [ClientRegisteredCount, setClientRegisteredCount] = useState(0);
 
     //function to retrive the registry user on this post 
     const GetRegistry = async() => {
@@ -235,13 +235,20 @@ const PostInfoDiv = (props) => {
                                 <span className="text-xs">Posted on</span>
                                 <h4 className="text-xl font-normal">{props.data.date_created}</h4>
                             </div>
-                           {ClientRegisteredCount && (
+                           {isViewMoreOpen && (
                              // total participants 
-                             <div className=''>
-                                <span className="text-xs">Total Participants</span>
-                                <h4 className="text-xl font-semibold break-all">{ClientRegisteredCount}</h4>
-                            </div>
+                             <>
+                                <div className=''>
+                                    <span className="text-xs">Total Participants</span>
+                                    <h4 className="text-xl font-semibold break-all">{ClientRegisteredCount}</h4>
+                                </div>
+                                <div className=''>
+                                    <span className="text-xs">Remaining available Ticket</span>
+                                    <h4 className="text-xl font-normal">{props.data.ticket_limit - ClientRegisteredCount}</h4>
+                                </div>
+                            </>
                            )}
+                           
                         </div>
                         {/* <!-- buttons --> */}
                         <div className="grid gap-5 text-white grid-flow-dense md:grid-flow-col">
@@ -277,8 +284,6 @@ const PostInfoDiv = (props) => {
                                 <svg className="h-7" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" d="M5 19h1.425L16.2 9.225L14.775 7.8L5 17.575zm-2 2v-4.25L16.2 3.575q.3-.275.663-.425t.762-.15q.4 0 .775.15t.65.45L20.425 5q.3.275.438.65T21 6.4q0 .4-.137.763t-.438.662L7.25 21zM19 6.4L17.6 5zm-3.525 2.125l-.7-.725L16.2 9.225z" /></svg>
                             </button>
 
-                            <button className='px-5 py-2 text-white rounded scaleHover bg-blue-400' onClick={() => {ExportMasterList()}}>Export to CSV</button>
-
                         </div>
                     </div>
                     {/* <!-- post info --> */}
@@ -312,6 +317,10 @@ const PostInfoDiv = (props) => {
                     {/* view more */}
                     {isViewMoreOpen && (
                         <table className='w-full border-collapse table-fixed'>
+                            {ClientRegisteredCount > 0 && (
+                                <button className='px-5 py-2 text-white rounded scaleHover bg-blue-400 mb-4' onClick={() => {ExportMasterList()}}>Export to CSV</button>
+                            )}
+
                             <tr className='bg-gray-300'>
                                 <th className='p-5 border border-darkColor text-start'>Name</th>
                                 <th className='p-5 border border-darkColor text-start'>Ticket Code</th>

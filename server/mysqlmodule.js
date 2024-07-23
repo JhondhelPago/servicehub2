@@ -545,8 +545,8 @@ async function GetEventRegisteredTicket_Count(event_id){
   try{
     const [Count] = await pool.execute(`
       SELECT COUNT(*) AS total_registry
-      FROM event_post
-      WHERE id = ?
+      FROM event_registry
+      WHERE event_id = ?
       `, [event_id]);
 
     return Count[0].total_registry;
@@ -596,8 +596,8 @@ async function GetJobRegisteredTicket_Count(job_id){
   try{
     const [Count] = await pool.execute(`
       SELECT COUNT(*) AS total_registry
-      FROM job_post
-      WHERE id = ?
+      FROM job_registry
+      WHERE job_id = ?
       `, [job_id]);
 
     return Count[0].total_registry;

@@ -17,13 +17,28 @@ const EventPostComponent = ({ eventdata, RegistredBoolean, ReInvokeFetchRegistry
     const thisEventId = eventdata.id;
     const thisUserId = clientuserId;
     const generatedCode = CodeGenerator.EventCodeGenerator(thisEventId, thisUserId);
+    
 
     try {
       const response = await axios.post(`/UserRegister/Event`, { TicketCode: generatedCode });
       if (response.status >= 200 && response.status <= 299) {
-        SetJoinedStatus(true);
-        setIsModalOpen(false); //closing the modal
-        ReInvokeFetchRegistry();
+        
+
+        if(response.data.message == true){
+
+          console.log(`message:`, response.data.message);
+          SetJoinedStatus(true);
+          setIsModalOpen(false); //closing the modal
+          alert('ticket created');
+          ReInvokeFetchRegistry();
+
+
+        }else{
+          alert('no ticket available right now');
+          setIsModalOpen(false);
+          ReInvokeFetchRegistry();
+
+        }
       }
     } catch (error) {
       console.error("Error joining event:", error);
@@ -39,12 +54,13 @@ const EventPostComponent = ({ eventdata, RegistredBoolean, ReInvokeFetchRegistry
   }
 
 
-
-
   useEffect(() => {
     SetJoinedStatus(RegistredBoolean);
     Convert_strTargetGroupToArray();
   }, [RegistredBoolean]);
+
+
+ 
 
   return (
     <>
@@ -53,7 +69,7 @@ const EventPostComponent = ({ eventdata, RegistredBoolean, ReInvokeFetchRegistry
         {/* <!-- event info container --> */}
         <div className="flex flex-col w-full gap-4 text-center lg:text-start xl:w-1/2">
           {/* <!-- title --> */}
-          <h1 className="text-4xl font-semibold lg:text-6xl text-balance font-noto">{eventdata.event_title} {`${eventdata.registered_tickets}/${eventdata.ticket_limit}`}</h1>
+          <h1 className="text-4xl font-semibold lg:text-6xl text-balance font-noto">{eventdata.event_title}</h1>
           <div className="flex flex-wrap justify-center gap-4 text-sm font-medium lg:text-lg lg:justify-start">
             {/* <!-- date --> */}
             <h3 className="tagBG">Date: {eventdata.scheduled_date}</h3>
@@ -74,12 +90,15 @@ const EventPostComponent = ({ eventdata, RegistredBoolean, ReInvokeFetchRegistry
 
           {/* <!-- desc --> */}
           <p className="pr-2 mt-4 overflow-auto text-justify max-h-52">{eventdata.description}</p>
+
           {
             JoinedStatus ? (
+              //set condition here
               <button className="w-10/12 p-4 mx-auto mt-auto text-xl font-medium text-white bg-gray-400 rounded-md" disabled>
                 Joined
               </button>
             ) : (
+              //set condition here
               <button
                 className="w-10/12 p-4 mx-auto mt-auto text-xl font-medium text-white rounded-md bg-primary-light scaleHover"
                 onClick={() => { setIsModalOpen(true) }}
