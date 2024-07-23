@@ -17,22 +17,50 @@ const EventPostComponent = ({ eventdata, RegistredBoolean, ReInvokeFetchRegistry
     const thisEventId = eventdata.id;
     const thisUserId = clientuserId;
     const generatedCode = CodeGenerator.EventCodeGenerator(thisEventId, thisUserId);
+    
 
     try {
       const response = await axios.post(`/UserRegister/Event`, { TicketCode: generatedCode });
       if (response.status >= 200 && response.status <= 299) {
-        SetJoinedStatus(true);
-        setIsModalOpen(false); //closing the modal
-        ReInvokeFetchRegistry();
+        
+
+        if(response.data.message == true){
+
+          console.log(`message:`, response.data.message);
+          SetJoinedStatus(true);
+          setIsModalOpen(false); //closing the modal
+          alert('ticket created');
+          ReInvokeFetchRegistry();
+
+
+        }else{
+          alert('no ticket available right now');
+          setIsModalOpen(false);
+          ReInvokeFetchRegistry();
+
+        }
       }
     } catch (error) {
       console.error("Error joining event:", error);
     }
   }
 
+  const [ForDisabilities, SetForDisabilities] = useState([]);
+
+  const Convert_strTargetGroupToArray = () => {
+
+    const strTargetGroup = eventdata.target_group;
+    SetForDisabilities(strTargetGroup.split(','));
+  }
+
+
   useEffect(() => {
     SetJoinedStatus(RegistredBoolean);
+    Convert_strTargetGroupToArray();
   }, [RegistredBoolean]);
+
+
+ 
 
   return (
     <>
@@ -44,20 +72,33 @@ const EventPostComponent = ({ eventdata, RegistredBoolean, ReInvokeFetchRegistry
           <h1 className="text-4xl font-semibold lg:text-6xl text-balance font-noto">{eventdata.event_title}</h1>
           <div className="flex flex-wrap justify-center gap-4 text-sm font-medium lg:text-lg lg:justify-start">
             {/* <!-- date --> */}
-            <h3 className="tagBG">{eventdata.scheduled_date}</h3>
+            <h3 className="tagBG">Date: {eventdata.scheduled_date}</h3>
             {/* <!-- time --> */}
-            <h3 className="tagBG">{TimeUtils._24HrTo12hr(eventdata.scheduled_time)}</h3>
+            <h3 className="tagBG">Time: {TimeUtils._24HrTo12hr(eventdata.scheduled_time)}</h3>
             {/* <!-- location --> */}
-            <h3 className="tagBG">{eventdata.location}</h3>
+            <h3 className="tagBG">Location: {eventdata.location}</h3>
+            {/* <!-- Ticket slots --> */}
+            <h3 className="tagBG">Ticket slots: {eventdata.registered_tickets}/{eventdata.ticket_limit}</h3>
           </div>
+          <p className="text-primary-light text-2xl">For members with the following disability:</p>
+          <div className="flex flex-wrap justify-center gap-4 text-sm font-medium lg:text-lg lg:justify-start">
+            {/* <!-- target group --> */}
+            {ForDisabilities && ForDisabilities.map(disability => (
+              <h3 className="tagBG">{disability}</h3>
+            ))}
+          </div>
+
           {/* <!-- desc --> */}
           <p className="pr-2 mt-4 overflow-auto text-justify max-h-52">{eventdata.description}</p>
+
           {
             JoinedStatus ? (
+              //set condition here
               <button className="w-10/12 p-4 mx-auto mt-auto text-xl font-medium text-white bg-gray-400 rounded-md" disabled>
                 Joined
               </button>
             ) : (
+              //set condition here
               <button
                 className="w-10/12 p-4 mx-auto mt-auto text-xl font-medium text-white rounded-md bg-primary-light scaleHover"
                 onClick={() => { setIsModalOpen(true) }}
