@@ -8,7 +8,7 @@ import { Carousel } from "react-responsive-carousel";
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import { UNSAFE_DataRouterStateContext } from "react-router-dom";
 import nav_logo from '../../assets/icon logo.png';
-mb - 2
+
 const JobPostComponent = ({ jobdata, RegisteredBoolean, ReInvokeFetchRegistry, TimeNow_Job }) => {
 
   const { clientuserId } = useContext(ClientUserContext);
