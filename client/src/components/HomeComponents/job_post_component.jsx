@@ -94,8 +94,12 @@ const JobPostComponent = ({ jobdata, RegisteredBoolean, ReInvokeFetchRegistry, T
         {/* <!-- event info container --> */}
         <div className="flex flex-col w-full gap-4 text-center lg:text-start xl:w-1/2">
           {/* <!-- title --> */}
-          {/* new badge here */}
+          {/* new badge here 
+          
+            pa modify ako ng New badge dito vin
+          */}
           {IsHot && (<h3 className="text-red-600">New Post</h3>)}
+          
           <h1 className="text-4xl font-semibold lg:text-6xl text-balance font-noto">{jobdata.event_title}</h1>
           <div className="flex flex-wrap justify-center gap-4 text-sm font-medium lg:text-lg lg:justify-start">
             {/* <!-- date --> */}
