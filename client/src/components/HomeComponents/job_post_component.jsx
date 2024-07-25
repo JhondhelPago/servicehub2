@@ -1,14 +1,14 @@
 import React, { useContext, useEffect, useState } from "react";
 import { TimeUtils, ImageStringUtils } from "../../module-script/util";
 import { ClientUserContext } from "../../pages/ClientUserContext";
-import { CodeGenerator } from "../../utils";
+import { CodeGenerator, HotPostChecker } from "../../utils";
 import axios from "axios";
 import sample_img from '../../assets/sample_img.jpg';
 import { Carousel } from "react-responsive-carousel";
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import { UNSAFE_DataRouterStateContext } from "react-router-dom";
 
-const JobPostComponent = ({ jobdata, RegisteredBoolean, ReInvokeFetchRegistry }) => {
+const JobPostComponent = ({ jobdata, RegisteredBoolean, ReInvokeFetchRegistry, TimeNow_Job }) => {
 
   const { clientuserId } = useContext(ClientUserContext);
 
@@ -65,6 +65,14 @@ const JobPostComponent = ({ jobdata, RegisteredBoolean, ReInvokeFetchRegistry })
 
   }
 
+  const [IsHot, SetIsHot] = useState(false);
+
+  const verifyHotPost = () => {
+
+    SetIsHot(HotPostChecker(`${jobdata.date_created} ${jobdata.time_created}`, `${TimeNow_Job.DateNow} ${TimeNow_Job.TimeNowFormatted}`));
+
+  }
+
   useEffect(() => {
     SetJoinedStatus(RegisteredBoolean);
     Convert_strTargetGroupToArray();
@@ -72,6 +80,8 @@ const JobPostComponent = ({ jobdata, RegisteredBoolean, ReInvokeFetchRegistry })
 
   useEffect(() => {
     ImageStringToArray();
+    verifyHotPost();
+
   }, [])
 
   return (
@@ -84,6 +94,8 @@ const JobPostComponent = ({ jobdata, RegisteredBoolean, ReInvokeFetchRegistry })
         {/* <!-- event info container --> */}
         <div className="flex flex-col w-full gap-4 text-center lg:text-start xl:w-1/2">
           {/* <!-- title --> */}
+          {/* new badge here */}
+          {IsHot && (<h3 className="text-red-600">New Post</h3>)}
           <h1 className="text-4xl font-semibold lg:text-6xl text-balance font-noto">{jobdata.event_title}</h1>
           <div className="flex flex-wrap justify-center gap-4 text-sm font-medium lg:text-lg lg:justify-start">
             {/* <!-- date --> */}
