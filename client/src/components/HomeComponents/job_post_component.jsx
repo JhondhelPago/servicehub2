@@ -8,7 +8,7 @@ import { Carousel } from "react-responsive-carousel";
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import { UNSAFE_DataRouterStateContext } from "react-router-dom";
 
-const JobPostComponent = ({ jobdata, RegisteredBoolean, ReInvokeFetchRegistry }) => {
+const JobPostComponent = ({ jobdata, RegisteredBoolean, ReInvokeFetchRegistry, TimeNow }) => {
 
   const { clientuserId } = useContext(ClientUserContext);
 
@@ -84,7 +84,7 @@ const JobPostComponent = ({ jobdata, RegisteredBoolean, ReInvokeFetchRegistry })
         {/* <!-- event info container --> */}
         <div className="flex flex-col w-full gap-4 text-center lg:text-start xl:w-1/2">
           {/* <!-- title --> */}
-          <h1 className="text-4xl font-semibold lg:text-6xl text-balance font-noto">{jobdata.event_title}</h1>
+          <h1 className="text-4xl font-semibold lg:text-6xl text-balance font-noto">{TimeNow.TimeNowFormatted} {jobdata.event_title} {jobdata.time_created}</h1>
           <div className="flex flex-wrap justify-center gap-4 text-sm font-medium lg:text-lg lg:justify-start">
             {/* <!-- date --> */}
             <h3 className="tagBG">{jobdata.scheduled_date}</h3>

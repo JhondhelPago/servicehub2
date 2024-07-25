@@ -1,12 +1,13 @@
 import React, { useContext, useEffect, useState } from "react";
 import { TimeUtils, ImageStringUtils } from '../../module-script/util';
+import { HotPostUtils, isLessThanTwoDaysDifference } from '../../utils'
 import { ClientUserContext } from "../../pages/ClientUserContext";
 import { CodeGenerator } from "../../utils";
 import axios from "axios";
 import { Carousel } from "react-responsive-carousel";
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 
-const EventPostComponent = ({ eventdata, RegistredBoolean, ReInvokeFetchRegistry }) => {
+const EventPostComponent = ({ eventdata, RegistredBoolean, ReInvokeFetchRegistry, TimeNow }) => {
   const { clientuserId } = useContext(ClientUserContext);
 
   // Initialize JoinedStatus based on RegistredBoolean prop
@@ -63,6 +64,14 @@ const EventPostComponent = ({ eventdata, RegistredBoolean, ReInvokeFetchRegistry
 
   }
 
+  const [IsHot, SetIsHot] = useState("string");
+
+  const verifyHotPost = () => {
+
+    SetIsHot(HotPostUtils.HotChecker(eventdata.date_created, eventdata.time_created));
+
+  }
+
 
   useEffect(() => {
     SetJoinedStatus(RegistredBoolean);
@@ -71,6 +80,9 @@ const EventPostComponent = ({ eventdata, RegistredBoolean, ReInvokeFetchRegistry
 
   useEffect(() => {
     ImageStringToArray();
+    verifyHotPost();
+    console.log(eventdata.event_title);
+    console.log(isLessThanTwoDaysDifference(eventdata.date_created, eventdata.time_created, TimeNow.DateNow, TimeNow.TimeNowFormatted).toString)
   }, [])
 
  
@@ -83,6 +95,9 @@ const EventPostComponent = ({ eventdata, RegistredBoolean, ReInvokeFetchRegistry
         <div className="flex flex-col w-full gap-4 text-center lg:text-start xl:w-1/2">
           {/* <!-- title --> */}
           <h1 className="text-4xl font-semibold lg:text-6xl text-balance font-noto">{eventdata.event_title}</h1>
+          <h3>Created: {eventdata.date_created} {eventdata.time_created}</h3>
+          <h3>Now: {TimeNow.DateNow} {TimeNow.TimeNowFormatted}</h3>
+          <h3>{isLessThanTwoDaysDifference(eventdata.date_created, eventdata.time_created, TimeNow.DateNow, TimeNow.TimeNowFormatted)}</h3>
           <div className="flex flex-wrap justify-center gap-4 text-sm font-medium lg:text-lg lg:justify-start">
             {/* <!-- date --> */}
             <h3 className="tagBG">Date: {eventdata.scheduled_date}</h3>

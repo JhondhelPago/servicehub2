@@ -1,6 +1,6 @@
-class TimeUtils {
+const { DateTime } = require('luxon');
 
-   
+class TimeUtils {
 
   static _24HrTo12hr (time_string){
       const timeArray = time_string.split(':');
@@ -22,10 +22,62 @@ class TimeUtils {
       }
 
       return `${_12hr.toString()}:${Min} ${timeMark}`;
-      
   }
+
+  static TimeNow_24HR_format (){
+    const time = new Date();
+    const option = {
+      timeZone: 'Asia/Manila',
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+      hour12: false
+    }
+
+    const TimeNowFormatted = time.toLocaleTimeString('en-US', option);
+    const DateNow = time.toISOString().split('T')[0];;
+    return {TimeNowFormatted, DateNow};
+  }
+
 }
 
+class HotPostUtils {
+
+  static TimeNow_24HR_format() {
+    const time = new Date();
+    const options = {
+      timeZone: 'Asia/Manila',
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+      hour12: false
+    };
+
+    const TimeNowFormatted = time.toLocaleTimeString('en-US', options);
+    const DateNow = time.toISOString().split('T')[0];
+    return { TimeNowFormatted, DateNow };
+  }
+
+  static HotChecker(dateString, timeString) {
+    // Combine date and time strings
+    const dateTimeString = `${dateString}T${timeString}`;
+    
+    // Parse the given date-time
+    const givenDateTime = DateTime.fromISO(dateTimeString, { zone: 'Asia/Manila' });
+    
+    // Get the current date-time in Manila
+    const now = DateTime.now().setZone('Asia/Manila');
+    
+    // Calculate the difference in days
+    const diffInDays = now.diff(givenDateTime, 'days').days;
+    
+    // Check if the difference is more than 2 days
+
+    return diffInDays < 2;
+    // return 100;
+  }
+
+}
 class ImageStringUtils {
 
   static ToArray(image_string){
@@ -199,6 +251,22 @@ const DisabilityJSON = {
 
 };
 
+function isLessThanTwoDaysDifference(createdDateString, createdTimeString, nowDateString, nowTimeString) {
+  // Combine date and time strings
+  const createdDateTimeString = `${createdDateString}T${createdTimeString}`;
+  const nowDateTimeString = `${nowDateString}T${nowTimeString}`;
+  
+  // Parse the given date-times
+  const createdDateTime = DateTime.fromISO(createdDateTimeString, { zone: 'Asia/Manila' });
+  const nowDateTime = DateTime.fromISO(nowDateTimeString, { zone: 'Asia/Manila' });
+  
+  // Calculate the difference in days
+  const diffInDays = nowDateTime.diff(createdDateTime, 'days').days;
+  
+  // Check if the difference is less than 2 days
+  return diffInDays < 2
+}
+
 module.exports = {
   TimeUtils,
   ImageStringUtils,
@@ -206,5 +274,7 @@ module.exports = {
   StringManipulate,
   sampleEdit,
   DisabilityJSON,
+  HotPostUtils,
+  isLessThanTwoDaysDifference
 }
 

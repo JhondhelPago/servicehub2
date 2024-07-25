@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { ClientUserContext } from './ClientUserContext.jsx';
 import axios from 'axios';
 import nav_logo from '../assets/nav logo dark.png';
-
+import { TimeUtils } from '../utils.js';
 // Import components
 import EventPostComponent from '../components/HomeComponents/event_post_component.jsx';
 import JobPostComponent from '../components/HomeComponents/job_post_component.jsx';
@@ -30,6 +30,9 @@ const UserHomepage = () => {
 
     const [isNavOpen, setIsNavOpen] = useState(false);
 
+    //time reference from the hotpost/ current time now
+    const [TimeNow, SetTimeNow] = useState(null);
+
     //fetching the Eventpost from the database
     const FetchEventData = async () => {
         try {
@@ -38,6 +41,8 @@ const UserHomepage = () => {
             const data = response.data;
             console.log(data);
             SetEventData(data);
+            //updating the time reference
+            SetTimeNow(TimeUtils.TimeNow_24HR_format());
         } catch (error) {
             console.error(error);
         }
@@ -51,6 +56,8 @@ const UserHomepage = () => {
             const data = response.data;
             console.log(data);
             SetJobData(data);
+            //updating the time reference
+            SetTimeNow(TimeUtils.TimeNow_24HR_format());
         } catch (error) {
             console.log(error);
         }
@@ -177,7 +184,7 @@ const UserHomepage = () => {
                                 console.log(`boolean if this post id is in the array of registered ${eventItem.id} : ` + event_registry.includes(eventItem.id));
                                 if (eventItem.archive_status == 'false') {
                                     return (
-                                        <EventPostComponent key={eventItem.id} eventdata={eventItem} RegistredBoolean={event_registry.includes(eventItem.id)} ReInvokeFetchRegistry={FetchRegistry}></EventPostComponent>
+                                        <EventPostComponent key={eventItem.id} eventdata={eventItem} RegistredBoolean={event_registry.includes(eventItem.id)} ReInvokeFetchRegistry={FetchRegistry} TimeNow={TimeNow}></EventPostComponent>
                                     )
                                 }
                             })}
@@ -189,7 +196,7 @@ const UserHomepage = () => {
                             {ActiveComponent === 'JobPosting' && JobData.map((jobItem) => {
                                 if (jobItem.archive_status == 'false') {
                                     return (
-                                        <JobPostComponent key={jobItem.id} jobdata={jobItem} RegisteredBoolean={job_registry.includes(jobItem.id)} ReInvokeFetchRegistry={FetchRegistry}></JobPostComponent>
+                                        <JobPostComponent key={jobItem.id} jobdata={jobItem} RegisteredBoolean={job_registry.includes(jobItem.id)} ReInvokeFetchRegistry={FetchRegistry} TimeNow={TimeNow}></JobPostComponent>
                                     )
                                 }
                             })}
