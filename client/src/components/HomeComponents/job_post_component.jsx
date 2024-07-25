@@ -6,6 +6,7 @@ import axios from "axios";
 import sample_img from '../../assets/sample_img.jpg';
 import { Carousel } from "react-responsive-carousel";
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
+import { UNSAFE_DataRouterStateContext } from "react-router-dom";
 
 const JobPostComponent = ({ jobdata, RegisteredBoolean, ReInvokeFetchRegistry }) => {
 
@@ -54,10 +55,24 @@ const JobPostComponent = ({ jobdata, RegisteredBoolean, ReInvokeFetchRegistry })
     SetForDisabilities(strTargetGroup.split(','));
   }
 
+  const [ImageArray, SetImageArray] = useState([]);
+
+  const ImageStringToArray = () => {
+    const strImage = jobdata.imagefiles;
+    const strImageArray = strImage.split(',');;
+
+    SetImageArray(strImageArray);
+
+  }
+
   useEffect(() => {
     SetJoinedStatus(RegisteredBoolean);
     Convert_strTargetGroupToArray();
   }, [RegisteredBoolean]);
+
+  useEffect(() => {
+    ImageStringToArray();
+  }, [])
 
   return (
     <>
@@ -141,26 +156,26 @@ const JobPostComponent = ({ jobdata, RegisteredBoolean, ReInvokeFetchRegistry })
 
           {/* Carousel component link */}
           {/* https://cloudinary.com/blog/add-a-responsive-image-carousel-to-your-react-app */}
-          <Carousel
-            useKeyboardArrows={true}
-            autoPlay={true}
-            infiniteLoop={true}
-          >
-            {(() => {
-              let ImageArray = ImageStringUtils.ToArray(jobdata.imagefiles);
-
-              return ImageArray.map((filename, index) => (
-                <img key={index} className="object-cover w-full h-full rounded-md" alt="sample_file" src={filename} />
-              ));
-
-            })()}
-
-            {/* <img className="object-cover w-full h-full rounded-md" alt="sample_file" src={require(`../../../../server/FileUpload/${ImageStringUtils.FirstImageElement(jobdata.imagefiles)}`)} /> */}
-            {/* <img className="object-cover w-full h-full rounded-md" alt="sample_file" src={require(`../../assets/sample2.jpg`)} /> */}
-          </Carousel>
+          {ImageArray && ImageArray.map((filename) => {
+            if(filename != ''){
+              return (
+                <>
+                  <Carousel
+                  useKeyboardArrows={true}
+                  autoPlay={true}
+                  infiniteLoop={true}
+                  >
+                    
+                    <img className="object-cover w-full h-full rounded-md" alt="sample_file" src={filename} />
+                    
+                  </Carousel>  
+            
+                </>
+              )
+            }
+          })}
 
         </div>
-        {/* <!-- join btn --> */}
       </div>
     </>
   )

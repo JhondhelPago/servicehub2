@@ -146,7 +146,6 @@ const PostForm = ({ onClick }) => {
                     <div className="flex flex-col grow">
                         <div className="flex items-center justify-between gap-2 py-5 pl-5 mb-3">
                             <h1 className="flex text-2xl font-medium md:text-4xl">Create Post</h1>
-                            <p>{AdminId}</p>
                         </div>
 
                         <div className="flex flex-col gap-5 pl-5 md:mx-10">

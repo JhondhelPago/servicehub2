@@ -53,12 +53,25 @@ const EventPostComponent = ({ eventdata, RegistredBoolean, ReInvokeFetchRegistry
     SetForDisabilities(strTargetGroup.split(','));
   }
 
+  const [ImageArray, SetImageArray] = useState([]);
+
+  const ImageStringToArray = () => {
+    const strImage = eventdata.imagefiles;
+    const ArrayImage = strImage.split(',');
+
+    SetImageArray(ArrayImage);
+
+  }
+
 
   useEffect(() => {
     SetJoinedStatus(RegistredBoolean);
     Convert_strTargetGroupToArray();
   }, [RegistredBoolean]);
 
+  useEffect(() => {
+    ImageStringToArray();
+  }, [])
 
  
 
@@ -144,18 +157,25 @@ const EventPostComponent = ({ eventdata, RegistredBoolean, ReInvokeFetchRegistry
           {/* <img className="object-cover w-full h-full rounded-md" src={require(`../../../../server/FileUpload/${ImageStringUtils.FirstImageElement(eventdata.imagefiles)}`)} alt="img" /> */}
           {/* Carousel component link */}
           {/* https://cloudinary.com/blog/add-a-responsive-image-carousel-to-your-react-app */}
-          <Carousel
-            useKeyboardArrows={true}
-            autoPlay={true}
-            infiniteLoop={true}
-          >
-            {(() => {
-              let ImageArray = ImageStringUtils.ToArray(eventdata.imagefiles);
-              return ImageArray.map((filename, index) => (
-                <img key={index} className="object-cover w-full h-full rounded-md" alt="sample_file" src={filename} />
-              ));
-            })()}
-          </Carousel>
+
+          {ImageArray && ImageArray.map((filename) => {
+            if(filename != ''){
+              return (
+                <>
+                  <Carousel
+                  useKeyboardArrows={true}
+                  autoPlay={true}
+                  infiniteLoop={true}
+                  >
+                    
+                    <img className="object-cover w-full h-full rounded-md" alt="sample_file" src={filename} />
+                    
+                  </Carousel>  
+            
+                </>
+              )
+            }
+          })}
         </div>
       </div>
     </>

@@ -85,10 +85,10 @@ const Profilepage = () => {
             </tr>
             <tr>
               <th className="p-5 border-b border-r border-darkColor">
-                District
+                Disability
               </th>
               <td className="w-full p-5 border-b border-darkColor">
-                {ClientData && `${ClientData[0].district}`}
+                {ClientData && `${ClientData[0].disability}`}
               </td>
             </tr>
             <tr>
