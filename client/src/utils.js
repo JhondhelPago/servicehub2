@@ -251,21 +251,54 @@ const DisabilityJSON = {
 
 };
 
-function isLessThanTwoDaysDifference(createdDateString, createdTimeString, nowDateString, nowTimeString) {
-  // Combine date and time strings
-  const createdDateTimeString = `${createdDateString}T${createdTimeString}`;
-  const nowDateTimeString = `${nowDateString}T${nowTimeString}`;
+// function isLessThanTwoDaysDifference(createdDateString, createdTimeString, nowDateString, nowTimeString) {
+//   // Combine date and time strings
+//   const createdDateTimeString = `${createdDateString}T${createdTimeString}`;
+//   const nowDateTimeString = `${nowDateString}T${nowTimeString}`;
   
-  // Parse the given date-times
-  const createdDateTime = DateTime.fromISO(createdDateTimeString, { zone: 'Asia/Manila' });
-  const nowDateTime = DateTime.fromISO(nowDateTimeString, { zone: 'Asia/Manila' });
+//   // Parse the given date-times
+//   const createdDateTime = DateTime.fromISO(createdDateTimeString, { zone: 'Asia/Manila' });
+//   const nowDateTime = DateTime.fromISO(nowDateTimeString, { zone: 'Asia/Manila' });
   
-  // Calculate the difference in days
-  const diffInDays = nowDateTime.diff(createdDateTime, 'days').days;
+//   // Calculate the difference in days
+//   const diffInDays = nowDateTime.diff(createdDateTime, 'days').days;
   
-  // Check if the difference is less than 2 days
-  return diffInDays < 2
+//   // Check if the difference is less than 2 days
+//   return diffInDays < 2
+// }
+
+function isLessThanTwoDaysDifference(created, now) {
+  const createdTime = new Date(created);
+  const nowTime = new Date(now);
+
+  const timeDifference = nowTime - createdTime;
+  // return timeDifference < 2 * 24 * 60 * 60 * 1000;
+  return timeDifference;
 }
+
+function convertToMilliseconds(dateString) {
+  const date = new Date(dateString);
+  return date.getTime();
+}
+
+function HotPostChecker(TimeCreatedStr, CurrentTimeBasedStr){
+
+  const day_num = 2; // number of days to defined the post is new
+
+  const msLimit = day_num * 24 * 60 * 60 * 1000;
+
+  const ms_TimeCreatedStr = convertToMilliseconds(TimeCreatedStr);
+
+  const ms_CurrentTimeBasedStr = convertToMilliseconds(CurrentTimeBasedStr);
+
+
+  const time_diff = ms_CurrentTimeBasedStr - ms_TimeCreatedStr;
+  
+  return time_diff < msLimit;
+  
+}
+
+
 
 module.exports = {
   TimeUtils,
@@ -275,6 +308,8 @@ module.exports = {
   sampleEdit,
   DisabilityJSON,
   HotPostUtils,
-  isLessThanTwoDaysDifference
+  isLessThanTwoDaysDifference,
+  convertToMilliseconds,
+  HotPostChecker
 }
 

@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { ClientUserContext } from './ClientUserContext.jsx';
 import axios from 'axios';
 import nav_logo from '../assets/nav logo dark.png';
-import { TimeUtils } from '../utils.js';
+import { HotPostChecker, TimeUtils } from '../utils.js';
 // Import components
 import EventPostComponent from '../components/HomeComponents/event_post_component.jsx';
 import JobPostComponent from '../components/HomeComponents/job_post_component.jsx';
@@ -30,8 +30,17 @@ const UserHomepage = () => {
 
     const [isNavOpen, setIsNavOpen] = useState(false);
 
-    //time reference from the hotpost/ current time now
-    const [TimeNow, SetTimeNow] = useState(null);
+    //time reference from the hotpost/ current time now -> event
+    const [TimeNow_Event, SetTimeNow_Event] = useState(null);
+
+    //time reference from the hotpost/ current time now -> job
+    const [TimeNow_Job, SetTimeNow_Job] = useState(null);
+
+    const [EventHot, SetEventHot] = useState(0);
+
+    const [JobHot, SetJobHot] = useState(0);
+
+
 
     //fetching the Eventpost from the database
     const FetchEventData = async () => {
@@ -39,10 +48,25 @@ const UserHomepage = () => {
             // getting the data from the middle server
             const response = await axios.get(`/fetchingEventPost/${clientuserId}`);
             const data = response.data;
-            console.log(data);
+
+            const Time_Now = TimeUtils.TimeNow_24HR_format();
+
             SetEventData(data);
             //updating the time reference
-            SetTimeNow(TimeUtils.TimeNow_24HR_format());
+            SetTimeNow_Event(Time_Now);
+
+
+            //initializing to 0 count of EventHot
+            let HotEvent = 0;
+
+            data.map((eventdata) => {
+                
+                (HotPostChecker(`${eventdata.date_created} ${eventdata.time_created}`, `${Time_Now.DateNow} ${Time_Now.TimeNowFormatted}`)) && HotEvent++;
+
+            });
+
+            SetEventHot(HotEvent);
+
         } catch (error) {
             console.error(error);
         }
@@ -54,10 +78,21 @@ const UserHomepage = () => {
             //using the axios get the data from the server
             const response = await axios.get(`/fetchingJobPost/${clientuserId}`);
             const data = response.data;
-            console.log(data);
+  
+            const Time_Now = TimeUtils.TimeNow_24HR_format();
+            
             SetJobData(data);
             //updating the time reference
-            SetTimeNow(TimeUtils.TimeNow_24HR_format());
+            SetTimeNow_Job(Time_Now);
+
+            let HotJob = 0;
+
+            data.map((jobdata) => {
+                (HotPostChecker(`${jobdata.date_created} ${jobdata.time_created}`, `${Time_Now.DateNow} ${Time_Now.TimeNowFormatted}`)) && HotJob++;
+            });
+
+            SetJobHot(HotJob);
+
         } catch (error) {
             console.log(error);
         }
@@ -133,7 +168,7 @@ const UserHomepage = () => {
                                 >
                                     Events
                                     {/* notif badge */}
-                                    <span className='px-2 py-1 ml-2 text-xs text-white bg-red-600 rounded-full'>99999</span>
+                                    <span className='px-2 py-1 ml-2 text-xs text-white bg-red-600 rounded-full'>{EventHot}</span>
                                 </button>
                                 <button
                                     className={`font-medium relative w-fit mx-auto ${ActiveComponent === 'JobPosting' ? 'activeUserLink' : 'userNavHover'}`}
@@ -141,7 +176,7 @@ const UserHomepage = () => {
                                 >
                                     Find a Job
                                     {/* notif badge */}
-                                    <span className='px-2 py-1 ml-2 text-xs text-white bg-red-600 rounded-full'>99999</span>
+                                    <span className='px-2 py-1 ml-2 text-xs text-white bg-red-600 rounded-full'>{JobHot}</span>
                                 </button>
                                 <button
                                     className={`font-medium relative w-fit mx-auto ${ActiveComponent === 'Chat' ? 'activeUserLink' : 'userNavHover'}`}
@@ -181,10 +216,10 @@ const UserHomepage = () => {
                                 <div className='mx-auto text-3xl font-semibold xl:hidden font-noto'>Events</div>
                             )}
                             {ActiveComponent === 'EventPosting' && EventData.map((eventItem) => {
-                                console.log(`boolean if this post id is in the array of registered ${eventItem.id} : ` + event_registry.includes(eventItem.id));
+                                // console.log(`boolean if this post id is in the array of registered ${eventItem.id} : ` + event_registry.includes(eventItem.id));
                                 if (eventItem.archive_status == 'false') {
                                     return (
-                                        <EventPostComponent key={eventItem.id} eventdata={eventItem} RegistredBoolean={event_registry.includes(eventItem.id)} ReInvokeFetchRegistry={FetchRegistry} TimeNow={TimeNow}></EventPostComponent>
+                                        <EventPostComponent key={eventItem.id} eventdata={eventItem} RegistredBoolean={event_registry.includes(eventItem.id)} ReInvokeFetchRegistry={FetchRegistry} TimeNow_Event={TimeNow_Event}></EventPostComponent>
                                     )
                                 }
                             })}
@@ -196,7 +231,7 @@ const UserHomepage = () => {
                             {ActiveComponent === 'JobPosting' && JobData.map((jobItem) => {
                                 if (jobItem.archive_status == 'false') {
                                     return (
-                                        <JobPostComponent key={jobItem.id} jobdata={jobItem} RegisteredBoolean={job_registry.includes(jobItem.id)} ReInvokeFetchRegistry={FetchRegistry} TimeNow={TimeNow}></JobPostComponent>
+                                        <JobPostComponent key={jobItem.id} jobdata={jobItem} RegisteredBoolean={job_registry.includes(jobItem.id)} ReInvokeFetchRegistry={FetchRegistry} TimeNow_Job={TimeNow_Job}></JobPostComponent>
                                     )
                                 }
                             })}
