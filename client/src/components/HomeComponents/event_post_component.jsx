@@ -6,6 +6,7 @@ import { CodeGenerator } from "../../utils";
 import axios from "axios";
 import { Carousel } from "react-responsive-carousel";
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
+import nav_logo from '../../assets/icon logo.png';
 
 const EventPostComponent = ({ eventdata, RegistredBoolean, ReInvokeFetchRegistry, TimeNow_Event }) => {
   const { clientuserId } = useContext(ClientUserContext);
@@ -18,14 +19,14 @@ const EventPostComponent = ({ eventdata, RegistredBoolean, ReInvokeFetchRegistry
     const thisEventId = eventdata.id;
     const thisUserId = clientuserId;
     const generatedCode = CodeGenerator.EventCodeGenerator(thisEventId, thisUserId);
-    
+
 
     try {
       const response = await axios.post(`/UserRegister/Event`, { TicketCode: generatedCode });
       if (response.status >= 200 && response.status <= 299) {
-        
 
-        if(response.data.message == true){
+
+        if (response.data.message == true) {
 
           console.log(`message:`, response.data.message);
           SetJoinedStatus(true);
@@ -34,7 +35,7 @@ const EventPostComponent = ({ eventdata, RegistredBoolean, ReInvokeFetchRegistry
           ReInvokeFetchRegistry();
 
 
-        }else{
+        } else {
           alert('no ticket available right now');
           setIsModalOpen(false);
           ReInvokeFetchRegistry();
@@ -81,15 +82,15 @@ const EventPostComponent = ({ eventdata, RegistredBoolean, ReInvokeFetchRegistry
   useEffect(() => {
     ImageStringToArray();
     verifyHotPost();
-    
+
   }, [])
 
- 
+
 
   return (
     <>
       {/* <!-- event post container --> */}
-      <div className="flex flex-wrap gap-4 p-4 bg-gray-50 xl:flex-nowrap eventCard">
+      <div className="flex flex-wrap gap-4 p-4 mb-2 bg-gray-50 xl:flex-nowrap eventCard">
         {/* <!-- event info container --> */}
         <div className="flex flex-col w-full gap-4 text-center lg:text-start xl:w-1/2">
           {/* <!-- title --> */}
@@ -97,11 +98,13 @@ const EventPostComponent = ({ eventdata, RegistredBoolean, ReInvokeFetchRegistry
           
             pa modify ako ng New badge dito vin
           */}
-          {IsHot && (<h3 className="text-red-600">New Post</h3>)}
 
           <h1 className="text-4xl font-semibold lg:text-6xl text-balance font-noto">{eventdata.event_title}</h1>
           {/* <h3>{isLessThanTwoDaysDifference("2024-7-25T11:24:24", "2024-07-25T14:52:03")}</h3> */}
           <div className="flex flex-wrap justify-center gap-4 text-sm font-medium lg:text-lg lg:justify-start">
+            {IsHot && (
+              <span className="px-4 py-2 text-white bg-red-600 rounded font-poppins scaleHover">New Event</span>
+            )}
             {/* <!-- date --> */}
             <h3 className="tagBG">Date: {eventdata.scheduled_date}</h3>
             {/* <!-- time --> */}
@@ -111,7 +114,7 @@ const EventPostComponent = ({ eventdata, RegistredBoolean, ReInvokeFetchRegistry
             {/* <!-- Ticket slots --> */}
             <h3 className="tagBG">Ticket slots: {eventdata.registered_tickets}/{eventdata.ticket_limit}</h3>
           </div>
-          <p className="text-primary-light text-2xl">For members with the following disability:</p>
+          <p className="mt-4 text-lg text-gray-600">For members with the following disability:</p>
           <div className="flex flex-wrap justify-center gap-4 text-sm font-medium lg:text-lg lg:justify-start">
             {/* <!-- target group --> */}
             {ForDisabilities && ForDisabilities.map(disability => (
@@ -176,24 +179,25 @@ const EventPostComponent = ({ eventdata, RegistredBoolean, ReInvokeFetchRegistry
           {/* Carousel component link */}
           {/* https://cloudinary.com/blog/add-a-responsive-image-carousel-to-your-react-app */}
 
-          {ImageArray && ImageArray.map((filename) => {
-            if(filename != ''){
-              return (
-                <>
-                  <Carousel
-                  useKeyboardArrows={true}
-                  autoPlay={true}
-                  infiniteLoop={true}
-                  >
-                    
+          <Carousel
+            useKeyboardArrows={true}
+            autoPlay={true}
+            infiniteLoop={true}
+          >
+            {ImageArray && ImageArray.map((filename) => {
+              if (filename != '') {
+                return (
+                  <>
                     <img className="object-cover w-full h-full rounded-md" alt="sample_file" src={filename} />
-                    
-                  </Carousel>  
-            
-                </>
-              )
-            }
-          })}
+                  </>
+                )
+              } else {
+                return (
+                  <img className="object-contain w-full h-full p-5 opacity-50 select-none" src={nav_logo} alt="logo" />
+                )
+              }
+            })}
+          </Carousel>
         </div>
       </div>
     </>
