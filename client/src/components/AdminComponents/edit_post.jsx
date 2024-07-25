@@ -183,7 +183,7 @@ const EditFormComponent = (props) => {
                 <div className="flex flex-col grow">
                     <div className="flex items-center justify-between gap-2 py-5 pl-5 mb-3 ">
                         <h1 className="flex text-2xl font-medium md:text-4xl">
-                            Edit Post {props.EditingData.target_group}
+                            Editing Post 
                         </h1>
                     </div>
                     <div className="flex flex-col gap-5 pl-5 md:mx-10 ">
@@ -205,18 +205,19 @@ const EditFormComponent = (props) => {
                                     <input className="w-full px-3 py-2 bg-white border rounded-lg border-darkColor" name="location" placeholder="Location" value={location} onChange={(e) => { setLocation(e.target.value) }} />
                                 </div>
                                 {/* <!-- this area is for file uploading --> */}
-                                <div className="">
+                                {/* <div className=""> */}
                                     {/* <!-- image here --> */}
-                                    <div className="relative flex">
+                                    {/* <div className="relative flex"> */}
                                         {/* <!-- Image display sample here  --> */}
                                         {/* <!-- upload button --> */}
-                                        <div className="flex items-center justify-center w-full bg-white border rounded-lg border-darkColor h-52 md:w-52" >
+                                        {/* <div className="flex items-center justify-center w-full bg-white border rounded-lg border-darkColor h-52 md:w-52" > */}
                                             {/* <!-- image upload icon --> */}
-                                            <img className="h-20" src={upload_icon} alt="upload image icon" />
-                                            <input id="imageInput" className="absolute inset-0 opacity-0 cursor-pointer" type="file" name="uploadImages" placeholder="upload file" multiple />
-                                        </div>
-                                    </div>
-                                </div>
+                                            {/* <img className="h-20" src={upload_icon} alt="upload image icon" /> */}
+                                            {/* <input id="imageInput" className="absolute inset-0 opacity-0 cursor-pointer" type="file" name="uploadImages" placeholder="upload file" multiple /> */}
+                                        {/* </div> */}
+                                    {/* </div> */}
+                                {/* </div> */}
+                             
                             </div>
                             {/* <!-- Textarea for event description --> */}
                             <textarea className="px-3 py-2 border rounded-md border-darkColor" type="textarea" name="description" placeholder="Event Description" rows="10" value={description} onChange={(e) => { setDescription(e.target.value) }}></textarea>
@@ -263,7 +264,7 @@ const EditFormComponent = (props) => {
                         {/* <img className='mt-5 mr-5 min-w[300px] rounded-lg' src={require(`../../../../server/FileUpload${filename}`)}></img> */}
 
                         {ImageFile && ImageFile.map((filename) => (
-                            <img className='mt-5 mr-5 min-w[300px] rounded-lg' src={require(`../../../../server/FileUpload/${filename}`)}></img>
+                            <img className='mt-5 mr-5 min-w[300px] rounded-lg' src={filename}></img>
                         ))}
                     </div>
                 </div>
