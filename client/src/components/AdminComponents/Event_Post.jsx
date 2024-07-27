@@ -21,7 +21,7 @@ const EventPosting = ({ TriggerSetEditData }) => {
     const eventData = async () => {
 
         try {
-            const response = await fetch('/fetchingEventPost');
+            const response = await fetch('/Manage/fetchingEventPost');
             const ArrayData = await response.json();
 
             setData(ArrayData)
