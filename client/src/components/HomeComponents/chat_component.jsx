@@ -26,7 +26,7 @@ const ChatSection = () => {
     return (
         <>
             {/* <div id="mainContentContainer" className="pb-0.5 w-full h-screen flex flex-col flex-grow bg-gray-100 text-darkColor overflow-hidden"> */}
-            <div id="mainContentContainer" Class="pb-5 flex flex-col flex-grow overflow-auto text-darkColor">
+            <div id="mainContentContainer" Class="pb-5 pt-2 flex flex-col flex-grow overflow-auto text-darkColor">
                 {/* <div className="sticky top-0 flex items-center justify-between gap-2 px-5 py-5 mb-5 bg-gray-100">
                     <h1 className="text-2xl font-medium md:text-4xl">Manage Inquiries</h1>
                     <!-- search bar -->
