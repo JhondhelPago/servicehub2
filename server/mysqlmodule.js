@@ -200,7 +200,8 @@ async function fetchEvent() {
   try {
     const [row] = await pool.execute(`
       SELECT * 
-      FROM event_post 
+      FROM event_post
+      WHERE archive_status = 'false' 
       ORDER BY id DESC
       `);
 
@@ -220,8 +221,62 @@ async function fetchEvent() {
   }
 }
 
+async function fetchEventManage(){
+  
+  try{
+    const [row] = await pool.execute(`
+      SELECT * 
+      FROM event_post
+      ORDER BY id DESC
+      `);
+
+    let newRow = row.map((record) => {
+      record.imagefiles = StringManipulate.RemoveQuotation(record.imagefiles);
+      record.target_group = StringManipulate.RemoveQuotation(
+        record.target_group
+      );
+
+      return record;
+    });
+
+    return newRow;
+  }catch(error){
+
+  }
+}
+
 async function fetchJob() {
   try {
+    const [row] = await pool.execute(
+      `SELECT job_post.* , admin.firstName, admin.lastName 
+      FROM job_post 
+      INNER JOIN admin ON job_post.creator = admin.id COLLATE utf8mb4_general_ci 
+      WHERE archive_status = 'false'
+      ORDER BY job_post.id DESC
+      `
+    );
+
+    //cleaning the uncertain format of column value
+
+    let newRow = row.map(function (record) {
+      record.imagefiles = StringManipulate.RemoveQuotation(record.imagefiles);
+      record.target_group = StringManipulate.RemoveQuotation(
+        record.target_group
+      );
+
+      return record;
+    });
+
+    return newRow;
+  } catch (error) {
+    console.log("Error in 'fetchJob() function' in mysqlmodule.js");
+    throw error;
+  }
+}
+
+async function fetchJobManage(){
+
+  try{
     const [row] = await pool.execute(
       `SELECT job_post.* , admin.firstName, admin.lastName 
       FROM job_post 
@@ -242,8 +297,8 @@ async function fetchJob() {
     });
 
     return newRow;
-  } catch (error) {
-    console.log("Error in 'fetchJob() function' in mysqlmodule.js");
+    
+  }catch(error){
     throw error;
   }
 }
@@ -1088,7 +1143,9 @@ module.exports = {
   get_adminId, //gettig the adminId
   post_EventJob, //inserting the Event or Job data information to the database
   fetchEvent,
+  fetchEventManage,
   fetchJob,
+  fetchJobManage,
   job_post_edit,
   deletePost,
   FetchAdminInboxFromClient,

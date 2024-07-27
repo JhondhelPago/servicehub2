@@ -21,7 +21,7 @@ const JobPosting = ({ TriggerSetEditData }) => {
     const jobData = async () => {
 
         try {
-            const response = await fetch('/fetchingJobPost');
+            const response = await fetch('/Manage/fetchingJobPost');
             const ArrayData = await response.json();
 
             setData(ArrayData)
