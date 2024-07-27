@@ -36,6 +36,7 @@ const InboxComponent = () => {
 
     }, [])
 
+    const [isMailViewOpen, setIsMailViewOpen] = useState(false)
 
     const [MailOverViewBoolean, SetMailOverViewBoolean] = useState(null);
 
@@ -57,6 +58,7 @@ const InboxComponent = () => {
             await FetchConvo_Admin_Client(clientId);
         }
 
+        setIsMailViewOpen(true);
 
     }
 
@@ -64,6 +66,7 @@ const InboxComponent = () => {
         SetMailOverViewBoolean(null);
         SetMailOverViewClientId(null);
         SetMailObjsArray(null);
+        setIsMailViewOpen(false);
     }
 
 
@@ -206,7 +209,7 @@ const InboxComponent = () => {
                         </div>
                     </div>
                 ) : (
-                    <div className="flex flex-col w-full overflow-hidden border border-l min-w-80 border-darkColor rounded-s">
+                    <div className={`w-full min-w-80 flex-col overflow-hidden border border-l border-darkColor ${isMailViewOpen ? 'lg:flex hidden bg-black' : 'flex bg-black'}}`}>
                         <div className="flex justify-between w-full p-2 border-b border-darkColor bg-extra-extra-light">
                             <div className="flex gap-2">
                                 <input type="checkbox" />
@@ -221,7 +224,11 @@ const InboxComponent = () => {
 
                             {InboxClientIds && InboxClientIds.map((clientId) => {
                                 return (
-                                    <MailListView clientId={clientId} ClickInboxAction={ClickInboxAction} ></MailListView>
+                                    <MailListView
+                                        clientId={clientId}
+                                        ClickInboxAction={ClickInboxAction}
+                                        setIsMailViewOpen={setIsMailViewOpen}
+                                    ></MailListView>
                                 )
                             })}
 
@@ -263,7 +270,16 @@ const InboxComponent = () => {
 
                 )}
                 {MailOverViewBoolean && !viewProfile && (
-                    <MailOverView MailObjsArray={MailObjsArray} ContactClientId={MailOverViewClientId} handleViewProfile={handleViewProfile} CloseMailOverViewAction={CloseMailOverViewAction} FetchConvo_Admin_Client={FetchConvo_Admin_Client}></MailOverView>
+                    <MailOverView
+                        MailObjsArray={MailObjsArray}
+                        ContactClientId={MailOverViewClientId}
+                        handleViewProfile={handleViewProfile}
+                        CloseMailOverViewAction={CloseMailOverViewAction}
+                        ClickInboxAction={ClickInboxAction}
+                        FetchConvo_Admin_Client={FetchConvo_Admin_Client}
+                        setIsMailViewOpen={setIsMailViewOpen}
+                        isMailViewOpen={isMailViewOpen}
+                    ></MailOverView>
                 )}
 
             </div>
@@ -274,7 +290,7 @@ const InboxComponent = () => {
 
 
 // component definition of the MailListView
-const MailListView = ({ clientId, ClickInboxAction }) => {
+const MailListView = ({ clientId, ClickInboxAction, setIsMailViewOpen }) => {
 
 
 
@@ -286,7 +302,10 @@ const MailListView = ({ clientId, ClickInboxAction }) => {
 
     return (
         <>
-            <div className="grid grid-cols-7 gap-4 p-2 border-b border-darkColor hoverMailItem group/del" onClick={() => { ClickInboxAction(ClientIdReference) }}>
+            <div className="grid grid-cols-7 gap-4 p-2 border-b border-darkColor hoverMailItem group/del" onClick={() => {
+                ClickInboxAction(ClientIdReference)
+                setIsMailViewOpen(true)
+            }}>
                 <label className="flex col-span-2 gap-2" htmlFor="">
                     <input type="checkbox" />
                     {/* <!-- from --> */}
@@ -306,7 +325,7 @@ const MailListView = ({ clientId, ClickInboxAction }) => {
 
 
 // component definition of the MailOverView
-const MailOverView = ({ MailObjsArray, ContactClientId, handleViewProfile, CloseMailOverViewAction, FetchConvo_Admin_Client }) => {
+const MailOverView = ({ MailObjsArray, ContactClientId, handleViewProfile, CloseMailOverViewAction, setIsMailViewOpen, isMailViewOpen, FetchConvo_Admin_Client, ClickInboxAction }) => {
 
 
 
@@ -349,7 +368,7 @@ const MailOverView = ({ MailObjsArray, ContactClientId, handleViewProfile, Close
             {/*  vin need ko dito ng div na pag lalagyan ng close button 
                 pag nag clcick sa button mag disappear yung MailOverView
             */}
-            <div ref={Overflow_InnerInbox} className="relative flex flex-col w-3/4 overflow-auto border-t border-b border-r border-darkColor">
+            <div ref={Overflow_InnerInbox} className={`relative flex flex-col overflow-auto border-t border-b border-r border-darkColor ${isMailViewOpen ? 'lg:w-3/4 w-full lg:border-l-0 border-l' : ''}`}>
 
                 <div className="sticky top-0 z-10 w-full">
                     <div className="flex justify-between w-full p-2 border-b border-darkColor bg-extra-extra-light">
@@ -360,12 +379,22 @@ const MailOverView = ({ MailObjsArray, ContactClientId, handleViewProfile, Close
                         {/* <p className="">Subj</p> */}
 
                         {/* refresh btn */}
-                        <button className="ml-auto mr-5 rounded hover:bg-extra-light">
+                        <button className="ml-auto mr-5 rounded hover:bg-extra-light"
+                            onClick={() => {
+                                ClickInboxAction(ContactClientId);
+                                setIsMailViewOpen(true)
+                            }}
+                        >
                             <svg className="h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" d="M17.65 6.35A7.958 7.958 0 0 0 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08A5.99 5.99 0 0 1 12 18c-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4z" /></svg>
                         </button>
 
                         {/* close btn */}
-                        <button className="hover:text-red-600" onClick={CloseMailOverViewAction}>
+                        <button
+                            className="hover:text-red-600"
+                            onClick={() => {
+                                CloseMailOverViewAction()
+                                setIsMailViewOpen(false)
+                            }}>
                             <svg className="h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" d="M18.3 5.71a.996.996 0 0 0-1.41 0L12 10.59L7.11 5.7A.996.996 0 1 0 5.7 7.11L10.59 12L5.7 16.89a.996.996 0 1 0 1.41 1.41L12 13.41l4.89 4.89a.996.996 0 1 0 1.41-1.41L13.41 12l4.89-4.89c.38-.38.38-1.02 0-1.4" /></svg>
                         </button>
                     </div>
@@ -472,7 +501,7 @@ const MailInnerView = ({ MailObj }) => {
                     {ImageArray && ImageArray.map((filename) => (
                         <div className="mx-5">
                             {/* image */}
-                            <img className="max-h-[30vh] mb-3 w-fit h-fit object-contain rounded-md" src={filename} onClick={() => {openCloudinaryImg(filename)}}></img>
+                            <img className="max-h-[30vh] mb-3 w-full h-fit object-contain rounded-md cursor-pointer" src={filename} onClick={() => { openCloudinaryImg(filename) }}></img>
                         </div>
                     ))}
 
@@ -595,7 +624,7 @@ const MailInnerViewUserSender = ({ MailObj }) => {
                     {ImageArray && ImageArray.map((filename) => (
                         <div className="mx-5">
                             {/* image */}
-                            <img className="max-h-[30vh] mb-3 w-fit h-fit object-contain rounded-md" src={filename}  onClick={() => {openCloudinaryImg(filename)}}></img>
+                            <img className="max-h-[30vh] mb-3 w-full cursor-pointer h-fit object-contain rounded-md" src={filename} onClick={() => { openCloudinaryImg(filename) }}></img>
                         </div>
                     ))}
 

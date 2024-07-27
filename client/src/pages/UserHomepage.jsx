@@ -60,7 +60,7 @@ const UserHomepage = () => {
             let HotEvent = 0;
 
             data.map((eventdata) => {
-                
+
                 (HotPostChecker(`${eventdata.date_created} ${eventdata.time_created}`, `${Time_Now.DateNow} ${Time_Now.TimeNowFormatted}`)) && HotEvent++;
 
             });
@@ -78,9 +78,9 @@ const UserHomepage = () => {
             //using the axios get the data from the server
             const response = await axios.get(`/fetchingJobPost/${clientuserId}`);
             const data = response.data;
-  
+
             const Time_Now = TimeUtils.TimeNow_24HR_format();
-            
+
             SetJobData(data);
             //updating the time reference
             SetTimeNow_Job(Time_Now);
@@ -150,25 +150,26 @@ const UserHomepage = () => {
             <div className='min-h-screen bg-gray-100 min-w-screen'>
                 <div className="flex flex-col h-screen px-5 font-poppins text-darkColor">
                     {/* <!-- nav --> */}
-                    <nav className="container sticky top-0 grid items-center grid-cols-2 py-5 mx-auto bg-gray-100 xl:flex">
+                    <nav className="container sticky top-0 grid items-center grid-cols-2 mx-auto bg-opacity-5 xl:flex">
                         {/* <!-- logo container --> */}
                         <button className="" onClick={() => { SetSelectedComponent('EventPosting') }}>
-                            <img className="h-10 select-none" src={nav_logo} alt="logo" />
+                            <img className="h-10 select-none xl:my-5" src={nav_logo} alt="logo" />
                         </button>
                         {/* <!-- menu btn --> */}
-                        <button className="flex h-full ml-auto rounded xl:hidden text-primary-light focus:outline-none focus:ring-primary-light focus:ring-1" onClick={() => setIsNavOpen(!isNavOpen)}>
+                        <button className="flex h-10 my-5 ml-auto rounded xl:hidden text-primary-light focus:outline-none focus:ring-primary-light focus:ring-1" onClick={() => setIsNavOpen(!isNavOpen)}>
                             <svg className="h-full" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" d="M4 6a1 1 0 0 1 1-1h14a1 1 0 1 1 0 2H5a1 1 0 0 1-1-1m0 12a1 1 0 0 1 1-1h14a1 1 0 1 1 0 2H5a1 1 0 0 1-1-1m7-7a1 1 0 1 0 0 2h8a1 1 0 1 0 0-2z" /></svg>
                         </button>
                         {/* <!-- links container --> */}
-                        <div className={`col-span-2 font-medium xl:ml-auto xl:col-span-1 relative xl:flex ${isNavOpen ? '' : 'hidden'}`}>
-                            <ul className="flex flex-col pt-5 mx-auto font-bold text-center gap-7 w-fit xl:pt-0 xl:flex-row xl:gap-20">
+                        <div className={`col-span-2 font-medium xl:ml-auto xl:col-span-1 relative xl:flex ${isNavOpen ? 'shadow-lg p-5 rounded-lg bg-gray-50' : 'hidden'}`}>
+                            <ul className="flex flex-col mx-auto font-bold text-center gap-7 w-fit xl:flex-row xl:gap-20">
                                 <button
                                     className={`font-medium relative w-fit mx-auto ${ActiveComponent === 'EventPosting' ? 'activeUserLink' : 'userNavHover'}`}
                                     onClick={() => { SetSelectedComponent('EventPosting') }}
                                 >
                                     Events
                                     {/* notif badge */}
-                                    <span className='px-2 py-1 ml-2 text-xs text-white bg-red-600 rounded-full'>{EventHot}</span>
+                                    {/* <span className='px-2 py-1 ml-2 text-xs text-white bg-red-600 rounded-full'>{EventHot}</span> */}
+                                    {EventHot > 0 && ( <span className='px-2 py-1 ml-2 text-xs text-white bg-red-600 rounded-full'>{EventHot}</span>)}
                                 </button>
                                 <button
                                     className={`font-medium relative w-fit mx-auto ${ActiveComponent === 'JobPosting' ? 'activeUserLink' : 'userNavHover'}`}
@@ -176,7 +177,8 @@ const UserHomepage = () => {
                                 >
                                     Find a Job
                                     {/* notif badge */}
-                                    <span className='px-2 py-1 ml-2 text-xs text-white bg-red-600 rounded-full'>{JobHot}</span>
+                                    {/* <span className='px-2 py-1 ml-2 text-xs text-white bg-red-600 rounded-full'>{JobHot}</span> */}
+                                    {JobHot > 0 && (<span className='px-2 py-1 ml-2 text-xs text-white bg-red-600 rounded-full'>{JobHot}</span>)}
                                 </button>
                                 <button
                                     className={`font-medium relative w-fit mx-auto ${ActiveComponent === 'Chat' ? 'activeUserLink' : 'userNavHover'}`}
@@ -213,7 +215,7 @@ const UserHomepage = () => {
                         {/* <!-- event post container --> */}
                         <div className='flex flex-col gap-5 px-2 overflow-auto'>
                             {ActiveComponent == 'EventPosting' && (
-                                <div className='mx-auto text-3xl font-semibold xl:hidden font-noto'>Events</div>
+                                <div className='mx-auto mt-2 text-3xl font-semibold xl:hidden font-noto'>Events</div>
                             )}
                             {ActiveComponent === 'EventPosting' && EventData.map((eventItem) => {
                                 // console.log(`boolean if this post id is in the array of registered ${eventItem.id} : ` + event_registry.includes(eventItem.id));
@@ -226,7 +228,7 @@ const UserHomepage = () => {
                         </div>
                         <div className='flex flex-col gap-5 px-2 overflow-auto'>
                             {ActiveComponent == 'JobPosting' && (
-                                <div className='mx-auto text-3xl font-semibold xl:hidden font-noto'>Find a Job</div>
+                                <div className='mx-auto mt-2 text-3xl font-semibold xl:hidden font-noto'>Find a Job</div>
                             )}
                             {ActiveComponent === 'JobPosting' && JobData.map((jobItem) => {
                                 if (jobItem.archive_status == 'false') {
@@ -239,7 +241,7 @@ const UserHomepage = () => {
                         {/* InboxComponent */}
                         {ActiveComponent === 'Chat' && (<ChatSection></ChatSection>)}
 
-                        <div className='flex flex-col gap-5 px-2 overflow-auto'>
+                        <div className='flex flex-col gap-5 px-2 pt-2 overflow-auto'>
                             {ActiveComponent === 'Tickets' && (<TicketPage event_registry={event_registry} job_registry={job_registry}></TicketPage>)}
                         </div>
 
