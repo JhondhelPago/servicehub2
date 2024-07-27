@@ -168,7 +168,8 @@ const UserHomepage = () => {
                                 >
                                     Events
                                     {/* notif badge */}
-                                    <span className='px-2 py-1 ml-2 text-xs text-white bg-red-600 rounded-full'>{EventHot}</span>
+                                    {/* <span className='px-2 py-1 ml-2 text-xs text-white bg-red-600 rounded-full'>{EventHot}</span> */}
+                                    {EventHot > 0 && ( <span className='px-2 py-1 ml-2 text-xs text-white bg-red-600 rounded-full'>{EventHot}</span>)}
                                 </button>
                                 <button
                                     className={`font-medium relative w-fit mx-auto ${ActiveComponent === 'JobPosting' ? 'activeUserLink' : 'userNavHover'}`}
@@ -176,7 +177,8 @@ const UserHomepage = () => {
                                 >
                                     Find a Job
                                     {/* notif badge */}
-                                    <span className='px-2 py-1 ml-2 text-xs text-white bg-red-600 rounded-full'>{JobHot}</span>
+                                    {/* <span className='px-2 py-1 ml-2 text-xs text-white bg-red-600 rounded-full'>{JobHot}</span> */}
+                                    {JobHot > 0 && (<span className='px-2 py-1 ml-2 text-xs text-white bg-red-600 rounded-full'>{JobHot}</span>)}
                                 </button>
                                 <button
                                     className={`font-medium relative w-fit mx-auto ${ActiveComponent === 'Chat' ? 'activeUserLink' : 'userNavHover'}`}
