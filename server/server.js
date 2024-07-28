@@ -959,7 +959,7 @@ app.get('/ClientData/:id', async(req, res) =>{
 
         const clientInformation = await clientInformation(id);
 
-        res.send({'UserInformation' : clientInformation});  
+        res.send({'UserInformation' : clientInformation});    
 
     }catch(error){
         throw error;
