@@ -1040,7 +1040,7 @@ async function getJobRegistry(userId){
 }
 
 
-async function InsertTikcetCodeEvent(ticket_code){
+async function InsertTikcetCodeEvent(ticket_code, postId, userId){
 
   //divide the ticket into 3 parts
   // 1. event_id
@@ -1048,11 +1048,8 @@ async function InsertTikcetCodeEvent(ticket_code){
   //3. user_id
 
   const registration_code = ticket_code;
-  const ticket_code_array = ticket_code.split('-');
-
-  const event_id = ticket_code_array[0];
-  const code = ticket_code_array[1];
-  const user_id = ticket_code_array[2];
+  const event_id = postId;
+  const user_id = userId;
 
 
   //query here to insert data to the database at event_registry
@@ -1074,14 +1071,11 @@ async function InsertTikcetCodeEvent(ticket_code){
 
 }
 
-async function InsertTicketCodeJob(ticket_code){
+async function InsertTicketCodeJob(ticket_code, postId, userId){
 
   const registration_code = ticket_code;
-  const ticket_code_array = ticket_code.split('-');
-
-  const job_id = ticket_code_array[0];
-  const code = ticket_code_array[1];
-  const user_id = ticket_code_array[2];
+  const job_id = postId;
+  const user_id = userId;
 
 
   //query here to insert data to the database at job_registry
