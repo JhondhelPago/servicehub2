@@ -91,9 +91,21 @@ const InboxComponent = () => {
 
     const Fetch_this_ClientInfo = async(client_id) => { //this function will be a props of a child component
         try{
-
-
             //after fetching the json, the propeties will be assign to the useState variable
+
+            const response = await axios.get(`/ClientDataRequest/${client_id}`);
+            const ClientInformation = response.data[0];
+
+            SetUserId(client_id);
+            SetFirstName(ClientInformation.firstName);
+            SetMiddleName(ClientInformation.middleName);
+            SetLastName(ClientInformation.Lastname);
+            SetAge(ClientInformation.age);
+            SetGender(ClientInformation.gender);
+            SetDisability(ClientInformation.disability);
+            SetContact_No(ClientInformation.phone);
+            SetMemberStatus(ClientInformation.status);
+            
 
         }catch(error){
             throw error;
@@ -101,13 +113,14 @@ const InboxComponent = () => {
     }
 
     //information field
+    const [UserId, SetUserId] = useState(null);
     const [FirstName, SetFirstName] = useState(null);
     const [MiddleName, SetMiddleName] = useState(null);
     const [LastName, SetLastName] = useState(null);
     const [Age, SetAge] = useState(null);
     const [Gender, SetGender] = useState(null);
     const [Address, SetAddress] = useState(null);
-    const [City, SetCity] = useState(null);
+    const [Disability, SetDisability] = useState(null);
     const [Contact_No, SetContact_No] = useState(null);
     const [MemberStatus, SetMemberStatus] = useState(null);
 
@@ -116,9 +129,27 @@ const InboxComponent = () => {
 
     const [viewProfile, setViewProfile] = useState(false)
     
-    const handleViewProfile = () => {
-        if (viewProfile) setViewProfile(false)
-        else setViewProfile(true)
+    const handleViewProfile = (client_id) => {
+        if (viewProfile){
+            setViewProfile(false);
+
+        } else{
+            setViewProfile(true);
+            // Fetch_this_ClientInfo function 
+            Fetch_this_ClientInfo(client_id);
+
+        } 
+    }
+
+
+    const handle_updateProfile = async() => {
+        try{
+            // app.post that will submit a new information parameter to a route that will make a change on the user information
+            
+
+        }catch(error){
+            throw error;
+        }
     }
 
     // redering return ng InboxComponent
@@ -136,19 +167,11 @@ const InboxComponent = () => {
                             <div className="container mx-auto border rounded-md border-darkColor">
                                 <table className="w-full border-collapse">
                                     <tr>
-                                        <th className="h-full p-5 border-b border-r border-darkColor">ID</th>
-                                        <td className="p-5 border-b border-darkColor">
-                                            Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-                                            Distinctio, cupiditate? Consequuntur libero voluptatem quam a
-                                            <input placeholder="Enter here" className="w-full p-3 mt-3 border rounded border-darkColor"></input>
-                                        </td>
-                                    </tr>
-                                    <tr>
                                         <th className="h-full p-5 border-b border-r border-darkColor">First Name</th>
                                         <td className="p-5 border-b border-darkColor">
                                             {/* {ClientData &&
                                                 `${ClientData[0].firstName} ${ClientData[0].middleName} ${ClientData[0].Lastname}`} */}
-                                            aksdgasd
+                                            {FirstName}
                                             <input placeholder="Enter here" className="w-full p-3 mt-3 border rounded border-darkColor"></input>
                                         </td>
                                     </tr>
@@ -157,7 +180,7 @@ const InboxComponent = () => {
                                         <td className="p-5 border-b border-darkColor">
                                             {/* {ClientData &&
                                                 `${ClientData[0].firstName} ${ClientData[0].middleName} ${ClientData[0].Lastname}`} */}
-                                            aksdgasd
+                                            {MiddleName}
                                             <input placeholder="Enter here" className="w-full p-3 mt-3 border rounded border-darkColor"></input>
                                         </td>
                                     </tr>
@@ -166,7 +189,7 @@ const InboxComponent = () => {
                                         <td className="p-5 border-b border-darkColor">
                                             {/* {ClientData &&
                                                 `${ClientData[0].firstName} ${ClientData[0].middleName} ${ClientData[0].Lastname}`} */}
-                                            aksdgasd
+                                            {LastName}
                                             <input placeholder="Enter here" className="w-full p-3 mt-3 border rounded border-darkColor"></input>
                                         </td>
                                     </tr>
@@ -174,7 +197,7 @@ const InboxComponent = () => {
                                         <th className="h-full p-5 border-b border-r border-darkColor">Age</th>
                                         <td className="p-5 border-b border-darkColor">
                                             {/* {ClientData && `${ClientData[0].age}`} */}
-                                            lajshdahd
+                                            {Age}
                                             <input type='number' placeholder="Enter here" className="w-full p-3 mt-3 border rounded border-darkColor"></input>
                                         </td>
                                     </tr>
@@ -182,7 +205,7 @@ const InboxComponent = () => {
                                         <th className="h-full p-5 border-b border-r border-darkColor">Gender</th>
                                         <td className="p-5 border-b border-darkColor">
                                             {/* {ClientData && `${ClientData[0].gender}`} */}
-                                            lasdkasd
+                                            {Gender}
                                             {/* <input placeholder="Enter here" className="w-full p-3 mt-3 border rounded border-darkColor"></input> */}
                                             <select className="w-full p-3 mt-3 border rounded border-darkColor">
                                                 <option value='male'>Male</option>
@@ -202,10 +225,10 @@ const InboxComponent = () => {
                                         </td>
                                     </tr>
                                     <tr>
-                                        <th className="h-full p-5 border-b border-r border-darkColor">City</th>
+                                        <th className="h-full p-5 border-b border-r border-darkColor">Disability</th>
                                         <td className="p-5 border-b border-darkColor">
                                             {/* {ClientData && `${ClientData[0].city}`} */}
-                                            ajnksdakjdha
+                                            {Disability}
                                             <input placeholder="Enter here" className="w-full p-3 mt-3 border rounded border-darkColor"></input>
                                         </td>
                                     </tr>
@@ -215,7 +238,7 @@ const InboxComponent = () => {
                                         </th>
                                         <td className="p-5 border-b border-darkColor">
                                             {/* {ClientData && `${ClientData[0].phone}`} */}
-                                            aksjd
+                                            {Contact_No}
                                             <input placeholder="Enter here" className="w-full p-3 mt-3 border rounded border-darkColor"></input>
                                         </td>
                                     </tr>
@@ -225,7 +248,7 @@ const InboxComponent = () => {
                                         </th>
                                         <td className="p-5">
                                             {/* {ClientData && `${ClientData[0].status}`} */}
-                                            akjsdh
+                                            {MemberStatus}
                                             <input placeholder="Enter here" className="w-full p-3 mt-3 border rounded border-darkColor"></input>
                                         </td>
                                     </tr>
@@ -398,7 +421,7 @@ const MailOverView = ({ MailObjsArray, ContactClientId, handleViewProfile, Close
 
                 <div className="sticky top-0 z-10 w-full">
                     <div className="flex justify-between w-full p-2 border-b border-darkColor bg-extra-extra-light">
-                        <div className="flex flex-row gap-2 px-2 rounded cursor-pointer hover:bg-extra-light" onClick={handleViewProfile}>
+                        <div className="flex flex-row gap-2 px-2 rounded cursor-pointer hover:bg-extra-light" onClick={() => {handleViewProfile(ContactClientId)}}>
                             <svg className="h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" d="M12 12q-1.65 0-2.825-1.175T8 8t1.175-2.825T12 4t2.825 1.175T16 8t-1.175 2.825T12 12m-8 8v-2.8q0-.85.438-1.562T5.6 14.55q1.55-.775 3.15-1.162T12 13t3.25.388t3.15 1.162q.725.375 1.163 1.088T20 17.2V20z" /></svg>
                             <p className="">User Name</p>
                         </div>
