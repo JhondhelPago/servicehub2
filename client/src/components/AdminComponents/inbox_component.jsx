@@ -89,9 +89,33 @@ const InboxComponent = () => {
 
     }
 
+    const Fetch_this_ClientInfo = async(client_id) => { //this function will be a props of a child component
+        try{
+
+
+            //after fetching the json, the propeties will be assign to the useState variable
+
+        }catch(error){
+            throw error;
+        }
+    }
+
+    //information field
+    const [FirstName, SetFirstName] = useState(null);
+    const [MiddleName, SetMiddleName] = useState(null);
+    const [LastName, SetLastName] = useState(null);
+    const [Age, SetAge] = useState(null);
+    const [Gender, SetGender] = useState(null);
+    const [Address, SetAddress] = useState(null);
+    const [City, SetCity] = useState(null);
+    const [Contact_No, SetContact_No] = useState(null);
+    const [MemberStatus, SetMemberStatus] = useState(null);
+
+
 
 
     const [viewProfile, setViewProfile] = useState(false)
+    
     const handleViewProfile = () => {
         if (viewProfile) setViewProfile(false)
         else setViewProfile(true)
@@ -120,17 +144,25 @@ const InboxComponent = () => {
                                         </td>
                                     </tr>
                                     <tr>
-                                        <th className="h-full p-5 border-b border-r border-darkColor">
-                                            Username
-                                        </th>
+                                        <th className="h-full p-5 border-b border-r border-darkColor">First Name</th>
                                         <td className="p-5 border-b border-darkColor">
-                                            {/* {ClientData && `${ClientData[0].firstName}`} */}
-                                            Asdd
+                                            {/* {ClientData &&
+                                                `${ClientData[0].firstName} ${ClientData[0].middleName} ${ClientData[0].Lastname}`} */}
+                                            aksdgasd
                                             <input placeholder="Enter here" className="w-full p-3 mt-3 border rounded border-darkColor"></input>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <th className="h-full p-5 border-b border-r border-darkColor">Name</th>
+                                        <th className="h-full p-5 border-b border-r border-darkColor">Middle Name</th>
+                                        <td className="p-5 border-b border-darkColor">
+                                            {/* {ClientData &&
+                                                `${ClientData[0].firstName} ${ClientData[0].middleName} ${ClientData[0].Lastname}`} */}
+                                            aksdgasd
+                                            <input placeholder="Enter here" className="w-full p-3 mt-3 border rounded border-darkColor"></input>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th className="h-full p-5 border-b border-r border-darkColor">Last Name</th>
                                         <td className="p-5 border-b border-darkColor">
                                             {/* {ClientData &&
                                                 `${ClientData[0].firstName} ${ClientData[0].middleName} ${ClientData[0].Lastname}`} */}
@@ -143,7 +175,7 @@ const InboxComponent = () => {
                                         <td className="p-5 border-b border-darkColor">
                                             {/* {ClientData && `${ClientData[0].age}`} */}
                                             lajshdahd
-                                            <input placeholder="Enter here" className="w-full p-3 mt-3 border rounded border-darkColor"></input>
+                                            <input type='number' placeholder="Enter here" className="w-full p-3 mt-3 border rounded border-darkColor"></input>
                                         </td>
                                     </tr>
                                     <tr>
@@ -151,7 +183,11 @@ const InboxComponent = () => {
                                         <td className="p-5 border-b border-darkColor">
                                             {/* {ClientData && `${ClientData[0].gender}`} */}
                                             lasdkasd
-                                            <input placeholder="Enter here" className="w-full p-3 mt-3 border rounded border-darkColor"></input>
+                                            {/* <input placeholder="Enter here" className="w-full p-3 mt-3 border rounded border-darkColor"></input> */}
+                                            <select className="w-full p-3 mt-3 border rounded border-darkColor">
+                                                <option value='male'>Male</option>
+                                                <option value='female'>Female</option>
+                                            </select>
                                         </td>
                                     </tr>
                                     <tr>
@@ -170,16 +206,6 @@ const InboxComponent = () => {
                                         <td className="p-5 border-b border-darkColor">
                                             {/* {ClientData && `${ClientData[0].city}`} */}
                                             ajnksdakjdha
-                                            <input placeholder="Enter here" className="w-full p-3 mt-3 border rounded border-darkColor"></input>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <th className="h-full p-5 border-b border-r border-darkColor">
-                                            District
-                                        </th>
-                                        <td className="p-5 border-b border-darkColor">
-                                            {/* {ClientData && `${ClientData[0].district}`} */}
-                                            aljkshdkashd
                                             <input placeholder="Enter here" className="w-full p-3 mt-3 border rounded border-darkColor"></input>
                                         </td>
                                     </tr>
