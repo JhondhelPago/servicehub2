@@ -1,6 +1,7 @@
 import React, { useState, useContext, useEffect, useRef } from "react";
 import axios from "axios";
 import { ClientUserContext } from "../../pages/ClientUserContext";
+import LoadingIcons from "react-loading-icons";
 
 
 const InboxComponent = () => {
@@ -63,6 +64,7 @@ const InboxComponent = () => {
 
     const [MailObjsArray, SetMailObjsArray] = useState([]);
 
+    const [isSending, setIsSending] = useState(false)
 
     const ClickInboxAction = async (adminId) => {
 
@@ -107,6 +109,19 @@ const InboxComponent = () => {
         <>
             {/* <!-- inbox list/content container --> */}
             <div className="flex h-full pb-5 overflow-auto">
+                {isSending && (
+                    <div className="absolute top-0 left-0 z-10 flex items-center justify-center w-full h-full bg-black bg-opacity-60 backdrop-blur-sm">
+                        <div className="sm:w-[30%] mx-5 w-full sm:min-w-[400px] max-w-[500px] flex flex-col bg-white z-[11] rounded-lg p-10 justify-center relative">
+                            <div className="flex flex-col gap-7">
+                                <LoadingIcons.TailSpin stroke="#CD890A" className="w-12 h-12 mx-auto" strokeWidth={2}></LoadingIcons.TailSpin >
+                                <h1 className="text-3xl font-semibold text-center font-noto">Loading</h1>
+                                <h3 className="mb-3 overflow-auto text-lg text-center font-noto">
+                                    Please wait.
+                                </h3>
+                            </div>
+                        </div>
+                    </div>
+                )}
                 {/* <!-- mail list container --> */}
                 <div className={`w-full min-w-80 flex-col overflow-hidden border border-l border-darkColor ${isMailViewOpen ? 'lg:flex hidden bg-black' : 'flex bg-black'}}`}>
                     <div className="flex justify-between w-full p-2 border-b border-darkColor bg-extra-extra-light">
@@ -187,6 +202,8 @@ const InboxComponent = () => {
                         FetchConvo_Client_Admin={FetchConvo_Client_Admin}
                         setIsMailViewOpen={setIsMailViewOpen}
                         isMailViewOpen={isMailViewOpen}
+                        setIsSending={setIsSending}
+                        isSending={isSending}
                     ></MailOverView>
                 )}
             </div>
@@ -231,7 +248,7 @@ const MailListView = ({ MailObj, ListMailClick, AdminContactId, ClickInboxAction
 
 
 // component definition of the MailOverView
-const MailOverView = ({ MailObjsArray, ContactAdminId, CloseMailOverViewAction, setIsMailViewOpen, isMailViewOpen, FetchConvo_Client_Admin, ClickInboxAction }) => {
+const MailOverView = ({ MailObjsArray, ContactAdminId, CloseMailOverViewAction, setIsMailViewOpen, isMailViewOpen, FetchConvo_Client_Admin, ClickInboxAction, isSending, setIsSending }) => {
 
     const Overflow_InnerInbox = useRef(null);
     const { clientuserId } = useContext(ClientUserContext);
@@ -281,7 +298,7 @@ const MailOverView = ({ MailObjsArray, ContactAdminId, CloseMailOverViewAction, 
 
             <div ref={Overflow_InnerInbox} className={`relative flex flex-col overflow-auto border-t border-b border-r border-darkColor ${isMailViewOpen ? 'lg:w-3/4 w-full lg:border-l-0 border-l' : ''}`}>
 
-                <div className="sticky top-0 w-full bg-black">
+                <div className="sticky top-0 w-full">
                     <div className="flex justify-between w-full p-2 border-b border-darkColor bg-extra-extra-light">
                         <p className="">Admin Name</p>
                         {/* <p className="">Subj</p> */}
@@ -292,7 +309,7 @@ const MailOverView = ({ MailObjsArray, ContactAdminId, CloseMailOverViewAction, 
                                 ClickInboxAction(ContactAdminId);
                                 setIsMailViewOpen(true)
                             }}
-                            >
+                        >
                             <svg className="h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" d="M17.65 6.35A7.958 7.958 0 0 0 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08A5.99 5.99 0 0 1 12 18c-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4z" /></svg>
                         </button>
 
@@ -337,7 +354,14 @@ const MailOverView = ({ MailObjsArray, ContactAdminId, CloseMailOverViewAction, 
 
                 {/* {ReplyButtonState == true && <Replyform></Replyform>} */}
                 <div className="h-auto">
-                    {ReplyButtonState === true && <Replyform ContactAdminId={ContactAdminId} ReplyDeactivate={ReplyDeactivate} FetchConvo_Client_Admin={FetchConvo_Client_Admin}></Replyform>}
+                    {ReplyButtonState === true &&
+                        <Replyform
+                            ContactAdminId={ContactAdminId}
+                            ReplyDeactivate={ReplyDeactivate}
+                            FetchConvo_Client_Admin={FetchConvo_Client_Admin}
+                            setIsSending={setIsSending}
+                            isSending={isSending}
+                        ></Replyform>}
 
                 </div>
             </div>
@@ -590,7 +614,7 @@ const MailInnerViewUserSender = ({ MailObj }) => {
 
 
 
-const Replyform = ({ ContactAdminId, ReplyDeactivate, FetchConvo_Client_Admin }) => {
+const Replyform = ({ ContactAdminId, ReplyDeactivate, FetchConvo_Client_Admin, isSending, setIsSending }) => {
 
     const { clientuserId } = useContext(ClientUserContext);
 
@@ -601,7 +625,7 @@ const Replyform = ({ ContactAdminId, ReplyDeactivate, FetchConvo_Client_Admin })
 
 
     const handleReplyForm = async (event) => {
-
+        setIsSending(true)
         event.preventDefault();
 
         const formData = new FormData();
@@ -636,8 +660,10 @@ const Replyform = ({ ContactAdminId, ReplyDeactivate, FetchConvo_Client_Admin })
             console.log(`status: ${response.data}`);
             ReplyDeactivate();
             FetchConvo_Client_Admin(ContactAdminId);
+            setIsSending(false)
 
         } catch (error) {
+            setIsSending(false)
             console.log("Error at the reply button clientside: ", error);
             throw error;
         }
