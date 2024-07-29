@@ -1,0 +1,6 @@
+email: acebuche.fj.bscs@gmail.com
+pass: 12345678
+
+Admin cred
+email: jose.acebuche081@gmail.com
+pass: 12345678

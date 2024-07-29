@@ -18,11 +18,11 @@ const EventPostComponent = ({ eventdata, RegistredBoolean, ReInvokeFetchRegistry
   const JoinButtonAction = async () => {
     const thisEventId = eventdata.id;
     const thisUserId = clientuserId;
-    const generatedCode = CodeGenerator.EventCodeGenerator(thisEventId, thisUserId);
+    const generatedCodeObj = CodeGenerator.EventCodeGenerator(thisEventId, thisUserId);
 
 
     try {
-      const response = await axios.post(`/UserRegister/Event`, { TicketCode: generatedCode });
+      const response = await axios.post(`/UserRegister/Event`, { CodeObj: generatedCodeObj });
       if (response.status >= 200 && response.status <= 299) {
 
 

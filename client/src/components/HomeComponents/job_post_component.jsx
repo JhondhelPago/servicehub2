@@ -21,12 +21,12 @@ const JobPostComponent = ({ jobdata, RegisteredBoolean, ReInvokeFetchRegistry, T
 
     const thisJobId = jobdata.id;
     const thisUserId = clientuserId;
-    const generatedCode = CodeGenerator.EventCodeGenerator(thisJobId, thisUserId);
+    const generatedCodeObj = CodeGenerator.EventCodeGenerator(thisJobId, thisUserId);
     ;
 
     try {
 
-      const response = await axios.post(`/UserRegister/Job`, { TicketCode: generatedCode });
+      const response = await axios.post(`/UserRegister/Job`, { CodeObj: generatedCodeObj });
       if (response.status >= 200 && response.status <= 299) {
 
         if (response.data.message == true) {

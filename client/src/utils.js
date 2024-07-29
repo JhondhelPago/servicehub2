@@ -96,7 +96,7 @@ class ImageStringUtils {
 
 class CodeGenerator {
 
-  static EventCodeGenerator(eventId,userId){
+  static EventCodeGenerator(postId,userId){
       const characterSet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
       const codeLength = 6;
       let code = '';
@@ -108,7 +108,17 @@ class CodeGenerator {
           
       }
 
-      return `${eventId}-${code}-${userId}`;
+      //create an object for the actual ticket code and for the user id
+      const sub_id = userId.split('-')[0];
+
+      const CodeObj = {
+        ticketCode: `${postId}-${code}-${sub_id}`,
+        postId: postId,
+        userId: userId,
+        sub_userId: sub_id
+      }
+
+      return CodeObj;
   }
 }
 

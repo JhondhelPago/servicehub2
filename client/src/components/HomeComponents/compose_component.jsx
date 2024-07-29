@@ -163,6 +163,7 @@ const ComposeComponent = ({ RenderSentItem, RenderInboxComponent }) => {
                     className="px-5 py-2 mx-auto text-lg text-white rounded bg-primary-light scaleHover"
                     onClick={() => {
                       setIsLoading(false)
+                      setIsSuccessful(false)
                       RenderInboxComponent()
                     }}
                   >Done</button>
