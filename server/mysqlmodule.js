@@ -8,7 +8,7 @@ const pool = mysql
     user: process.env.DATABASE_USER, //"root",
     password: process.env.DATABASE_PASS, //"",
     database: 'kainakap',//"servicehub",
-    port: process.env.DATABASE_PORT, 
+    port: process.env.DATABASE_PORT,
     waitForConnections: true,
     connectionLimit: 10,
     queueLimit: 0,
@@ -170,14 +170,16 @@ async function job_post_edit(
   para_PostType
 ) {
   //query for editing the post in the MySQL Server
-  console.log({para_postID,
+  console.log({
+    para_postID,
     para_Event,
     para_Date,
     para_Time,
     para_Location,
     para_Description,
     para_Taget_group,
-    para_PostType});
+    para_PostType
+  });
 
   try {
     await pool.execute(
@@ -223,9 +225,9 @@ async function fetchEvent() {
   }
 }
 
-async function fetchEventManage(){
-  
-  try{
+async function fetchEventManage() {
+
+  try {
     const [row] = await pool.execute(`
       SELECT * 
       FROM event_post
@@ -242,7 +244,7 @@ async function fetchEventManage(){
     });
 
     return newRow;
-  }catch(error){
+  } catch (error) {
 
   }
 }
@@ -276,9 +278,9 @@ async function fetchJob() {
   }
 }
 
-async function fetchJobManage(){
+async function fetchJobManage() {
 
-  try{
+  try {
     const [row] = await pool.execute(
       `SELECT job_post.* , admin.firstName, admin.lastName 
       FROM job_post 
@@ -299,8 +301,8 @@ async function fetchJobManage(){
     });
 
     return newRow;
-    
-  }catch(error){
+
+  } catch (error) {
     throw error;
   }
 }
@@ -312,7 +314,7 @@ async function deletePost(id, post_type) {
 
   try {
     await pool.execute(`DELETE FROM ${table} WHERE id = ${id}`);
-  } catch (error) {}
+  } catch (error) { }
 }
 
 // async function FetchAdminInboxFromClient(adminId) {
@@ -495,9 +497,9 @@ async function GetSentMail(id) {
 }
 
 
-async function getRegistry(userId){
+async function getRegistry(userId) {
 
-  try{
+  try {
     //get the even_registry and job_registry, "where @ userId" 
 
     const [event_registry_array] = await pool.execute(`
@@ -505,7 +507,7 @@ async function getRegistry(userId){
       FROM event_registry
       WHERE user_id = ?
       `, [userId]);
-    
+
 
 
     const [job_registry_array] = await pool.execute(`
@@ -515,7 +517,7 @@ async function getRegistry(userId){
       `, [userId]);
 
 
-    const RegistryObj ={
+    const RegistryObj = {
       event_registry: event_registry_array,
       job_registry: job_registry_array
     }
@@ -523,16 +525,16 @@ async function getRegistry(userId){
 
     return RegistryObj;
 
-  }catch(error){
+  } catch (error) {
     throw error;
   }
 }
 
-async function getRegistryInnerJoinPost(userId){
+async function getRegistryInnerJoinPost(userId) {
 
- 
 
-  try{
+
+  try {
 
     const [EventRegistryInnerJoinEvent] = await pool.execute(`
       SELECT event_registry.registration_id, event_registry.event_id, event_registry.user_id, event_registry.registration_code, event_post.*
@@ -560,16 +562,16 @@ async function getRegistryInnerJoinPost(userId){
     return RegistryInnerJoinedPost;
 
 
-  }catch(error){
+  } catch (error) {
     throw error;
   }
 
 }
 
 
-async function ArchivingPost(table, post_id, statusBoolean){
+async function ArchivingPost(table, post_id, statusBoolean) {
 
-  try{
+  try {
 
 
     await pool.execute(`
@@ -579,15 +581,15 @@ async function ArchivingPost(table, post_id, statusBoolean){
       `, [statusBoolean, post_id]
     );
 
-  }catch(error){
+  } catch (error) {
     throw error;
   }
 }
 
 
-async function EventViewStats(event_id){
+async function EventViewStats(event_id) {
 
-  try{
+  try {
 
     const [EventRegistyEntry] = await pool.execute(`
       SELECT user.firstName, user.middleName, user.lastName, event_registry.user_id, event_registry.event_id, event_registry.registration_code 
@@ -596,18 +598,18 @@ async function EventViewStats(event_id){
       WHERE event_registry.event_id = ?
       `, [event_id]);
 
-      console.log(EventRegistyEntry);
-      return EventRegistyEntry;
+    console.log(EventRegistyEntry);
+    return EventRegistyEntry;
 
-  }catch(error){
+  } catch (error) {
     console.log('error  on the msqlmodule.js @ EventViewStats() function.', error);
     throw error;
   }
 }
 
-async function JobViewStats(job_id){
+async function JobViewStats(job_id) {
 
-  try{
+  try {
 
     const [JobRegistryEntry] = await pool.execute(`
       SELECT user.firstName, user.middleName, user.lastName, job_registry.user_id, job_registry.job_id, job_registry.registration_code 
@@ -616,12 +618,12 @@ async function JobViewStats(job_id){
       WHERE job_registry.job_id = ?
       `, [job_id]);
 
-      console.log('log from mysqlmoldule.js');
-      console.log(JobRegistryEntry);
-      
-      return JobRegistryEntry;
+    console.log('log from mysqlmoldule.js');
+    console.log(JobRegistryEntry);
 
-  }catch(error){
+    return JobRegistryEntry;
+
+  } catch (error) {
     console.log('error on the mysqlmodule.js @ JobViewStats() function.', error);
     throw error;
   }
@@ -629,9 +631,9 @@ async function JobViewStats(job_id){
 }
 
 
-async function GetEventRow(event_id){
+async function GetEventRow(event_id) {
 
-  try{
+  try {
     const [EventRow] = await pool.execute(`
       SELECT * 
       FROM event_post
@@ -642,15 +644,15 @@ async function GetEventRow(event_id){
     // to return the row itself from the array format
     return EventRow[0];
 
-  }catch(error){
+  } catch (error) {
     throw error;
   }
 
 }
 
-async function GetEventRegisteredTicket_Count(event_id){
+async function GetEventRegisteredTicket_Count(event_id) {
 
-  try{
+  try {
     const [Count] = await pool.execute(`
       SELECT COUNT(*) AS total_registry
       FROM event_registry
@@ -659,14 +661,14 @@ async function GetEventRegisteredTicket_Count(event_id){
 
     return Count[0].total_registry;
 
-  }catch(error){
-    throw error; 
+  } catch (error) {
+    throw error;
   }
 }
 
-async function UpdateEventTicketCount(event_id, ticketCount){
+async function UpdateEventTicketCount(event_id, ticketCount) {
 
-  try{
+  try {
 
     await pool.execute(`
       UPDATE event_post
@@ -674,15 +676,15 @@ async function UpdateEventTicketCount(event_id, ticketCount){
       WHERE id = ?
       `, [ticketCount, event_id]);
 
-  }catch(error){
+  } catch (error) {
     throw error;
   }
 
 }
 
-async function GetJobRow(job_id){
+async function GetJobRow(job_id) {
 
-  try{
+  try {
     const [JobRow] = await pool.execute(`
       SELECT * 
       FROM job_post
@@ -693,15 +695,15 @@ async function GetJobRow(job_id){
     // to return the row itself from the array format
     return JobRow[0];
 
-  }catch(error){
+  } catch (error) {
     throw error;
   }
 
 }
 
-async function GetJobRegisteredTicket_Count(job_id){
+async function GetJobRegisteredTicket_Count(job_id) {
 
-  try{
+  try {
     const [Count] = await pool.execute(`
       SELECT COUNT(*) AS total_registry
       FROM job_registry
@@ -710,14 +712,14 @@ async function GetJobRegisteredTicket_Count(job_id){
 
     return Count[0].total_registry;
 
-  }catch(error){
+  } catch (error) {
     throw error;
   }
 }
 
-async function UpdateJobTicketCount(job_id, ticketCount){
+async function UpdateJobTicketCount(job_id, ticketCount) {
 
-  try{
+  try {
 
     await pool.execute(`
       UPDATE job_post
@@ -725,7 +727,7 @@ async function UpdateJobTicketCount(job_id, ticketCount){
       WHERE id = ?
       `, [ticketCount, job_id]);
 
-  }catch(error){
+  } catch (error) {
     throw error;
   }
 
@@ -975,7 +977,7 @@ async function FetchInboxOfClient(id) {
     );
 
     return ClientInbox;
-  }catch(error){
+  } catch (error) {
     throw error;
   }
 
@@ -1076,9 +1078,9 @@ async function dashboardQuery() {
   }
 }
 
-async function filteredDashboardQuery(city){
+async function filteredDashboardQuery(city) {
 
-  try{
+  try {
 
     const [rowdata] = await pool.execute(`
       SELECT * 
@@ -1086,9 +1088,9 @@ async function filteredDashboardQuery(city){
       WHERE city = ?
       `, [city]);
 
-      return rowdata;
+    return rowdata;
 
-  }catch(error){
+  } catch (error) {
 
     console.log(`error on the mysqlmodule.js @ filterDashboardQuery function `, error);
     throw error;
@@ -1096,9 +1098,9 @@ async function filteredDashboardQuery(city){
   }
 }
 
-async function getEventRegistry(userId){
+async function getEventRegistry(userId) {
 
-  try{
+  try {
 
     const [registrtArray] = await pool.execute(`
       SELECT event_id
@@ -1106,17 +1108,17 @@ async function getEventRegistry(userId){
       WHERE user_id = ?
       `, [userId]);
 
-      return registrtArray;
+    return registrtArray;
 
-  }catch(error){
+  } catch (error) {
     throw error;
   }
 }
 
 
-async function getJobRegistry(userId){
+async function getJobRegistry(userId) {
 
-  try{
+  try {
 
     const [RegistryArray] = await pool.execute(`
         SELECT job_id
@@ -1125,15 +1127,15 @@ async function getJobRegistry(userId){
       `, [userId]);
 
 
-      return RegistryArray;
-    
-  }catch(error){
+    return RegistryArray;
+
+  } catch (error) {
     throw error;
   }
 }
 
 
-async function InsertTikcetCodeEvent(ticket_code, postId, userId){
+async function InsertTikcetCodeEvent(ticket_code, postId, userId) {
 
   //divide the ticket into 3 parts
   // 1. event_id
@@ -1147,7 +1149,7 @@ async function InsertTikcetCodeEvent(ticket_code, postId, userId){
 
   //query here to insert data to the database at event_registry
 
-  try{
+  try {
 
     await pool.execute(`
       INSERT INTO event_registry
@@ -1158,13 +1160,13 @@ async function InsertTikcetCodeEvent(ticket_code, postId, userId){
     );
 
 
-  }catch(error){
+  } catch (error) {
     throw error;
   }
 
 }
 
-async function InsertTicketCodeJob(ticket_code, postId, userId){
+async function InsertTicketCodeJob(ticket_code, postId, userId) {
 
   const registration_code = ticket_code;
   const job_id = postId;
@@ -1173,7 +1175,7 @@ async function InsertTicketCodeJob(ticket_code, postId, userId){
 
   //query here to insert data to the database at job_registry
 
-  try{
+  try {
     await pool.execute(`
       INSERT INTO job_registry
       (job_id, user_id, registration_code)
@@ -1182,15 +1184,15 @@ async function InsertTicketCodeJob(ticket_code, postId, userId){
       [job_id, user_id, registration_code]
     );
 
-  }catch(error){
+  } catch (error) {
     throw error;
   }
 
 }
 
-async function TicketCancelationEvent(event_registration_id){
+async function TicketCancelationEvent(event_registration_id) {
 
-  try{
+  try {
 
     await pool.execute(`
       DELETE
@@ -1198,15 +1200,15 @@ async function TicketCancelationEvent(event_registration_id){
       WHERE registration_id = ?;
       `, [event_registration_id]);
 
-  }catch(error){
+  } catch (error) {
     throw error;
   }
 
 }
 
-async function TicketCancelationJob(job_registration_id){
+async function TicketCancelationJob(job_registration_id) {
 
-  try{
+  try {
 
     await pool.execute(`
       DELETE
@@ -1214,7 +1216,7 @@ async function TicketCancelationJob(job_registration_id){
       WHERE registration_id = ?;
       `, [job_registration_id]);
 
-  }catch(error){
+  } catch (error) {
     throw error;
   }
 
