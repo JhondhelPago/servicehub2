@@ -180,13 +180,11 @@ const UserLoginpage = () => {
                         </div>
                         <div className="flex flex-col gap-2 mx-3">
                             <p className="font-extralight">Not a member? <a className="font-medium text-primary-extraDark" href="#">Sign-up</a></p>
-                            <button type="submit" className="py-3 text-xl transition-all rounded-md shadow-sm font-noto bg-primary-extraDark hover:shadow-lg hover:scale-105">
-                                {isLoading ? (
-                                    <LoadingIcons.TailSpin stroke="#fff" className="mx-auto w-7 h-7" strokeWidth={2}></LoadingIcons.TailSpin >
-                                ) : (
-                                    <p>Login</p>
-                                )}
-                            </button>
+                            {isLoading ? (
+                                <LoadingIcons.TailSpin stroke="#fff" className="mx-auto w-7 h-7" strokeWidth={2}></LoadingIcons.TailSpin >
+                            ) : (
+                                <button type="submit" className="py-3 text-xl transition-all rounded-md shadow-sm font-noto bg-primary-extraDark hover:shadow-lg hover:scale-105">Login</button>
+                            )}
                         </div>
                     </form>
                 </div>
