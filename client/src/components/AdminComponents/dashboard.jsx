@@ -547,7 +547,7 @@ const Homeprompt = () => {
 
     // const NCR_cities  = 
 
-    const [City, SetCity] = useState(null);
+    const [City, SetCity] = useState('All');
 
     const SetSelectedCity = (event) => {
 
