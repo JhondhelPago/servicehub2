@@ -1,16 +1,18 @@
+require('dotenv').config();
 const mysql = require("mysql2");
 const { StringManipulate } = require("./utilities");
 
 const pool = mysql
   .createPool({
-    host: "localhost",
-    user: "root",
-    password: "",
-    database: "servicehub",
+    host: process.env.DATABASE_HOST,  //"localhost",
+    user: process.env.DATABASE_USER, //"root",
+    password: process.env.DATABASE_PASS, //"",
+    database: 'kainakap',//"servicehub",
+    port: process.env.DATABASE_PORT, 
     waitForConnections: true,
     connectionLimit: 10,
     queueLimit: 0,
-    connectTimeout: 10000 // 10 seconds 
+    connectTimeout: 30000 // 10 seconds 
   })
   .promise();
 
@@ -50,8 +52,8 @@ async function get_adminId(email, password, role) {
 
   try {
     const [row] = await pool.query(
-      `SELECT id FROM admin WHERE email = ? AND password = ? AND role = ?`,
-      [email, password, adminRole]
+      `SELECT id FROM admin WHERE email = ? AND password = ?`,
+      [email, password]
     );
     return row;
   } catch (error) {
@@ -313,35 +315,86 @@ async function deletePost(id, post_type) {
   } catch (error) {}
 }
 
+// async function FetchAdminInboxFromClient(adminId) {
+//   try {
+//     // const [row] = await pool.execute(
+//     //   `
+//     //     SELECT mail_sent.*, user.firstName
+//     //     FROM mail_sent
+//     //     JOIN user ON mail_sent.senderID = user.id COLLATE utf8mb4_general_ci
+//     //     WHERE mail_sent.receiverID = ?
+//     //     `,
+//     //   [adminId]
+//     // );
+//     // return row;
+
+//     const [row] = await pool.execute(
+//       `
+//       SELECT senderID
+//       FROM mail_sent
+//       WHERE receiverID = ? 
+//       ORDER BY STR_TO_DATE(CONCAT(date_sent, ' ', time_sent), "%Y-%m-%d %H:%i:%s")
+//       DESC LIMIT 1000;
+//       `,
+//       [adminId]
+//     );
+
+//     return row;
+//   } catch (error) {
+//     throw error;
+//   }
+// }
+
 async function FetchAdminInboxFromClient(adminId) {
   try {
-    // const [row] = await pool.execute(
-    //   `
-    //     SELECT mail_sent.*, user.firstName
-    //     FROM mail_sent
-    //     JOIN user ON mail_sent.senderID = user.id COLLATE utf8mb4_general_ci
-    //     WHERE mail_sent.receiverID = ?
-    //     `,
-    //   [adminId]
-    // );
-    // return row;
+    // Log the adminId to ensure it's being passed correctly
+    console.log('Fetching admin inbox for adminId:', adminId);
 
-    const [row] = await pool.execute(
-      `
+    const query = `
       SELECT senderID
       FROM mail_sent
       WHERE receiverID = ? 
-      ORDER BY STR_TO_DATE(CONCAT(date_sent, " ", time_sent), "%Y-%m-%d %H:%i:%s")
+      ORDER BY STR_TO_DATE(CONCAT(date_sent, ' ', time_sent), "%Y-%m-%d %H:%i:%s")
       DESC LIMIT 1000;
-      `,
-      [adminId]
-    );
+    `;
+
+    // Log the query to see the final constructed query
+    console.log('Executing query:', query);
+
+    const [row] = await pool.execute(query, [adminId]);
 
     return row;
   } catch (error) {
+    console.error('Error executing query:', error);
     throw error;
   }
 }
+
+async function FetchAdminInboxFromClient(adminId) {
+  try {
+    // Log the adminId to ensure it's being passed correctly
+    console.log('Fetching admin inbox for adminId:', adminId);
+
+    const query = `
+      SELECT senderID
+      FROM mail_sent
+      WHERE receiverID = ? 
+      ORDER BY STR_TO_DATE(CONCAT(date_sent, ' ', time_sent), '%Y-%m-%d %H:%i:%s')
+      DESC LIMIT 1000;
+    `;
+
+    // Log the query to see the final constructed query
+    console.log('Executing query:', query);
+
+    const [row] = await pool.execute(query, [adminId]);
+
+    return row;
+  } catch (error) {
+    console.error('Error executing query:', error);
+    throw error;
+  }
+}
+
 
 async function FetchAdminIboxes(adminId) {
   //retrun an array of senderIDs associated with given adminId parameter as the receiverID
@@ -352,7 +405,7 @@ async function FetchAdminIboxes(adminId) {
       SELECT senderID 
       FROM mail_sent 
       WHERE receiverID = ? 
-      ORDER BY STR_TO_DATE(CONCAT(date_sent, " ", time_sent), "%Y-%m-%d %H:%i:%s") DESC LIMIT 1000;
+      ORDER BY STR_TO_DATE(CONCAT(date_sent, ' ', time_sent), "%Y-%m-%d %H:%i:%s") DESC LIMIT 1000;
       `,
       [adminId]
     );
@@ -364,7 +417,7 @@ async function FetchAdminIboxes(adminId) {
 async function getAdmin() {
   try {
     const [AdminIdRow] = await pool.execute(
-      `SELECT id FROM admin WHERE role="regular"`
+      `SELECT id FROM admin`
     );
 
     if (AdminIdRow.length == 0) {
@@ -773,7 +826,7 @@ async function ClientData(id) {
 
   try {
     const [rowdata] = await pool.execute(
-      `SELECT firstName, middleName, Lastname, age, gender, disability, houseno, street, barangay, city, province, zipcode, phone, status 
+      `SELECT firstName, middleName, Lastname, age, gender, disability, houseno, street, baranggay, city, province, zipcode, phone, status 
       FROM user WHERE id = ?`
       , [id]
     );
@@ -915,7 +968,7 @@ async function FetchInboxOfClient(id) {
       SELECT senderID
       FROM mail_sent
       WHERE receiverID = ?
-      ORDER BY STR_TO_DATE(CONCAT(date_sent, " ", time_sent), "%Y-%m-%d %H:%i:%s") DESC 
+      ORDER BY STR_TO_DATE(CONCAT(date_sent, ' ', time_sent), "%Y-%m-%d %H:%i:%s") DESC 
       LIMIT 1000;
       `,
       [id]
@@ -928,45 +981,85 @@ async function FetchInboxOfClient(id) {
 
 }
 
-async function NewFetchInboxClient(SenderClientId){
+// async function NewFetchInboxClient(SenderClientId){
 
-  try{
+//   try{
 
+//     const [ReceiverAdminIdArray] = await pool.execute(`
+//       SELECT receiverID
+//       FROM mail_sent
+//       WHERE senderID = ?
+//       ORDER BY STR_TO_DATE(CONCAT(date_sent, " ", time_sent), "%Y-%m-%d %H:%i:%s") DESC
+//       LIMIT 1000;
+//       `, [SenderClientId]);
+
+//       return ReceiverAdminIdArray;
+
+//   }catch(error){
+//     console.log(`error at the mysqlmodule.js @ 'NewfetchInboxClient' function.`, error);
+//     throw error;
+//   }
+// }
+
+async function NewFetchInboxClient(SenderClientId) {
+  try {
     const [ReceiverAdminIdArray] = await pool.execute(`
       SELECT receiverID
       FROM mail_sent
       WHERE senderID = ?
-      ORDER BY STR_TO_DATE(CONCAT(date_sent, " ", time_sent), "%Y-%m-%d %H:%i:%s") DESC
+      ORDER BY STR_TO_DATE(CONCAT(date_sent, ' ', time_sent), '%Y-%m-%d %H:%i:%s') DESC
       LIMIT 1000;
-      `, [SenderClientId]);
+    `, [SenderClientId]);
 
-      return ReceiverAdminIdArray;
-
-  }catch(error){
-    console.log(`error at the mysqlmodule.js @ 'NewfetchInboxClient' function.`, error);
+    return ReceiverAdminIdArray;
+  } catch (error) {
+    console.log(`error at the mysqlmodule.js @ 'NewFetchInboxClient' function.`, error);
     throw error;
   }
 }
 
+
+
+// async function ALL_SendMaiL(ClientReceiver_id, SenderAdminId) {
+//   try {
+//     const [SendMails] = await pool.execute(
+//       `
+//       SELECT * 
+//       FROM mail_sent
+//       WHERE senderID = ? AND receiverID = ?
+//       ORDER BY STR_TO_DATE(CONCAT(date_sent, ' ', time_sent), "%Y-%m-%d %H:%i:%s") DESC;
+//       `,
+//       [ClientReceiver_id, SenderAdminId]
+//     );
+
+//     return SendMails;
+//   } catch (error) {
+//     console.log(error);
+//     throw error;
+//   }
+// }
 
 async function ALL_SendMaiL(ClientReceiver_id, SenderAdminId) {
   try {
-    const [SendMails] = await pool.execute(
-      `
+    const query = `
       SELECT * 
       FROM mail_sent
       WHERE senderID = ? AND receiverID = ?
-      ORDER BY STR_TO_DATE(CONCAT(date_sent, " ", time_sent), "%Y-%m-%d %H:%i:%s") DESC;
-      `,
-      [ClientReceiver_id, SenderAdminId]
-    );
+      ORDER BY STR_TO_DATE(CONCAT(date_sent, ' ', time_sent), '%Y-%m-%d %H:%i:%s') DESC;
+    `;
+
+    console.log('Executing query:', query);
+
+    const [SendMails] = await pool.execute(query, [ClientReceiver_id, SenderAdminId]);
 
     return SendMails;
   } catch (error) {
-    console.log(error);
+    console.error('Error executing query:', error);
     throw error;
   }
 }
+
+
 
 async function dashboardQuery() {
   // id = 1000
