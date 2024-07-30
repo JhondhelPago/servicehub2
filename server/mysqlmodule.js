@@ -805,11 +805,11 @@ const MyDateTime = {
 
 async function clientuserLoginSession(email, password) {
   //return the id of this clientuser login session
-
+  const approved_status = 'verified'
   try {
     const [rowdata] = await pool.execute(
-      `SELECT id FROM user WHERE email = ? AND password = ?`,
-      [email, password]
+      `SELECT id FROM user WHERE email = ? AND password = ? AND verification_status = ?`,
+      [email, password, approved_status]
     );
 
     if (rowdata.length != 0) {
