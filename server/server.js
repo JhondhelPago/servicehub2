@@ -749,7 +749,7 @@ app.get('/EventPost/Stat/:event_id', async(req, res) => {
 
     //sorting logic here before sending
     EventRegisteredArray.sort((a, b) => {
-      const Name_a = a.fistname.toLowerCase();
+      const Name_a = a.firstName.toLowerCase();
       const Name_b = b.firstName.toLowerCase();
 
       if (Name_a < Name_b ) return -1;
@@ -782,7 +782,7 @@ app.get('/EventPost/Stat/Export/:event_id', async(req, res) => {
 
     //sorting logic here before sending
     EventRegisteredArray.sort((a, b) => {
-      const Name_a = a.fistname.toLowerCase();
+      const Name_a = a.firstName.toLowerCase();
       const Name_b = b.firstName.toLowerCase();
 
       if (Name_a < Name_b ) return -1;
