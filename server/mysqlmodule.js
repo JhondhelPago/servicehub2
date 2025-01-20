@@ -2,7 +2,10 @@ require('dotenv').config();
 const mysql = require("mysql2");
 const { StringManipulate } = require("./utilities");
 
-const pool = mysql
+
+
+const pool = 
+  mysql
   .createPool({
     host: process.env.DATABASE_HOST,  //"localhost",
     user: process.env.DATABASE_USER, //"root",
