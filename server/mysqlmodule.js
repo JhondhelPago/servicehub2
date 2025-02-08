@@ -1226,6 +1226,38 @@ async function TicketCancelationJob(job_registration_id) {
 }
 
 
+
+
+
+// addition function
+
+async function GetClientDemo(ClientIds){
+
+  try{
+
+    if (!Array.isArray(ClientIds) || ClientIds.length === 0) {
+      return [];
+    }
+
+    const quotedIds = ClientIds.map(id => `'${id}'`); // Add quotes around each UUID
+    const ids_params = quotedIds.join(',');
+
+    const sql = `
+      SELECT firstName, lastName, email, id
+      FROM user
+      WHERE id IN (${ids_params});
+    `;
+
+    const [results] = await pool.execute(sql); // Pass the quoted IDs
+
+    return results;
+
+  } catch(error) {
+    throw error;
+  }
+}
+
+
 module.exports = {
   //user function exports
   get_userId,
@@ -1276,5 +1308,10 @@ module.exports = {
   InsertTikcetCodeEvent,
   InsertTicketCodeJob,
   TicketCancelationEvent,
-  TicketCancelationJob
+  TicketCancelationJob,
+
+  //addition function
+  GetClientDemo
+
+  
 };

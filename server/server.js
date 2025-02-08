@@ -60,7 +60,11 @@ const {
     InsertTikcetCodeEvent,
     InsertTicketCodeJob,
     TicketCancelationEvent,
-    TicketCancelationJob
+    TicketCancelationJob,
+
+
+    //addition function
+    GetClientDemo
 
 } = require('./mysqlmodule.js');
 
@@ -628,6 +632,7 @@ app.get("/FetchMailInbox/Admin/:AdminId", async (req, res) => {
     const ClientInboxIdsArray = await FetchAdminInboxFromClient(AdminId);
 
     // return ClientInboxIdsArray;
+    console.log('ClientInboxIdsArray:')
     console.log(ClientInboxIdsArray);
 
     // const ClientIdsUnique = [...new Set(ClientInboxIdsArray)];
@@ -644,10 +649,30 @@ app.get("/FetchMailInbox/Admin/:AdminId", async (req, res) => {
       }   
     });
 
-
+    //unique ids of sender user type client
     console.log(ClientIdsUnique);
 
-    res.send(ClientIdsUnique);
+    //sql function here to return the the QuerySet
+
+    const user_demo = await GetClientDemo(ClientIdsUnique);
+    console.log('user_demo');
+    console.log(user_demo)
+
+
+    let names = []
+
+
+    user_demo.forEach(user_object => {
+      names.push({
+        name: `${user_object.firstName} ${user_object.lastName}`,
+        id : user_object.id
+      });
+    });
+
+
+    res.json({
+      user_demo: names
+    });
 
   }catch(error){
     throw error;
@@ -665,7 +690,7 @@ app.get(`/GetAdmin/Convo/WithClient/:adminId/:clientId`, async(req, res) => {
 
   try{
 
-    const Admin_SendMailArray = await ALL_SendMaiL(adminId, clientId);
+    const Admin_SendMailArray = await ALL_SendMaiL(adminId, clientId);  
 
     const Client_SendArray = await ALL_SendMaiL(clientId, adminId);
 
