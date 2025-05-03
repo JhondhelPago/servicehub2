@@ -1,4 +1,6 @@
 import React, { useContext, useState } from 'react';
+import axiosInstance from '../../api/AxiosInstance';
+
 // import nagigate here
 import { useNavigate } from 'react-router-dom';
 import { UserContext } from './UserContext';
@@ -35,19 +37,26 @@ const LoginComponents = () => {
         setError('');
 
         try {
-            const response = await fetch('/adminLoginSession', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    email,
-                    password,
-                    module: role,
-                }),
-            });
+            // const response = await fetch('/api/admin/newadminLoginSession', {
+            //     method: 'POST',
+            //     headers: {
+            //         'Content-Type': 'application/json',
+            //     },
+            //     body: JSON.stringify({
+            //         email,
+            //         password,
+            //         module: role,
+            //     }),
+            // });
+            const body = {
+                email,
+                password,
+                module: role,
+            }
 
-            const data = await response.json();
+            const response = await axiosInstance.post('/api/admin/newadminLoginSession', body);
+
+            const data = response.data;
             console.log(data);
             if (data.status) {
                 // If login is successful, redirect to the homepage

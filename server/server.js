@@ -1,4 +1,5 @@
 const express = require("express");
+const cors = require("cors");
 const multer = require("multer");
 const path = require("path");
 const bodyParser = require("body-parser");
@@ -103,6 +104,12 @@ const { allowedNodeEnvironmentFlags } = require("process");
 
 // express app instanciation
 const app = express();
+
+// allows request from the frontend to the backend
+app.use(cors({
+  origin: 'http://localhost:3000',
+  credentials: true
+}));
 
 app.use(bodyParser.urlencoded({ extended: false }));
 
@@ -1915,6 +1922,10 @@ app.get("/sample_res", (req, res) => {
   res.send("this is a response");
   res.end();
 });
+
+const adminRoutes = require("./routes/adminRoutes");
+app.use('/api/admin', adminRoutes);
+
 
 app.use((err, req, res, next) => {
   console.error(err.stack);
