@@ -34,6 +34,37 @@ async function get_userId(email, password) {
 }
 
 //admin queries
+// async function get_adminId(email, password, role) {
+//   //role parameter -> possible value [Admin, Manager]
+
+//   //switch statement where
+//   let adminRole;
+
+//   switch (role) {
+//     case "Admin":
+//       adminRole = "regular";
+//       break;
+
+//     case "Manager":
+//       adminRole = "manager";
+//       break;
+
+//     default:
+//       throw new Error("Invalid Module Entered  from admin login form");
+//   }
+
+//   try {
+//     const [row] = await pool.query(
+//       `SELECT id FROM admin WHERE email = ? AND password = ?`,
+//       [email, password]
+//     );
+//     return row;
+//   } catch (error) {
+//     console.log(error);
+//     throw error;
+//   }
+// }
+
 async function get_adminId(email, password, role) {
   //role parameter -> possible value [Admin, Manager]
 
@@ -55,10 +86,10 @@ async function get_adminId(email, password, role) {
 
   try {
     const [row] = await pool.query(
-      `SELECT id FROM admin WHERE email = ? AND password = ?`,
-      [email, password]
+      `SELECT id, password FROM admin WHERE email = ?`,
+      [email]
     );
-    return row;
+    return row[0];
   } catch (error) {
     console.log(error);
     throw error;

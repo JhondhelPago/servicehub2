@@ -2,6 +2,7 @@ const express = require("express");
 const multer = require("multer");
 const path = require("path");
 const bodyParser = require("body-parser");
+const bcrypt = require("bcrypt");
 const fs = require("fs");
 const createCsvWriter = require('csv-writer').createObjectCsvWriter;
 const { DisabilityJSON } = require('./utilities.js');
@@ -591,13 +592,27 @@ app.post("/adminLoginSession", async (req, res) => {
 
   try {
     //send the id of the admin
-    const row = await get_adminId(email, password, role);
+    const User = await get_adminId(email, password, role);
 
-    if (row.length > 0) {
-      res.send({ status: true, id: row[0].id });
+    // if (row.length > 0) {
+    //   res.send({ status: true, id: row[0].id });
+    // } else {
+    //   res.send({ status: false, id: null });
+    // }
+
+    // if (!User || !User.password || !password) {
+    //   return res.status(400).json({ status: false, message: 'Invalid input or user not found' });
+    // }
+
+    const isPasswordValid = await bcrypt.hash(password, User.password);
+
+
+    if (isPasswordValid) {
+      res.send({ status: true, id: User.id });
     } else {
       res.send({ status: false, id: null });
     }
+
   } catch (error) {
     console.log(error);
     throw error;
