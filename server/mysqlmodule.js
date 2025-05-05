@@ -843,7 +843,7 @@ async function clientuserLoginSession(email) {
   try {
     const [rowdata] = await pool.execute(
       `SELECT id, email, password FROM user WHERE email = ? AND verification_status = ?`,
-      [email, password, approved_status]
+      [email, approved_status]
     );
 
     if (rowdata.length != 0) {

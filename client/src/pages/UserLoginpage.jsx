@@ -64,7 +64,7 @@ const UserLoginpage = () => {
             email: Email,
             password: Password
         }
-        const UrlServer = `/clientuser/loginsession`;
+        const UrlServer = `api/user/loginsession`;
 
 
         try {

@@ -1,6 +1,8 @@
 const express = require('express');
 const router = express.Router();
-const { login } = require('../controllers/adminiControllers/authController.js');
+const { 
+    login 
+} = require('../controllers/adminiControllers/authController.js');
 const { 
     getDashboardData,
     getDashboardCity,
