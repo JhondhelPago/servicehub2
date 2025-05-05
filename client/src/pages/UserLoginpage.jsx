@@ -66,23 +66,6 @@ const UserLoginpage = () => {
         }
         const UrlServer = `/clientuser/loginsession`;
 
-        // axios.post(UrlServer, reqbody)
-        //     .then(res => {
-
-        //         setValid([res]);
-
-        //         if(Valid[0].data == 'ok'){
-
-        //             NavigateHome('/UserHome');
-
-        //         }else{
-        //             NavigateHome('/UserLog')
-        //         }
-
-        //     })
-        //     .catch(error => {
-        //         console.error(error);
-        //     });
 
         try {
 

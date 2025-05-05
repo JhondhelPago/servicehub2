@@ -837,19 +837,19 @@ const MyDateTime = {
 
 // mysql query for the clientuser
 
-async function clientuserLoginSession(email, password) {
+async function clientuserLoginSession(email) {
   //return the id of this clientuser login session
   const approved_status = 'verified'
   try {
     const [rowdata] = await pool.execute(
-      `SELECT id FROM user WHERE email = ? AND password = ? AND verification_status = ?`,
+      `SELECT id, email, password FROM user WHERE email = ? AND verification_status = ?`,
       [email, password, approved_status]
     );
 
     if (rowdata.length != 0) {
-      return rowdata; //return the result of the query which is the id of this login credentials
+      return rowdata[0]; //return the result of the query which is the id of this login credentials
     } else {
-      return [null];
+      return null;
     }
   } catch (error) {
     throw error;

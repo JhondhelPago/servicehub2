@@ -42,7 +42,6 @@ const EventPosting = ({ TriggerSetEditData }) => {
                         <h1 className="flex text-2xl font-medium md:text-4xl">
                             Manage Event Posts
                         </h1>
-                        {Data.length > 0 && <p>Data.length : {Data.length}</p>}
                         {Data.length === 0 && <p>No  Data Found!</p>}
                     </div>
                     {/* <!-- search bar --> */}

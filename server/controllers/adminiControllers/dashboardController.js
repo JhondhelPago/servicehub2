@@ -3,7 +3,7 @@ const fs = require('fs');
 const path = require('path');
 const os = require('os');
 const createCsvWriter = require('csv-writer').createObjectCsvWriter;
-// mysql funtions abstracted queries
+// mysql functions abstracted queries
 const {
     dashboardQuery,
     filteredDashboardQuery,

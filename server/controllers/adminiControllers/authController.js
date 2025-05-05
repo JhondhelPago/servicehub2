@@ -16,9 +16,9 @@ exports.login = async(req, res) => {
     
     
         if (isPasswordValid) {
-        res.send({ status: true, id: User.id });
+            res.send({ status: true, id: User.id });
         } else {
-        res.send({ status: false, id: null });
+            res.send({ status: false, id: null });
         }
 
     } catch (error) {
