@@ -17,7 +17,8 @@ const InboxComponent = () => {
 
         try {
 
-            const response = await axios.get(`/New/FetchMailInbox/Client/${clientuserId}`);
+            //const response = await axios.get(`/New/FetchMailInbox/Client/${clientuserId}`);
+            const response = await axios.get(`/api/user/mailbox/client/${clientuserId}`);
             const InboxListAdmin = response.data;
 
 
@@ -235,7 +236,7 @@ const MailListView = ({ MailObj, ListMailClick, AdminContactId, ClickInboxAction
                     <h6 className="truncate">{AdminContactId}</h6>
                 </label>
                 {/* <!-- subject --> */}
-                <h6 className="col-span-3 truncate">Sample Admin Subject</h6>
+                <h6 className="col-span-3 truncate">Subject String of Mail</h6>
                 <h6 className="col-span-2 my-auto text-xs justify-self-end group-hover/del:hidden">date_sent time_sent</h6>
                 <button className="hidden col-span-2 justify-self-end group-hover/del:inline hover:text-red-600">
                     <svg className="h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" d="M6 19a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V7H6zM8 9h8v10H8zm7.5-5l-1-1h-5l-1 1H5v2h14V4z" /></svg>

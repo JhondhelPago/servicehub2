@@ -1923,14 +1923,11 @@ app.get("/sample_res", (req, res) => {
   res.end();
 });
 
-// admin routes prefix
-const adminRoutes = require("./routes/adminRoutes");
+const adminRoutes = require("./routes/adminRoutes.js");
 app.use('/api/admin', adminRoutes);
 
-// client user routes prefix
-const clientUserRoutes = require("./routes/userRoutes");
-app.use('/api/user', clientUserRoutes);
-
+const userRoutes = require('./routes/userRoutes.js');
+app.use('/api/user', userRoutes);
 
 
 app.use((err, req, res, next) => {
