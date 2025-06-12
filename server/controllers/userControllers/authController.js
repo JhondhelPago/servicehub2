@@ -19,14 +19,15 @@ exports.clientuser_login = async (req, res) => {
             });
         }
 
-        const isPasswordValid = await bcrypt.hash(password, user.password);
+        const isPasswordValid = await bcrypt.compare(password, user.password);
+        console.log("isPasswordValid: ", isPasswordValid);
 
         if (!isPasswordValid) {
             // invalid password
-            res.send({ status: true, IdLogSession: null });
+            res.send({ status: false, IdLogSession: null });
         } else {
             // valid passsword 
-            res.send({ status: false, IdLogSession: user.id});
+            res.send({ status: true, IdLogSession: user.id});
         }
 
     } catch (error) { 

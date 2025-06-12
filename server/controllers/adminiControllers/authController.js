@@ -12,7 +12,8 @@ exports.login = async(req, res) => {
 
         const User = await get_adminId(email, password, role);
       
-        const isPasswordValid = await bcrypt.hash(password, User.password);
+        const isPasswordValid = await bcrypt.compare(password, User.password);
+        console.log("isPasswordValid:", isPasswordValid);
     
     
         if (isPasswordValid) {
