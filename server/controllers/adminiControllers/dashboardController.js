@@ -3,6 +3,8 @@ const fs = require('fs');
 const path = require('path');
 const os = require('os');
 const createCsvWriter = require('csv-writer').createObjectCsvWriter;
+const { createObjectCsvStringifier } = require('csv-writer');
+const { Readable } = require('stream');
 // mysql functions abstracted queries
 const {
     dashboardQuery,
@@ -16,6 +18,8 @@ const {
 
 exports.getDashboardData = async (req, res) => {
     try {
+
+        console.log("getDashboardData called");
 
         const userAllData = await dashboardQuery();
 
@@ -36,7 +40,7 @@ exports.getDashboardData = async (req, res) => {
 exports.getDashboardCity = async (req, res) => {
     try {
 
-        const city = req.params.city;
+        const city = req.query.city;
         console.log(city);
 
         const userAllData = await filteredDashboardQuery(city);
@@ -59,31 +63,24 @@ exports.getDashboardCity = async (req, res) => {
 exports.downloadDashboardData = async (req, res) => {
     try {
 
-        const userAllDat = await dashboardQuery();
+        console.log("downloadDashboardData called");
 
+        const userAllData = await dashboardQuery();
         if (!userAllData || userAllData.length === 0) {
             return res.status(404).json({ message: 'No data found for the selected city.' });
         }
 
-        const csvWriter = createCsvWriter({
-            path: 'data.csv',
-            header: Object.keys(userAllDat[0]).map((key) => ({ id: key, title: key }))
+        const csvStringifier = createObjectCsvStringifier({
+            header: Object.keys(userAllData[0]).map(key => ({ id: key, title: key }))
         });
 
-        await csvWriter.writeRecords(userAllDat);
-        const filePath = path.join(__dirname, 'data.csv');
-        
-        res.download(filePath, 'data.csv', (err) => {
-            if (err) {
-                console.error(err);
-                res.status(500).send('Error downloading file');
-            } else {
-                // Optionally, delete the file after download
-                fs.unlink(filePath, (err) => {
-                    if (err) console.error(err);
-                });
-            }
-        });
+        const csvHeader = csvStringifier.getHeaderString();
+        const csvBody = csvStringifier.stringifyRecords(userAllData);
+        const csvData = csvHeader + csvBody;
+
+        res.setHeader('Content-Type', 'text/csv');
+        res.setHeader('Content-Disposition', 'attachment; filename="data.csv"');
+        res.status(200).send(csvData);
 
     } catch (error) {
         console.error(error);
@@ -95,7 +92,8 @@ exports.downloadDashboardData = async (req, res) => {
 
 exports.downloadDashboardCity = async (req, res) => {
     try {
-        const city = req.params.city;
+        const city = req.query.city;
+        console.log("downloadDashboardCity called for city:", city);
 
         const userAllData = await filteredDashboardQuery(city);
 

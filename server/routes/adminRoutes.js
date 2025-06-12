@@ -21,5 +21,12 @@ router.get('/dashboard/:city', getDashboardCity);
 router.get('/dashboard/download', downloadDashboardData);
 router.get('/dashboard/download/:city', downloadDashboardCity);
 
+// new dashboard routes
+router.get('/dashb', getDashboardData);
+router.get('/dashb/city', getDashboardCity);
+
+router.get('/dashb/download', downloadDashboardData);
+router.get('/dashb/download/city', downloadDashboardCity)
+
 
 module.exports = router;
