@@ -32,7 +32,6 @@ exports.clientuser_login = async (req, res) => {
 
     } catch (error) { 
         console.error(error);
-        console.log(user);
         res.status(500).json({
             message: 'Internal server error'
         });

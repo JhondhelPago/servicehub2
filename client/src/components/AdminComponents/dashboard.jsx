@@ -120,7 +120,7 @@ const Homeprompt = () => {
 
     const FetchUserInformation = async () => {
         try {
-            const response = await axiosInstance.get('/api/admin/dashboard');
+            const response = await axiosInstance.get('/api/admin/dashb');
             SetUserInformation(response.data);
             console.log(response.data);
         } catch (error) {
@@ -147,7 +147,11 @@ const Homeprompt = () => {
         }else{
             try{
 
-                const response = await axiosInstance.get(`/api/admin/dashboard/${City}`);
+                const response = await axiosInstance.get(`/api/admin/dashb/city`, {
+                    params: {
+                        city: City,
+                    }
+                });
                 SetUserInformation(response.data);
     
             }catch(error){
@@ -163,7 +167,7 @@ const Homeprompt = () => {
 
         if(City == 'All'){
             try{
-                const response = await axiosInstance.get(`/api/admin/dashboard/download`, {
+                const response = await axiosInstance.get(`/api/admin/dashb/download`, {
                     responseType: 'blob',
                 });
     
@@ -182,8 +186,11 @@ const Homeprompt = () => {
         } else {
             //filtered query
             try{
-                const response = await axiosInstance.get(`/api/admin/dashboard/download/${City}`, {
+                const response = await axiosInstance.get(`/api/admin/dashb/download/city`, {
                     responseType: 'blob',
+                    params: {
+                        city: City,
+                    }
                 });
 
                 const url =  window.URL.createObjectURL(new Blob([response.data]));
