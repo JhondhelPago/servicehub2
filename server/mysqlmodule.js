@@ -1039,9 +1039,20 @@ async function FetchInboxOfClient(id) {
 
 async function NewFetchInboxClient(SenderClientId) {
   try {
+    // const [ReceiverAdminIdArray] = await pool.execute(`
+    //   SELECT receiverID, admin.username
+    //   FROM mail_sent
+    //   LEFT JOIN admin ON mail_sent.receiverID = admin.id
+    //   WHERE senderID = ?
+    //   ORDER BY STR_TO_DATE(CONCAT(date_sent, ' ', time_sent), '%Y-%m-%d %H:%i:%s') DESC
+    //   LIMIT 1000;
+    // `, [SenderClientId]);
+
     const [ReceiverAdminIdArray] = await pool.execute(`
-      SELECT receiverID
+      SELECT receiverID, admin.username AS username
       FROM mail_sent
+      LEFT JOIN admin 
+        ON mail_sent.receiverID COLLATE utf8mb4_unicode_ci = admin.id COLLATE utf8mb4_unicode_ci
       WHERE senderID = ?
       ORDER BY STR_TO_DATE(CONCAT(date_sent, ' ', time_sent), '%Y-%m-%d %H:%i:%s') DESC
       LIMIT 1000;

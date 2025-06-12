@@ -7,6 +7,6 @@ router.post('/loginsession', clientuser_login);
 
 
 // chat components controllers
-router.get('/mailbox/client/:clientuserId', FetchInboxClient);
+router.get('/mailbox/client/', FetchInboxClient);
 
 module.exports = router;

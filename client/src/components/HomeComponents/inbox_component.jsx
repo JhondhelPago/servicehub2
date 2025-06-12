@@ -10,6 +10,8 @@ const InboxComponent = () => {
 
     const [InboxContact, SetInboxContact] = useState([]);
 
+    const [CurrentAdminUsername, SetCurrentAdminUsername] = useState('');
+
     //function to fetch the inbox of the clientuser using the clientuserId
 
 
@@ -18,7 +20,11 @@ const InboxComponent = () => {
         try {
 
             //const response = await axios.get(`/New/FetchMailInbox/Client/${clientuserId}`);
-            const response = await axios.get(`/api/user/mailbox/client/${clientuserId}`);
+            const response = await axios.get(`/api/user/mailbox/client`, {
+                params: {
+                    clientuserId: clientuserId
+                }
+            });
             const InboxListAdmin = response.data;
 
 
@@ -67,8 +73,9 @@ const InboxComponent = () => {
 
     const [isSending, setIsSending] = useState(false)
 
-    const ClickInboxAction = async (adminId) => {
+    const ClickInboxAction = async (adminId, AdminUsername) => {
 
+        SetCurrentAdminUsername(AdminUsername);
         await FetchConvo_Client_Admin(adminId);
 
         if (MailOverViewAdminId !== adminId) {
@@ -145,10 +152,11 @@ const InboxComponent = () => {
                         )
                     })} */}
 
-                        {InboxContact.map((AdminContactId) => {
+                        {InboxContact.map((id_username) => {
                             return (
                                 <MailListView
-                                    AdminContactId={AdminContactId}
+                                    AdminContactId={id_username.id}
+                                    AdminUsername={id_username.username}
                                     ClickInboxAction={ClickInboxAction}
                                     setIsMailViewOpen={setIsMailViewOpen}
                                 ></MailListView>
@@ -159,35 +167,7 @@ const InboxComponent = () => {
 
                         {/* <!-- active mail sample --> */}
                         {/* if active: activeMailItem */}
-                        <div className="grid grid-cols-7 gap-4 p-2 border-b border-darkColor activeMailItem group/del">
-                            <label className="flex col-span-2 gap-2" for="">
-                                <input type="checkbox" />
-                                {/* <!-- from --> */}
-                                <h6 className="truncate">User1 User1User1</h6>
-                            </label>
-                            {/* <!-- subject --> */}
-                            <h6 className="col-span-3 truncate">Active Mail Sample</h6>
-                            <h6 className="col-span-2 my-auto text-xs justify-self-end group-hover/del:hidden">00/00/00</h6>
-                            <button className="hidden col-span-2 justify-self-end group-hover/del:inline hover:text-red-600">
-                                <svg className="h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" d="M6 19a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V7H6zM8 9h8v10H8zm7.5-5l-1-1h-5l-1 1H5v2h14V4z" /></svg>
-                            </button>
-                        </div>
-
-                        {/* <!-- unread mail sample --> */}
-                        {/* if unread: unreadMailItem hoverMail */}
-                        <div className="grid grid-cols-7 gap-4 p-2 border-b border-darkColor unreadMailItem hoverMail group/del">
-                            <label className="flex col-span-2 gap-2" for="">
-                                <input type="checkbox" />
-                                {/* <!-- from --> */}
-                                <h6 className="truncate">User1 User1User1</h6>
-                            </label>
-                            {/* <!-- subject --> */}
-                            <h6 className="col-span-3 truncate">Unread Mail Sample</h6>
-                            <h6 className="col-span-2 my-auto text-xs justify-self-end group-hover/del:hidden">00/00/00</h6>
-                            <button className="hidden col-span-2 justify-self-end group-hover/del:inline hover:text-red-600">
-                                <svg className="h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" d="M6 19a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V7H6zM8 9h8v10H8zm7.5-5l-1-1h-5l-1 1H5v2h14V4z" /></svg>
-                            </button>
-                        </div>
+                        
 
                     </div>
                 </div>
@@ -205,6 +185,7 @@ const InboxComponent = () => {
                         isMailViewOpen={isMailViewOpen}
                         setIsSending={setIsSending}
                         isSending={isSending}
+                        AdminUsername={CurrentAdminUsername}
                     ></MailOverView>
                 )}
             </div>
@@ -215,7 +196,7 @@ const InboxComponent = () => {
 
 
 // component definition of the MailListView
-const MailListView = ({ MailObj, ListMailClick, AdminContactId, ClickInboxAction, setIsMailViewOpen }) => {
+const MailListView = ({ MailObj, ListMailClick, AdminContactId, AdminUsername, ClickInboxAction, setIsMailViewOpen }) => {
 
     // activeMailItem
     // hoverMailItem
@@ -227,13 +208,13 @@ const MailListView = ({ MailObj, ListMailClick, AdminContactId, ClickInboxAction
     return (
         <>
             <div className="grid grid-cols-7 gap-4 p-2 border-b border-darkColor hoverMailItem group/del" onClick={() => {
-                ClickInboxAction(SenderAdminId)
+                ClickInboxAction(SenderAdminId, AdminUsername);
                 setIsMailViewOpen(true)
             }}>
                 <label className="flex col-span-2 gap-2" htmlFor="">
                     <input type="checkbox" />
                     {/* <!-- from --> */}
-                    <h6 className="truncate">{AdminContactId}</h6>
+                    <h6 className="truncate">{AdminUsername}</h6>
                 </label>
                 {/* <!-- subject --> */}
                 <h6 className="col-span-3 truncate">Subject String of Mail</h6>
@@ -249,10 +230,11 @@ const MailListView = ({ MailObj, ListMailClick, AdminContactId, ClickInboxAction
 
 
 // component definition of the MailOverView
-const MailOverView = ({ MailObjsArray, ContactAdminId, CloseMailOverViewAction, setIsMailViewOpen, isMailViewOpen, FetchConvo_Client_Admin, ClickInboxAction, isSending, setIsSending }) => {
+const MailOverView = ({ MailObjsArray, ContactAdminId, CloseMailOverViewAction, setIsMailViewOpen, isMailViewOpen, FetchConvo_Client_Admin, ClickInboxAction, isSending, setIsSending, AdminUsername }) => {
 
     const Overflow_InnerInbox = useRef(null);
     const { clientuserId } = useContext(ClientUserContext);
+    
 
     useEffect(() => {
 
@@ -301,7 +283,7 @@ const MailOverView = ({ MailObjsArray, ContactAdminId, CloseMailOverViewAction, 
 
                 <div className="sticky top-0 w-full">
                     <div className="flex justify-between w-full p-2 border-b border-darkColor bg-extra-extra-light">
-                        <p className="">Admin Name</p>
+                        <p className="">{AdminUsername}</p>
                         {/* <p className="">Subj</p> */}
 
                         {/* refresh btn */}

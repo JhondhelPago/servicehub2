@@ -6,9 +6,10 @@ const {
 exports.FetchInboxClient = async (req, res) => {
     try {
         
-        const clientId = req.params.clientuserId;
+        const clientId = req.query.clientuserId;
 
         let adminIdArray = [];
+        let adminUsernameArray = [];
 
         const clientInboxArray = await FetchInboxClient(clientId);
 
@@ -16,11 +17,17 @@ exports.FetchInboxClient = async (req, res) => {
             
             if(!adminIdArray.includes(mailObj.receiverID)){
                 adminIdArray.push(mailObj.receiverID);
+                adminUsernameArray.push(mailObj.username);
             }
 
         });
 
-        res.send(adminIdArray)
+        const id_username  = adminIdArray.map((id, index) => ({
+            id: id,
+            username: adminUsernameArray[index]
+        }));
+
+        res.send(id_username);
 
     } catch (error) {
         console.error(error);
